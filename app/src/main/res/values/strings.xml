@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Lubelskie Stacje Pogodowe</string>
+
+    <!--Bottom navigation-->
+    <string name="title_smog">Smog</string>
+    <string name="title_temp">Temperatura</string>
+    <string name="title_map">Mapa</string>
+</resources>

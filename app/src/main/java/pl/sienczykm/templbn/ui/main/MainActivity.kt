@@ -4,7 +4,16 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.model.TempStation
+import pl.sienczykm.templbn.remote.LspController
+import pl.sienczykm.templbn.utils.Station
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,12 +35,30 @@ class MainActivity : AppCompatActivity() {
         }
         false
     }
+
+    private val callback = object : Callback<TempStation> {
+        override fun onFailure(call: Call<TempStation>, t: Throwable) {
+            Timber.e(t)
+        }
+
+        override fun onResponse(call: Call<TempStation>, response: Response<TempStation>) {
+            if (response.isSuccessful) {
+                (response.body() as TempStation).toString()
+            } else {
+                Timber.e(response.message())
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
+        setSupportActionBar(toolbar)
         textMessage = findViewById(R.id.message)
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        LspController.getStation(Station.PLAC_LITEWSKI, callback)
+        LspController.getStation(Station.LUKOW, callback)
     }
 }

@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Temperature {
+class ChartModel {
 
     @SerializedName("label")
     @Expose
@@ -13,6 +13,6 @@ class Temperature {
     var color: String? = null
     @SerializedName("data")
     @Expose
-    var data: List<List<Int>>? = null
+    var data: List<List<Double>>? = null
 
 }

@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class TempStation {
+class TempStationOne {
 
     @SerializedName("data")
     @Expose
@@ -11,33 +11,33 @@ class TempStation {
 
     @SerializedName("windSpeed")
     @Expose
-    var windSpeedData: WindSpeed? = null
+    var windSpeedData: ChartModel? = null
 
     @SerializedName("temperature")
     @Expose
-    var temperatureData: Temperature? = null
+    var temperatureData: ChartModel? = null
 
     @SerializedName("windChill")
     @Expose
-    var windChillData: WindChill? = null
+    var windChillData: ChartModel? = null
 
     @SerializedName("humidity")
     @Expose
-    var humidityData: Humidity? = null
+    var humidityData: ChartModel? = null
 
     @SerializedName("pressure")
     @Expose
-    var pressureData: Pressure? = null
+    var pressureData: ChartModel? = null
 
     @SerializedName("rainCum")
     @Expose
-    var rainData: RainCum? = null
+    var rainData: ChartModel? = null
 
-    @SerializedName(value = "windDirInt", alternate = ["windDir"])
+    @SerializedName("windDirInt")
     @Expose
     var windDir: Int? = null
 
-    @SerializedName(value = "windSpeedInt")//, alternate = ["windSpeed"])
+    @SerializedName("windSpeedInt")
     @Expose
     var windSpeed: Double? = null
 
@@ -49,10 +49,6 @@ class TempStation {
     @Expose
     var temperatureWindChill: Double? = null
 
-    @SerializedName("T5")
-    @Expose
-    var temperatureGround: Double? = null
-
     @SerializedName("humidityInt")
     @Expose
     var humidity: Double? = null
@@ -61,13 +57,10 @@ class TempStation {
     @Expose
     var pressure: Double? = null
 
-    @SerializedName(value = "rainCumInt", alternate = ["rainT"])
+    @SerializedName("rainCumInt")
     @Expose
-    var rainToday: Int? = null
+    var rainToday: Double? = null
 
-    override fun toString(): String {
-        return "TempStation(data=$data, windDir=$windDir, windSpeed=$windSpeed, temperature=$temperature, temperatureWindChill=$temperatureWindChill, temperatureGround=$temperatureGround, humidity=$humidity, pressure=$pressure, rainToday=$rainToday)"
-    }
 
 
 }

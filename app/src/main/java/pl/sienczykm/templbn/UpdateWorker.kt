@@ -9,7 +9,6 @@ import pl.sienczykm.templbn.db.model.TempStationDb
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.utils.Constants
 import pl.sienczykm.templbn.utils.Station
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +36,7 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
                     parseChartData(responseStationOne?.humidityData?.data),
                     parseChartData(responseStationOne?.windSpeedData?.data),
                     parseChartData(responseStationOne?.temperatureWindChart?.data),
-                    parseChartData(responseStationOne?.pressureData?.data),
+                    parseChartData(responseStationOne?.pressureData?.data, true),
                     parseChartData(responseStationOne?.rainData?.data)
                 )
 
@@ -66,12 +65,12 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
             }
         }
 
-        Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insertStations(tempStation).toString())
+        AppDb.getDatabase(applicationContext).tempStationDao().insertStations(tempStation).toString()
 
-        val dbStations: List<TempStationDb>? =
-            AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
-
-        Timber.e(dbStations.toString())
+//        val dbStations: List<TempStationDb>? =
+//            AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
+//
+//        dbStations?.forEach { Timber.e(it.pressureChart?.toString()) }
 
         return Result.success()
     }
@@ -86,14 +85,18 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
     }
 
     private fun parseChartData(chartData: List<List<Double>?>?): List<ChartModelDb>? {
+        return parseChartData(chartData, false)
+    }
+
+    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<ChartModelDb>? {
         val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
         val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
 
         return if (chartData.isNullOrEmpty()) null
         else {
-            chartData
-                .filter { it != null }
-                .map { ChartModelDb(it?.get(0)?.toLong()?.plus(offset), it?.get(1)) }
+            var returnList = chartData.filterNotNull()
+            if (isPressure) returnList = returnList.filter { it[1] > 0 }
+            returnList.map { ChartModelDb(it[0].toLong().plus(offset), it[1]) }
         }
     }
 }

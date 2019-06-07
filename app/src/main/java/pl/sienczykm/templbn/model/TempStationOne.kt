@@ -22,7 +22,7 @@ class TempStationOne {
 
     @SerializedName("windChill")
     @Expose
-    var windChillData: ChartModel? = null
+    var temperatureWindChart: ChartModel? = null
 
     @SerializedName("humidity")
     @Expose

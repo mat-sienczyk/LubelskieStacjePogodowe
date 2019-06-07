@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.ChartModelDb
 import pl.sienczykm.templbn.db.model.TempStationDb
 import pl.sienczykm.templbn.remote.LspController
+import pl.sienczykm.templbn.utils.Constants
 import pl.sienczykm.templbn.utils.Station
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -13,6 +15,8 @@ import java.util.*
 
 class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
     override fun doWork(): Result {
+
+        val tempStation = mutableListOf<TempStationDb>()
 
         Station.STATIONS.forEach {
 
@@ -28,10 +32,17 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
                     responseStationOne?.windDir,
                     responseStationOne?.humidity,
                     responseStationOne?.pressure,
-                    responseStationOne?.rainToday
+                    responseStationOne?.rainToday,
+                    parseChartData(responseStationOne?.temperatureData?.data),
+                    parseChartData(responseStationOne?.humidityData?.data),
+                    parseChartData(responseStationOne?.windSpeedData?.data),
+                    parseChartData(responseStationOne?.temperatureWindChart?.data),
+                    parseChartData(responseStationOne?.pressureData?.data),
+                    parseChartData(responseStationOne?.rainData?.data)
                 )
 
-                Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insert(stationOne).toString())
+                tempStation.add(stationOne)
+//                Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insert(stationOne).toString())
 
             } else {
                 val responseStationOne = LspController.getStationTwo(it).body()
@@ -45,13 +56,17 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
                     responseStationOne?.windDir,
                     responseStationOne?.humidity,
                     null,
-                    responseStationOne?.rainToday
+                    responseStationOne?.rainToday,
+                    parseChartData(responseStationOne?.temperatureData?.data),
+                    parseChartData(responseStationOne?.humidityData?.data)
                 )
 
-                Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insert(stationTwo).toString())
+                tempStation.add(stationTwo)
+//                Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insert(stationTwo).toString())
             }
         }
 
+        Timber.e(AppDb.getDatabase(applicationContext).tempStationDao().insertStations(tempStation).toString())
 
         val dbStations: List<TempStationDb>? =
             AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
@@ -61,12 +76,24 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
         return Result.success()
     }
 
-    fun parseDate(stringDate: String?): Date {
+    private fun parseDate(stringDate: String?): Date? {
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("pl", "PL"))
         inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
 
         return inputFormat.parse(stringDate)
 
+    }
+
+    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartModelDb>? {
+        val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
+        val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
+
+        return if (chartData.isNullOrEmpty()) null
+        else {
+            chartData
+                .filter { it != null }
+                .map { ChartModelDb(it?.get(0)?.toLong()?.plus(offset), it?.get(1)) }
+        }
     }
 }

@@ -18,6 +18,11 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.navigation_home -> {
                 textMessage.setText(R.string.title_smog)
+
+                val updateWorkRequest = OneTimeWorkRequestBuilder<UpdateWorker>()
+                    .build()
+                WorkManager.getInstance().enqueue(updateWorkRequest)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
@@ -39,9 +44,5 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         textMessage = findViewById(R.id.message)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-        val updateWorkRequest = OneTimeWorkRequestBuilder<UpdateWorker>()
-            .build()
-        WorkManager.getInstance().enqueue(updateWorkRequest)
     }
 }

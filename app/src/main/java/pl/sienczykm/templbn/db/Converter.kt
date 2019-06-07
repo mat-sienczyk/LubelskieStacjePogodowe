@@ -1,12 +1,18 @@
 package pl.sienczykm.templbn.db
 
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import pl.sienczykm.templbn.db.model.ChartModelDb
 import java.util.*
+
 
 class Converter {
 
+    val chartArrayType = object : TypeToken<List<ChartModelDb>>() {}.type
+
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
+    fun timestampToDate(value: Long?): Date? {
         return if (value == null) null else Date(value)
     }
 
@@ -16,29 +22,20 @@ class Converter {
     }
 
     @TypeConverter
-    fun fromArray(strings: List<String>?): String? {
-        return when (strings) {
+    fun chartArrayToString(chartData: List<ChartModelDb>?): String? {
+        return when (chartData) {
             null -> null
-            else -> strings.joinToString()
+            else -> Gson().toJson(chartData, chartArrayType)
         }
 
     }
 
     @TypeConverter
-    fun toArray(concatenatedStrings: String?): List<String>? {
-        return when (concatenatedStrings) {
+    fun stringToChartArray(json: String?): List<ChartModelDb>? {
+        return when (json) {
             null -> null
-            else -> listOf()
+            else -> Gson().fromJson(json, chartArrayType)
         }
-
-//
-//        return if (concatenatedStrings.isEmpty()) ArrayList(emptyList()) else ArrayList(
-//            Arrays.asList(
-//                *concatenatedStrings.split(
-//                    ",".toRegex()
-//                ).dropLastWhile { it.isEmpty() }.toTypedArray()
-//            )
-//        )
     }
 
 }

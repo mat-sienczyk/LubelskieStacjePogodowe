@@ -1,6 +1,5 @@
 package pl.sienczykm.templbn.db.model
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
@@ -17,11 +16,11 @@ data class TempStationDb(
     val windDir: Double? = null,
     val humidity: Double? = null,
     val pressure: Double? = null,
-    val rainToday: Double? = null
-//    @Embedded val temperatureChart: List<ChartModelDb>? = null,
-//    @Embedded val humidityChart: List<ChartModelDb>? = null,
-//    @Embedded val windSpeedChart: List<ChartModelDb>? = null,
-//    @Embedded val temperatureWindChart: List<ChartModelDb>? = null,
-//    @Embedded val pressureChart: List<ChartModelDb>? = null,
-//    @Embedded val rainTodayChart: List<ChartModelDb>? = null
+    val rainToday: Double? = null,
+    val temperatureChart: List<ChartModelDb>? = null,
+    val humidityChart: List<ChartModelDb>? = null,
+    val windSpeedChart: List<ChartModelDb>? = null,
+    val temperatureWindChart: List<ChartModelDb>? = null,
+    val pressureChart: List<ChartModelDb>? = null,
+    val rainTodayChart: List<ChartModelDb>? = null
 )

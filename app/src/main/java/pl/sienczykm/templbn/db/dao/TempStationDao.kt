@@ -11,7 +11,7 @@ interface TempStationDao {
     fun insert(station: TempStationDb): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertStations(vararg stations: TempStationDb): List<Long>
+    fun insertStations(stations: List<TempStationDb>): List<Long>
 
     @Update
     fun update(station: TempStationDb)

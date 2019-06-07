@@ -1,28 +1,35 @@
 package pl.sienczykm.templbn.model
 
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import pl.sienczykm.templbn.utils.EmptyStringTypeAdapter
 
 class TempStationTwo {
 
     @SerializedName("data")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var data: String? = null
 
     @SerializedName("windDir")
     @Expose
-    var windDir: Int? = null
+    @JsonAdapter(EmptyStringTypeAdapter::class)
+    var windDir: Double? = null
 
     @SerializedName("windSpeed")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var windSpeed: Double? = null
 
     @SerializedName("rainT")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var rainToday: Double? = null
 
     @SerializedName("T5")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var temperatureGround: Double? = null
 
     @SerializedName("temperature")
@@ -35,10 +42,12 @@ class TempStationTwo {
 
     @SerializedName("temperatureInt")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var temperature: Double? = null
 
     @SerializedName("humidityInt")
     @Expose
+    @JsonAdapter(EmptyStringTypeAdapter::class)
     var humidity: Double? = null
 
 }

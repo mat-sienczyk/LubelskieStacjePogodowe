@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.remote
 
+import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -7,20 +8,23 @@ import okhttp3.logging.HttpLoggingInterceptor
 import pl.sienczykm.templbn.model.TempStationOne
 import pl.sienczykm.templbn.model.TempStationTwo
 import pl.sienczykm.templbn.utils.Config
+import pl.sienczykm.templbn.utils.EmptyStringTypeAdapter
 import pl.sienczykm.templbn.utils.Station
-import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 object LspController {
 
-    fun getStationOne(station: Station, callback: Callback<TempStationOne>) {
-        getService().getStationOne(station.id).enqueue(callback)
+    @WorkerThread
+    fun getStationOne(station: Station): Response<TempStationOne> {
+        return getService().getStationOne(station.id).execute()
     }
 
-    fun getStationTwo(station: Station, callback: Callback<TempStationTwo>) {
-        getService().getStationTwo(station.id).enqueue(callback)
+    @WorkerThread
+    fun getStationTwo(station: Station): Response<TempStationTwo> {
+        return getService().getStationTwo(station.id).execute()
     }
 
     private fun getService(): LspService {

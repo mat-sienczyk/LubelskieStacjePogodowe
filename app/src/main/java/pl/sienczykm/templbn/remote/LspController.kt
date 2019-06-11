@@ -5,11 +5,13 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import pl.sienczykm.templbn.model.SmogSensor
+import pl.sienczykm.templbn.model.SmogSensorData
 import pl.sienczykm.templbn.model.TempStationOne
 import pl.sienczykm.templbn.model.TempStationTwo
 import pl.sienczykm.templbn.utils.Config
-import pl.sienczykm.templbn.utils.EmptyStringTypeAdapter
-import pl.sienczykm.templbn.utils.Station
+import pl.sienczykm.templbn.utils.SmogStation
+import pl.sienczykm.templbn.utils.WeatherStation
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,25 +20,46 @@ import retrofit2.converter.gson.GsonConverterFactory
 object LspController {
 
     @WorkerThread
-    fun getStationOne(station: Station): Response<TempStationOne> {
-        return getService().getStationOne(station.id).execute()
+    fun getStationOne(weatherStation: WeatherStation): Response<TempStationOne> {
+        return getWeatherService().getStationOne(weatherStation.id).execute()
     }
 
     @WorkerThread
-    fun getStationTwo(station: Station): Response<TempStationTwo> {
-        return getService().getStationTwo(station.id).execute()
+    fun getStationTwo(weatherStation: WeatherStation): Response<TempStationTwo> {
+        return getWeatherService().getStationTwo(weatherStation.id).execute()
     }
 
-    private fun getService(): LspService {
+    @WorkerThread
+    fun getSensors(smogStation: SmogStation): Response<List<SmogSensor>> {
+        return getSmogService().getSensorsForStation(smogStation.id).execute()
+    }
 
-            val retrofit = Retrofit.Builder()
-                .baseUrl(Config.BASE_URL)
-                .client(getClient())
-                .addConverterFactory(GsonConverterFactory.create(getGson()))
-                .build()
+    @WorkerThread
+    fun getSensorData(sensorId: Int): Response<SmogSensorData> {
+        return getSmogService().getDataForSensor(sensorId).execute()
+    }
 
-            return retrofit.create(LspService::class.java)
-        }
+    private fun getWeatherService(): WeatherService {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Config.BASE_WEATHER_URL)
+            .client(getClient())
+            .addConverterFactory(GsonConverterFactory.create(getGson()))
+            .build()
+
+        return retrofit.create(WeatherService::class.java)
+    }
+
+    private fun getSmogService(): SmogService {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Config.BASE_SMOG_URL)
+            .client(getClient())
+            .addConverterFactory(GsonConverterFactory.create(getGson()))
+            .build()
+
+        return retrofit.create(SmogService::class.java)
+    }
 
 
     private fun getClient(): OkHttpClient {

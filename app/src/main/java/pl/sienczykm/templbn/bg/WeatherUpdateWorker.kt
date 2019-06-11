@@ -1,23 +1,24 @@
-package pl.sienczykm.templbn
+package pl.sienczykm.templbn.bg
 
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.ChartModelDb
+import pl.sienczykm.templbn.db.model.DataModelDb
 import pl.sienczykm.templbn.db.model.TempStationDb
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.utils.Constants
-import pl.sienczykm.templbn.utils.Station
+import pl.sienczykm.templbn.utils.WeatherStation
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
+class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
     override fun doWork(): Result {
 
         val tempStation = mutableListOf<TempStationDb>()
 
-        Station.STATIONS.forEach {
+        WeatherStation.STATIONS.forEach {
 
             if (it.parser == 1) {
                 val responseStationOne = LspController.getStationOne(it).body()
@@ -67,10 +68,9 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
 
         AppDb.getDatabase(applicationContext).tempStationDao().insertStations(tempStation).toString()
 
-//        val dbStations: List<TempStationDb>? =
-//            AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
-//
-//        dbStations?.forEach { Timber.e(it.pressureChart?.toString()) }
+        val dbStations: List<TempStationDb>? =
+            AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
+        dbStations?.forEach { Timber.e(it.toString()) }
 
         return Result.success()
     }
@@ -84,11 +84,11 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
 
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartModelDb>? {
+    private fun parseChartData(chartData: List<List<Double>?>?): List<DataModelDb>? {
         return parseChartData(chartData, false)
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<ChartModelDb>? {
+    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<DataModelDb>? {
         val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
         val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
 
@@ -96,7 +96,7 @@ class UpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker
         else {
             var returnList = chartData.filterNotNull()
             if (isPressure) returnList = returnList.filter { it[1] > 0 }
-            returnList.map { ChartModelDb(it[0].toLong().plus(offset), it[1]) }
+            returnList.map { DataModelDb(it[0].toLong().plus(offset), it[1]) }
         }
     }
 }

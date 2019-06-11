@@ -9,7 +9,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.UpdateWorker
+import pl.sienczykm.templbn.bg.SmogUpdateWorker
+import pl.sienczykm.templbn.bg.WeatherUpdateWorker
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,14 +20,19 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_home -> {
                 textMessage.setText(R.string.title_smog)
 
-                val updateWorkRequest = OneTimeWorkRequestBuilder<UpdateWorker>()
+                val smogUpdateWorkRequest = OneTimeWorkRequestBuilder<SmogUpdateWorker>()
                     .build()
-                WorkManager.getInstance().enqueue(updateWorkRequest)
+                WorkManager.getInstance().enqueue(smogUpdateWorkRequest)
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 textMessage.setText(R.string.title_temp)
+
+                val weatherUpdateWorkRequest = OneTimeWorkRequestBuilder<WeatherUpdateWorker>()
+                    .build()
+                WorkManager.getInstance().enqueue(weatherUpdateWorkRequest)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {

@@ -17,10 +17,10 @@ data class TempStationDb(
     val humidity: Double? = null,
     val pressure: Double? = null,
     val rainToday: Double? = null,
-    val temperatureChart: List<ChartModelDb>? = null,
-    val humidityChart: List<ChartModelDb>? = null,
-    val windSpeedChart: List<ChartModelDb>? = null,
-    val temperatureWindChart: List<ChartModelDb>? = null,
-    val pressureChart: List<ChartModelDb>? = null,
-    val rainTodayChart: List<ChartModelDb>? = null
+    val temperatureData: List<DataModelDb>? = null,
+    val humidityData: List<DataModelDb>? = null,
+    val windSpeedData: List<DataModelDb>? = null,
+    val temperatureWindData: List<DataModelDb>? = null,
+    val pressureData: List<DataModelDb>? = null,
+    val rainTodayData: List<DataModelDb>? = null
 )

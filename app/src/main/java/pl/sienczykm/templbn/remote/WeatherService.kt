@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface LspService {
+interface WeatherService {
     @GET("data.php")
     fun getStationOne(@Query("s") stationId: Int): Call<TempStationOne>
 

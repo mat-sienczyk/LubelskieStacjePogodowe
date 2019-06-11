@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.bg
+package pl.sienczykm.templbn.background
 
 import android.content.Context
 import androidx.work.Worker

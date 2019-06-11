@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import pl.sienczykm.templbn.bg.SmogUpdateWorker
+import pl.sienczykm.templbn.background.SmogUpdateWorker
 import pl.sienczykm.templbn.utils.SmogStation
 
 class SmogFragment : Fragment() {

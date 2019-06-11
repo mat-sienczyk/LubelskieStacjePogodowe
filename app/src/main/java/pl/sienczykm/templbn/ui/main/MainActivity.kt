@@ -10,9 +10,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.bg.GetStationsWorker
-import pl.sienczykm.templbn.bg.SmogUpdateWorker
-import pl.sienczykm.templbn.bg.WeatherUpdateWorker
+import pl.sienczykm.templbn.background.GetStationsWorker
+import pl.sienczykm.templbn.background.SmogUpdateWorker
+import pl.sienczykm.templbn.background.WeatherUpdateWorker
 import pl.sienczykm.templbn.utils.SmogStation
 import pl.sienczykm.templbn.utils.WeatherStation
 

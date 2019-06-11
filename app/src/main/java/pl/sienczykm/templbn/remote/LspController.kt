@@ -20,18 +20,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 object LspController {
 
     @WorkerThread
-    fun getStationOne(weatherStation: WeatherStation): Response<TempStationOne> {
-        return getWeatherService().getStationOne(weatherStation.id).execute()
+    fun getStationOne(stationId: Int): Response<TempStationOne> {
+        return getWeatherService().getStationOne(stationId).execute()
     }
 
     @WorkerThread
-    fun getStationTwo(weatherStation: WeatherStation): Response<TempStationTwo> {
-        return getWeatherService().getStationTwo(weatherStation.id).execute()
+    fun getStationTwo(stationId: Int): Response<TempStationTwo> {
+        return getWeatherService().getStationTwo(stationId).execute()
     }
 
     @WorkerThread
-    fun getSensors(smogStation: SmogStation): Response<List<SmogSensor>> {
-        return getSmogService().getSensorsForStation(smogStation.id).execute()
+    fun getSensors(stationId: Int): Response<List<SmogSensor>> {
+        return getSmogService().getSensorsForStation(stationId).execute()
     }
 
     @WorkerThread

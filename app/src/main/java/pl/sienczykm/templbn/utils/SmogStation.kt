@@ -23,7 +23,7 @@ class SmogStation private constructor(
 
     companion object {
 
-        val STATION_ID_KEY = "smog_station_id"
+        val ID_KEY = "smog_station_id"
 
         val LUBLIN = SmogStation(266, "Lublin", 51.259431, 22.569133)
         val BIALA_PODLASKA = SmogStation(236, "Biała Podlaska", 52.029194, 23.149389)
@@ -47,17 +47,8 @@ class SmogStation private constructor(
             NALECZOW
         )
 
-//        fun getStationForGivenId(id: Int): SmogStation {
-//
-//            var selectedStation = LUBLIN
-//
-//            for (station in STATIONS) {
-//                if (station.id == id) {
-//                    selectedStation = station
-//                }
-//            }
-//
-//            return selectedStation
-//        }
+        fun getStationForGivenId(id: Int): SmogStation {
+            return STATIONS.single { it.id == id }
+        }
     }
 }

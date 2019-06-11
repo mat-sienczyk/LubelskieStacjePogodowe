@@ -16,18 +16,23 @@ import java.util.*
 class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
     override fun doWork(): Result {
 
-        AppDb.getDatabase(applicationContext).smogStationDao()
-            .insertStations(SmogStation.STATIONS.map { SmogStationDb(it.id, getSensors(it)) })
+        val stationId = inputData.getInt(SmogStation.ID_KEY, 0)
 
-//        val dbStations: List<SmogStationDb>? =
-//            AppDb.getDatabase(applicationContext).smogStationDao().getAllStations()
-//        dbStations?.forEach { Timber.e(it.toString()) }
+        return if (stationId != 0) {
+            AppDb.getDatabase(applicationContext).smogStationDao()
+                .insert(SmogStationDb(stationId, getSensors(stationId)))
 
-        return Result.success()
+            //        val dbStations: List<SmogStationDb>? =
+            //            AppDb.getDatabase(applicationContext).smogStationDao().getAllStations()
+            //        dbStations?.forEach { Timber.e(it.toString()) }
+            Result.success()
+        } else {
+            Result.failure()
+        }
     }
 
-    private fun getSensors(smogStation: SmogStation): List<SmogSensorDb>? {
-        return LspController.getSensors(smogStation).body()
+    private fun getSensors(stationId: Int): List<SmogSensorDb>? {
+        return LspController.getSensors(stationId).body()
             ?.filter { smogSensor -> smogSensor.id != null }
             ?.map { smogSensor ->
                 SmogSensorDb(

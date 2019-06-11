@@ -24,7 +24,7 @@ class WeatherStation private constructor(
 
     companion object {
 
-        val STATION_ID_KEY = "weather_station_id"
+        val ID_KEY = "weather_station_id"
 
         val OGROD_BOTANICZNY = WeatherStation(10, Type.ONE, "Ogród botaniczny", 51.263975, 22.514608)
         val GUCIOW = WeatherStation(11, Type.ONE, "Guciów", 50.582600, 23.073628)
@@ -56,18 +56,9 @@ class WeatherStation private constructor(
             CELEJOW
         )
 
-//        fun getStationForGivenId(id: Int): WeatherStation {
-//
-//            var selectedStation = PLAC_LITEWSKI
-//
-//            for (station in STATIONS) {
-//                if (station.id == id) {
-//                    selectedStation = station
-//                }
-//            }
-//
-//            return selectedStation
-//        }
+        fun getStationForGivenId(id: Int): WeatherStation {
+            return STATIONS.single { it.id == id }
+        }
     }
 
     enum class Type {

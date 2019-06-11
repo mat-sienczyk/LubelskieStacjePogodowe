@@ -10,24 +10,18 @@ import pl.sienczykm.templbn.db.model.SmogStationDb
 import pl.sienczykm.templbn.model.SmogSensorData
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.utils.SmogStation
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
     override fun doWork(): Result {
 
-        val tempStations = mutableListOf<SmogStationDb>()
+        AppDb.getDatabase(applicationContext).smogStationDao()
+            .insertStations(SmogStation.STATIONS.map { SmogStationDb(it.id, getSensors(it)) })
 
-        SmogStation.STATIONS.forEach { smogStation ->
-            tempStations.add(SmogStationDb(smogStation.id, getSensors(smogStation)))
-        }
-
-        AppDb.getDatabase(applicationContext).smogStationDao().insertStations(tempStations).toString()
-
-        val dbStations: List<SmogStationDb>? =
-            AppDb.getDatabase(applicationContext).smogStationDao().getAllStations()
-        dbStations?.forEach { Timber.e(it.toString()) }
+//        val dbStations: List<SmogStationDb>? =
+//            AppDb.getDatabase(applicationContext).smogStationDao().getAllStations()
+//        dbStations?.forEach { Timber.e(it.toString()) }
 
         return Result.success()
     }
@@ -49,13 +43,11 @@ class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
         return smogSensorData?.values?.map { DataModelDb(parseDate(it.date), it.value) }
     }
 
-
     private fun parseDate(stringDate: String?): Long? {
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("pl", "PL"))
         inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
 
         return inputFormat.parse(stringDate).time
-
     }
 }

@@ -6,37 +6,20 @@ class SmogStation private constructor(
     val latitude: Double,
     val longitude: Double
 ) {
-//    val jsonUrl: String
-//    val url: String
+    val url: String
 //    var distance: Double = 0.toDouble()
 
     init {
-//        this.jsonUrl = constructJsonUrl(id)
-//        this.url = getStationUrl(jsonUrl)
+        this.url = getStationUrl()
     }
 
     override fun toString(): String {
         return name
     }
 
-//    private fun getStationUrl(url: String): String {
-//        return Config.BASE_URL + "podglad/" + url.substring(url.length - 2, url.length)
-//    }
-//
-//    private fun constructJsonUrl(id: Int): String {
-//
-//        var jsonUrl = Config.BASE_URL
-//
-//        if (parser == PARSER_I) {
-//            jsonUrl = jsonUrl + "data.php?s="
-//        } else {
-//            jsonUrl = jsonUrl + "data2.php?s="
-//        }
-//
-//        jsonUrl = jsonUrl + id
-//
-//        return jsonUrl
-//    }
+    private fun getStationUrl(): String {
+        return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$id"
+    }
 
     companion object {
 
@@ -64,17 +47,17 @@ class SmogStation private constructor(
             NALECZOW
         )
 
-        fun getStationForGivenId(id: Int): SmogStation {
-
-            var selectedStation = LUBLIN
-
-            for (station in STATIONS) {
-                if (station.id == id) {
-                    selectedStation = station
-                }
-            }
-
-            return selectedStation
-        }
+//        fun getStationForGivenId(id: Int): SmogStation {
+//
+//            var selectedStation = LUBLIN
+//
+//            for (station in STATIONS) {
+//                if (station.id == id) {
+//                    selectedStation = station
+//                }
+//            }
+//
+//            return selectedStation
+//        }
     }
 }

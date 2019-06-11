@@ -2,63 +2,43 @@ package pl.sienczykm.templbn.utils
 
 class WeatherStation private constructor(
     val id: Int,
-    val parser: Int,
+    val type: Type,
     val name: String,
     val latitude: Double,
     val longitude: Double
 ) {
-    val jsonUrl: String
     val url: String
-    var distance: Double = 0.toDouble()
+//    var distance: Double = 0.toDouble()
 
     init {
-        this.jsonUrl = constructJsonUrl(parser, id)
-        this.url = getStationUrl(jsonUrl)
+        this.url = getStationUrl()
     }
 
     override fun toString(): String {
         return name
     }
 
-    private fun getStationUrl(url: String): String {
-        return Config.BASE_WEATHER_URL + "podglad/" + url.substring(url.length - 2, url.length)
-    }
-
-    private fun constructJsonUrl(parser: Int, id: Int): String {
-
-        var jsonUrl = Config.BASE_WEATHER_URL
-
-        if (parser == PARSER_I) {
-            jsonUrl = jsonUrl + "data.php?s="
-        } else {
-            jsonUrl = jsonUrl + "data2.php?s="
-        }
-
-        jsonUrl = jsonUrl + id
-
-        return jsonUrl
+    private fun getStationUrl(): String {
+        return Config.BASE_WEATHER_URL + "podglad/" + id
     }
 
     companion object {
 
         val STATION_ID_KEY = "weather_station_id"
 
-        val PARSER_I = 1
-        val PARSER_II = 2
-
-        val OGROD_BOTANICZNY = WeatherStation(10, PARSER_I, "Ogród botaniczny", 51.263975, 22.514608)
-        val GUCIOW = WeatherStation(11, PARSER_I, "Guciów", 50.582600, 23.073628)
-        val FLORIANKA = WeatherStation(12, PARSER_II, "Florianka", 50.554803, 22.988150)
-        val LUKOW = WeatherStation(13, PARSER_II, "Łuków", 51.930883, 22.389122)
-        val PLAC_LITEWSKI = WeatherStation(16, PARSER_I, "Plac Litewski", 51.248831, 22.560531)
-        val ZEMBORZYCKA = WeatherStation(17, PARSER_I, "MPWiK Zemborzycka", 51.203525, 22.561972)
-        val HAJDOW = WeatherStation(18, PARSER_II, "MPWiK Hajdów", 51.264328, 22.622867)
-        val LUBARTOW = WeatherStation(19, PARSER_I, "PGK Lubartów", 51.452850, 22.590253)
-        val TRZDNIK = WeatherStation(20, PARSER_II, "Trzydnik", 50.851986, 22.134056)
-        val LESNIOWICE = WeatherStation(21, PARSER_II, "Leśniowice", 50.988278, 23.509881)
-        val RYBCZEWICE = WeatherStation(22, PARSER_II, "Rybczewice", 51.039969, 22.853811)
-        val WOLA_WERESZCZYNSKA = WeatherStation(23, PARSER_II, "Wola Wereszczyńska", 51.442264, 23.129692)
-        val CELEJOW = WeatherStation(24, PARSER_II, "Celejów", 51.330653, 22.071947)
+        val OGROD_BOTANICZNY = WeatherStation(10, Type.ONE, "Ogród botaniczny", 51.263975, 22.514608)
+        val GUCIOW = WeatherStation(11, Type.ONE, "Guciów", 50.582600, 23.073628)
+        val FLORIANKA = WeatherStation(12, Type.TWO, "Florianka", 50.554803, 22.988150)
+        val LUKOW = WeatherStation(13, Type.TWO, "Łuków", 51.930883, 22.389122)
+        val PLAC_LITEWSKI = WeatherStation(16, Type.ONE, "Plac Litewski", 51.248831, 22.560531)
+        val ZEMBORZYCKA = WeatherStation(17, Type.ONE, "MPWiK Zemborzycka", 51.203525, 22.561972)
+        val HAJDOW = WeatherStation(18, Type.TWO, "MPWiK Hajdów", 51.264328, 22.622867)
+        val LUBARTOW = WeatherStation(19, Type.ONE, "PGK Lubartów", 51.452850, 22.590253)
+        val TRZDNIK = WeatherStation(20, Type.TWO, "Trzydnik", 50.851986, 22.134056)
+        val LESNIOWICE = WeatherStation(21, Type.TWO, "Leśniowice", 50.988278, 23.509881)
+        val RYBCZEWICE = WeatherStation(22, Type.TWO, "Rybczewice", 51.039969, 22.853811)
+        val WOLA_WERESZCZYNSKA = WeatherStation(23, Type.TWO, "Wola Wereszczyńska", 51.442264, 23.129692)
+        val CELEJOW = WeatherStation(24, Type.TWO, "Celejów", 51.330653, 22.071947)
 
         val STATIONS = arrayOf(
             PLAC_LITEWSKI,
@@ -76,17 +56,21 @@ class WeatherStation private constructor(
             CELEJOW
         )
 
-        fun getStationForGivenId(id: Int): WeatherStation {
+//        fun getStationForGivenId(id: Int): WeatherStation {
+//
+//            var selectedStation = PLAC_LITEWSKI
+//
+//            for (station in STATIONS) {
+//                if (station.id == id) {
+//                    selectedStation = station
+//                }
+//            }
+//
+//            return selectedStation
+//        }
+    }
 
-            var selectedStation = PLAC_LITEWSKI
-
-            for (station in STATIONS) {
-                if (station.id == id) {
-                    selectedStation = station
-                }
-            }
-
-            return selectedStation
-        }
+    enum class Type {
+        ONE, TWO
     }
 }

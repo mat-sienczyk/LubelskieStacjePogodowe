@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -12,27 +13,17 @@ import pl.sienczykm.templbn.ui.weather.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var viewModel: MainViewModel
+
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_smog -> {
-
-//                WorkManager.getInstance().enqueue(SmogStation.STATIONS.map { smogStation ->
-//                    OneTimeWorkRequestBuilder<SmogUpdateWorker>().setInputData(
-//                        workDataOf(SmogStation.ID_KEY to smogStation.id)
-//                    ).build()
-//                })
 
                 changeFragment(SmogFragment.newInstance())
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_weather -> {
-
-//                WorkManager.getInstance().enqueue(WeatherStation.STATIONS.map { weatherStation ->
-//                    OneTimeWorkRequestBuilder<WeatherUpdateWorker>().setInputData(
-//                        workDataOf(WeatherStation.ID_KEY to weatherStation.id)
-//                    ).build()
-//                })
 
                 changeFragment(WeatherFragment.newInstance())
 
@@ -54,6 +45,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        if (savedInstanceState == null) changeFragment(WeatherFragment.newInstance())
     }
 
     fun changeFragment(fragment: Fragment) {

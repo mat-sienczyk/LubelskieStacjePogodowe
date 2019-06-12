@@ -20,10 +20,10 @@ interface TempStationDao {
     fun delete(station: TempStationDb)
 
     @Query("SELECT * FROM TempStationDb WHERE stationId LIKE :id")
-    fun getStationById(id: Int): TempStationDb
+    fun getStationById(id: Int): LiveData<TempStationDb>
 
     @Query("SELECT * FROM TempStationDb")
-    fun getAllStations(): List<TempStationDb>
+    fun getAllStations(): LiveData<List<TempStationDb>>
 
     @Query("DELETE FROM TempStationDb")
     fun deleteAllStations()

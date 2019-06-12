@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import pl.sienczykm.templbn.db.model.SmogStationDb
 
@@ -19,10 +20,10 @@ interface SmogStationDao {
     fun delete(station: SmogStationDb)
 
     @Query("SELECT * FROM SmogStationDb WHERE stationId LIKE :id")
-    fun getStationById(id: Int): SmogStationDb
+    fun getStationById(id: Int): LiveData<SmogStationDb>
 
     @Query("SELECT * FROM SmogStationDb")
-    fun getAllStations(): List<SmogStationDb>
+    fun getAllStations(): LiveData<List<SmogStationDb>>
 
     @Query("DELETE FROM SmogStationDb")
     fun deleteAllStations()

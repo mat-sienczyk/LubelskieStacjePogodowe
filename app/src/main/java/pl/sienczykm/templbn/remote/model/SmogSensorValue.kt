@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.model
+package pl.sienczykm.templbn.remote.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

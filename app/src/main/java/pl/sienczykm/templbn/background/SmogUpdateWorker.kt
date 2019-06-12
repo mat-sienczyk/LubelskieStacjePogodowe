@@ -7,8 +7,8 @@ import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.DataModelDb
 import pl.sienczykm.templbn.db.model.SmogSensorDb
 import pl.sienczykm.templbn.db.model.SmogStationDb
-import pl.sienczykm.templbn.model.SmogSensorData
 import pl.sienczykm.templbn.remote.LspController
+import pl.sienczykm.templbn.remote.model.SmogSensorData
 import pl.sienczykm.templbn.utils.SmogStation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,9 +22,6 @@ class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
             AppDb.getDatabase(applicationContext).smogStationDao()
                 .insert(SmogStationDb(stationId, getSensors(stationId)))
 
-            //        val dbStations: List<SmogStationDb>? =
-            //            AppDb.getDatabase(applicationContext).smogStationDao().getAllStations()
-            //        dbStations?.forEach { Timber.e(it.toString()) }
             Result.success()
         } else {
             Result.failure()
@@ -32,14 +29,14 @@ class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
     }
 
     private fun getSensors(stationId: Int): List<SmogSensorDb>? {
-        return LspController.getSensors(stationId).body()
+        return LspController.getSmogSensors(stationId).body()
             ?.filter { smogSensor -> smogSensor.id != null }
             ?.map { smogSensor ->
                 SmogSensorDb(
                     smogSensor.id,
                     smogSensor.param?.paramName,
                     smogSensor.param?.paramCode,
-                    parseSensorData(LspController.getSensorData(smogSensor.id!!).body())
+                    parseSensorData(LspController.getSmogSensorData(smogSensor.id!!).body())
                 )
             }
     }

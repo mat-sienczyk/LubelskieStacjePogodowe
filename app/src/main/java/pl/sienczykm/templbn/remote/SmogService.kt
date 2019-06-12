@@ -1,7 +1,7 @@
 package pl.sienczykm.templbn.remote
 
-import pl.sienczykm.templbn.model.SmogSensor
-import pl.sienczykm.templbn.model.SmogSensorData
+import pl.sienczykm.templbn.remote.model.SmogSensor
+import pl.sienczykm.templbn.remote.model.SmogSensorData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

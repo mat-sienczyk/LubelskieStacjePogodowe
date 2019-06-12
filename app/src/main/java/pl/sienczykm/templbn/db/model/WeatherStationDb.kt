@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class TempStationDb(
+data class WeatherStationDb(
     @PrimaryKey
     val stationId: Int? = null,
     val date: Date? = null,

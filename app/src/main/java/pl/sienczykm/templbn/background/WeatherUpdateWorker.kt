@@ -5,7 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.DataModelDb
-import pl.sienczykm.templbn.db.model.TempStationDb
+import pl.sienczykm.templbn.db.model.WeatherStationDb
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.utils.Constants
 import pl.sienczykm.templbn.utils.WeatherStation
@@ -21,9 +21,9 @@ class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
             AppDb.getDatabase(applicationContext).tempStationDao()
                 .insert(
                     if (WeatherStation.getStationForGivenId(stationId).type == WeatherStation.Type.ONE) {
-                        val responseStation = LspController.getStationOne(stationId).body()
+                        val responseStation = LspController.getWeatherStationOne(stationId).body()
 
-                        TempStationDb(
+                        WeatherStationDb(
                             stationId,
                             parseDate(responseStation?.data),
                             responseStation?.temperature,
@@ -43,9 +43,9 @@ class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
                         )
 
                     } else {
-                        val responseStation = LspController.getStationTwo(stationId).body()
+                        val responseStation = LspController.getWeatherStationTwo(stationId).body()
 
-                        TempStationDb(
+                        WeatherStationDb(
                             stationId,
                             parseDate(responseStation?.data),
                             responseStation?.temperature,
@@ -63,13 +63,9 @@ class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
                     }
                 )
 
-//        val dbStations: List<TempStationDb>? =
-//            AppDb.getDatabase(applicationContext).tempStationDao().getAllStations()
-//        dbStations?.forEach { Timber.e(it.toString()) }
-
-            return Result.success()
+            Result.success()
         } else {
-            return Result.failure()
+            Result.failure()
         }
     }
 
@@ -79,7 +75,6 @@ class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
         inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
 
         return inputFormat.parse(stringDate)
-
     }
 
     private fun parseChartData(chartData: List<List<Double>?>?): List<DataModelDb>? {

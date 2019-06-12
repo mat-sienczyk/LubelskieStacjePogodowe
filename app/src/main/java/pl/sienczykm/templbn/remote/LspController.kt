@@ -5,13 +5,11 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.sienczykm.templbn.model.SmogSensor
-import pl.sienczykm.templbn.model.SmogSensorData
-import pl.sienczykm.templbn.model.TempStationOne
-import pl.sienczykm.templbn.model.TempStationTwo
+import pl.sienczykm.templbn.remote.model.SmogSensor
+import pl.sienczykm.templbn.remote.model.SmogSensorData
+import pl.sienczykm.templbn.remote.model.WeatherStationOne
+import pl.sienczykm.templbn.remote.model.WeatherStationTwo
 import pl.sienczykm.templbn.utils.Config
-import pl.sienczykm.templbn.utils.SmogStation
-import pl.sienczykm.templbn.utils.WeatherStation
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,22 +18,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 object LspController {
 
     @WorkerThread
-    fun getStationOne(stationId: Int): Response<TempStationOne> {
+    fun getWeatherStationOne(stationId: Int): Response<WeatherStationOne> {
         return getWeatherService().getStationOne(stationId).execute()
     }
 
     @WorkerThread
-    fun getStationTwo(stationId: Int): Response<TempStationTwo> {
+    fun getWeatherStationTwo(stationId: Int): Response<WeatherStationTwo> {
         return getWeatherService().getStationTwo(stationId).execute()
     }
 
     @WorkerThread
-    fun getSensors(stationId: Int): Response<List<SmogSensor>> {
+    fun getSmogSensors(stationId: Int): Response<List<SmogSensor>> {
         return getSmogService().getSensorsForStation(stationId).execute()
     }
 
     @WorkerThread
-    fun getSensorData(sensorId: Int): Response<SmogSensorData> {
+    fun getSmogSensorData(sensorId: Int): Response<SmogSensorData> {
         return getSmogService().getDataForSensor(sensorId).execute()
     }
 

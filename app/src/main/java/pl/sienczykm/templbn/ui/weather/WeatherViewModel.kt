@@ -5,8 +5,17 @@ import androidx.lifecycle.LiveData
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationDb
 import pl.sienczykm.templbn.ui.common.BaseStationListViewModel
+import pl.sienczykm.templbn.utils.UpdateHandler
 
 class WeatherViewModel(application: Application) : BaseStationListViewModel<WeatherStationDb>(application) {
+
+    init {
+        refresh()
+    }
+
+    override fun refresh() {
+        UpdateHandler.syncNowWeatherStations(getApplication(), receiver)
+    }
 
     override val stations: LiveData<List<WeatherStationDb>> by lazy {
         AppDb.getDatabase(getApplication()).tempStationDao().getAllStations()

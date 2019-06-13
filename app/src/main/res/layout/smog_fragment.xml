@@ -3,13 +3,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.smog.SmogViewModel"/>
+                  type="pl.sienczykm.templbn.ui.common.BaseStationListViewModel"/>
 
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:refreshing="@{viewModel.isRefreshing}"
             android:id="@+id/swipe">
 
         <androidx.constraintlayout.widget.ConstraintLayout

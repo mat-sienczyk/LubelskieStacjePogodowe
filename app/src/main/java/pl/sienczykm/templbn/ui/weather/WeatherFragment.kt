@@ -1,6 +1,8 @@
 package pl.sienczykm.templbn.ui.weather
 
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
@@ -34,7 +36,16 @@ class WeatherFragment : BaseStationListFragment<WeatherStationDb, WeatherViewMod
         return binding.swipe
     }
 
-    override fun updateJob() {
-        UpdateHandler.syncNowWeatherStations(activity?.applicationContext!!)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        stationViewModel.getAllStations()
+            .observe(
+                this,
+                Observer { stations ->
+                    binding.number.text = stations.joinToString(
+                        separator = "\n",
+                        transform = { "Nr stacji: " + it.stationId + ", data: " + it.date })
+                })
     }
 }

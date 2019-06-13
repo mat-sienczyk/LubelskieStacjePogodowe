@@ -86,7 +86,7 @@ object WeatherProcessingUtils {
     private fun parseWeatherDate(stringDate: String?): Date? {
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("pl", "PL"))
-        inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
+        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         return inputFormat.parse(stringDate)
     }

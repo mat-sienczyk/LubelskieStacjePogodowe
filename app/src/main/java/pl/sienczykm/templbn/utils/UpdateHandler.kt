@@ -1,11 +1,9 @@
 package pl.sienczykm.templbn.utils
 
 import android.content.Context
+import android.os.Handler
 import androidx.work.*
-import pl.sienczykm.templbn.background.SmogUpdateJob
-import pl.sienczykm.templbn.background.SmogUpdateWorker
-import pl.sienczykm.templbn.background.WeatherUpdateJob
-import pl.sienczykm.templbn.background.WeatherUpdateWorker
+import pl.sienczykm.templbn.background.*
 import java.util.concurrent.TimeUnit
 
 object UpdateHandler {
@@ -15,25 +13,30 @@ object UpdateHandler {
         .build()
 
     private const val AUTO_SYNC_TAG = "auto_sync_tag"
-    
-    fun syncNowSmogStations(context: Context) {
-        SmogStation.STATIONS.map { smogStation ->
-            SmogUpdateJob.enqueueWork(context, smogStation.id)
-        }
+
+    fun syncNowSmogStations(context: Context, receiver: UpdateReceiver.Receiver) {
+        SmogUpdateJob.enqueueWork(
+            context,
+            SmogStation.STATIONS.map { it.id },
+            UpdateReceiver(Handler(), receiver)
+        )
     }
 
-    fun syncNowWeatherStations(context: Context) {
-        WeatherStation.STATIONS.map { weatherStation ->
-            WeatherUpdateJob.enqueueWork(context, weatherStation.id)
-        }
+    fun syncNowWeatherStations(context: Context, receiver: UpdateReceiver.Receiver) {
+        WeatherUpdateJob.enqueueWork(
+            context,
+            WeatherStation.STATIONS.map { it.id },
+            UpdateReceiver(Handler(), receiver)
+        )
+
     }
 
-    fun syncNowWeatherStation(context: Context, stationId: Int) {
-        WeatherUpdateJob.enqueueWork(context, stationId)
+    fun syncNowWeatherStation(context: Context, stationId: Int, receiver: UpdateReceiver.Receiver) {
+        WeatherUpdateJob.enqueueWork(context, stationId, UpdateReceiver(Handler(), receiver))
     }
 
-    fun syncNowSmogStation(context: Context, stationId: Int) {
-        SmogUpdateJob.enqueueWork(context, stationId)
+    fun syncNowSmogStation(context: Context, stationId: Int, receiver: UpdateReceiver.Receiver) {
+        SmogUpdateJob.enqueueWork(context, stationId, UpdateReceiver(Handler(), receiver))
     }
 
     fun setAutoSync(minutes: Long) {

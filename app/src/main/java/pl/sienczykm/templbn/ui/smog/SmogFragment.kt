@@ -6,8 +6,18 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.SmogFragmentBinding
 import pl.sienczykm.templbn.db.model.SmogStationDb
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
+import pl.sienczykm.templbn.utils.UpdateHandler
 
 class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogFragmentBinding>() {
+
+    companion object {
+        fun newInstance(): SmogFragment {
+            val args = Bundle()
+            val fragment = SmogFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun getViewModel(): SmogViewModel {
         return activity?.run {
@@ -19,13 +29,6 @@ class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogF
         return R.layout.smog_fragment
     }
 
-    companion object {
-        fun newInstance(): SmogFragment {
-            val args = Bundle()
-            val fragment = SmogFragment()
-            fragment.arguments = args
-            return fragment
-        }
+    override fun refresh() {
     }
-
 }

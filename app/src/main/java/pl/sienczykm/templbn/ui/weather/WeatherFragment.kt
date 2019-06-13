@@ -6,8 +6,18 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.WeatherFragmentBinding
 import pl.sienczykm.templbn.db.model.WeatherStationDb
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
+import pl.sienczykm.templbn.utils.UpdateHandler
 
 class WeatherFragment : BaseStationListFragment<WeatherStationDb, WeatherViewModel, WeatherFragmentBinding>() {
+
+    companion object {
+        fun newInstance(): WeatherFragment {
+            val args = Bundle()
+            val fragment = WeatherFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun getViewModel(): WeatherViewModel {
         return activity?.run {
@@ -19,13 +29,6 @@ class WeatherFragment : BaseStationListFragment<WeatherStationDb, WeatherViewMod
         return R.layout.weather_fragment
     }
 
-    companion object {
-        fun newInstance(): WeatherFragment {
-            val args = Bundle()
-            val fragment = WeatherFragment()
-            fragment.arguments = args
-            return fragment
-        }
+    override fun refresh() {
     }
-
 }

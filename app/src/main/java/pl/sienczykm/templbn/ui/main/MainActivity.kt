@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.smog.SmogFragment
 import pl.sienczykm.templbn.ui.weather.WeatherFragment
+import pl.sienczykm.templbn.utils.UpdateHandler
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_map -> {
 
-//                WorkManager.getInstance().enqueue(OneTimeWorkRequestBuilder<GetStationsWorker>().build())
+                UpdateHandler.disableAutoSync()
 
                 return@OnNavigationItemSelectedListener true
             }
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         if (savedInstanceState == null) changeFragment(WeatherFragment.newInstance())
+
+        UpdateHandler.setAutoSync(15)
     }
 
     fun changeFragment(fragment: Fragment) {

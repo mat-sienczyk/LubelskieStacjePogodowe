@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.ui.smog
 
 import android.os.Bundle
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -9,7 +10,6 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.SmogFragmentBinding
 import pl.sienczykm.templbn.db.model.SmogStationDb
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
-import pl.sienczykm.templbn.utils.UpdateHandler
 
 class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogFragmentBinding>() {
 
@@ -33,7 +33,11 @@ class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogF
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {
-        return binding.swipe
+        return binding.swipeLayout
+    }
+
+    override fun getCoordinatorLayout(): CoordinatorLayout {
+        return binding.coordinatorLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

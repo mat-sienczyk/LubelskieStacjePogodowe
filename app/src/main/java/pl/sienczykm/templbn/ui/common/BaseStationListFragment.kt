@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -13,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.StatusReceiver
-import pl.sienczykm.templbn.utils.toast
+import pl.sienczykm.templbn.utils.snackbar
 
 abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : ViewDataBinding> : Fragment() {
 
@@ -27,6 +29,8 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
     abstract fun getLayoutId(): Int
 
     abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
+
+    abstract fun getCoordinatorLayout(): CoordinatorLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
@@ -57,9 +61,13 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
 
     private fun handleStatus(status: Int) {
         when (status) {
-            StatusReceiver.STATUS_NO_CONNECTION -> context?.toast(R.string.no_connection)
-            StatusReceiver.STATUS_ERROR -> context?.toast(R.string.error_server)
+            StatusReceiver.STATUS_NO_CONNECTION -> handleError(R.string.no_connection)
+            StatusReceiver.STATUS_ERROR -> handleError(R.string.error_server)
         }
+    }
+
+    private fun handleError(@StringRes message: Int) {
+        snackbar(getCoordinatorLayout(), message)
     }
 
 }

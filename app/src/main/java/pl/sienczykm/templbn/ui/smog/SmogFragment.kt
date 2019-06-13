@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.ui.smog
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.SmogFragmentBinding
 import pl.sienczykm.templbn.db.model.SmogStationDb
@@ -29,6 +30,11 @@ class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogF
         return R.layout.smog_fragment
     }
 
-    override fun refresh() {
+    override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {
+        return binding.swipe
+    }
+
+    override fun updateJob() {
+        UpdateHandler.syncNowSmogStations(activity?.applicationContext!!)
     }
 }

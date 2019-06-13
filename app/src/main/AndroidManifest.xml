@@ -3,6 +3,7 @@
     package="pl.sienczykm.templbn" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
             android:name=".App"
@@ -23,6 +24,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+                android:name=".background.WeatherUpdateJob"
+                android:permission="android.permission.BIND_JOB_SERVICE"
+                android:exported="false" />
+
+        <service
+                android:name=".background.SmogUpdateJob"
+                android:permission="android.permission.BIND_JOB_SERVICE"
+                android:exported="false" />
     </application>
 
 </manifest>

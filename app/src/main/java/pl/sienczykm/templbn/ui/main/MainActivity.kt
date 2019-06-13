@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_map -> {
 
-                UpdateHandler.disableAutoSync()
+//                UpdateHandler.disableAutoSync()
 
                 return@OnNavigationItemSelectedListener true
             }

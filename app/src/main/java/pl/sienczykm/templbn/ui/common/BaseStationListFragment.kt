@@ -50,6 +50,7 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
         getSwipeToRefreshLayout().setOnRefreshListener {
             stationViewModel.refresh()
         }
+
         getSwipeToRefreshLayout().setColorSchemeColors(
             resources.getColor(R.color.main_yellow),
             resources.getColor(R.color.main_red),

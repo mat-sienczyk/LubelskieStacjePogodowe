@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
+import pl.sienczykm.templbn.utils.NetworkUtils
 import pl.sienczykm.templbn.utils.WeatherStation
 
 class WeatherUpdateJob : JobIntentService() {
@@ -39,10 +40,19 @@ class WeatherUpdateJob : JobIntentService() {
 
         receiver.send(UpdateReceiver.STATUS_RUNNING, Bundle())
 
-        intent.getIntArrayExtra(WeatherStation.ID_KEY).forEach { stationId ->
-            WeatherProcessingUtils.updateWeatherStation(applicationContext, stationId)
+        if (NetworkUtils.isNetworkConnected(applicationContext)) {
+            intent.getIntArrayExtra(WeatherStation.ID_KEY).forEach { stationId ->
+                try {
+                    ProcessingUtils.updateWeatherStation(applicationContext, stationId)
+                    receiver.send(UpdateReceiver.STATUS_FINISHED, Bundle())
+                } catch (e: Exception) {
+                    val errorBundle = Bundle()
+                    errorBundle.putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
+                    receiver.send(UpdateReceiver.STATUS_ERROR, errorBundle)
+                }
+            }
+        } else {
+            receiver.send(UpdateReceiver.STATUS_NO_CONNECTION, Bundle())
         }
-
-        receiver.send(UpdateReceiver.STATUS_FINISHED, Bundle())
     }
 }

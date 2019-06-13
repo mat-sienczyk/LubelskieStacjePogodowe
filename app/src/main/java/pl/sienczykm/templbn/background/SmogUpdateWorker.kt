@@ -11,9 +11,12 @@ class SmogUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
         val stationId = inputData.getInt(SmogStation.ID_KEY, 0)
 
         return if (stationId != 0) {
-            SmogProcessingUtils.updateSmogStation(applicationContext, stationId)
-
-            Result.success()
+            try {
+                ProcessingUtils.updateSmogStation(applicationContext, stationId)
+                Result.success()
+            } catch (e: Exception) {
+                Result.failure()
+            }
         } else {
             Result.failure()
         }

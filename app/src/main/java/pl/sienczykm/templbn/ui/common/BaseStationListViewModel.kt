@@ -21,6 +21,8 @@ abstract class BaseStationListViewModel<T>(application: Application) : AndroidVi
             when (resultCode) {
                 UpdateReceiver.STATUS_RUNNING -> isRefreshing.value = true
                 UpdateReceiver.STATUS_FINISHED -> isRefreshing.value = false
+                UpdateReceiver.STATUS_NO_CONNECTION -> onNoConnection()
+                UpdateReceiver.STATUS_ERROR -> onError(resultData)
             }
         }
     }
@@ -31,5 +33,13 @@ abstract class BaseStationListViewModel<T>(application: Application) : AndroidVi
 
     fun getAllStations(): LiveData<List<T>> {
         return stations
+    }
+
+    fun onError(resultData: Bundle) {
+        isRefreshing.value = false
+    }
+
+    private fun onNoConnection() {
+        isRefreshing.value = false
     }
 }

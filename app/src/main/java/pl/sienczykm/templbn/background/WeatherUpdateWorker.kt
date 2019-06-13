@@ -11,9 +11,12 @@ class WeatherUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
         val stationId = inputData.getInt(WeatherStation.ID_KEY, 0)
 
         return if (stationId != 0) {
-            WeatherProcessingUtils.updateWeatherStation(applicationContext, stationId)
-
-            Result.success()
+            try {
+                ProcessingUtils.updateWeatherStation(applicationContext, stationId)
+                Result.success()
+            } catch (e: Exception) {
+                Result.failure()
+            }
         } else {
             Result.failure()
         }

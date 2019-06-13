@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn
 
 import android.app.Application
-import pl.sienczykm.templbn.db.AppDb
 import timber.log.Timber
 
 class App : Application() {
@@ -13,9 +12,4 @@ class App : Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
-
-    fun getDatabase(): AppDb {
-        return AppDb.getDatabase(this)
-    }
-
 }

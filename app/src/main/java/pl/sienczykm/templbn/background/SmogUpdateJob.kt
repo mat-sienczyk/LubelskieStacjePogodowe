@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
+import pl.sienczykm.templbn.utils.NetworkUtils
 import pl.sienczykm.templbn.utils.SmogStation
 
 class SmogUpdateJob : JobIntentService() {
@@ -39,10 +40,19 @@ class SmogUpdateJob : JobIntentService() {
 
         receiver.send(UpdateReceiver.STATUS_RUNNING, Bundle())
 
-        intent.getIntArrayExtra(SmogStation.ID_KEY).forEach { stationId ->
-            SmogProcessingUtils.updateSmogStation(applicationContext, stationId)
+        if (NetworkUtils.isNetworkConnected(applicationContext)) {
+            intent.getIntArrayExtra(SmogStation.ID_KEY).forEach { stationId ->
+                try {
+                    ProcessingUtils.updateSmogStation(applicationContext, stationId)
+                    receiver.send(UpdateReceiver.STATUS_FINISHED, Bundle())
+                } catch (e: Exception) {
+                    val errorBundle = Bundle()
+                    errorBundle.putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
+                    receiver.send(UpdateReceiver.STATUS_ERROR, errorBundle)
+                }
+            }
+        } else {
+            receiver.send(UpdateReceiver.STATUS_NO_CONNECTION, Bundle())
         }
-
-        receiver.send(UpdateReceiver.STATUS_FINISHED, Bundle())
     }
 }

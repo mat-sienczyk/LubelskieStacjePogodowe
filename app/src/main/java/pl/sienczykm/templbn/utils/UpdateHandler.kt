@@ -14,29 +14,29 @@ object UpdateHandler {
 
     private const val AUTO_SYNC_TAG = "auto_sync_tag"
 
-    fun syncNowSmogStations(context: Context, receiver: UpdateReceiver.Receiver) {
+    fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
         SmogUpdateJob.enqueueWork(
             context,
             SmogStation.STATIONS.map { it.id },
-            UpdateReceiver(Handler(), receiver)
+            StatusReceiver(Handler(), receiver)
         )
     }
 
-    fun syncNowWeatherStations(context: Context, receiver: UpdateReceiver.Receiver) {
+    fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
         WeatherUpdateJob.enqueueWork(
             context,
             WeatherStation.STATIONS.map { it.id },
-            UpdateReceiver(Handler(), receiver)
+            StatusReceiver(Handler(), receiver)
         )
 
     }
 
-    fun syncNowWeatherStation(context: Context, stationId: Int, receiver: UpdateReceiver.Receiver) {
-        WeatherUpdateJob.enqueueWork(context, stationId, UpdateReceiver(Handler(), receiver))
+    fun syncNowWeatherStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
+        WeatherUpdateJob.enqueueWork(context, stationId, StatusReceiver(Handler(), receiver))
     }
 
-    fun syncNowSmogStation(context: Context, stationId: Int, receiver: UpdateReceiver.Receiver) {
-        SmogUpdateJob.enqueueWork(context, stationId, UpdateReceiver(Handler(), receiver))
+    fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
+        SmogUpdateJob.enqueueWork(context, stationId, StatusReceiver(Handler(), receiver))
     }
 
     fun setAutoSync(minutes: Long) {

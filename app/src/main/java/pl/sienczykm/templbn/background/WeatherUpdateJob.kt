@@ -15,15 +15,15 @@ class WeatherUpdateJob : JobIntentService() {
         private const val RECEIVER_KEY = "receiver_key"
 
 
-        fun enqueueWork(context: Context, stationId: Int, updateReceiver: UpdateReceiver) {
-            enqueueWork(context, listOf(stationId), updateReceiver)
+        fun enqueueWork(context: Context, stationId: Int, statusReceiver: StatusReceiver) {
+            enqueueWork(context, listOf(stationId), statusReceiver)
         }
 
-        fun enqueueWork(context: Context, stationsIds: List<Int>, updateReceiver: UpdateReceiver) {
+        fun enqueueWork(context: Context, stationsIds: List<Int>, statusReceiver: StatusReceiver) {
 
             val intent = Intent(context, WeatherUpdateJob::class.java)
             intent.putExtra(WeatherStation.ID_KEY, stationsIds.toIntArray())
-            intent.putExtra(RECEIVER_KEY, updateReceiver)
+            intent.putExtra(RECEIVER_KEY, statusReceiver)
 
             enqueueWork(
                 context,
@@ -38,21 +38,21 @@ class WeatherUpdateJob : JobIntentService() {
 
         val receiver: ResultReceiver = intent.getParcelableExtra(RECEIVER_KEY)
 
-        receiver.send(UpdateReceiver.STATUS_RUNNING, Bundle())
+        receiver.send(StatusReceiver.STATUS_RUNNING, Bundle())
 
         if (NetworkUtils.isNetworkConnected(applicationContext)) {
             intent.getIntArrayExtra(WeatherStation.ID_KEY).forEach { stationId ->
                 try {
                     ProcessingUtils.updateWeatherStation(applicationContext, stationId)
-                    receiver.send(UpdateReceiver.STATUS_FINISHED, Bundle())
+                    receiver.send(StatusReceiver.STATUS_IDLE, Bundle())
                 } catch (e: Exception) {
                     val errorBundle = Bundle()
                     errorBundle.putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
-                    receiver.send(UpdateReceiver.STATUS_ERROR, errorBundle)
+                    receiver.send(StatusReceiver.STATUS_ERROR, errorBundle)
                 }
             }
         } else {
-            receiver.send(UpdateReceiver.STATUS_NO_CONNECTION, Bundle())
+            receiver.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }
     }
 }

@@ -8,9 +8,12 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.utils.toast
 
 abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : ViewDataBinding> : Fragment() {
 
@@ -48,6 +51,15 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
             resources.getColor(R.color.main_red),
             resources.getColor(R.color.main_green)
         )
+
+        stationViewModel.status.observe(this, Observer { status -> handleStatus(status) })
+    }
+
+    private fun handleStatus(status: Int) {
+        when (status) {
+            StatusReceiver.STATUS_NO_CONNECTION -> context?.toast(R.string.no_connection)
+            StatusReceiver.STATUS_ERROR -> context?.toast(R.string.error_server)
+        }
     }
 
 }

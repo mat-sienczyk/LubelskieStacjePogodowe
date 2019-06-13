@@ -50,12 +50,10 @@ abstract class BaseStationListViewModel<T>(application: Application) : AndroidVi
     fun onError(resultData: String?) {
         isRefreshing.value = false
         status.value = StatusReceiver.STATUS_ERROR
-        status.value = StatusReceiver.STATUS_IDLE
     }
 
     fun onNoConnection() {
         isRefreshing.value = false
         status.value = StatusReceiver.STATUS_NO_CONNECTION
-        status.value = StatusReceiver.STATUS_IDLE
     }
 }

@@ -44,7 +44,6 @@ class SmogUpdateJob : JobIntentService() {
             intent.getIntArrayExtra(SmogStation.ID_KEY).forEach { stationId ->
                 try {
                     ProcessingUtils.updateSmogStation(applicationContext, stationId)
-                    receiver.send(StatusReceiver.STATUS_IDLE, Bundle())
                 } catch (e: Exception) {
                     val errorBundle = Bundle()
                     errorBundle.putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
@@ -54,5 +53,7 @@ class SmogUpdateJob : JobIntentService() {
         } else {
             receiver.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }
+
+        receiver.send(StatusReceiver.STATUS_IDLE, Bundle())
     }
 }

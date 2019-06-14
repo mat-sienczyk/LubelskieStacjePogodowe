@@ -1,6 +1,6 @@
 package pl.sienczykm.templbn.utils
 
-class WeatherStation(id: Int, type: Type, name: String, latitude: Double, longitude: Double) :
+class WeatherStation private constructor(id: Int, type: Type, name: String, latitude: Double, longitude: Double) :
     Station(id, name, latitude, longitude) {
 
     var type: Type

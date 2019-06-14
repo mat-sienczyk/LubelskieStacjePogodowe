@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) changeFragment(WeatherFragment.newInstance())
 
-        UpdateHandler.setAutoSync(15)
+        UpdateHandler.setAutoSync(10)
     }
 
     fun changeFragment(fragment: Fragment) {

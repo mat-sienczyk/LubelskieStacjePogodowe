@@ -1,6 +1,6 @@
 package pl.sienczykm.templbn.utils
 
-abstract class Station constructor(
+abstract class Station(
     val id: Int,
     val name: String,
     val latitude: Double,

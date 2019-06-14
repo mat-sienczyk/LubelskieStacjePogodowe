@@ -11,41 +11,61 @@ import java.util.concurrent.TimeUnit
 
 object UpdateHandler {
 
+    const val STATION_ID_ARRAY_KEY = "station_id_array_key"
+    const val STATION_TYPE_KEY = "station_type_key"
+    const val AUTO_SYNC_TAG = "auto_sync_tag"
+
     private val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
-    private const val AUTO_SYNC_TAG = "auto_sync_tag"
-
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
-        SmogUpdateJob.enqueueWork(
-            context,
-            SmogStation.getStations().map { it.id },
-            StatusReceiver(Handler(), receiver)
-        )
+        syncNowStations(context, SmogStation.getStations().map { it.id }, receiver, SmogStation.ID_KEY)
     }
 
     fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
-        WeatherUpdateJob.enqueueWork(
-            context,
-            WeatherStation.getStations().map { it.id },
-            StatusReceiver(Handler(), receiver)
-        )
-
-    }
-
-    fun syncNowWeatherStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
-        WeatherUpdateJob.enqueueWork(context, stationId, StatusReceiver(Handler(), receiver))
+        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, WeatherStation.ID_KEY)
     }
 
     fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
-        SmogUpdateJob.enqueueWork(context, stationId, StatusReceiver(Handler(), receiver))
+        syncNowStations(context, listOf(stationId), receiver, SmogStation.ID_KEY)
+    }
+
+    fun syncNowWeatherStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
+        syncNowStations(context, listOf(stationId), receiver, WeatherStation.ID_KEY)
+    }
+
+    private fun syncNowStations(
+        context: Context,
+        stationsIds: List<Int>,
+        receiver: StatusReceiver.Receiver,
+        stationType: String
+    ) {
+        when (stationType) {
+            SmogStation.ID_KEY -> {
+                SmogUpdateJob.enqueueWork(
+                    context,
+                    stationsIds,
+                    StatusReceiver(Handler(), receiver),
+                    stationType
+                )
+            }
+            WeatherStation.ID_KEY -> {
+                WeatherUpdateJob.enqueueWork(
+                    context,
+                    stationsIds,
+                    StatusReceiver(Handler(), receiver),
+                    stationType
+                )
+            }
+        }
+
     }
 
     fun setAutoSync(minutes: Long) {
         WorkManager.getInstance().enqueue(
             listOf(
-                periodicWorkRequest(minutes, getStationsIntArray(SmogStation.getStations()), SmogStation.ID_KEY),
+                periodicWorkRequest(60, getStationsIntArray(SmogStation.getStations()), SmogStation.ID_KEY),
                 periodicWorkRequest(minutes, getStationsIntArray(WeatherStation.getStations()), WeatherStation.ID_KEY)
             )
         )
@@ -59,8 +79,8 @@ object UpdateHandler {
         return PeriodicWorkRequestBuilder<AutoUpdateWorker>(minutes, TimeUnit.MINUTES)
             .setInputData(
                 workDataOf(
-                    AutoUpdateWorker.STATION_ID_ARRAY_KEY to stationsIntArray,
-                    AutoUpdateWorker.STATION_TYPE_KEY to type
+                    STATION_ID_ARRAY_KEY to stationsIntArray,
+                    STATION_TYPE_KEY to type
                 )
             )
             .setConstraints(constraints)

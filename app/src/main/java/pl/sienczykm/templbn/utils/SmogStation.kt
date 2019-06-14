@@ -1,6 +1,6 @@
 package pl.sienczykm.templbn.utils
 
-class SmogStation(id: Int, name: String, latitude: Double, longitude: Double) : Station(id, name, latitude, longitude) {
+class SmogStation private constructor(id: Int, name: String, latitude: Double, longitude: Double) : Station(id, name, latitude, longitude) {
 
     init {
         this.url = getStationUrl()

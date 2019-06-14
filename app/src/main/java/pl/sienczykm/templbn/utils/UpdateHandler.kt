@@ -3,7 +3,10 @@ package pl.sienczykm.templbn.utils
 import android.content.Context
 import android.os.Handler
 import androidx.work.*
-import pl.sienczykm.templbn.background.*
+import pl.sienczykm.templbn.background.AutoUpdateWorker
+import pl.sienczykm.templbn.background.SmogUpdateJob
+import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.background.WeatherUpdateJob
 import java.util.concurrent.TimeUnit
 
 object UpdateHandler {
@@ -17,7 +20,7 @@ object UpdateHandler {
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
         SmogUpdateJob.enqueueWork(
             context,
-            SmogStation.STATIONS.map { it.id },
+            SmogStation.getStations().map { it.id },
             StatusReceiver(Handler(), receiver)
         )
     }
@@ -25,7 +28,7 @@ object UpdateHandler {
     fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
         WeatherUpdateJob.enqueueWork(
             context,
-            WeatherStation.STATIONS.map { it.id },
+            WeatherStation.getStations().map { it.id },
             StatusReceiver(Handler(), receiver)
         )
 
@@ -40,22 +43,32 @@ object UpdateHandler {
     }
 
     fun setAutoSync(minutes: Long) {
-        WorkManager.getInstance().enqueue(SmogStation.STATIONS.map { smogStation ->
-            PeriodicWorkRequestBuilder<SmogUpdateWorker>(minutes, TimeUnit.MINUTES)
-                .setInputData(workDataOf(SmogStation.ID_KEY to smogStation.id))
-                .setConstraints(constraints)
-                .addTag(AUTO_SYNC_TAG)
-                .build()
-        })
-
-        WorkManager.getInstance().enqueue(WeatherStation.STATIONS.map { weatherStation ->
-            PeriodicWorkRequestBuilder<WeatherUpdateWorker>(minutes, TimeUnit.MINUTES)
-                .setInputData(workDataOf(WeatherStation.ID_KEY to weatherStation.id))
-                .setConstraints(constraints)
-                .addTag(AUTO_SYNC_TAG)
-                .build()
-        })
+        WorkManager.getInstance().enqueue(
+            listOf(
+                periodicWorkRequest(minutes, getStationsIntArray(SmogStation.getStations()), SmogStation.ID_KEY),
+                periodicWorkRequest(minutes, getStationsIntArray(WeatherStation.getStations()), WeatherStation.ID_KEY)
+            )
+        )
     }
+
+    private fun periodicWorkRequest(
+        minutes: Long,
+        stationsIntArray: IntArray,
+        type: String
+    ): PeriodicWorkRequest {
+        return PeriodicWorkRequestBuilder<AutoUpdateWorker>(minutes, TimeUnit.MINUTES)
+            .setInputData(
+                workDataOf(
+                    AutoUpdateWorker.STATION_ID_ARRAY_KEY to stationsIntArray,
+                    AutoUpdateWorker.STATION_TYPE_KEY to type
+                )
+            )
+            .setConstraints(constraints)
+            .addTag(AUTO_SYNC_TAG)
+            .build()
+    }
+
+    private fun getStationsIntArray(stations: List<Station>) = stations.map { it.id }.toIntArray()
 
     fun disableAutoSync() {
         WorkManager.getInstance().cancelAllWorkByTag(AUTO_SYNC_TAG)

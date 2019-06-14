@@ -1,24 +1,16 @@
 package pl.sienczykm.templbn.utils
 
-class WeatherStation private constructor(
-    val id: Int,
-    val type: Type,
-    val name: String,
-    val latitude: Double,
-    val longitude: Double
-) {
-    val url: String
-//    var distance: Double = 0.toDouble()
+class WeatherStation(id: Int, type: Type, name: String, latitude: Double, longitude: Double) :
+    Station(id, name, latitude, longitude) {
+
+    var type: Type
 
     init {
         this.url = getStationUrl()
+        this.type = type
     }
 
-    override fun toString(): String {
-        return name
-    }
-
-    private fun getStationUrl(): String {
+    override fun getStationUrl(): String {
         return Config.BASE_WEATHER_URL + "podglad/" + id
     }
 
@@ -40,24 +32,26 @@ class WeatherStation private constructor(
         val WOLA_WERESZCZYNSKA = WeatherStation(23, Type.TWO, "Wola Wereszczyńska", 51.442264, 23.129692)
         val CELEJOW = WeatherStation(24, Type.TWO, "Celejów", 51.330653, 22.071947)
 
-        val STATIONS = arrayOf(
-            PLAC_LITEWSKI,
-            OGROD_BOTANICZNY,
-            ZEMBORZYCKA,
-            HAJDOW,
-            LUBARTOW,
-            GUCIOW,
-            FLORIANKA,
-            LUKOW,
-            TRZDNIK,
-            LESNIOWICE,
-            RYBCZEWICE,
-            WOLA_WERESZCZYNSKA,
-            CELEJOW
-        )
+        fun getStations(): List<WeatherStation> {
+            return listOf(
+                PLAC_LITEWSKI,
+                OGROD_BOTANICZNY,
+                ZEMBORZYCKA,
+                HAJDOW,
+                LUBARTOW,
+                GUCIOW,
+                FLORIANKA,
+                LUKOW,
+                TRZDNIK,
+                LESNIOWICE,
+                RYBCZEWICE,
+                WOLA_WERESZCZYNSKA,
+                CELEJOW
+            )
+        }
 
         fun getStationForGivenId(id: Int): WeatherStation {
-            return STATIONS.single { it.id == id }
+            return getStations().single { it.id == id }
         }
     }
 

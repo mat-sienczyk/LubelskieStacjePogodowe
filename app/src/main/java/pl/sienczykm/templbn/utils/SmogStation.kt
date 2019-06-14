@@ -1,23 +1,12 @@
 package pl.sienczykm.templbn.utils
 
-class SmogStation private constructor(
-    val id: Int,
-    val name: String,
-    val latitude: Double,
-    val longitude: Double
-) {
-    val url: String
-//    var distance: Double = 0.toDouble()
+class SmogStation(id: Int, name: String, latitude: Double, longitude: Double) : Station(id, name, latitude, longitude) {
 
     init {
         this.url = getStationUrl()
     }
 
-    override fun toString(): String {
-        return name
-    }
-
-    private fun getStationUrl(): String {
+    override fun getStationUrl(): String {
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$id"
     }
 
@@ -35,20 +24,23 @@ class SmogStation private constructor(
         val CHELM = SmogStation(11360, "Chełm", 51.122190, 23.472870)
         val NALECZOW = SmogStation(11362, "Nałęczów", 51.284931, 22.210242)
 
-        val STATIONS = arrayOf(
-            LUBLIN,
-            BIALA_PODLASKA,
-            JARCZEW,
-            WILCZOPOLE,
-            ZAMOSC,
-            PULAWY,
-            FLORAINKA,
-            CHELM,
-            NALECZOW
-        )
+        fun getStations(): List<SmogStation> {
+            return listOf(
+                LUBLIN,
+                BIALA_PODLASKA,
+                JARCZEW,
+                WILCZOPOLE,
+                ZAMOSC,
+                PULAWY,
+                FLORAINKA,
+                CHELM,
+                NALECZOW
+            )
+        }
 
         fun getStationForGivenId(id: Int): SmogStation {
-            return STATIONS.single { it.id == id }
+            return getStations().single { it.id == id }
         }
+
     }
 }

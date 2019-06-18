@@ -4,13 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable name="station"
-                  type="pl.sienczykm.templbn.utils.WeatherStation"/>
-
         <variable name="stationDb"
-                  type="pl.sienczykm.templbn.db.model.WeatherStationDb"/>
-
+                  type="pl.sienczykm.templbn.db.model.StationModel"/>
     </data>
 
     <androidx.cardview.widget.CardView

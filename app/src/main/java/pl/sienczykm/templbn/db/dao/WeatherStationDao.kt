@@ -2,30 +2,30 @@ package pl.sienczykm.templbn.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import pl.sienczykm.templbn.db.model.WeatherStationDb
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 
 @Dao
 interface WeatherStationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(station: WeatherStationDb): Long
+    fun insert(station: WeatherStationModel): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertStations(stations: List<WeatherStationDb>): List<Long>
+    fun insertStations(stations: List<WeatherStationModel>): List<Long>
 
     @Update
-    fun update(station: WeatherStationDb)
+    fun update(station: WeatherStationModel)
 
     @Delete
-    fun delete(station: WeatherStationDb)
+    fun delete(station: WeatherStationModel)
 
-    @Query("SELECT * FROM WeatherStationDb WHERE stationId LIKE :id")
-    fun getStationById(id: Int): LiveData<WeatherStationDb>
+    @Query("SELECT * FROM WeatherStationModel WHERE stationId LIKE :id")
+    fun getStationById(id: Int): LiveData<WeatherStationModel>
 
-    @Query("SELECT * FROM WeatherStationDb")
-    fun getAllStations(): LiveData<List<WeatherStationDb>>
+    @Query("SELECT * FROM WeatherStationModel")
+    fun getAllStations(): LiveData<List<WeatherStationModel>>
 
-    @Query("DELETE FROM WeatherStationDb")
+    @Query("DELETE FROM WeatherStationModel")
     fun deleteAllStations()
 
 }

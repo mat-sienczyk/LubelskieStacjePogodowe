@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
+import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.NetworkUtils
-import pl.sienczykm.templbn.utils.SmogStation
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.WeatherStation
 
 abstract class UpdateJob : JobIntentService() {
 
@@ -25,8 +25,14 @@ abstract class UpdateJob : JobIntentService() {
             intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY).forEach { stationId ->
                 try {
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {
-                        SmogStation.ID_KEY -> ProcessingUtils.updateSmogStation(applicationContext, stationId)
-                        WeatherStation.ID_KEY -> ProcessingUtils.updateWeatherStation(applicationContext, stationId)
+                        SmogStationModel.ID_KEY -> ProcessingUtils.updateSmogStation(
+                            applicationContext,
+                            stationId
+                        )
+                        WeatherStationModel.ID_KEY -> ProcessingUtils.updateWeatherStation(
+                            applicationContext,
+                            stationId
+                        )
                         else -> throw Exception("Invalid station key")
                     }
                 } catch (e: Exception) {

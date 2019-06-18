@@ -1,0 +1,88 @@
+package pl.sienczykm.templbn.db.model
+
+import androidx.room.Entity
+import androidx.room.Ignore
+import pl.sienczykm.templbn.utils.Config
+
+@Entity
+data class WeatherStationModel constructor(
+    @Ignore
+    override val stationId: Int,
+    var type: Type,
+    @Ignore
+    override val name: String,
+    @Ignore
+    override val latitude: Double,
+    @Ignore
+    override val longitude: Double
+) :
+    StationModel(stationId, name, latitude, longitude) {
+
+    override fun getStationUrl(): String {
+        return Config.BASE_WEATHER_URL + "podglad/" + stationId
+    }
+
+    init {
+        this.url = getStationUrl()
+    }
+
+    var temperature: Double? = null
+    var temperatureWind: Double? = null
+    var temperatureGround: Double? = null
+    var windSpeed: Double? = null
+    var windDir: Double? = null
+    var humidity: Double? = null
+    var pressure: Double? = null
+    var rainToday: Double? = null
+    var temperatureData: List<DataModelModel>? = null
+    var humidityData: List<DataModelModel>? = null
+    var windSpeedData: List<DataModelModel>? = null
+    var temperatureWindData: List<DataModelModel>? = null
+    var pressureData: List<DataModelModel>? = null
+    var rainTodayData: List<DataModelModel>? = null
+
+    companion object {
+
+        val ID_KEY = "weather_station_id"
+
+        val OGROD_BOTANICZNY = WeatherStationModel(10, Type.ONE, "Ogród botaniczny", 51.263975, 22.514608)
+        val GUCIOW = WeatherStationModel(11, Type.ONE, "Guciów", 50.582600, 23.073628)
+        val FLORIANKA = WeatherStationModel(12, Type.TWO, "Florianka", 50.554803, 22.988150)
+        val LUKOW = WeatherStationModel(13, Type.TWO, "Łuków", 51.930883, 22.389122)
+        val PLAC_LITEWSKI = WeatherStationModel(16, Type.ONE, "Plac Litewski", 51.248831, 22.560531)
+        val ZEMBORZYCKA = WeatherStationModel(17, Type.ONE, "MPWiK Zemborzycka", 51.203525, 22.561972)
+        val HAJDOW = WeatherStationModel(18, Type.TWO, "MPWiK Hajdów", 51.264328, 22.622867)
+        val LUBARTOW = WeatherStationModel(19, Type.ONE, "PGK Lubartów", 51.452850, 22.590253)
+        val TRZDNIK = WeatherStationModel(20, Type.TWO, "Trzydnik", 50.851986, 22.134056)
+        val LESNIOWICE = WeatherStationModel(21, Type.TWO, "Leśniowice", 50.988278, 23.509881)
+        val RYBCZEWICE = WeatherStationModel(22, Type.TWO, "Rybczewice", 51.039969, 22.853811)
+        val WOLA_WERESZCZYNSKA = WeatherStationModel(23, Type.TWO, "Wola Wereszczyńska", 51.442264, 23.129692)
+        val CELEJOW = WeatherStationModel(24, Type.TWO, "Celejów", 51.330653, 22.071947)
+
+        fun getStations(): List<WeatherStationModel> {
+            return listOf(
+                PLAC_LITEWSKI,
+                OGROD_BOTANICZNY,
+                ZEMBORZYCKA,
+                HAJDOW,
+                LUBARTOW,
+                GUCIOW,
+                FLORIANKA,
+                LUKOW,
+                TRZDNIK,
+                LESNIOWICE,
+                RYBCZEWICE,
+                WOLA_WERESZCZYNSKA,
+                CELEJOW
+            )
+        }
+
+        fun getStationForGivenId(id: Int): WeatherStationModel {
+            return getStations().single { it.stationId == id }
+        }
+    }
+
+    enum class Type {
+        ONE, TWO
+    }
+}

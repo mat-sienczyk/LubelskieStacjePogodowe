@@ -7,11 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import pl.sienczykm.templbn.db.dao.SmogStationDao
 import pl.sienczykm.templbn.db.dao.WeatherStationDao
-import pl.sienczykm.templbn.db.model.SmogStationDb
-import pl.sienczykm.templbn.db.model.WeatherStationDb
+import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.Config
 
-@Database(entities = [WeatherStationDb::class, SmogStationDb::class], version = Config.DB_VERSION)
+@Database(entities = [WeatherStationModel::class, SmogStationModel::class], version = Config.DB_VERSION)
 @TypeConverters(Converter::class)
 abstract class AppDb : RoomDatabase() {
 

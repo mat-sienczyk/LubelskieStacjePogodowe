@@ -1,6 +1,6 @@
 package pl.sienczykm.templbn.db.model
 
-data class DataModelDb(
+data class DataModelModel(
     val timestamp: Long? = null,
     val value: Double? = null
 )

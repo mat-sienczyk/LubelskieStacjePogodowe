@@ -7,6 +7,9 @@ import pl.sienczykm.templbn.background.AutoUpdateWorker
 import pl.sienczykm.templbn.background.SmogUpdateJob
 import pl.sienczykm.templbn.background.StatusReceiver
 import pl.sienczykm.templbn.background.WeatherUpdateJob
+import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
 
 object UpdateHandler {
@@ -20,19 +23,29 @@ object UpdateHandler {
         .build()
 
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, SmogStation.ID_KEY)
+        syncNowStations(
+            context,
+            WeatherStationModel.getStations().map { it.stationId },
+            receiver,
+            WeatherStationModel.ID_KEY
+        )
     }
 
     fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, listOf(stationId), receiver, SmogStation.ID_KEY)
+        syncNowStations(context, listOf(stationId), receiver, SmogStationModel.ID_KEY)
     }
 
     fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, WeatherStation.ID_KEY)
+        syncNowStations(
+            context,
+            WeatherStationModel.getStations().map { it.stationId },
+            receiver,
+            WeatherStationModel.ID_KEY
+        )
     }
 
     fun syncNowWeatherStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, listOf(stationId), receiver, WeatherStation.ID_KEY)
+        syncNowStations(context, listOf(stationId), receiver, WeatherStationModel.ID_KEY)
     }
 
     private fun syncNowStations(
@@ -42,7 +55,7 @@ object UpdateHandler {
         stationType: String
     ) {
         when (stationType) {
-            SmogStation.ID_KEY -> {
+            SmogStationModel.ID_KEY -> {
                 SmogUpdateJob.enqueueWork(
                     context,
                     stationsIds,
@@ -50,7 +63,7 @@ object UpdateHandler {
                     stationType
                 )
             }
-            WeatherStation.ID_KEY -> {
+            WeatherStationModel.ID_KEY -> {
                 WeatherUpdateJob.enqueueWork(
                     context,
                     stationsIds,
@@ -65,8 +78,12 @@ object UpdateHandler {
     fun setAutoSync(minutes: Long) {
         WorkManager.getInstance().enqueue(
             listOf(
-                periodicWorkRequest(60, getStationsIntArray(SmogStation.getStations()), SmogStation.ID_KEY),
-                periodicWorkRequest(minutes, getStationsIntArray(WeatherStation.getStations()), WeatherStation.ID_KEY)
+                periodicWorkRequest(60, getStationsIntArray(SmogStationModel.getStations()), SmogStationModel.ID_KEY),
+                periodicWorkRequest(
+                    minutes,
+                    getStationsIntArray(WeatherStationModel.getStations()),
+                    WeatherStationModel.ID_KEY
+                )
             )
         )
     }
@@ -88,7 +105,7 @@ object UpdateHandler {
             .build()
     }
 
-    private fun getStationsIntArray(stations: List<Station>) = stations.map { it.id }.toIntArray()
+    private fun getStationsIntArray(stations: List<StationModel>) = stations.map { it.stationId }.toIntArray()
 
     fun disableAutoSync() {
         WorkManager.getInstance().cancelAllWorkByTag(AUTO_SYNC_TAG)

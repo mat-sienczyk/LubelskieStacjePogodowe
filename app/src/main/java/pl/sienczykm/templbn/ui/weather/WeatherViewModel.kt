@@ -3,11 +3,11 @@ package pl.sienczykm.templbn.ui.weather
 import android.app.Application
 import androidx.lifecycle.LiveData
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.WeatherStationDb
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 
-class WeatherViewModel(application: Application) : BaseStationListViewModel<WeatherStationDb>(application) {
+class WeatherViewModel(application: Application) : BaseStationListViewModel<WeatherStationModel>(application) {
 
     init {
         refresh()
@@ -17,7 +17,7 @@ class WeatherViewModel(application: Application) : BaseStationListViewModel<Weat
         UpdateHandler.syncNowWeatherStations(getApplication(), receiver)
     }
 
-    override val stations: LiveData<List<WeatherStationDb>> by lazy {
+    override val stations: LiveData<List<WeatherStationModel>> by lazy {
         AppDb.getDatabase(getApplication()).tempStationDao().getAllStations()
     }
 

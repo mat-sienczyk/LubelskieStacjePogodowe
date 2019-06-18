@@ -3,14 +3,13 @@ package pl.sienczykm.templbn.background
 import android.content.Context
 import androidx.annotation.WorkerThread
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.DataModelDb
-import pl.sienczykm.templbn.db.model.SmogSensorDb
-import pl.sienczykm.templbn.db.model.SmogStationDb
-import pl.sienczykm.templbn.db.model.WeatherStationDb
+import pl.sienczykm.templbn.db.model.DataModelModel
+import pl.sienczykm.templbn.db.model.SmogSensorModel
+import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.SmogSensorData
 import pl.sienczykm.templbn.utils.Constants
-import pl.sienczykm.templbn.utils.WeatherStation
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,73 +21,76 @@ object ProcessingUtils {
     fun updateSmogStation(appContext: Context, stationId: Int) {
 
         AppDb.getDatabase(appContext).smogStationDao()
-            .insert(SmogStationDb(stationId, getSensors(stationId)))
-
+            .insert(constructSmogStation(SmogStationModel.getStationForGivenId(stationId)))
     }
 
     @WorkerThread
     fun updateWeatherStation(appContext: Context, stationId: Int) {
 
         AppDb.getDatabase(appContext).tempStationDao()
-                .insert(
-                    if (WeatherStation.getStationForGivenId(stationId).type == WeatherStation.Type.ONE) {
+            .insert(constructWeatherStation(WeatherStationModel.getStationForGivenId(stationId)))
+    }
 
-                        val response = LspController.getWeatherStationOne(stationId)
+    private fun constructSmogStation(station: SmogStationModel): SmogStationModel {
+        station.sensors = getSensors(station.stationId)
+        station.date = Date(station.sensors?.get(0)?.data?.get(0)?.timestamp!!)
+        return station
+    }
 
-                        when {
-                            response.isSuccessful -> {
-                                val responseStation = response.body()
+    private fun constructWeatherStation(station: WeatherStationModel): WeatherStationModel {
+        if (station.type == WeatherStationModel.Type.ONE) {
 
-                                WeatherStationDb(
-                                    stationId,
-                                    parseWeatherDate(responseStation?.data),
-                                    responseStation?.temperature,
-                                    responseStation?.temperatureWindChill,
-                                    null,
-                                    responseStation?.windSpeed,
-                                    responseStation?.windDir,
-                                    responseStation?.humidity,
-                                    responseStation?.pressure,
-                                    responseStation?.rainToday,
-                                    parseChartData(responseStation?.temperatureData?.data),
-                                    parseChartData(responseStation?.humidityData?.data),
-                                    parseChartData(responseStation?.windSpeedData?.data),
-                                    parseChartData(responseStation?.temperatureWindChart?.data),
-                                    parseChartData(responseStation?.pressureData?.data, true),
-                                    parseChartData(responseStation?.rainData?.data)
-                                )
-                            }
-                            else -> throw Exception(response.errorBody().toString())
-                        }
+            val response = LspController.getWeatherStationOne(station.stationId)
 
-                    } else {
+            when {
+                response.isSuccessful -> {
+                    val responseStation = response.body()
 
-                        val response = LspController.getWeatherStationTwo(stationId)
+                    station.date = parseWeatherDate(responseStation?.data)
+                    station.temperature = responseStation?.temperature
+                    station.temperatureWind = responseStation?.temperatureWindChill
+                    station.windSpeed = responseStation?.windSpeed
+                    station.windDir = responseStation?.windDir
+                    station.humidity = responseStation?.humidity
+                    station.pressure = responseStation?.pressure
+                    station.rainToday = responseStation?.rainToday
+                    station.temperatureData = parseChartData(responseStation?.temperatureData?.data)
+                    station.humidityData = parseChartData(responseStation?.humidityData?.data)
+                    station.windSpeedData = parseChartData(responseStation?.windSpeedData?.data)
+                    station.temperatureWindData =
+                        parseChartData(responseStation?.temperatureWindChart?.data)
+                    station.pressureData = parseChartData(responseStation?.pressureData?.data, true)
+                    station.rainTodayData = parseChartData(responseStation?.rainData?.data)
 
-                        when {
-                            response.isSuccessful -> {
-                                val responseStation = response.body()
+                }
+                else -> throw Exception(response.errorBody().toString())
+            }
 
-                                WeatherStationDb(
-                                    stationId,
-                                    parseWeatherDate(responseStation?.data),
-                                    responseStation?.temperature,
-                                    null,
-                                    responseStation?.temperatureGround,
-                                    responseStation?.windSpeed,
-                                    responseStation?.windDir,
-                                    responseStation?.humidity,
-                                    null,
-                                    responseStation?.rainToday,
-                                    parseChartData(responseStation?.temperatureData?.data),
-                                    parseChartData(responseStation?.humidityData?.data)
-                                )
+        } else {
 
-                            }
-                            else -> throw Exception(response.errorBody().toString())
-                        }
-                    }
-                )
+            val response = LspController.getWeatherStationTwo(station.stationId)
+
+            when {
+                response.isSuccessful -> {
+                    val responseStation = response.body()
+
+                    station.date = parseWeatherDate(responseStation?.data)
+                    station.temperature = responseStation?.temperature
+                    station.temperatureGround = responseStation?.temperatureGround
+                    station.windSpeed = responseStation?.windSpeed
+                    station.windDir = responseStation?.windDir
+                    station.humidity = responseStation?.humidity
+                    station.rainToday = responseStation?.rainToday
+                    station.temperatureWindData = parseChartData(responseStation?.temperatureData?.data)
+                    station.humidityData = parseChartData(responseStation?.humidityData?.data)
+
+
+                }
+                else -> throw Exception(response.errorBody().toString())
+            }
+        }
+
+        return station
     }
 
     private fun parseWeatherDate(stringDate: String?): Date? {
@@ -99,11 +101,11 @@ object ProcessingUtils {
         return inputFormat.parse(stringDate)
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?): List<DataModelDb>? {
+    private fun parseChartData(chartData: List<List<Double>?>?): List<DataModelModel>? {
         return parseChartData(chartData, false)
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<DataModelDb>? {
+    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<DataModelModel>? {
         val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
         val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
 
@@ -111,11 +113,11 @@ object ProcessingUtils {
         else {
             var returnList = chartData.filterNotNull()
             if (isPressure) returnList = returnList.filter { it[1] > 0 }
-            returnList.map { DataModelDb(it[0].toLong().plus(offset), it[1]) }
+            returnList.map { DataModelModel(it[0].toLong().plus(offset), it[1]) }
         }
     }
 
-    private fun getSensors(stationId: Int): List<SmogSensorDb>? {
+    private fun getSensors(stationId: Int): List<SmogSensorModel>? {
 
         val response = LspController.getSmogSensors(stationId)
 
@@ -123,7 +125,7 @@ object ProcessingUtils {
             response.isSuccessful -> response.body()
                 ?.filter { smogSensor -> smogSensor.id != null }
                 ?.map { smogSensor ->
-                    SmogSensorDb(
+                    SmogSensorModel(
                         smogSensor.id,
                         smogSensor.param?.paramName,
                         smogSensor.param?.paramCode,
@@ -134,8 +136,8 @@ object ProcessingUtils {
         }
     }
 
-    private fun parseSensorData(smogSensorData: SmogSensorData?): List<DataModelDb>? {
-        return smogSensorData?.values?.map { DataModelDb(parseSmogDate(it.date), it.value) }
+    private fun parseSensorData(smogSensorData: SmogSensorData?): List<DataModelModel>? {
+        return smogSensorData?.values?.map { DataModelModel(parseSmogDate(it.date), it.value) }
     }
 
     private fun parseSmogDate(stringDate: String?): Long? {

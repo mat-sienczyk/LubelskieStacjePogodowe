@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.WeatherFragmentBinding
-import pl.sienczykm.templbn.db.model.WeatherStationDb
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
+import timber.log.Timber
 
-class WeatherFragment : BaseStationListFragment<WeatherStationDb, WeatherViewModel, WeatherFragmentBinding>() {
+class WeatherFragment : BaseStationListFragment<WeatherStationModel, WeatherViewModel, WeatherFragmentBinding>() {
 
     companion object {
         fun newInstance(): WeatherFragment {
@@ -38,5 +39,20 @@ class WeatherFragment : BaseStationListFragment<WeatherStationDb, WeatherViewMod
 
     override fun getCoordinatorLayout(): CoordinatorLayout {
         return binding.coordinatorLayout
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        stationViewModel.getAllStations()
+            .observe(
+                this,
+                Observer { stations ->
+                    Timber.e(
+                        stations.joinToString(
+                            separator = "\n",
+                            transform = { "Nazwa: " + it.name + ", nr stacji: " + it.stationId + ", data: " + it.date })
+                    )
+                })
     }
 }

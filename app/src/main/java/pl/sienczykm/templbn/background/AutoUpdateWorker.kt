@@ -3,9 +3,9 @@ package pl.sienczykm.templbn.background
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import pl.sienczykm.templbn.utils.SmogStation
+import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.WeatherStation
 
 class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
 
@@ -16,7 +16,7 @@ class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
 
         return try {
             when (stationType) {
-                SmogStation.ID_KEY -> {
+                SmogStationModel.ID_KEY -> {
                     stationsId?.forEach { stationId ->
                         ProcessingUtils.updateSmogStation(
                             applicationContext,
@@ -24,7 +24,7 @@ class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
                         )
                     }
                 }
-                WeatherStation.ID_KEY -> {
+                WeatherStationModel.ID_KEY -> {
                     stationsId?.forEach { stationId ->
                         ProcessingUtils.updateWeatherStation(
                             applicationContext,

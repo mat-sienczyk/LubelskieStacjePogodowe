@@ -20,15 +20,15 @@ object UpdateHandler {
         .build()
 
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, SmogStation.getStations().map { it.id }, receiver, SmogStation.ID_KEY)
-    }
-
-    fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, WeatherStation.ID_KEY)
+        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, SmogStation.ID_KEY)
     }
 
     fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
         syncNowStations(context, listOf(stationId), receiver, SmogStation.ID_KEY)
+    }
+
+    fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
+        syncNowStations(context, WeatherStation.getStations().map { it.id }, receiver, WeatherStation.ID_KEY)
     }
 
     fun syncNowWeatherStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {

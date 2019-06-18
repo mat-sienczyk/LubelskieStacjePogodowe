@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.StatusReceiver
-import pl.sienczykm.templbn.utils.snackbar
+import pl.sienczykm.templbn.utils.snackbarShow
 
 abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : ViewDataBinding> : Fragment() {
 
@@ -68,7 +68,7 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
     }
 
     private fun handleError(@StringRes message: Int) {
-        snackbar(getCoordinatorLayout(), message)
+        snackbarShow(getCoordinatorLayout(), message)
     }
 
 }

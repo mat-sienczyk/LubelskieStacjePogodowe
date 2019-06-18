@@ -39,17 +39,4 @@ class SmogFragment : BaseStationListFragment<SmogStationDb, SmogViewModel, SmogF
     override fun getCoordinatorLayout(): CoordinatorLayout {
         return binding.coordinatorLayout
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        stationViewModel.getAllStations()
-            .observe(
-                this,
-                Observer { stations ->
-                    binding.number.text = stations.joinToString(
-                        separator = "\n",
-                        transform = { "Nr stacji: " + it.stationId + ", data: " + it.date })
-                })
-    }
 }

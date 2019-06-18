@@ -8,4 +8,8 @@
 
     <string name="no_connection">Brak połączenia z Internetem.</string>
     <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>
+
+    <string name="station_name">NAZWA STACJI</string>
+    <string name="station_date">DATA</string>
+
 </resources>

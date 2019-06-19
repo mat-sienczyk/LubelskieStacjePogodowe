@@ -11,14 +11,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.utils.snackbarShow
+import timber.log.Timber
 
-abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : ViewDataBinding> : Fragment() {
-
+abstract class BaseStationListFragment<K : StationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
+    Fragment(), RecyclerViewClickListener {
 
     lateinit var stationViewModel: T
     lateinit var binding: N
@@ -31,6 +35,10 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
     abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
 
     abstract fun getCoordinatorLayout(): CoordinatorLayout
+
+    abstract fun getList(): RecyclerView
+
+    abstract fun getAdapter(): BaseStationsAdapter<L>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
@@ -58,6 +66,11 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
         )
 
         stationViewModel.status.observe(this, Observer { status -> handleStatus(status) })
+
+        val mLayoutManager = LinearLayoutManager(context)
+        mLayoutManager.orientation = RecyclerView.VERTICAL
+        getList().layoutManager = mLayoutManager
+        getList().adapter = getAdapter()
     }
 
     private fun handleStatus(status: Int) {
@@ -65,6 +78,14 @@ abstract class BaseStationListFragment<K, T : BaseStationListViewModel<K>, N : V
             StatusReceiver.STATUS_NO_CONNECTION -> handleError(R.string.no_connection)
             StatusReceiver.STATUS_ERROR -> handleError(R.string.error_server)
         }
+    }
+
+    override fun onClickItem(v: View, position: Int) {
+        Timber.e("Clicked: %s", stationViewModel.stations.value?.get(position)?.stationId)
+    }
+
+    override fun onLongClickItem(v: View, position: Int) {
+        Timber.e("Long clicked: %s", stationViewModel.stations.value?.get(position)?.stationId)
     }
 
     private fun handleError(@StringRes message: Int) {

@@ -1,18 +1,19 @@
 package pl.sienczykm.templbn.ui.weather
 
 import android.os.Bundle
-import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.databinding.RowWeatherStationBinding
 import pl.sienczykm.templbn.databinding.WeatherFragmentBinding
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
-import timber.log.Timber
+import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
-class WeatherFragment : BaseStationListFragment<WeatherStationModel, WeatherViewModel, WeatherFragmentBinding>() {
+class WeatherFragment :
+    BaseStationListFragment<WeatherStationModel, WeatherViewModel, WeatherFragmentBinding, RowWeatherStationBinding>() {
 
     companion object {
         fun newInstance(): WeatherFragment {
@@ -41,18 +42,11 @@ class WeatherFragment : BaseStationListFragment<WeatherStationModel, WeatherView
         return binding.coordinatorLayout
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun getList(): RecyclerView {
+        return binding.stationList
+    }
 
-        stationViewModel.getAllStations()
-            .observe(
-                this,
-                Observer { stations ->
-                    Timber.e(
-                        stations.joinToString(
-                            separator = "\n",
-                            transform = { "Nazwa: " + it.name + ", nr stacji: " + it.stationId + ", data: " + it.date })
-                    )
-                })
+    override fun getAdapter(): BaseStationsAdapter<RowWeatherStationBinding> {
+        return WeatherAdapter(this)
     }
 }

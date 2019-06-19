@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_map -> {
 
-//                UpdateHandler.disableAutoSync()
+                UpdateHandler.disableAutoSync()
 
                 return@OnNavigationItemSelectedListener true
             }
@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        if (savedInstanceState == null) changeFragment(WeatherFragment.newInstance())
-
         UpdateHandler.setAutoSync(10)
+
+        if (savedInstanceState == null) changeFragment(WeatherFragment.newInstance())
     }
 
     fun changeFragment(fragment: Fragment) {

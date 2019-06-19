@@ -1,18 +1,19 @@
 package pl.sienczykm.templbn.ui.smog
 
 import android.os.Bundle
-import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.databinding.RowSmogStationBinding
 import pl.sienczykm.templbn.databinding.SmogFragmentBinding
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
-import timber.log.Timber
+import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
-class SmogFragment : BaseStationListFragment<SmogStationModel, SmogViewModel, SmogFragmentBinding>() {
+class SmogFragment :
+    BaseStationListFragment<SmogStationModel, SmogViewModel, SmogFragmentBinding, RowSmogStationBinding>() {
 
     companion object {
         fun newInstance(): SmogFragment {
@@ -41,16 +42,11 @@ class SmogFragment : BaseStationListFragment<SmogStationModel, SmogViewModel, Sm
         return binding.coordinatorLayout
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun getList(): RecyclerView {
+        return binding.stationList
+    }
 
-        stationViewModel.getAllStations()
-            .observe(
-                this,
-                Observer { stations ->
-                    Timber.e(stations.joinToString(
-                        separator = "\n",
-                        transform = { "Nazwa: " + it.name + ", nr stacji: " + it.stationId + ", data: " + it.date }))
-                })
+    override fun getAdapter(): BaseStationsAdapter<RowSmogStationBinding> {
+        return SmogAdapter(this)
     }
 }

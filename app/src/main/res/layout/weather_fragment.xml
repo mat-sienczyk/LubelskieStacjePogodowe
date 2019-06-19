@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.common.BaseStationListViewModel"/>
-
+                  type="pl.sienczykm.templbn.ui.weather.WeatherViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:id="@+id/coordinator_layout"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/coordinator_layout">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
@@ -19,10 +19,12 @@
                 app:refreshing="@{viewModel.isRefreshing}"
                 android:id="@+id/swipe_layout">
 
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/station_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/station_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/row_weather_station"
+                    app:adapter="@{viewModel.stations}"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

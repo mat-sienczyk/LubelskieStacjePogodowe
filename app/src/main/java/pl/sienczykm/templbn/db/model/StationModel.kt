@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.db.model
 
 import androidx.room.PrimaryKey
+import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class StationModel(
@@ -14,5 +15,10 @@ abstract class StationModel(
     var date: Date? = null
 
     abstract fun getStationUrl(): String
+
+    fun getParsedDate(): String {
+        val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm z", Locale("pl", "PL"))
+        return outputFormat.format(date)
+    }
 
 }

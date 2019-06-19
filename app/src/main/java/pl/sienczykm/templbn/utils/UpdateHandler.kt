@@ -8,7 +8,6 @@ import pl.sienczykm.templbn.background.SmogUpdateJob
 import pl.sienczykm.templbn.background.StatusReceiver
 import pl.sienczykm.templbn.background.WeatherUpdateJob
 import pl.sienczykm.templbn.db.model.SmogStationModel
-import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
 
@@ -25,9 +24,9 @@ object UpdateHandler {
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
             context,
-            WeatherStationModel.getStations().map { it.stationId },
+            SmogStationModel.getStations().map { it.stationId },
             receiver,
-            WeatherStationModel.ID_KEY
+            SmogStationModel.ID_KEY
         )
     }
 
@@ -78,10 +77,14 @@ object UpdateHandler {
     fun setAutoSync(minutes: Long) {
         WorkManager.getInstance().enqueue(
             listOf(
-                periodicWorkRequest(60, getStationsIntArray(SmogStationModel.getStations()), SmogStationModel.ID_KEY),
+                periodicWorkRequest(
+                    60,
+                    SmogStationModel.getStations().map { it.stationId }.toIntArray(),
+                    SmogStationModel.ID_KEY
+                ),
                 periodicWorkRequest(
                     minutes,
-                    getStationsIntArray(WeatherStationModel.getStations()),
+                    WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
                     WeatherStationModel.ID_KEY
                 )
             )
@@ -104,8 +107,6 @@ object UpdateHandler {
             .addTag(AUTO_SYNC_TAG)
             .build()
     }
-
-    private fun getStationsIntArray(stations: List<StationModel>) = stations.map { it.stationId }.toIntArray()
 
     fun disableAutoSync() {
         WorkManager.getInstance().cancelAllWorkByTag(AUTO_SYNC_TAG)

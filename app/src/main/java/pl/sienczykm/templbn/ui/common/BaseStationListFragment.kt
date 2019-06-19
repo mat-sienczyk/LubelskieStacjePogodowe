@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.common
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,21 +11,21 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.background.StatusReceiver
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.ui.station.StationFragment
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
 abstract class BaseStationListFragment<K : StationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
-    Fragment(), RecyclerViewClickListener {
+    Fragment(), RecyclerViewClickListener, BaseNavigator {
 
     lateinit var stationViewModel: T
     lateinit var binding: N
@@ -52,6 +53,7 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         stationViewModel = getViewModel()
+        stationViewModel.setNavigator(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,25 +69,16 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
             resources.getColor(R.color.main_green)
         )
 
-        stationViewModel.status.observe(this, Observer { status -> handleStatus(status) })
-
         val mLayoutManager = LinearLayoutManager(context)
         mLayoutManager.orientation = RecyclerView.VERTICAL
         getList().layoutManager = mLayoutManager
         getList().adapter = getAdapter()
     }
 
-    private fun handleStatus(status: Int) {
-        when (status) {
-            StatusReceiver.STATUS_NO_CONNECTION -> handleError(R.string.no_connection)
-            StatusReceiver.STATUS_ERROR -> handleError(R.string.error_server)
-        }
-    }
-
     override fun onClickItem(v: View, position: Int) {
         when (val station = stationViewModel.stations.value?.get(position)) {
-            is WeatherStationModel -> Timber.e("Weather station: %s", station.toString())
-            is SmogStationModel -> Timber.e("Smog station: %s", station.toString())
+            is WeatherStationModel -> openStationActivity(StationFragment.Type.WEATHER, station.stationId)
+            is SmogStationModel -> openStationActivity(StationFragment.Type.SMOG, station.stationId)
             else -> throw Exception("Invalid station object")
         }
     }
@@ -94,7 +87,24 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
         Timber.e("Long clicked: %s", stationViewModel.stations.value?.get(position)?.stationId)
     }
 
-    private fun handleError(@StringRes message: Int) {
+    override fun handleError(message: String?) {
+        Timber.e(Throwable(message))
+        showError(R.string.error_server)
+    }
+
+    override fun noConnection() {
+        showError(R.string.error_no_connection)
+    }
+
+    private fun openStationActivity(type: StationFragment.Type, stationId: Int) {
+        val intent = Intent(activity, StationActivity::class.java).apply {
+            putExtra(StationFragment.STATION_TYPE_KEY, type)
+            putExtra(StationFragment.STATION_ID_KEY, stationId)
+        }
+        startActivity(intent)
+    }
+
+    private fun showError(@StringRes message: Int) {
         snackbarShow(getCoordinatorLayout(), message)
     }
 

@@ -22,3 +22,11 @@ fun snackbarShow(view: CoordinatorLayout, @StringRes message: Int, duration: Int
 fun snackbarShow(view: CoordinatorLayout, message: String, duration: Int = Snackbar.LENGTH_LONG) {
     Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
 }
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
+}

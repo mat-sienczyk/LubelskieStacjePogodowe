@@ -6,10 +6,12 @@
     <string name="title_temp">Temperatura</string>
     <string name="title_map">Mapa</string>
 
-    <string name="no_connection">Brak połączenia z Internetem.</string>
+    <string name="error_no_connection">Brak połączenia z Internetem.</string>
+    <string name="error_no_web_browser">Brak przeglądarki Internetowej.</string>
     <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>
 
     <string name="station_name">NAZWA STACJI</string>
     <string name="station_date">DATA</string>
+    <string name="open_website">Otwórz stronę stacji</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package pl.sienczykm.templbn.ui.weather
 
-import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +16,7 @@ class WeatherFragment :
 
     companion object {
         fun newInstance(): WeatherFragment {
-            val args = Bundle()
-            val fragment = WeatherFragment()
-            fragment.arguments = args
-            return fragment
+            return WeatherFragment()
         }
     }
 

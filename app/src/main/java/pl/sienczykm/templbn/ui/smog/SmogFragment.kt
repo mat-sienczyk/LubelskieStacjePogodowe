@@ -1,6 +1,5 @@
 package pl.sienczykm.templbn.ui.smog
 
-import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +16,7 @@ class SmogFragment :
 
     companion object {
         fun newInstance(): SmogFragment {
-            val args = Bundle()
-            val fragment = SmogFragment()
-            fragment.arguments = args
-            return fragment
+            return SmogFragment()
         }
     }
 

@@ -14,7 +14,7 @@ class WeatherViewModel(application: Application) : BaseStationListViewModel<Weat
     }
 
     override val stations: LiveData<List<WeatherStationModel>> by lazy {
-        AppDb.getDatabase(getApplication()).tempStationDao().getAllStations()
+        AppDb.getDatabase(getApplication()).weatherStationDao().getAllStations()
     }
 
 }

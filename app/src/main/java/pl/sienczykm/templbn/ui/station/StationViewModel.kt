@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.common
+package pl.sienczykm.templbn.ui.station
 
 import android.app.Application
 import android.os.Bundle
@@ -7,12 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import pl.sienczykm.templbn.background.ProcessingUtils
 import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.utils.UpdateHandler
 import java.lang.ref.WeakReference
 
-abstract class BaseStationListViewModel<T>(application: Application) : AndroidViewModel(application) {
+class StationViewModel(application: Application) : AndroidViewModel(application) {
 
     val isRefreshing = MutableLiveData<Boolean>().apply { value = false }
-    private lateinit var navigator: WeakReference<BaseNavigator>
+    lateinit var station: LiveData<StationModel>
+    private lateinit var navigator: WeakReference<StationNavigator>
 
     val receiver = object : StatusReceiver.Receiver {
         override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
@@ -25,9 +29,28 @@ abstract class BaseStationListViewModel<T>(application: Application) : AndroidVi
         }
     }
 
-    abstract val stations: LiveData<List<T>>
+    fun openCustomTab() {
+        getNavigator()?.openCustomTab(station.value?.url)
+    }
 
-    abstract fun refresh()
+    fun refresh(type: StationFragment.Type, stationId: Int) {
+        if (stationId == 0) throw Exception("Invalid stationId")
+        else when (type) {
+            StationFragment.Type.WEATHER -> {
+                station =
+                    AppDb.getDatabase(getApplication()).weatherStationDao().getStationById(stationId) as LiveData<StationModel>
+
+                UpdateHandler.syncNowWeatherStation(getApplication(), stationId, receiver)
+            }
+            StationFragment.Type.SMOG -> {
+                station =
+                    AppDb.getDatabase(getApplication()).smogStationDao().getStationById(stationId) as LiveData<StationModel>
+
+                UpdateHandler.syncNowSmogStation(getApplication(), stationId, receiver)
+
+            }
+        }
+    }
 
     fun onRunning() {
         isRefreshing.value = true
@@ -47,11 +70,12 @@ abstract class BaseStationListViewModel<T>(application: Application) : AndroidVi
         getNavigator()?.noConnection()
     }
 
-    fun getNavigator(): BaseNavigator? {
+    fun getNavigator(): StationNavigator? {
         return navigator.get()
     }
 
-    fun setNavigator(navigator: BaseNavigator) {
+    fun setNavigator(navigator: StationNavigator) {
         this.navigator = WeakReference(navigator)
     }
+
 }

@@ -15,7 +15,7 @@ import pl.sienczykm.templbn.utils.Config
 @TypeConverters(Converter::class)
 abstract class AppDb : RoomDatabase() {
 
-    abstract fun tempStationDao(): WeatherStationDao
+    abstract fun weatherStationDao(): WeatherStationDao
 
     abstract fun smogStationDao(): SmogStationDao
 

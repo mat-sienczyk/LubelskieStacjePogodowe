@@ -27,7 +27,7 @@ object ProcessingUtils {
     @WorkerThread
     fun updateWeatherStation(appContext: Context, stationId: Int) {
 
-        AppDb.getDatabase(appContext).tempStationDao()
+        AppDb.getDatabase(appContext).weatherStationDao()
             .insert(constructWeatherStation(WeatherStationModel.getStationForGivenId(stationId)))
     }
 

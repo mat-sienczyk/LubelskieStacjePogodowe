@@ -9,10 +9,6 @@ import pl.sienczykm.templbn.utils.UpdateHandler
 
 class WeatherViewModel(application: Application) : BaseStationListViewModel<WeatherStationModel>(application) {
 
-    init {
-        refresh()
-    }
-
     override fun refresh() {
         UpdateHandler.syncNowWeatherStations(getApplication(), receiver)
     }

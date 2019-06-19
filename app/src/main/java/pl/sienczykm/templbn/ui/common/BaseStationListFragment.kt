@@ -17,7 +17,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
@@ -81,7 +83,11 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
     }
 
     override fun onClickItem(v: View, position: Int) {
-        Timber.e("Clicked: %s", stationViewModel.stations.value?.get(position)?.stationId)
+        when (val station = stationViewModel.stations.value?.get(position)) {
+            is WeatherStationModel -> Timber.e("Weather station: %s", station.toString())
+            is SmogStationModel -> Timber.e("Smog station: %s", station.toString())
+            else -> throw Exception("Invalid station object")
+        }
     }
 
     override fun onLongClickItem(v: View, position: Int) {

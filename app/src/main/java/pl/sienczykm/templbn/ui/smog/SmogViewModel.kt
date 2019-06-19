@@ -9,10 +9,6 @@ import pl.sienczykm.templbn.utils.UpdateHandler
 
 class SmogViewModel(application: Application) : BaseStationListViewModel<SmogStationModel>(application) {
 
-    init {
-        refresh()
-    }
-
     override fun refresh() {
         UpdateHandler.syncNowSmogStations(getApplication(), receiver)
     }

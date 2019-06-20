@@ -44,8 +44,14 @@ class StationFragment : Fragment(), StationNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val type = arguments?.getSerializable(STATION_TYPE_KEY) as Type
+        val stationId = arguments?.getInt(STATION_ID_KEY, 0)
+
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(StationViewModel::class.java)
+            ViewModelProviders.of(
+                this,
+                StationViewModelFactory(application, type, stationId!!)
+            ).get(StationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         viewModel.setNavigator(this)
     }
@@ -60,11 +66,8 @@ class StationFragment : Fragment(), StationNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val type = arguments?.getSerializable(STATION_TYPE_KEY) as Type
-        val stationId = arguments?.getInt(STATION_ID_KEY)
-
         binding.swipeLayout.setOnRefreshListener {
-            viewModel.refresh(type, stationId!!)
+            viewModel.refresh()
         }
 
         binding.swipeLayout.setColorSchemeColors(
@@ -73,7 +76,6 @@ class StationFragment : Fragment(), StationNavigator {
             resources.getColor(R.color.main_green)
         )
 
-        viewModel.refresh(type, stationId!!)
         viewModel.station.observe(this, Observer { activity?.title = it.name })
     }
 

@@ -9,49 +9,8 @@ import pl.sienczykm.templbn.background.ProcessingUtils
 import pl.sienczykm.templbn.background.StatusReceiver
 import java.lang.ref.WeakReference
 
-abstract class BaseStationListViewModel<T>(application: Application) : AndroidViewModel(application) {
-
-    val isRefreshing = MutableLiveData<Boolean>().apply { value = false }
-    private lateinit var navigator: WeakReference<BaseNavigator>
-
-    val receiver = object : StatusReceiver.Receiver {
-        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-            when (resultCode) {
-                StatusReceiver.STATUS_RUNNING -> onRunning()
-                StatusReceiver.STATUS_IDLE -> onIdle()
-                StatusReceiver.STATUS_NO_CONNECTION -> onNoConnection()
-                StatusReceiver.STATUS_ERROR -> onError(resultData.getString(ProcessingUtils.ERROR_KEY))
-            }
-        }
-    }
+abstract class BaseStationListViewModel<T>(application: Application) : BaseRefreshViewModel<BaseNavigator>(application) {
 
     abstract val stations: LiveData<List<T>>
 
-    abstract fun refresh()
-
-    fun onRunning() {
-        isRefreshing.value = true
-    }
-
-    fun onIdle() {
-        isRefreshing.value = false
-    }
-
-    fun onError(resultData: String?) {
-        isRefreshing.value = false
-        getNavigator()?.handleError(resultData)
-    }
-
-    fun onNoConnection() {
-        isRefreshing.value = false
-        getNavigator()?.noConnection()
-    }
-
-    fun getNavigator(): BaseNavigator? {
-        return navigator.get()
-    }
-
-    fun setNavigator(navigator: BaseNavigator) {
-        this.navigator = WeakReference(navigator)
-    }
 }

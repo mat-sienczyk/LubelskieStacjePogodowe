@@ -8,8 +8,6 @@ import pl.sienczykm.templbn.R
 
 class StationActivity : AppCompatActivity(){
 
-    lateinit var viewModel: StationViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_station)

@@ -14,4 +14,7 @@
     <string name="station_date">DATA</string>
     <string name="open_website">Otwórz stronę stacji</string>
 
+    <string name="weather_station">"Stacja pogodowa"</string>
+    <string name="smog_station">"Stacja smogowa"</string>
+
 </resources>

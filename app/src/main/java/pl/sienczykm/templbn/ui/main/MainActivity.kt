@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.smog.SmogFragment
 import pl.sienczykm.templbn.ui.weather.WeatherFragment
 import pl.sienczykm.templbn.utils.UpdateHandler
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_map -> {
 
-                UpdateHandler.disableAutoSync()
+                changeFragment(MapFragment.newInstance())
 
                 return@OnNavigationItemSelectedListener true
             }

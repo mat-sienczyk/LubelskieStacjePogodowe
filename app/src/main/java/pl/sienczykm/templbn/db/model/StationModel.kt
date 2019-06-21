@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.db.model
 
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,6 +14,8 @@ abstract class StationModel(
 ) {
     lateinit var url: String
     var date: Date? = null
+    @Ignore
+    var distance: Double? = null
 
     abstract fun getStationUrl(): String
 

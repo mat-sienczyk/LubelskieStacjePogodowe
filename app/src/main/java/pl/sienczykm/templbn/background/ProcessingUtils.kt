@@ -21,23 +21,23 @@ object ProcessingUtils {
     fun updateSmogStation(appContext: Context, stationId: Int) {
 
         AppDb.getDatabase(appContext).smogStationDao()
-            .insert(constructSmogStation(SmogStationModel.getStationForGivenId(stationId)))
+            .insert(constructSmogStationModel(SmogStationModel.getStationForGivenId(stationId)))
     }
 
     @WorkerThread
     fun updateWeatherStation(appContext: Context, stationId: Int) {
 
         AppDb.getDatabase(appContext).weatherStationDao()
-            .insert(constructWeatherStation(WeatherStationModel.getStationForGivenId(stationId)))
+            .insert(constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId)))
     }
 
-    private fun constructSmogStation(station: SmogStationModel): SmogStationModel {
+    private fun constructSmogStationModel(station: SmogStationModel): SmogStationModel {
         station.sensors = getSensors(station.stationId)
         station.date = Date(station.sensors?.get(0)?.data?.get(0)?.timestamp!!)
         return station
     }
 
-    private fun constructWeatherStation(station: WeatherStationModel): WeatherStationModel {
+    private fun constructWeatherStationModel(station: WeatherStationModel): WeatherStationModel {
         if (station.type == WeatherStationModel.Type.ONE) {
 
             val response = LspController.getWeatherStationOne(station.stationId)

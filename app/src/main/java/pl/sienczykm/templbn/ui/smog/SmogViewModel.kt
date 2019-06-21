@@ -13,8 +13,15 @@ class SmogViewModel(application: Application) : BaseStationListViewModel<SmogSta
         UpdateHandler.syncNowSmogStations(getApplication(), receiver)
     }
 
-    override val stations: LiveData<List<SmogStationModel>> by lazy {
+    override val stationsLiveData: LiveData<List<SmogStationModel>> by lazy {
         AppDb.getDatabase(getApplication()).smogStationDao().getAllStations()
     }
 
+    init {
+        stations.addSource(stationsLiveData) { result: List<SmogStationModel>? ->
+            result?.let {
+                stations.value = sortStations(it)
+            }
+        }
+    }
 }

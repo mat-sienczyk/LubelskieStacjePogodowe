@@ -28,9 +28,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         }
     }
 
+    //TODO przenieść do viewModelu?
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
     private lateinit var binding: FragmentMapBinding
+    //TODO przenieść do viewModelu?
     private val markerMap = hashMapOf<Marker, StationModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,6 +49,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        //TODO przenieść do viewModelu?
         map = googleMap
 
         val markerBoundsBuilder = LatLngBounds.Builder()

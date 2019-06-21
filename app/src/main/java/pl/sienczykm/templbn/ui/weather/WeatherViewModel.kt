@@ -13,8 +13,16 @@ class WeatherViewModel(application: Application) : BaseStationListViewModel<Weat
         UpdateHandler.syncNowWeatherStations(getApplication(), receiver)
     }
 
-    override val stations: LiveData<List<WeatherStationModel>> by lazy {
+    override val stationsLiveData: LiveData<List<WeatherStationModel>> by lazy {
         AppDb.getDatabase(getApplication()).weatherStationDao().getAllStations()
+    }
+
+    init {
+        stations.addSource(stationsLiveData) { result: List<WeatherStationModel>? ->
+            result?.let {
+                stations.value = sortStations(it)
+            }
+        }
     }
 
 }

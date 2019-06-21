@@ -23,15 +23,15 @@ class MainActivity : AppCompatActivity() {
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_smog -> {
-
-                changeFragment(SmogFragment.newInstance())
-
-                return@OnNavigationItemSelectedListener true
-            }
             R.id.navigation_weather -> {
 
                 changeFragment(WeatherFragment.newInstance())
+
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_smog -> {
+
+                changeFragment(SmogFragment.newInstance())
 
                 return@OnNavigationItemSelectedListener true
             }

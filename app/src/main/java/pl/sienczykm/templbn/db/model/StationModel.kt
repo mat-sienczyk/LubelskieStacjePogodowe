@@ -2,8 +2,10 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import pl.sienczykm.templbn.utils.round
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 abstract class StationModel(
     @PrimaryKey
@@ -20,8 +22,17 @@ abstract class StationModel(
     abstract fun getStationUrl(): String
 
     fun getParsedDate(): String {
-        val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm z", Locale("pl", "PL"))
+        val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("pl", "PL"))
         return outputFormat.format(date)
+    }
+
+    fun getParsedDistance(): String? {
+        return when {
+            distance == null -> null
+            distance!! >= 10 -> distance.round(1).toString() + " km"
+            distance!! < 1 -> (distance.round(3) * 1000).roundToInt().toString() + " m"
+            else -> distance.round(2).toString() + " km"
+        }
     }
 
 }

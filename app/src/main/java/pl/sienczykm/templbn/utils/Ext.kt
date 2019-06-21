@@ -9,6 +9,8 @@ import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.*
 
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_LONG) {
@@ -53,5 +55,13 @@ fun Context?.isLocationPermissionGranted(): Boolean {
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+
     }
+}
+
+fun Double?.round(places: Int): Double {
+    if (places < 0 || this == null) throw IllegalArgumentException()
+    var bd = BigDecimal(this)
+    bd = bd.setScale(places, RoundingMode.HALF_UP)
+    return bd.toDouble()
 }

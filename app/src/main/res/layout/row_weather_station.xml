@@ -11,37 +11,82 @@
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_view_margin"
             app:cardCornerRadius="6dp"
             app:cardElevation="6dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/name"
-                    android:text="@{station.name}"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/date" android:layout_marginEnd="8dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-            <TextView
-                    android:id="@+id/date"
-                    android:text="@{station.parsedDate}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/name" android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                        android:id="@+id/name"
+                        android:text="@{station.name, default=NAME}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                        android:id="@+id/date"
+                        android:text="@{station.parsedDate, default=DATE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/distance"
+                        android:text="@{station.parsedDistance, default=DISTANCE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                <TextView
+                        android:id="@+id/temp"
+                        android:text="@{station.temperature.toString(), default=TEMP}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/wind"
+                        android:text="@{station.windSpeed.toString(), default=WIND}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/humidity"
+                        android:text="@{station.humidity.toString(), default=HUMIDITY}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/pressure"
+                        android:text="@{station.pressure.toString(), default=PRESSURE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.ui.map
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,10 @@ import pl.sienczykm.templbn.databinding.FragmentMapBinding
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.ui.station.StationFragment
+import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
@@ -96,6 +99,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         )
 
         map.setOnInfoWindowClickListener(this)
+
+        if (activity.isLocationPermissionGranted()) {
+            map.isMyLocationEnabled = true
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MainActivity.PERMISSIONS_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    map.isMyLocationEnabled = true
+                }
+                return
+            }
+        }
     }
 
     override fun onInfoWindowClick(marker: Marker) {

@@ -1,6 +1,5 @@
 package pl.sienczykm.templbn.ui.common
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -24,17 +22,15 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.ui.station.StationFragment
+import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
 abstract class BaseStationListFragment<K : StationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
     Fragment(), RecyclerViewClickListener, BaseNavigator {
-
-    companion object {
-        private const val PERMISSIONS_REQUEST_CODE = 111
-    }
 
     var coordinates: LatLon? = null
 
@@ -85,42 +81,30 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
         getList().layoutManager = mLayoutManager
         getList().adapter = getAdapter()
 
-        getLocation()
+        if (savedInstanceState == null) updateCoordinate()
     }
 
-    fun getLocation() {
-        if (ContextCompat.checkSelfPermission(
-                activity!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE
-            )
-        } else {
-            updateCoordinate()
+    fun updateCoordinate() {
+        if (activity.isLocationPermissionGranted()) {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        stationViewModel.coordinates = LatLon(location.latitude, location.longitude)
+                    }
+                }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            PERMISSIONS_REQUEST_CODE -> {
+            MainActivity.PERMISSIONS_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     updateCoordinate()
                 }
                 return
             }
         }
-    }
-
-    fun updateCoordinate() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    stationViewModel.coordinates = LatLon(location.latitude, location.longitude)
-                }
-            }
     }
 
     override fun onClickItem(v: View, position: Int) {

@@ -1,10 +1,13 @@
 package pl.sienczykm.templbn.utils
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.*
 
@@ -40,4 +43,15 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val Δλ = Math.toRadians(lat2 - lat1)
     val Δφ = Math.toRadians(lon2 - lon1)
     return 2 * R * asin(sqrt(sin(Δλ / 2).pow(2.0) + sin(Δφ / 2).pow(2.0) * cos(λ1) * cos(λ2)))
+}
+
+fun Context?.isLocationPermissionGranted(): Boolean {
+    return if(this == null){
+        false
+    }else{
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 }

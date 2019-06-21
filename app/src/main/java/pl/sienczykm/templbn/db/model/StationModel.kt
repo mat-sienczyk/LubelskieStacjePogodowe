@@ -29,9 +29,9 @@ abstract class StationModel(
     fun getParsedDistance(): String? {
         return when {
             distance == null -> null
-            distance!! >= 10 -> distance.round(1).toString() + " km"
-            distance!! < 1 -> (distance.round(3) * 1000).roundToInt().toString() + " m"
-            else -> distance.round(2).toString() + " km"
+            distance!! >= 10 -> distance.round(1)?.toString() + " km"
+            distance!! < 1 -> (distance.round(3)?.times(1000))?.roundToInt().toString() + " m"
+            else -> distance.round(2)?.toString() + " km"
         }
     }
 

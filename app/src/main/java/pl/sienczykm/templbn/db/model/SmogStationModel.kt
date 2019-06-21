@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import pl.sienczykm.templbn.utils.round
 
 @Entity
 data class SmogStationModel constructor(
@@ -28,37 +29,120 @@ data class SmogStationModel constructor(
     var sensors: List<SmogSensorModel>? = null
 
     fun getPM25(): String? {
-        return getData(SmogSensorType.PM25)
+        return getValue(SmogSensorType.PM25)?.toString()
     }
 
     fun getPM10(): String? {
-        return getData(SmogSensorType.PM10)
+        return getValue(SmogSensorType.PM10)?.toString()
     }
 
     fun getCO(): String? {
-        return getData(SmogSensorType.CO)
+        return getValue(SmogSensorType.CO)?.toString()
     }
 
     fun getNO2(): String? {
-        return getData(SmogSensorType.NO2)
+        return getValue(SmogSensorType.NO2)?.toString()
     }
 
     fun getO3(): String? {
-        return getData(SmogSensorType.O3)
+        return getValue(SmogSensorType.O3)?.toString()
     }
 
     fun getSO2(): String? {
-        return getData(SmogSensorType.SO2)
+        return getValue(SmogSensorType.SO2)?.toString()
     }
 
     fun getC6H6(): String? {
-        return getData(SmogSensorType.C6H6)
+        return getValue(SmogSensorType.C6H6)?.toString()
     }
 
-    private fun getData(sensorType: SmogSensorType): String? {
+    fun getQualityIndex(sensorType: SmogSensorType): QualityIndex? {
+        val value = getValue(sensorType) ?: return null
+        when (sensorType) {
+            SmogSensorType.PM10 -> {
+                return when {
+                    (value > 0) and (value <= 21) -> QualityIndex.VERY_GOOD
+                    (value > 21) and (value <= 61) -> QualityIndex.GOOD
+                    (value > 61) and (value <= 101) -> QualityIndex.MODERATE
+                    (value > 101) and (value <= 141) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 141) and (value <= 201) -> QualityIndex.UNHEALTHY
+                    value > 201 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.PM25 -> {
+                return when {
+                    (value > 0) and (value <= 13) -> QualityIndex.VERY_GOOD
+                    (value > 13) and (value <= 37) -> QualityIndex.GOOD
+                    (value > 37) and (value <= 61) -> QualityIndex.MODERATE
+                    (value > 61) and (value <= 85) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 85) and (value <= 121) -> QualityIndex.UNHEALTHY
+                    value > 121 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.O3 -> {
+                return when {
+                    (value > 0) and (value <= 71) -> QualityIndex.VERY_GOOD
+                    (value > 71) and (value <= 121) -> QualityIndex.GOOD
+                    (value > 121) and (value <= 151) -> QualityIndex.MODERATE
+                    (value > 151) and (value <= 181) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 181) and (value <= 241) -> QualityIndex.UNHEALTHY
+                    value > 241 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.NO2 -> {
+                return when {
+                    (value > 0) and (value <= 41) -> QualityIndex.VERY_GOOD
+                    (value > 41) and (value <= 101) -> QualityIndex.GOOD
+                    (value > 101) and (value <= 151) -> QualityIndex.MODERATE
+                    (value > 151) and (value <= 201) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 201) and (value <= 401) -> QualityIndex.UNHEALTHY
+                    value > 401 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.SO2 -> {
+                return when {
+                    (value > 0) and (value <= 51) -> QualityIndex.VERY_GOOD
+                    (value > 51) and (value <= 101) -> QualityIndex.GOOD
+                    (value > 101) and (value <= 201) -> QualityIndex.MODERATE
+                    (value > 201) and (value <= 351) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 351) and (value <= 501) -> QualityIndex.UNHEALTHY
+                    value > 501 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.C6H6 -> {
+                return when {
+                    (value > 0) and (value <= 6) -> QualityIndex.VERY_GOOD
+                    (value > 6) and (value <= 11) -> QualityIndex.GOOD
+                    (value > 11) and (value <= 16) -> QualityIndex.MODERATE
+                    (value > 16) and (value <= 21) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 21) and (value <= 51) -> QualityIndex.UNHEALTHY
+                    value > 51 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+            SmogSensorType.CO -> {
+                return when {
+                    (value > 0) and (value <= 3) -> QualityIndex.VERY_GOOD
+                    (value > 3) and (value <= 7) -> QualityIndex.GOOD
+                    (value > 7) and (value <= 11) -> QualityIndex.MODERATE
+                    (value > 11) and (value <= 15) -> QualityIndex.UNHEALTHY_SENSITIVE
+                    (value > 15) and (value <= 21) -> QualityIndex.UNHEALTHY
+                    value > 21 -> QualityIndex.HAZARDOUS
+                    else -> null
+                }
+            }
+        }
+    }
+
+    private fun getValue(sensorType: SmogSensorType): Double? {
         return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
             ?.data?.first { chartDataModel -> chartDataModel.value != null }
-            ?.value?.toString()
+            ?.value.round(1)
     }
 
     companion object {
@@ -102,5 +186,14 @@ data class SmogStationModel constructor(
         SO2("dwutlenek siarki", "SO2", 1),
         C6H6("benzen", "C6H6", 10),
         PM25("pył zawieszony PM2.5", "PM2.5", 69)
+    }
+
+    enum class QualityIndex(val value: Int, val desc: String) {
+        VERY_GOOD(0, "Bardzo dobry"),
+        GOOD(1, "Dobry"),
+        MODERATE(2, "Umiarkowany"),
+        UNHEALTHY_SENSITIVE(3, "Dostateczny"),
+        UNHEALTHY(4, "Zły"),
+        HAZARDOUS(5, "Bardzo zły"),
     }
 }

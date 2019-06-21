@@ -59,9 +59,14 @@ fun Context?.isLocationPermissionGranted(): Boolean {
     }
 }
 
-fun Double?.round(places: Int): Double {
-    if (places < 0 || this == null) throw IllegalArgumentException()
-    var bd = BigDecimal(this)
-    bd = bd.setScale(places, RoundingMode.HALF_UP)
-    return bd.toDouble()
+fun Double?.round(places: Int): Double? {
+    return when {
+        this == null -> null
+        places < 0 -> this
+        else -> {
+            var bd = BigDecimal(this)
+            bd = bd.setScale(places, RoundingMode.HALF_UP)
+            bd.toDouble()
+        }
+    }
 }

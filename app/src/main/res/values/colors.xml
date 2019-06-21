@@ -10,4 +10,12 @@
     <color name="main_red">#e03a2a</color>
 
     <color name="black_transparent">#3f000000</color>
+
+    <color name="quality_very_good">#4CAF50</color>
+    <color name="quality_good">#8BC34A</color>
+    <color name="quality_moderate">#FFEB3B</color>
+    <color name="quality_unhealthy_sensitive">#FFC107</color>
+    <color name="quality_unhealthy">#FF9800</color>
+    <color name="quality_hazardous">#F44336</color>
+
 </resources>

@@ -27,6 +27,40 @@ data class SmogStationModel constructor(
 
     var sensors: List<SmogSensorModel>? = null
 
+    fun getPM25(): String? {
+        return getData(SmogSensorType.PM25)
+    }
+
+    fun getPM10(): String? {
+        return getData(SmogSensorType.PM10)
+    }
+
+    fun getCO(): String? {
+        return getData(SmogSensorType.CO)
+    }
+
+    fun getNO2(): String? {
+        return getData(SmogSensorType.NO2)
+    }
+
+    fun getO3(): String? {
+        return getData(SmogSensorType.O3)
+    }
+
+    fun getSO2(): String? {
+        return getData(SmogSensorType.SO2)
+    }
+
+    fun getC6H6(): String? {
+        return getData(SmogSensorType.C6H6)
+    }
+
+    private fun getData(sensorType: SmogSensorType): String? {
+        return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
+            ?.data?.first { chartDataModel -> chartDataModel.value != null }
+            ?.value?.toString()
+    }
+
     companion object {
 
         val ID_KEY = "smog_station_id"
@@ -58,5 +92,15 @@ data class SmogStationModel constructor(
         fun getStationForGivenId(id: Int): SmogStationModel {
             return getStations().single { it.stationId == id }
         }
+    }
+
+    enum class SmogSensorType(val paramName: String, val paramKey: String, val paramId: Int) {
+        CO("tlenek węgla", "CO", 8),
+        NO2("dwutlenek azotu", "NO2", 6),
+        O3("ozon", "O3", 5),
+        PM10("pył zawieszony PM10", "PM10", 3),
+        SO2("dwutlenek siarki", "SO2", 1),
+        C6H6("benzen", "C6H6", 10),
+        PM25("pył zawieszony PM2.5", "PM2.5", 69)
     }
 }

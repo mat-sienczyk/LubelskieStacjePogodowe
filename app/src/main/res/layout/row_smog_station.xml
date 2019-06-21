@@ -11,7 +11,7 @@
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_view_margin"
             app:cardCornerRadius="6dp"
             app:cardElevation="6dp"
@@ -46,6 +46,42 @@
                 <TextView
                         android:id="@+id/distance"
                         android:text="@{station.parsedDistance, default=DISTANCE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                <TextView
+                        android:id="@+id/pm25"
+                        android:text="@{station.getPM25, default=PM25}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/pm10"
+                        android:text="@{station.getPM10, default=PM10}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/o3"
+                        android:text="@{station.getO3, default=O3}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"/>
+
+                <TextView
+                        android:id="@+id/no2"
+                        android:text="@{station.getNO2, default=NO2}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>

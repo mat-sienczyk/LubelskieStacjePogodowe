@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.background
 import android.content.Context
 import androidx.annotation.WorkerThread
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.DataModelModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.SmogSensorModel
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
@@ -33,7 +33,7 @@ object ProcessingUtils {
 
     private fun constructSmogStationModel(station: SmogStationModel): SmogStationModel {
         station.sensors = getSensors(station.stationId)
-        station.date = Date(station.sensors?.get(0)?.data?.get(0)?.timestamp!!)
+        station.date = Date(station.sensors?.first()?.data?.first()?.timestamp!!)
         return station
     }
 
@@ -101,11 +101,11 @@ object ProcessingUtils {
         return inputFormat.parse(stringDate)
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?): List<DataModelModel>? {
+    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartDataModel>? {
         return parseChartData(chartData, false)
     }
 
-    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<DataModelModel>? {
+    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<ChartDataModel>? {
         val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
         val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
 
@@ -113,7 +113,7 @@ object ProcessingUtils {
         else {
             var returnList = chartData.filterNotNull()
             if (isPressure) returnList = returnList.filter { it[1] > 0 }
-            returnList.map { DataModelModel(it[0].toLong().plus(offset), it[1]) }
+            returnList.map { ChartDataModel(it[0].toLong().plus(offset), it[1]) }
         }
     }
 
@@ -136,8 +136,8 @@ object ProcessingUtils {
         }
     }
 
-    private fun parseSensorData(smogSensorData: SmogSensorData?): List<DataModelModel>? {
-        return smogSensorData?.values?.map { DataModelModel(parseSmogDate(it.date), it.value) }
+    private fun parseSensorData(smogSensorData: SmogSensorData?): List<ChartDataModel>? {
+        return smogSensorData?.values?.map { ChartDataModel(parseSmogDate(it.date), it.value) }
     }
 
     private fun parseSmogDate(stringDate: String?): Long? {

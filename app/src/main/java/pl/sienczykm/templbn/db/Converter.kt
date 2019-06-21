@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import pl.sienczykm.templbn.db.model.DataModelModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.SmogSensorModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.*
@@ -11,7 +11,7 @@ import java.util.*
 
 class Converter {
 
-    val dataArrayType = object : TypeToken<List<DataModelModel>>() {}.type
+    val dataArrayType = object : TypeToken<List<ChartDataModel>>() {}.type
     val sensorArrayType = object : TypeToken<List<SmogSensorModel>>() {}.type
 
     @TypeConverter
@@ -35,7 +35,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun chartArrayToString(data: List<DataModelModel>?): String? {
+    fun chartArrayToString(data: List<ChartDataModel>?): String? {
         return when (data) {
             null -> null
             else -> Gson().toJson(data, dataArrayType)
@@ -44,7 +44,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun stringToChartArray(json: String?): List<DataModelModel>? {
+    fun stringToChartArray(json: String?): List<ChartDataModel>? {
         return when (json) {
             null -> null
             else -> Gson().fromJson(json, dataArrayType)

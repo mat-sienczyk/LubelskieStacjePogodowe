@@ -34,12 +34,12 @@ data class WeatherStationModel constructor(
     var humidity: Double? = null
     var pressure: Double? = null
     var rainToday: Double? = null
-    var temperatureData: List<DataModelModel>? = null
-    var humidityData: List<DataModelModel>? = null
-    var windSpeedData: List<DataModelModel>? = null
-    var temperatureWindData: List<DataModelModel>? = null
-    var pressureData: List<DataModelModel>? = null
-    var rainTodayData: List<DataModelModel>? = null
+    var temperatureData: List<ChartDataModel>? = null
+    var humidityData: List<ChartDataModel>? = null
+    var windSpeedData: List<ChartDataModel>? = null
+    var temperatureWindData: List<ChartDataModel>? = null
+    var pressureData: List<ChartDataModel>? = null
+    var rainTodayData: List<ChartDataModel>? = null
 
     companion object {
 

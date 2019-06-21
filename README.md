@@ -1,12 +1,18 @@
 # LubelskieStacjePogodowe
 
-Lubelskie Stacje Pogodowe
+Lubelskie Stacje Pogodowe v2
+
+Techologie:
+- Koltin
+- Android Jetpack (Room, LivaData, DataBinding, ViewModel, WorkManager)
+- Retrofit2, OkHttp3
+- Google Play Services (Maps, Location)
 
 Ekran głowny:
 
-Bottom bar navigation podzielona na 3 sekcje: Smog, Pogoda (default), Mapa
+Bottom bar navigation podzielona na 3 sekcje: Temperatura, Smog, Mapa
 
-Pogoda:
+Temperatura:
 - Na górze sekcja Ulubione
 - pozniej sekcja "Pozostałe" z posortowanymi stacjami po lookalizacji albo (jesli brak zgody) to alfabetycznie
 
@@ -21,10 +27,10 @@ Na toolbarze nazwa aplikacji (Lubelskie Stacje Pogodowe) a w overflowmenu 3 opcj
 
 To wszystko w jednej aktywności, stacje wyświetlane w liscie recyclerview na cardView, po kliknięciu w stacje lub odnośnik na mapie otwiera nam się aktywność ze stacją (ta sama dla smogowej i pogodowej)
 
-Widget stacji na liście:
+Stacje na liście:
 
 - na cardview
-- na górze nazwa, data, ropdzaj stacji
+- na górze nazwa, data, rodzaj stacji, odległość
 - najwazneijsze 3-4 dane (temp, wiatr, wilgotność, ciśnienie, PM2,5, PM10) poziomo z ikonkami
 
 Po kliknięciu przechodzmi z animacja do nowej aktywności - szczegóły stacji.
@@ -34,6 +40,6 @@ Ekran szczegółów stacji:
 W actionbarze strzałka wstecz, nazwa stacji i serduszko po kliknięciu któego ddoajemy stacje do ulubionych (czerwone lub puste)
 
 - widok danych stacji na cardview z danymmi stacji i odnośnikiem do jej strony który otwiera customTabs (tak jak jest obecnie)
-- przy danych z wykresami, wykres wysuwa sie z dołu - na wykresie linia pokazująca wczioraj/dziś
+- przy danych z wykresami, wykres wysuwa sie z dołu - na wykresie linia pokazująca wczoraj/dziś
 
 

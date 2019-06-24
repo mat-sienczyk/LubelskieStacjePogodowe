@@ -28,121 +28,36 @@ data class SmogStationModel constructor(
 
     var sensors: List<SmogSensorModel>? = null
 
-    fun getPM25(): String? {
-        return getValue(SmogSensorType.PM25)?.toString()
-    }
-
-    fun getPM10(): String? {
-        return getValue(SmogSensorType.PM10)?.toString()
-    }
-
-    fun getCO(): String? {
-        return getValue(SmogSensorType.CO)?.toString()
-    }
-
-    fun getNO2(): String? {
-        return getValue(SmogSensorType.NO2)?.toString()
-    }
-
-    fun getO3(): String? {
-        return getValue(SmogSensorType.O3)?.toString()
-    }
-
-    fun getSO2(): String? {
-        return getValue(SmogSensorType.SO2)?.toString()
-    }
-
-    fun getC6H6(): String? {
-        return getValue(SmogSensorType.C6H6)?.toString()
+    fun getValue(sensorType: SmogSensorType): Double? {
+        return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
+            ?.data?.first { chartDataModel -> chartDataModel.value != null }
+            ?.value.round(1)
     }
 
     fun getQualityIndex(sensorType: SmogSensorType): QualityIndex? {
         val value = getValue(sensorType) ?: return null
-        when (sensorType) {
-            SmogSensorType.PM10 -> {
-                return when {
-                    (value > 0) and (value <= 21) -> QualityIndex.VERY_GOOD
-                    (value > 21) and (value <= 61) -> QualityIndex.GOOD
-                    (value > 61) and (value <= 101) -> QualityIndex.MODERATE
-                    (value > 101) and (value <= 141) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 141) and (value <= 201) -> QualityIndex.UNHEALTHY
-                    value > 201 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.PM25 -> {
-                return when {
-                    (value > 0) and (value <= 13) -> QualityIndex.VERY_GOOD
-                    (value > 13) and (value <= 37) -> QualityIndex.GOOD
-                    (value > 37) and (value <= 61) -> QualityIndex.MODERATE
-                    (value > 61) and (value <= 85) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 85) and (value <= 121) -> QualityIndex.UNHEALTHY
-                    value > 121 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.O3 -> {
-                return when {
-                    (value > 0) and (value <= 71) -> QualityIndex.VERY_GOOD
-                    (value > 71) and (value <= 121) -> QualityIndex.GOOD
-                    (value > 121) and (value <= 151) -> QualityIndex.MODERATE
-                    (value > 151) and (value <= 181) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 181) and (value <= 241) -> QualityIndex.UNHEALTHY
-                    value > 241 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.NO2 -> {
-                return when {
-                    (value > 0) and (value <= 41) -> QualityIndex.VERY_GOOD
-                    (value > 41) and (value <= 101) -> QualityIndex.GOOD
-                    (value > 101) and (value <= 151) -> QualityIndex.MODERATE
-                    (value > 151) and (value <= 201) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 201) and (value <= 401) -> QualityIndex.UNHEALTHY
-                    value > 401 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.SO2 -> {
-                return when {
-                    (value > 0) and (value <= 51) -> QualityIndex.VERY_GOOD
-                    (value > 51) and (value <= 101) -> QualityIndex.GOOD
-                    (value > 101) and (value <= 201) -> QualityIndex.MODERATE
-                    (value > 201) and (value <= 351) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 351) and (value <= 501) -> QualityIndex.UNHEALTHY
-                    value > 501 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.C6H6 -> {
-                return when {
-                    (value > 0) and (value <= 6) -> QualityIndex.VERY_GOOD
-                    (value > 6) and (value <= 11) -> QualityIndex.GOOD
-                    (value > 11) and (value <= 16) -> QualityIndex.MODERATE
-                    (value > 16) and (value <= 21) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 21) and (value <= 51) -> QualityIndex.UNHEALTHY
-                    value > 51 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
-            SmogSensorType.CO -> {
-                return when {
-                    (value > 0) and (value <= 3) -> QualityIndex.VERY_GOOD
-                    (value > 3) and (value <= 7) -> QualityIndex.GOOD
-                    (value > 7) and (value <= 11) -> QualityIndex.MODERATE
-                    (value > 11) and (value <= 15) -> QualityIndex.UNHEALTHY_SENSITIVE
-                    (value > 15) and (value <= 21) -> QualityIndex.UNHEALTHY
-                    value > 21 -> QualityIndex.HAZARDOUS
-                    else -> null
-                }
-            }
+        return when {
+            (value > 0) and (value <= sensorType.maxVeryGood) -> QualityIndex.VERY_GOOD
+            (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> QualityIndex.GOOD
+            (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> QualityIndex.MODERATE
+            (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> QualityIndex.UNHEALTHY_SENSITIVE
+            (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> QualityIndex.UNHEALTHY
+            value > sensorType.maxUnhealthy -> QualityIndex.HAZARDOUS
+            else -> null
         }
     }
 
-    private fun getValue(sensorType: SmogSensorType): Double? {
-        return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
-            ?.data?.first { chartDataModel -> chartDataModel.value != null }
-            ?.value.round(1)
+    fun getValueAndQualityIndex(sensorType: SmogSensorType): Pair<Double?, QualityIndex?>? {
+        val value = getValue(sensorType) ?: return null
+        return when {
+            (value > 0) and (value <= sensorType.maxVeryGood) -> value to QualityIndex.VERY_GOOD
+            (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> value to QualityIndex.GOOD
+            (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> value to QualityIndex.MODERATE
+            (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> value to QualityIndex.UNHEALTHY_SENSITIVE
+            (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> value to QualityIndex.UNHEALTHY
+            value > sensorType.maxUnhealthy -> value to QualityIndex.HAZARDOUS
+            else -> null
+        }
     }
 
     companion object {
@@ -178,14 +93,23 @@ data class SmogStationModel constructor(
         }
     }
 
-    enum class SmogSensorType(val paramName: String, val paramKey: String, val paramId: Int) {
-        CO("tlenek węgla", "CO", 8),
-        NO2("dwutlenek azotu", "NO2", 6),
-        O3("ozon", "O3", 5),
-        PM10("pył zawieszony PM10", "PM10", 3),
-        SO2("dwutlenek siarki", "SO2", 1),
-        C6H6("benzen", "C6H6", 10),
-        PM25("pył zawieszony PM2.5", "PM2.5", 69)
+    enum class SmogSensorType(
+        val paramName: String,
+        val paramKey: String,
+        val paramId: Int,
+        val maxVeryGood: Int,
+        val maxGood: Int,
+        val maxModerate: Int,
+        val maxUnhealthySensitive: Int,
+        val maxUnhealthy: Int
+    ) {
+        PM10("pył zawieszony PM10", "PM10", 3, 21, 61, 101, 141, 201),
+        PM25("pył zawieszony PM2.5", "PM2.5", 69, 13, 37, 61, 85, 121),
+        O3("ozon", "O3", 5, 71, 121, 151, 181, 241),
+        NO2("dwutlenek azotu", "NO2", 6, 41, 101, 151, 201, 401),
+        SO2("dwutlenek siarki", "SO2", 1, 51, 101, 201, 351, 501),
+        C6H6("benzen", "C6H6", 10, 6, 11, 16, 21, 51),
+        CO("tlenek węgla", "CO", 8, 3, 7, 11, 15, 21)
     }
 
     enum class QualityIndex(val value: Int, val desc: String) {

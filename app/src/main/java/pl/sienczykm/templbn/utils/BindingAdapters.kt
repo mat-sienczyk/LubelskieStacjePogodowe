@@ -15,8 +15,9 @@ fun addStations(recyclerView: RecyclerView, stations: List<StationModel>?) {
 }
 
 @BindingAdapter("airQuality")
-fun setAirQualityColor(textView: TextView, qualityIndex: SmogStationModel.QualityIndex?) {
-    when (qualityIndex) {
+fun setAirValueAndQuality(textView: TextView, valueAndQuality: Pair<Double?, SmogStationModel.QualityIndex?>?) {
+    textView.text = valueAndQuality?.first?.toString()
+    when (valueAndQuality?.second) {
         SmogStationModel.QualityIndex.VERY_GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_very_good))
         SmogStationModel.QualityIndex.GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_good))
         SmogStationModel.QualityIndex.MODERATE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_moderate))

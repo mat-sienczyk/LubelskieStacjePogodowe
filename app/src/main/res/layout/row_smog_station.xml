@@ -63,32 +63,28 @@
 
                 <TextView
                         android:id="@+id/pm25"
-                        android:text="@{station.getPM25, default=PM25}"
-                        app:airQuality="@{station.getQualityIndex(SmogSensorType.PM25)}"
+                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.PM25)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>
 
                 <TextView
                         android:id="@+id/pm10"
-                        android:text="@{station.getPM10, default=PM10}"
-                        app:airQuality="@{station.getQualityIndex(SmogSensorType.PM10)}"
+                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.PM10)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>
 
                 <TextView
                         android:id="@+id/o3"
-                        android:text="@{station.getO3, default=O3}"
-                        app:airQuality="@{station.getQualityIndex(SmogSensorType.O3)}"
+                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.O3)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>
 
                 <TextView
                         android:id="@+id/no2"
-                        android:text="@{station.getNO2, default=NO2}"
-                        app:airQuality="@{station.getQualityIndex(SmogSensorType.NO2)}"
+                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.NO2)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>

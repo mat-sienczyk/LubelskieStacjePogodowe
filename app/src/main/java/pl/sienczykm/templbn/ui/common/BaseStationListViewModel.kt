@@ -23,7 +23,9 @@ abstract class BaseStationListViewModel<T : StationModel>(application: Applicati
 
     fun sortStations(stations: List<T>): List<T>? {
         return when (coordinates) {
-            null -> stations.sortedBy { it.name }
+            null -> stations
+                .onEach { it.distance = null }
+                .sortedBy { it.name }
             else -> stations
                 .onEach { it.distance = haversine(coordinates!!.lat, coordinates!!.lon, it.latitude, it.longitude) }
                 .sortedBy { it.distance }

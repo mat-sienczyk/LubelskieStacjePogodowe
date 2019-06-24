@@ -68,6 +68,7 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
 
         getSwipeToRefreshLayout().setOnRefreshListener {
             stationViewModel.refresh()
+            updateCoordinate()
         }
 
         getSwipeToRefreshLayout().setColorSchemeColors(
@@ -89,8 +90,9 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        stationViewModel.coordinates = LatLon(location.latitude, location.longitude)
+                    when {
+                        location != null -> stationViewModel.coordinates = LatLon(location.latitude, location.longitude)
+                        else -> stationViewModel.coordinates = null
                     }
                 }
         }

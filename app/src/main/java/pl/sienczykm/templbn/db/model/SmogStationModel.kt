@@ -34,20 +34,7 @@ data class SmogStationModel constructor(
             ?.value.round(1)
     }
 
-    fun getQualityIndex(sensorType: SmogSensorType): QualityIndex? {
-        val value = getValue(sensorType) ?: return null
-        return when {
-            (value > 0) and (value <= sensorType.maxVeryGood) -> QualityIndex.VERY_GOOD
-            (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> QualityIndex.GOOD
-            (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> QualityIndex.MODERATE
-            (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> QualityIndex.UNHEALTHY_SENSITIVE
-            (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> QualityIndex.UNHEALTHY
-            value > sensorType.maxUnhealthy -> QualityIndex.HAZARDOUS
-            else -> null
-        }
-    }
-
-    fun getValueAndQualityIndex(sensorType: SmogSensorType): Pair<Double?, QualityIndex?>? {
+    fun getValueAndQualityIndex(sensorType: SmogSensorType): Pair<Double, QualityIndex>? {
         val value = getValue(sensorType) ?: return null
         return when {
             (value > 0) and (value <= sensorType.maxVeryGood) -> value to QualityIndex.VERY_GOOD

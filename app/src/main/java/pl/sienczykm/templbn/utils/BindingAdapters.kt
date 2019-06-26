@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.utils
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import at.grabner.circleprogress.CircleProgressView
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.StationModel
@@ -25,4 +26,51 @@ fun setAirValueAndQuality(textView: TextView, valueAndQuality: Pair<Double, Smog
         SmogStationModel.QualityIndex.UNHEALTHY -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy))
         SmogStationModel.QualityIndex.HAZARDOUS -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_hazardous))
     }
+}
+
+@BindingAdapter("circleData")
+fun setCircleData(
+    circleProgressView: CircleProgressView,
+    valueAndQuality: Pair<Double, SmogStationModel.QualityIndex>?
+) {
+    if (valueAndQuality != null) {
+        circleProgressView.setValue(valueAndQuality.first.toFloat())
+        when (valueAndQuality.second) {
+            SmogStationModel.QualityIndex.VERY_GOOD -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_very_good
+                )
+            )
+            SmogStationModel.QualityIndex.GOOD -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_good
+                )
+            )
+            SmogStationModel.QualityIndex.MODERATE -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_moderate
+                )
+            )
+            SmogStationModel.QualityIndex.UNHEALTHY_SENSITIVE -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_unhealthy_sensitive
+                )
+            )
+            SmogStationModel.QualityIndex.UNHEALTHY -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_unhealthy
+                )
+            )
+            SmogStationModel.QualityIndex.HAZARDOUS -> circleProgressView.setTextColor(
+                circleProgressView.context.resources.getColor(
+                    R.color.quality_hazardous
+                )
+            )
+        }
+    }
+}
+
+@BindingAdapter("maxValue")
+fun setMaxValue(circleProgressView: CircleProgressView, sensorType: SmogStationModel.SmogSensorType) {
+    circleProgressView.maxValue = sensorType.maxUnhealthy.toFloat()
 }

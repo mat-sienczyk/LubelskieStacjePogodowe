@@ -57,6 +57,7 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation 'androidx.browser:browser:1.0.0'
+    implementation 'com.github.jakob-grabner:Circle-Progress-View:1.4'
 
     testImplementation 'junit:junit:4.12'
 

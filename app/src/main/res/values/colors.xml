@@ -10,6 +10,7 @@
     <color name="main_red">#e03a2a</color>
 
     <color name="black_transparent">#3f000000</color>
+    <color name="shadow">#26000000</color>
 
     <color name="quality_very_good">#4CAF50</color>
     <color name="quality_good">#8BC34A</color>

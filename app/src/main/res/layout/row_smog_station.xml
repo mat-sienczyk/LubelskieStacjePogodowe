@@ -59,35 +59,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:baselineAligned="false">
 
-                <TextView
-                        android:id="@+id/pm25"
-                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.PM25)}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/smog_value_and_data"
+                        app:sensor="@{SmogSensorType.PM25}"
+                        app:station="@{station}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/pm10"
-                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.PM10)}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/smog_value_and_data"
+                        app:sensor="@{SmogSensorType.PM10}"
+                        app:station="@{station}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/o3"
-                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.O3)}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/smog_value_and_data"
+                        app:sensor="@{SmogSensorType.O3}"
+                        app:station="@{station}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/no2"
-                        app:airQuality="@{station.getValueAndQualityIndex(SmogSensorType.NO2)}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/smog_value_and_data"
+                        app:sensor="@{SmogSensorType.NO2}"
+                        app:station="@{station}"
+                        android:layout_weight="1"/>
 
             </LinearLayout>
         </LinearLayout>

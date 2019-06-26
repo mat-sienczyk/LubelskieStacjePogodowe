@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.db.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.utils.Config
+import pl.sienczykm.templbn.utils.round
 
 @Entity
 data class WeatherStationModel constructor(
@@ -40,6 +41,38 @@ data class WeatherStationModel constructor(
     var temperatureWindData: List<ChartDataModel>? = null
     var pressureData: List<ChartDataModel>? = null
     var rainTodayData: List<ChartDataModel>? = null
+
+    //TODO set this value from preferences later
+    @Ignore
+    val convertWind = true
+
+    fun getParsedTemperature(): String? {
+        return temperature?.round(0)?.toInt()?.toString()
+    }
+
+    fun getParsedWind(convert: Boolean): String? {
+        return if (convert) {
+            convertMetersToKm(windSpeed)?.round(0)?.toInt()?.toString()
+        } else {
+            windSpeed?.round(0)?.toInt()?.toString()
+        }
+    }
+
+    fun getParsedHumidity(): String? {
+        return humidity?.round(0)?.toInt()?.toString()
+    }
+
+    fun getParsedPressure(): String? {
+        return if (pressure == 0.0) {
+            pressureData?.last { it.value != 0.0 }?.value?.round(0)?.toInt()?.toString()
+        } else {
+            pressure?.round(0)?.toInt()?.toString()
+        }
+    }
+
+    fun convertMetersToKm(wind: Double?): Double? {
+        return (wind?.times(3.6)).round(1)
+    }
 
     companion object {
 

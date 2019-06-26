@@ -14,23 +14,45 @@
     <string name="station_title_weather">"Stacja pogodowa"</string>
     <string name="station_title_smog">"Stacja smogowa"</string>
 
-    <string name="station_date">Data:</string>
-    <string name="station_wind">Wiatr:</string>
-    <string name="station_temp">Temp.:</string>
-    <string name="station_temp_air">Temp. odczuwalna:</string>
-    <string name="station_temp_ground">Temp. przygruntowa:</string>
-    <string name="station_humidity">Wilgotność:</string>
-    <string name="station_pressure">Ciśnienie:</string>
-    <string name="station_rain_today">Opdad dziś:</string>
+    <string name="station_date">Data</string>
+    <string name="station_wind">Wiatr</string>
+    <string name="station_temp">Temp.</string>
+    <string name="station_temp_air">Temp. odczuwalna</string>
+    <string name="station_temp_ground">Temp. przygruntowa</string>
+    <string name="station_humidity">Wilgotność</string>
+    <string name="station_pressure">Ciśnienie</string>
+    <string name="station_rain_today">Opdad dziś</string>
 
-    <string name="station_pm10">Pył zawieszony PM10:</string>
-    <string name="station_pm25">Pył zawieszony PM2.5:</string>
-    <string name="station_o3">Ozon O3:</string>
-    <string name="station_no2">Dwutlenek azotu NO2:</string>
-    <string name="station_so2">Dwutlenek siarki SO2:</string>
-    <string name="station_c6h6">Benzen C6H6:</string>
-    <string name="station_co">Tlenek węgla CO:</string>
+    <string name="station_pm10">Pył zawieszony PM10</string>
+    <string name="station_pm25">Pył zawieszony PM2.5</string>
+    <string name="station_o3">Ozon O3</string>
+    <string name="station_no2">Dwutlenek azotu NO2</string>
+    <string name="station_so2">Dwutlenek siarki SO2</string>
+    <string name="station_c6h6">Benzen C6H6</string>
+    <string name="station_co">Tlenek węgla CO</string>
 
     <string name="station_open_website">Otwórz stronę stacji</string>
+
+    <!--units-->
+    <string name="m_per_sec">" m/s"</string>
+    <string name="km_per_hour">" km/h"</string>
+    <string name="celsius_degree">"\u00B0C"</string>
+    <string name="percent">" %"</string>
+    <string name="hectopascal">" hPa"</string>
+    <string name="milliliters">" mm"</string>
+    <string name="km">" km"</string>
+    <string name="m">" m"</string>
+    <string name="degree">"\u00B0"</string>
+    <string name="microgram_per_cubic_metre">"µg/m\u00B3"</string>
+    <string name="milligram_per_cubic_metre">"mg/m\u00B3"</string>
+
+    <string name="east_wind">"\u2190"</string>
+    <string name="south_wind">"\u2191"</string>
+    <string name="west_wind">"\u2192"</string>
+    <string name="north_wind">"\u2193"</string>
+    <string name="south_east_wind">"\u2196"</string>
+    <string name="south_west_wind">"\u2197"</string>
+    <string name="north_west_wind">"\u2198"</string>
+    <string name="north_east_wind">"\u2199"</string>
 
 </resources>

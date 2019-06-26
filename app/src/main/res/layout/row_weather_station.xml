@@ -56,35 +56,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:baselineAligned="false"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
 
-                <TextView
-                        android:id="@+id/temp"
-                        android:text="@{station.temperature.toString(), default=TEMP}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/weather_value_and_data"
+                        app:metadata="@{@string/station_temp}"
+                        app:value="@{station.getParsedTemperature()}"
+                        app:unit="@{@string/celsius_degree}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/wind"
-                        android:text="@{station.windSpeed.toString(), default=WIND}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/weather_value_and_data"
+                        app:metadata="@{@string/station_wind}"
+                        app:value="@{station.getParsedWind(station.convertWind)}"
+                        app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/humidity"
-                        android:text="@{station.humidity.toString(), default=HUMIDITY}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/weather_value_and_data"
+                        app:metadata="@{@string/station_humidity}"
+                        app:value="@{station.getParsedHumidity()}"
+                        app:unit="@{@string/percent}"
+                        android:layout_weight="1"/>
 
-                <TextView
-                        android:id="@+id/pressure"
-                        android:text="@{station.pressure.toString(), default=PRESSURE}"
-                        android:layout_width="wrap_content"
+                <include
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"/>
+                        layout="@layout/weather_value_and_data"
+                        app:metadata="@{@string/station_pressure}"
+                        app:value="@{station.getParsedPressure()}"
+                        app:unit="@{@string/hectopascal}"
+                        android:layout_weight="1"/>
 
             </LinearLayout>
         </LinearLayout>

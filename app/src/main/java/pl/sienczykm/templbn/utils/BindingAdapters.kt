@@ -28,11 +28,15 @@ fun setAirValueAndQuality(textView: TextView, valueAndQuality: Pair<Double, Smog
     }
 }
 
-@BindingAdapter("circleData")
+@BindingAdapter("circleData", "maxValue", "unit")
 fun setCircleData(
     circleProgressView: CircleProgressView,
-    valueAndQuality: Pair<Double, SmogStationModel.QualityIndex>?
+    valueAndQuality: Pair<Double, SmogStationModel.QualityIndex>?,
+    sensorType: SmogStationModel.SmogSensorType,
+    unit: String
 ) {
+    circleProgressView.maxValue = sensorType.maxUnhealthy.toFloat()
+    circleProgressView.unit = unit
     if (valueAndQuality != null) {
         circleProgressView.setValue(valueAndQuality.first.toFloat())
         when (valueAndQuality.second) {
@@ -68,9 +72,4 @@ fun setCircleData(
             )
         }
     }
-}
-
-@BindingAdapter("maxValue")
-fun setMaxValue(circleProgressView: CircleProgressView, sensorType: SmogStationModel.SmogSensorType) {
-    circleProgressView.maxValue = sensorType.maxUnhealthy.toFloat()
 }

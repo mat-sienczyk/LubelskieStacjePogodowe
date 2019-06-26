@@ -67,6 +67,7 @@
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.PM25}"
                         app:station="@{station}"
+                        app:unit="@{@string/microgram_per_cubic_metre}"
                         android:layout_weight="1"/>
 
                 <include
@@ -75,6 +76,7 @@
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.PM10}"
                         app:station="@{station}"
+                        app:unit="@{@string/microgram_per_cubic_metre}"
                         android:layout_weight="1"/>
 
                 <include
@@ -83,6 +85,7 @@
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.O3}"
                         app:station="@{station}"
+                        app:unit="@{@string/microgram_per_cubic_metre}"
                         android:layout_weight="1"/>
 
                 <include
@@ -91,6 +94,7 @@
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.NO2}"
                         app:station="@{station}"
+                        app:unit="@{@string/microgram_per_cubic_metre}"
                         android:layout_weight="1"/>
 
             </LinearLayout>

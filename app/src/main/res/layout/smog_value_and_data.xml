@@ -15,6 +15,10 @@
                 name="station"
                 type="pl.sienczykm.templbn.db.model.SmogStationModel"/>
 
+        <variable
+                name="unit"
+                type="String"/>
+
     </data>
 
     <LinearLayout
@@ -32,11 +36,9 @@
                 app:cpv_autoTextSize="true"
                 app:cpv_textMode="Value"
                 app:cpv_innerContourSize="0dp"
-                app:maxValue="@{sensor}"
                 app:cpv_outerContourSize="0dp"
                 app:cpv_showUnit="true"
                 app:cpv_textScale="1"
-                app:cpv_unit="ug/m3"
                 app:cpv_unitPosition="bottom"
                 app:cpv_unitScale="1"
                 android:layout_gravity="center"
@@ -45,6 +47,8 @@
                 app:cpv_barColor2="@color/quality_moderate"
                 app:cpv_barColor3="@color/quality_hazardous"
                 app:cpv_rimColor="@color/shadow"
+                app:maxValue="@{sensor}"
+                app:unit="@{unit}"
                 app:circleData="@{station.getValueAndQualityIndex(sensor)}"/>
 
         <TextView

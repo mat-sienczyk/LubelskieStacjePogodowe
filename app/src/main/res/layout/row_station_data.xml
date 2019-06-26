@@ -6,11 +6,15 @@
         <import type="android.view.View"/>
 
         <variable
-                name="passedTitle"
+                name="metadata"
                 type="String"/>
 
         <variable
-                name="passedValue"
+                name="value"
+                type="String"/>
+
+        <variable
+                name="unit"
                 type="String"/>
 
         <variable
@@ -27,7 +31,7 @@
             android:padding="5dp">
 
         <TextView
-                android:text="@{passedTitle}"
+                android:text="@{metadata}"
                 android:id="@+id/metadataText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +40,7 @@
                 tools:text="Data:"/>
 
         <TextView
-                android:text="@{passedValue}"
+                android:text="@{value + (unit ?? ``)}"
                 android:id="@+id/dataText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -53,8 +53,8 @@
 
                             <include
                                     layout="@layout/row_station_data"
-                                    app:passedTitle="@{@string/station_date}"
-                                    app:passedValue="@{viewModel.station.parsedDate}"
+                                    app:metadata="@{@string/station_date}"
+                                    app:value="@{viewModel.station.parsedDate}"
                                     app:showChart="@{false}"/>
 
                         </LinearLayout>

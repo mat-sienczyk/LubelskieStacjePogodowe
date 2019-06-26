@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="passedTitle"
+                type="String"/>
+
+        <variable
+                name="passedValue"
+                type="String"/>
+
+        <variable
+                name="showChart"
+                type="boolean"/>
+    </data>
+
+    <LinearLayout
+            android:id="@+id/data_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+        <TextView
+                android:text="@{passedTitle}"
+                android:id="@+id/metadataText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="18sp"
+                tools:text="Data:"/>
+
+        <TextView
+                android:text="@{passedValue}"
+                android:id="@+id/dataText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="01.04.2015 08:30 CEST"/>
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        <ImageView
+                android:id="@+id/chartImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{showChart ? View.VISIBLE : View.GONE}"
+                android:src="@drawable/ic_show_chart_black_24dp"/>
+    </LinearLayout>
+</layout>

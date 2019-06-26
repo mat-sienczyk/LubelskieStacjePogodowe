@@ -66,7 +66,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                     .position(position)
                     .title(weatherStationModel.name)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                    .snippet(getString(R.string.weather_station))
+                    .snippet(getString(R.string.station_title_weather))
             )
 
             markerMap[marker] = weatherStationModel
@@ -82,7 +82,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                     .position(position)
                     .title(smogStationModel.name)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .snippet(getString(R.string.smog_station))
+                    .snippet(getString(R.string.station_title_weather))
             )
 
             markerMap[marker] = smogStationModel

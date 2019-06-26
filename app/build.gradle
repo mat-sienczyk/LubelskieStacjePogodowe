@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "pl.sienczykm.templbn"
+        applicationId "pl.sienczykm.templbn2"
         minSdkVersion 19
         targetSdkVersion 28
         versionName "1.0"

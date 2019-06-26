@@ -9,7 +9,7 @@ import pl.sienczykm.templbn.utils.UpdateHandler
 
 class StationViewModel(
     application: Application,
-    private val type: StationFragment.Type,
+    val type: StationFragment.Type,
     private val stationId: Int = 0
 ) :
     BaseRefreshViewModel<StationNavigator>(application) {

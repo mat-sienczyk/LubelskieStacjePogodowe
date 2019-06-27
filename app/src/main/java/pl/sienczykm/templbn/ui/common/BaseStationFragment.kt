@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.station
+package pl.sienczykm.templbn.ui.common
 
 import android.content.Intent
 import android.net.Uri
@@ -7,58 +7,49 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentStationBinding
+import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
-class StationFragment : Fragment(), StationNavigator {
+abstract class BaseStationFragment<K : StationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
+    StationNavigator {
 
-    lateinit var viewModel: StationViewModel
-    lateinit var binding: FragmentStationBinding
+    lateinit var viewModel: T
+    lateinit var binding: N
 
-    enum class Type {
-        WEATHER, SMOG
-    }
+    abstract fun getViewModel(stationId: Int): T
 
-    companion object {
+    @LayoutRes
+    abstract fun getLayoutId(): Int
 
-        const val STATION_TYPE_KEY = "station_type_key"
-        const val STATION_ID_KEY = "station_id_key"
+    abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
 
-        fun newInstance(type: Type, stationId: Int): StationFragment {
-            val args = Bundle()
-            args.putSerializable(STATION_TYPE_KEY, type)
-            args.putInt(STATION_ID_KEY, stationId)
-            val fragment = StationFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
+    abstract fun getCoordinatorLayout(): CoordinatorLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val type = arguments?.getSerializable(STATION_TYPE_KEY) as Type
-        val stationId = arguments?.getInt(STATION_ID_KEY, 0)
+        val stationId = arguments?.getInt(StationActivity.STATION_ID_KEY, 0)!!
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(
-                this,
-                StationViewModelFactory(application, type, stationId!!)
-            ).get(StationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        super.onCreate(savedInstanceState)
+        viewModel = getViewModel(stationId)
         viewModel.setNavigator(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_station, container, false)
-        binding.viewModel = viewModel
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        binding.setVariable(BR.viewModel, viewModel)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -66,11 +57,11 @@ class StationFragment : Fragment(), StationNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.swipeLayout.setOnRefreshListener {
+        getSwipeToRefreshLayout().setOnRefreshListener {
             viewModel.refresh()
         }
 
-        binding.swipeLayout.setColorSchemeColors(
+        getSwipeToRefreshLayout().setColorSchemeColors(
             resources.getColor(R.color.main_yellow),
             resources.getColor(R.color.main_red),
             resources.getColor(R.color.main_green)
@@ -104,6 +95,6 @@ class StationFragment : Fragment(), StationNavigator {
     }
 
     private fun showError(@StringRes message: Int) {
-        snackbarShow(binding.coordinatorLayout, message)
+        snackbarShow(getCoordinatorLayout(), message)
     }
 }

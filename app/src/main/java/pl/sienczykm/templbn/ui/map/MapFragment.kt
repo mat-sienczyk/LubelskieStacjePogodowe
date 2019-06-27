@@ -20,7 +20,6 @@ import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
-import pl.sienczykm.templbn.ui.station.StationFragment
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -40,7 +39,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
-//        binding.viewModel = viewModel
+//        binding.viewModelWeather = viewModelWeather
         binding.lifecycleOwner = this
 
         mapView = binding.mapView
@@ -119,10 +118,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onInfoWindowClick(marker: Marker) {
         val intent = Intent(activity, StationActivity::class.java).apply {
             putExtra(
-                StationFragment.STATION_TYPE_KEY,
-                if (markerMap[marker] is WeatherStationModel) StationFragment.Type.WEATHER else StationFragment.Type.SMOG
+                StationActivity.STATION_TYPE_KEY,
+                if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.SMOG
             )
-            putExtra(StationFragment.STATION_ID_KEY, markerMap[marker]?.stationId)
+            putExtra(StationActivity.STATION_ID_KEY, markerMap[marker]?.stationId)
         }
         startActivity(intent)
     }

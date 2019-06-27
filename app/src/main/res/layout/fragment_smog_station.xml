@@ -4,10 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="pl.sienczykm.templbn.ui.station.StationFragment.Type"/>
-
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.station.StationViewModel"/>
+                  type="pl.sienczykm.templbn.ui.station.SmogStationViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,12 +47,19 @@
                                     android:layout_height="wrap_content"
                                     android:textStyle="bold"
                                     android:gravity="center"
-                                    android:text="@{viewModel.type == Type.SMOG ? @string/station_title_smog : @string/station_title_weather}"/>
+                                    android:text="@string/station_title_smog"/>
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_date}"
                                     app:value="@{viewModel.station.parsedDate}"
+                                    app:showChart="@{false}"/>
+
+                            <include
+                                    layout="@layout/row_station_data"
+                                    app:metadata="@{@string/station_pm25}"
+                                    app:value="@{viewModel.station.getPM25}"
+                                    app:unit="@{@string/microgram_per_cubic_metre}"
                                     app:showChart="@{false}"/>
 
                         </LinearLayout>

@@ -43,8 +43,8 @@
     <string name="km">" km"</string>
     <string name="m">" m"</string>
     <string name="degree">"\u00B0"</string>
-    <string name="microgram_per_cubic_metre">"µg/m\u00B3"</string>
-    <string name="milligram_per_cubic_metre">"mg/m\u00B3"</string>
+    <string name="microgram_per_cubic_metre">" µg/m\u00B3"</string>
+    <string name="milligram_per_cubic_metre">" mg/m\u00B3"</string>
 
     <string name="east_wind">"\u2190"</string>
     <string name="south_wind">"\u2191"</string>

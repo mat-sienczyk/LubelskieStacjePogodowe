@@ -24,7 +24,6 @@ import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
-import pl.sienczykm.templbn.ui.station.StationFragment
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
@@ -111,8 +110,8 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
 
     override fun onClickItem(v: View, position: Int) {
         when (val station = stationViewModel.stations.value?.get(position)) {
-            is WeatherStationModel -> openStationActivity(StationFragment.Type.WEATHER, station.stationId)
-            is SmogStationModel -> openStationActivity(StationFragment.Type.SMOG, station.stationId)
+            is WeatherStationModel -> openStationActivity(StationActivity.Type.WEATHER, station.stationId)
+            is SmogStationModel -> openStationActivity(StationActivity.Type.SMOG, station.stationId)
             else -> throw Exception("Invalid station object")
         }
     }
@@ -130,10 +129,10 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
         showError(R.string.error_no_connection)
     }
 
-    private fun openStationActivity(type: StationFragment.Type, stationId: Int) {
+    private fun openStationActivity(type: StationActivity.Type, stationId: Int) {
         val intent = Intent(activity, StationActivity::class.java).apply {
-            putExtra(StationFragment.STATION_TYPE_KEY, type)
-            putExtra(StationFragment.STATION_ID_KEY, stationId)
+            putExtra(StationActivity.STATION_TYPE_KEY, type)
+            putExtra(StationActivity.STATION_ID_KEY, stationId)
         }
         startActivity(intent)
     }

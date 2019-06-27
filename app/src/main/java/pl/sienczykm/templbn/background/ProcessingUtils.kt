@@ -33,7 +33,7 @@ object ProcessingUtils {
 
     private fun constructSmogStationModel(station: SmogStationModel): SmogStationModel {
         station.sensors = getSensors(station.stationId)
-        station.date = Date(station.sensors?.first()?.data?.first()?.timestamp!!)
+        station.date = Date(station.sensors?.first()?.data?.first{ it.value != null }?.timestamp!!)
         return station
     }
 

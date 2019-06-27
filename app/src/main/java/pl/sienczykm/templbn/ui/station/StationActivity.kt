@@ -26,14 +26,14 @@ class StationActivity : AppCompatActivity(){
         val type = intent.getSerializableExtra(STATION_TYPE_KEY) as Type
         val stationId = intent.getIntExtra(STATION_ID_KEY, 0)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(
-            R.id.container,
-            when (type) {
-                Type.WEATHER -> WeatherStationFragment.newInstance(stationId)
-                Type.SMOG -> SmogStationFragment.newInstance(stationId)
-            }
-        )
-        transaction.commit()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.container,
+                when (type) {
+                    Type.WEATHER -> WeatherStationFragment.newInstance(stationId)
+                    Type.SMOG -> SmogStationFragment.newInstance(stationId)
+                }
+            ).commit()
     }
 }

@@ -80,7 +80,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun changeFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.container, fragment)
             .commit()
     }

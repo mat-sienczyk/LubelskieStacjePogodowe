@@ -55,49 +55,45 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    app:flexWrap="wrap"
+                    app:justifyContent="space_evenly">
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.PM25}"
                         app:station="@{station}"
-                        app:unit="@{@string/microgram_per_cubic_metre}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.PM10}"
                         app:station="@{station}"
-                        app:unit="@{@string/microgram_per_cubic_metre}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.O3}"
                         app:station="@{station}"
-                        app:unit="@{@string/microgram_per_cubic_metre}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/smog_value_and_data"
                         app:sensor="@{SmogSensorType.NO2}"
                         app:station="@{station}"
-                        app:unit="@{@string/microgram_per_cubic_metre}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/microgram_per_cubic_metre}"/>
 
-            </LinearLayout>
+            </com.google.android.flexbox.FlexboxLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

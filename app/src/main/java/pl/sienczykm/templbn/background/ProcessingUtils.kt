@@ -38,55 +38,58 @@ object ProcessingUtils {
     }
 
     private fun constructWeatherStationModel(station: WeatherStationModel): WeatherStationModel {
-        if (station.type == WeatherStationModel.Type.ONE) {
+        when (station.type) {
+            WeatherStationModel.Type.ONE -> {
 
-            val response = LspController.getWeatherStationOne(station.stationId)
+                val response = LspController.getWeatherStationOne(station.stationId)
 
-            when {
-                response.isSuccessful -> {
-                    val responseStation = response.body()
+                when {
+                    response.isSuccessful -> {
+                        val responseStation = response.body()
 
-                    station.date = parseWeatherDate(responseStation?.data)
-                    station.temperature = responseStation?.temperature
-                    station.temperatureWind = responseStation?.temperatureWindChill
-                    station.windSpeed = responseStation?.windSpeed
-                    station.windDir = responseStation?.windDir
-                    station.humidity = responseStation?.humidity
-                    station.pressure = responseStation?.pressure
-                    station.rainToday = responseStation?.rainToday
-                    station.temperatureData = parseChartData(responseStation?.temperatureData?.data)
-                    station.humidityData = parseChartData(responseStation?.humidityData?.data)
-                    station.windSpeedData = parseChartData(responseStation?.windSpeedData?.data)
-                    station.temperatureWindData =
-                        parseChartData(responseStation?.temperatureWindChart?.data)
-                    station.pressureData = parseChartData(responseStation?.pressureData?.data, true)
-                    station.rainTodayData = parseChartData(responseStation?.rainData?.data)
+                        station.date = parseWeatherDate(responseStation?.data)
+                        station.temperature = responseStation?.temperature
+                        station.temperatureWind = responseStation?.temperatureWindChill
+                        station.windSpeed = responseStation?.windSpeed
+                        station.windDir = responseStation?.windDir
+                        station.humidity = responseStation?.humidity
+                        station.pressure = responseStation?.pressure
+                        station.rainToday = responseStation?.rainToday
+                        station.temperatureData = parseChartData(responseStation?.temperatureData?.data)
+                        station.humidityData = parseChartData(responseStation?.humidityData?.data)
+                        station.windSpeedData = parseChartData(responseStation?.windSpeedData?.data)
+                        station.temperatureWindData =
+                            parseChartData(responseStation?.temperatureWindChart?.data)
+                        station.pressureData = parseChartData(responseStation?.pressureData?.data, true)
+                        station.rainTodayData = parseChartData(responseStation?.rainData?.data)
 
+                    }
+                    else -> throw Exception(response.errorBody().toString())
                 }
-                else -> throw Exception(response.errorBody().toString())
+
             }
+            WeatherStationModel.Type.TWO -> {
 
-        } else {
+                val response = LspController.getWeatherStationTwo(station.stationId)
 
-            val response = LspController.getWeatherStationTwo(station.stationId)
+                when {
+                    response.isSuccessful -> {
+                        val responseStation = response.body()
 
-            when {
-                response.isSuccessful -> {
-                    val responseStation = response.body()
-
-                    station.date = parseWeatherDate(responseStation?.data)
-                    station.temperature = responseStation?.temperature
-                    station.temperatureGround = responseStation?.temperatureGround
-                    station.windSpeed = responseStation?.windSpeed
-                    station.windDir = responseStation?.windDir
-                    station.humidity = responseStation?.humidity
-                    station.rainToday = responseStation?.rainToday
-                    station.temperatureWindData = parseChartData(responseStation?.temperatureData?.data)
-                    station.humidityData = parseChartData(responseStation?.humidityData?.data)
+                        station.date = parseWeatherDate(responseStation?.data)
+                        station.temperature = responseStation?.temperature
+                        station.temperatureGround = responseStation?.temperatureGround
+                        station.windSpeed = responseStation?.windSpeed
+                        station.windDir = responseStation?.windDir
+                        station.humidity = responseStation?.humidity
+                        station.rainToday = responseStation?.rainToday
+                        station.temperatureWindData = parseChartData(responseStation?.temperatureData?.data)
+                        station.humidityData = parseChartData(responseStation?.humidityData?.data)
 
 
+                    }
+                    else -> throw Exception(response.errorBody().toString())
                 }
-                else -> throw Exception(response.errorBody().toString())
             }
         }
 

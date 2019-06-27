@@ -52,51 +52,45 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
+                    app:flexWrap="wrap"
+                    app:justifyContent="space_evenly">
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_temp}"
                         app:value="@{station.getParsedTemperature()}"
-                        app:unit="@{@string/celsius_degree}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/celsius_degree}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_wind}"
                         app:value="@{station.getParsedWind(station.convertWind)}"
-                        app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
-                        android:layout_weight="1"/>
+                        app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_humidity}"
                         app:value="@{station.getParsedHumidity()}"
-                        app:unit="@{@string/percent}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/percent}"/>
 
                 <include
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_pressure}"
                         app:value="@{station.getParsedPressure()}"
-                        app:unit="@{@string/hectopascal}"
-                        android:layout_weight="1"/>
+                        app:unit="@{@string/hectopascal}"/>
 
-            </LinearLayout>
+            </com.google.android.flexbox.FlexboxLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -18,12 +18,12 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
-abstract class BaseStationFragment<K : StationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
+abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
     StationNavigator {
 
     lateinit var viewModel: T

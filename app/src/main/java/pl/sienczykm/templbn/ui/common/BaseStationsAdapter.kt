@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
-import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 
 abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: RecyclerViewClickListener) :
     RecyclerView.Adapter<BaseStationsAdapter<N>.StationsViewHolder>() {
 
-    lateinit var stations: List<StationModel>
+    lateinit var stations: List<BaseStationModel>
 
-    fun updateStations(stations: List<StationModel>) {
+    fun updateStations(stations: List<BaseStationModel>) {
         this.stations = stations
         notifyDataSetChanged()
     }
@@ -50,7 +50,7 @@ abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: Recyc
             return true
         }
 
-        fun bind(station: StationModel) {
+        fun bind(station: BaseStationModel) {
             binding.setVariable(BR.station, station)
             binding.executePendingBindings()
         }

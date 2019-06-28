@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-abstract class StationModel(
+abstract class BaseStationModel(
     @PrimaryKey
     open val stationId: Int,
     open val name: String,
@@ -15,6 +15,7 @@ abstract class StationModel(
     open val longitude: Double
 ) {
     lateinit var url: String
+    var favorite: Boolean = false
     var date: Date? = null
     @Ignore
     var distance: Double? = null
@@ -24,6 +25,10 @@ abstract class StationModel(
     fun getParsedDate(): String {
         val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("pl", "PL"))
         return outputFormat.format(date)
+    }
+
+    fun getParsedFavorite(): String {
+        return favorite.toString()
     }
 
     fun getParsedDistance(): String? {

@@ -16,14 +16,23 @@ interface SmogStationDao {
     @Update
     fun update(station: SmogStationModel)
 
+    @Query("UPDATE SmogStationModel SET favorite = :favorite WHERE stationId LIKE :id")
+    fun updateFavorite(id: Int, favorite: Boolean): Int
+
     @Delete
     fun delete(station: SmogStationModel)
 
     @Query("SELECT * FROM SmogStationModel WHERE stationId LIKE :id")
-    fun getStationById(id: Int): LiveData<SmogStationModel>
+    fun getStationLiveDataById(id: Int): LiveData<SmogStationModel>
 
     @Query("SELECT * FROM SmogStationModel")
-    fun getAllStations(): LiveData<List<SmogStationModel>>
+    fun getAllStationsLiveData(): LiveData<List<SmogStationModel>>
+
+    @Query("SELECT * FROM SmogStationModel WHERE stationId LIKE :id")
+    fun getStationById(id: Int): SmogStationModel?
+
+    @Query("SELECT * FROM SmogStationModel")
+    fun getAllStations(): List<SmogStationModel>?
 
     @Query("DELETE FROM SmogStationModel")
     fun deleteAllStations()

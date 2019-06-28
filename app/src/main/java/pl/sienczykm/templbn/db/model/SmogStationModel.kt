@@ -16,7 +16,7 @@ data class SmogStationModel constructor(
     @Ignore
     override val longitude: Double
 ) :
-    StationModel(stationId, name, latitude, longitude) {
+    BaseStationModel(stationId, name, latitude, longitude) {
 
     override fun getStationUrl(): String {
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"

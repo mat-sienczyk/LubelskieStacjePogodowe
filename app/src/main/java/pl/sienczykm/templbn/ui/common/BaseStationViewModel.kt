@@ -2,9 +2,9 @@ package pl.sienczykm.templbn.ui.common
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 
-abstract class BaseStationViewModel<T : StationModel>(
+abstract class BaseStationViewModel<T : BaseStationModel>(
     application: Application,
     private val stationId: Int = 0
 ) :

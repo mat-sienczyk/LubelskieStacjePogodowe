@@ -14,7 +14,7 @@ class SmogViewModel(application: Application) : BaseStationListViewModel<SmogSta
     }
 
     override val stationsLiveData: LiveData<List<SmogStationModel>> by lazy {
-        AppDb.getDatabase(getApplication()).smogStationDao().getAllStations()
+        AppDb.getDatabase(getApplication()).smogStationDao().getAllStationsLiveData()
     }
 
     init {

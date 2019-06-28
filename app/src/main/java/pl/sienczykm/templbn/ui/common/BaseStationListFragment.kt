@@ -19,8 +19,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.LocationServices
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.SmogStationModel
-import pl.sienczykm.templbn.db.model.StationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
@@ -28,7 +29,7 @@ import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
-abstract class BaseStationListFragment<K : StationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
+abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
     Fragment(), RecyclerViewClickListener, BaseNavigator {
 
     var coordinates: LatLon? = null
@@ -117,16 +118,31 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
     }
 
     override fun onLongClickItem(v: View, position: Int) {
-        Timber.e("Long clicked: %s", stationViewModel.stations.value?.get(position)?.stationId)
+        val station = stationViewModel.stations.value?.get(position)
+        val updated = when (station) {
+            is WeatherStationModel -> AppDb.getDatabase(activity?.applicationContext!!).weatherStationDao().updateFavorite(
+                station.stationId,
+                !station.favorite
+            )
+            is SmogStationModel -> AppDb.getDatabase(activity?.applicationContext!!).smogStationDao().updateFavorite(
+                station.stationId,
+                !station.favorite
+            )
+            else -> throw Exception("Invalid station object")
+        }
+
+        if (updated == 1) {
+            if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(R.string.added_to_favorites)
+        }
     }
 
     override fun handleError(message: String?) {
         Timber.e(Throwable(message))
-        showError(R.string.error_server)
+        showSnackbar(R.string.error_server)
     }
 
     override fun noConnection() {
-        showError(R.string.error_no_connection)
+        showSnackbar(R.string.error_no_connection)
     }
 
     private fun openStationActivity(type: StationActivity.Type, stationId: Int) {
@@ -137,7 +153,7 @@ abstract class BaseStationListFragment<K : StationModel, T : BaseStationListView
         startActivity(intent)
     }
 
-    private fun showError(@StringRes message: Int) {
+    private fun showSnackbar(@StringRes message: Int) {
         snackbarShow(getCoordinatorLayout(), message)
     }
 

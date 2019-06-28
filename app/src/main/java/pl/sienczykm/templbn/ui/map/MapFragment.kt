@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentMapBinding
 import pl.sienczykm.templbn.db.model.SmogStationModel
-import pl.sienczykm.templbn.db.model.StationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
@@ -35,7 +35,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     private lateinit var mapView: MapView
     private lateinit var binding: FragmentMapBinding
     //TODO przenieść do viewModelu?
-    private val markerMap = hashMapOf<Marker, StationModel>()
+    private val markerMap = hashMapOf<Marker, BaseStationModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)

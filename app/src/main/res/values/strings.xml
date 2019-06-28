@@ -6,6 +6,9 @@
     <string name="title_temp">Temperatura</string>
     <string name="title_map">Mapa</string>
 
+    <!--messages-->
+    <string name="added_to_favorites">Stacja dodana do Ulubionych.</string>
+    <string name="removed_from_favorites">Stacja usunięta z Ulubionych.</string>
     <string name="error_no_connection">Brak połączenia z Internetem.</string>
     <string name="error_no_web_browser">Brak przeglądarki Internetowej.</string>
     <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>

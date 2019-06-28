@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.smog
 
+import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentSmogBinding
 import pl.sienczykm.templbn.databinding.RowSmogStationBinding
+import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter

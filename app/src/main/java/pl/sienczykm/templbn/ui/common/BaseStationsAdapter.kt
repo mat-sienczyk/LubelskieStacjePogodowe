@@ -5,30 +5,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sienczykm.templbn.db.model.BaseStationModel
 
 abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: RecyclerViewClickListener) :
-    RecyclerView.Adapter<BaseStationsAdapter<N>.StationsViewHolder>() {
-
-    lateinit var stations: List<BaseStationModel>
-
-    fun updateStations(stations: List<BaseStationModel>) {
-        this.stations = stations
-        notifyDataSetChanged()
-    }
+    ListAdapter<BaseStationModel, BaseStationsAdapter<N>.StationsViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return StationsViewHolder(getViewDataBinding(parent, layoutInflater))
     }
 
-    override fun getItemCount(): Int {
-        return stations.size
-    }
-
     override fun onBindViewHolder(holder: StationsViewHolder, position: Int) {
-        holder.bind(stations[position])
+        holder.bind(getItem(position))
     }
 
     inner class StationsViewHolder(stationBinding: ViewDataBinding) :
@@ -58,5 +49,15 @@ abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: Recyc
     }
 
     abstract fun getViewDataBinding(parent: ViewGroup, layoutInflater: LayoutInflater): ViewDataBinding
+}
+
+class DiffCallback : DiffUtil.ItemCallback<BaseStationModel>() {
+    override fun areItemsTheSame(oldItem: BaseStationModel, newItem: BaseStationModel): Boolean {
+        return oldItem.stationId == newItem.stationId
+    }
+
+    override fun areContentsTheSame(oldItem: BaseStationModel, newItem: BaseStationModel): Boolean {
+        return oldItem.dataChanged(newItem)
+    }
 
 }

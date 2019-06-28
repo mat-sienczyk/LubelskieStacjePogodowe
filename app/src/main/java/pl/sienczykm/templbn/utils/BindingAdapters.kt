@@ -5,14 +5,14 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.db.model.SmogStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
 @BindingAdapter("adapter")
 fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {
     val adapter = recyclerView.adapter as BaseStationsAdapter<*>
-    adapter.updateStations(stations ?: emptyList())
+    adapter.submitList(stations ?: emptyList())
 }
 
 @BindingAdapter("airQuality")

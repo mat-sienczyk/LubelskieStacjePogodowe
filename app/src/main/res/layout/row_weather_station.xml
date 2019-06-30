@@ -4,6 +4,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
                 name="station"
                 type="pl.sienczykm.templbn.db.model.WeatherStationModel"/>
@@ -23,11 +26,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:layout_height="match_parent"
+                    app:justifyContent="space_evenly">
 
                 <TextView
                         android:id="@+id/name"
@@ -50,14 +52,15 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"/>
 
-                <TextView
+                <ImageView
                         android:id="@+id/fav"
-                        android:text="@{station.parsedFavorite, default=FAVORITE}"
+                        android:src="@drawable/ic_star"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="@{station.favorite ? View.VISIBLE : View.GONE}"
                         android:padding="5dp"/>
 
-            </LinearLayout>
+            </com.google.android.flexbox.FlexboxLayout>
 
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"

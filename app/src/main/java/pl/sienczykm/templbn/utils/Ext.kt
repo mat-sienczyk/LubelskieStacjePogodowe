@@ -77,7 +77,7 @@ fun Double?.roundAndGetString(places: Int = 0): String? {
         places < 0 -> this.toString()
         places == 0 -> this.round(places)?.toInt()?.toString()
         else -> {
-            this.round(places)?.toString()
+            this.round(places)?.toString()?.replace(".", ",")
         }
     }
 }

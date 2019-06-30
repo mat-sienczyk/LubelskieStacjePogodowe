@@ -74,3 +74,45 @@ fun setCircleData(
 fun setColor(circleProgressView: CircleProgressView, @ColorRes colorId: Int) {
     circleProgressView.setTextColor(circleProgressView.context.resources.getColor(colorId))
 }
+
+@BindingAdapter(value = ["windDir", "value", "unit"], requireAll = false)
+fun setWeatherData(
+    textView: TextView,
+    windDir: Double?,
+    value: String?,
+    unit: String?
+) {
+    if (windDir != null) {
+        textView.text = textView.context.getString(
+            R.string.wind_placeholder,
+            windIntToDir(textView, windDir),
+            value,
+            unit ?: ""
+        )
+    } else {
+        textView.text = textView.context.getString(R.string.data_placeholder, value, unit ?: "")
+    }
+}
+
+fun windIntToDir(textView: TextView, windDirInt: Double?): String? {
+    return when {
+        // north N
+        windDirInt == null -> null
+        windDirInt <= 22 || windDirInt >= 338 -> textView.context.getString(R.string.north_wind)
+        // north-east NE
+        windDirInt <= 67 -> textView.context.getString(R.string.north_east_wind)
+        // east E
+        windDirInt <= 112 -> textView.context.getString(R.string.east_wind)
+        // south-east SE
+        windDirInt <= 157 -> textView.context.getString(R.string.south_east_wind)
+        // south S
+        windDirInt <= 202 -> textView.context.getString(R.string.south_wind)
+        // south-west SW
+        windDirInt <= 247 -> textView.context.getString(R.string.south_west_wind)
+        // west W
+        windDirInt <= 292 -> textView.context.getString(R.string.west_wind)
+        // north-west NW
+        windDirInt <= 337 -> textView.context.getString(R.string.north_west_wind)
+        else -> null
+    }
+}

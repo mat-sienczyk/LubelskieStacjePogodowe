@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -19,7 +21,11 @@
 
         <variable
                 name="showChart"
-                type="boolean"/>
+                type="boolean" />
+
+        <variable
+                name="windDirDouble"
+                type="Double" />
     </data>
 
     <LinearLayout
@@ -41,11 +47,13 @@
                 tools:text="Data:"/>
 
         <TextView
-                android:text="@{value + (unit ?? ``)}"
+                android:padding="5dp"
+                app:unit="@{unit}"
+                app:value="@{value}"
                 android:id="@+id/dataText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
+                app:windDir="@{windDirDouble}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="01.04.2015 08:30 CEST"/>
@@ -60,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="@{showChart ? View.VISIBLE : View.GONE}"
-                android:src="@drawable/ic_show_chart_black_24dp"/>
+                android:padding="5dp"
+                android:src="@drawable/ic_chart" />
     </LinearLayout>
 </layout>

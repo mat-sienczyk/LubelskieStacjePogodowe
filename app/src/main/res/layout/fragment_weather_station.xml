@@ -61,6 +61,7 @@
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_wind}"
                                     app:value="@{viewModel.station.getParsedWind(1)}"
+                                    app:windDirDouble="@{viewModel.station.windDir}"
                                     app:unit="@{@string/km_per_hour}"
                                     app:showChart="@{viewModel.station.windSpeedData != null}"/>
 

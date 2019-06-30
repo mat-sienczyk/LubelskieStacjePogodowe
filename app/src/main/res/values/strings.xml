@@ -17,6 +17,9 @@
     <string name="station_title_weather">"Stacja pogodowa"</string>
     <string name="station_title_smog">"Stacja smogowa"</string>
 
+    <string name="wind_placeholder">"%1$s %2$s%3$s"</string>
+    <string name="data_placeholder">"%1$s%2$s"</string>
+
     <string name="station_date">Data</string>
     <string name="station_wind">Wiatr</string>
     <string name="station_temp">Temp.</string>

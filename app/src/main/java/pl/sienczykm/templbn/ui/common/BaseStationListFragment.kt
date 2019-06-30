@@ -133,6 +133,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
         if (updated == 1) {
             if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(R.string.added_to_favorites)
+            getList().smoothScrollToPosition(0)
         }
     }
 

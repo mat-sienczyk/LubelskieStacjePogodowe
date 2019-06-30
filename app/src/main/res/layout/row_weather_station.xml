@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_temp}"
-                        app:value="@{station.getParsedTemperature()}"
+                        app:value="@{station.getParsedTemperature(0)}"
                         app:unit="@{@string/celsius_degree}"/>
 
                 <include
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_wind}"
-                        app:value="@{station.getParsedWind(station.convertWind)}"
+                        app:value="@{station.getParsedWind(0)}"
                         app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"/>
 
                 <include
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_humidity}"
-                        app:value="@{station.getParsedHumidity()}"
+                        app:value="@{station.getParsedHumidity(0)}"
                         app:unit="@{@string/percent}"/>
 
                 <include
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         layout="@layout/weather_value_and_data"
                         app:metadata="@{@string/station_pressure}"
-                        app:value="@{station.getParsedPressure()}"
+                        app:value="@{station.getParsedPressure(0)}"
                         app:unit="@{@string/hectopascal}"/>
 
             </com.google.android.flexbox.FlexboxLayout>

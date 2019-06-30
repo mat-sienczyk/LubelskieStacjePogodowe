@@ -59,7 +59,7 @@ fun Context?.isLocationPermissionGranted(): Boolean {
     }
 }
 
-fun Double?.round(places: Int): Double? {
+fun Double?.round(places: Int = 0): Double? {
     return when {
         this == null -> null
         places < 0 -> this
@@ -67,6 +67,17 @@ fun Double?.round(places: Int): Double? {
             var bd = BigDecimal(this)
             bd = bd.setScale(places, RoundingMode.HALF_UP)
             bd.toDouble()
+        }
+    }
+}
+
+fun Double?.roundAndGetString(places: Int = 0): String? {
+    return when {
+        this == null -> null
+        places < 0 -> this.toString()
+        places == 0 -> this.round(places)?.toInt()?.toString()
+        else -> {
+            this.round(places)?.toString()
         }
     }
 }

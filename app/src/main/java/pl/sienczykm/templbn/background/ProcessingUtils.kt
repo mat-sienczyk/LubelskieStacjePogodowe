@@ -21,6 +21,8 @@ object ProcessingUtils {
     fun updateSmogStation(appContext: Context, stationId: Int) {
 
         val dao = AppDb.getDatabase(appContext).smogStationDao()
+
+        //TODO przemodelować to żeby nie trzeba było pobierać stacji z bazy najpierw (update nowych danych, upsert w dao?)
         val station = dao.getStationById(stationId)
 
         if (station != null) {
@@ -34,6 +36,8 @@ object ProcessingUtils {
     fun updateWeatherStation(appContext: Context, stationId: Int) {
 
         val dao = AppDb.getDatabase(appContext).weatherStationDao()
+
+        //TODO przemodelować to żeby nie trzeba było pobierać stacji z bazy najpierw (update nowych danych, upsert w dao?)
         val station = dao.getStationById(stationId)
 
         if (station != null) {

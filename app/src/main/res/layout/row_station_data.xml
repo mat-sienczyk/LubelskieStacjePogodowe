@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:visibility="@{value == null ? View.GONE : View.VISIBLE}"
             android:padding="5dp">
 
         <TextView

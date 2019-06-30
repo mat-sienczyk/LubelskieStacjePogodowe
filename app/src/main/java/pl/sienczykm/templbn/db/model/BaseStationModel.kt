@@ -27,10 +27,6 @@ abstract class BaseStationModel(
         return outputFormat.format(date)
     }
 
-    fun getParsedFavorite(): String {
-        return favorite.toString()
-    }
-
     fun getParsedDistance(): String? {
         return when {
             distance == null -> null

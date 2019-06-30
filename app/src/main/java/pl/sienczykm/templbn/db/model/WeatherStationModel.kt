@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.round
+import pl.sienczykm.templbn.utils.roundAndGetString
 
 @Entity
 data class WeatherStationModel constructor(
@@ -46,28 +47,40 @@ data class WeatherStationModel constructor(
     @Ignore
     val convertWind = true
 
-    fun getParsedTemperature(): String? {
-        return temperature?.round(0)?.toInt()?.toString()
+    fun getParsedTemperature(roundPlaces: Int = 0): String? {
+        return temperature.roundAndGetString(roundPlaces)
     }
 
-    fun getParsedWind(convert: Boolean): String? {
-        return if (convert) {
-            convertMetersToKm(windSpeed)?.round(0)?.toInt()?.toString()
+    fun getParsedTemperatureWind(roundPlaces: Int = 0): String? {
+        return temperatureWind.roundAndGetString(roundPlaces)
+    }
+
+    fun getParsedTemperatureGround(roundPlaces: Int = 0): String? {
+        return temperatureGround.roundAndGetString(roundPlaces)
+    }
+
+    fun getParsedWind(roundPlaces: Int = 0): String? {
+        return if (convertWind) {
+            convertMetersToKm(windSpeed).roundAndGetString(roundPlaces)
         } else {
-            windSpeed?.round(0)?.toInt()?.toString()
+            windSpeed.roundAndGetString(roundPlaces)
         }
     }
 
-    fun getParsedHumidity(): String? {
-        return humidity?.round(0)?.toInt()?.toString()
+    fun getParsedHumidity(roundPlaces: Int = 0): String? {
+        return humidity.roundAndGetString(roundPlaces)
     }
 
-    fun getParsedPressure(): String? {
+    fun getParsedPressure(roundPlaces: Int = 0): String? {
         return if (pressure == 0.0) {
-            pressureData?.last()?.value?.round(0)?.toInt()?.toString()
+            pressureData?.last()?.value.roundAndGetString(roundPlaces)
         } else {
-            pressure?.round(0)?.toInt()?.toString()
+            pressure.roundAndGetString(roundPlaces)
         }
+    }
+
+    fun getParsedRain(roundPlaces: Int = 0): String? {
+        return rainToday.roundAndGetString(roundPlaces)
     }
 
     fun convertMetersToKm(wind: Double?): Double? {

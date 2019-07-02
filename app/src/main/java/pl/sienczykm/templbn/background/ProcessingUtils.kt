@@ -54,7 +54,7 @@ object ProcessingUtils {
 
     private fun constructSmogStationModel(station: SmogStationModel, favorite: Boolean = false): SmogStationModel {
         station.sensors = getSensors(station.stationId)
-        station.date = Date(station.sensors?.first()?.data?.first{ it.value != null }?.timestamp!!)
+        station.date = Date(station.sensors?.firstOrNull()?.data?.first{ it.value != null }?.timestamp!!)
         station.favorite = favorite
         return station
     }

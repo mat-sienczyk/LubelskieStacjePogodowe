@@ -27,14 +27,10 @@ data class SmogStationModel constructor(
     }
 
     var sensors: List<SmogSensorModel>? = null
-
-    fun getPM25(): String? {
-        return getValue(SmogSensorType.PM25)?.toString()
-    }
-
+    
     fun getValue(sensorType: SmogSensorType): Double? {
         return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
-            ?.data?.first { chartDataModel -> chartDataModel.value != null }
+            ?.data?.firstOrNull { chartDataModel -> chartDataModel.value != null }
             ?.value.round(1)
     }
 

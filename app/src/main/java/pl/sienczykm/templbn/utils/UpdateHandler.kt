@@ -74,7 +74,8 @@ object UpdateHandler {
 
     }
 
-    fun setAutoSync(minutes: Long) {
+    fun setAutoSync() {
+        //TODO pobieranie minut z ustawień
         WorkManager.getInstance().enqueue(
             listOf(
                 periodicWorkRequest(
@@ -83,7 +84,7 @@ object UpdateHandler {
                     AirStationModel.ID_KEY
                 ),
                 periodicWorkRequest(
-                    minutes,
+                    10,
                     WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
                     WeatherStationModel.ID_KEY
                 )

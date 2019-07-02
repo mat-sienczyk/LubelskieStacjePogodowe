@@ -36,17 +36,13 @@ abstract class BaseStationModel(
         }
     }
 
-    fun dataChanged(other: Any?): Boolean {
+    fun dataChanged(other: BaseStationModel?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-
-        other as BaseStationModel
-
         if (favorite != other.favorite) return false
         if (date != other.date) return false
         if (distance != other.distance) return false
 
         return true
     }
-
 }

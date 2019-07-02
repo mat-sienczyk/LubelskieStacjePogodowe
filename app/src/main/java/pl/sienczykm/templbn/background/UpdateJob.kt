@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.NetworkUtils
 import pl.sienczykm.templbn.utils.UpdateHandler
@@ -25,7 +25,7 @@ abstract class UpdateJob : JobIntentService() {
             intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY).forEach { stationId ->
                 try {
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {
-                        SmogStationModel.ID_KEY -> ProcessingUtils.updateSmogStation(
+                        AirStationModel.ID_KEY -> ProcessingUtils.updateAirStation(
                             applicationContext,
                             stationId
                         )

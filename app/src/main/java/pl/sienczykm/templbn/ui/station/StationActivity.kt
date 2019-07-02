@@ -9,7 +9,7 @@ import pl.sienczykm.templbn.R
 class StationActivity : AppCompatActivity(){
 
     enum class Type {
-        WEATHER, SMOG
+        WEATHER, AIR
     }
 
     companion object {
@@ -32,7 +32,7 @@ class StationActivity : AppCompatActivity(){
                 R.id.container,
                 when (type) {
                     Type.WEATHER -> WeatherStationFragment.newInstance(stationId)
-                    Type.SMOG -> SmogStationFragment.newInstance(stationId)
+                    Type.AIR -> AirStationFragment.newInstance(stationId)
                 }
             ).commit()
     }

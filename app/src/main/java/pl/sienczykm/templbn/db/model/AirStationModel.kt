@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import pl.sienczykm.templbn.utils.round
 
 @Entity
-data class SmogStationModel constructor(
+data class AirStationModel constructor(
     @Ignore
     override val stationId: Int,
     @Ignore
@@ -26,42 +26,42 @@ data class SmogStationModel constructor(
         this.url = getStationUrl()
     }
 
-    var sensors: List<SmogSensorModel>? = null
-    
-    fun getValue(sensorType: SmogSensorType): Double? {
-        return sensors?.find { smogSensorModel -> smogSensorModel.paramCode == sensorType.paramKey }
+    var sensors: List<AirSensorModel>? = null
+
+    fun getValue(sensorType: AirSensorType): Double? {
+        return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }
             ?.data?.firstOrNull { chartDataModel -> chartDataModel.value != null }
             ?.value.round(1)
     }
 
-    fun getValueAndQualityIndex(sensorType: SmogSensorType): Pair<Double, QualityIndex>? {
+    fun getValueAndQualityIndex(sensorType: AirSensorType): Pair<Double, AirQualityIndex>? {
         val value = getValue(sensorType) ?: return null
         return when {
-            (value > 0) and (value <= sensorType.maxVeryGood) -> value to QualityIndex.VERY_GOOD
-            (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> value to QualityIndex.GOOD
-            (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> value to QualityIndex.MODERATE
-            (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> value to QualityIndex.UNHEALTHY_SENSITIVE
-            (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> value to QualityIndex.UNHEALTHY
-            value > sensorType.maxUnhealthy -> value to QualityIndex.HAZARDOUS
+            (value > 0) and (value <= sensorType.maxVeryGood) -> value to AirQualityIndex.VERY_GOOD
+            (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> value to AirQualityIndex.GOOD
+            (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> value to AirQualityIndex.MODERATE
+            (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> value to AirQualityIndex.UNHEALTHY_SENSITIVE
+            (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> value to AirQualityIndex.UNHEALTHY
+            value > sensorType.maxUnhealthy -> value to AirQualityIndex.HAZARDOUS
             else -> null
         }
     }
 
     companion object {
 
-        val ID_KEY = "smog_station_id"
+        val ID_KEY = "air_station_id"
 
-        val LUBLIN = SmogStationModel(266, "Lublin", 51.259431, 22.569133)
-        val BIALA_PODLASKA = SmogStationModel(236, "Biała Podlaska", 52.029194, 23.149389)
-        val JARCZEW = SmogStationModel(248, "Jarczew", 51.814367, 21.972375)
-        val WILCZOPOLE = SmogStationModel(282, "Wilczopole", 51.163542, 22.598608)
-        val ZAMOSC = SmogStationModel(285, "Zamość", 50.716628, 23.290247)
-        val PULAWY = SmogStationModel(9593, "Puławy", 51.419047, 21.961089)
-        val FLORAINKA = SmogStationModel(10874, "Florianka", 50.551894, 22.982861)
-        val CHELM = SmogStationModel(11360, "Chełm", 51.122190, 23.472870)
-        val NALECZOW = SmogStationModel(11362, "Nałęczów", 51.284931, 22.210242)
+        val LUBLIN = AirStationModel(266, "Lublin", 51.259431, 22.569133)
+        val BIALA_PODLASKA = AirStationModel(236, "Biała Podlaska", 52.029194, 23.149389)
+        val JARCZEW = AirStationModel(248, "Jarczew", 51.814367, 21.972375)
+        val WILCZOPOLE = AirStationModel(282, "Wilczopole", 51.163542, 22.598608)
+        val ZAMOSC = AirStationModel(285, "Zamość", 50.716628, 23.290247)
+        val PULAWY = AirStationModel(9593, "Puławy", 51.419047, 21.961089)
+        val FLORAINKA = AirStationModel(10874, "Florianka", 50.551894, 22.982861)
+        val CHELM = AirStationModel(11360, "Chełm", 51.122190, 23.472870)
+        val NALECZOW = AirStationModel(11362, "Nałęczów", 51.284931, 22.210242)
 
-        fun getStations(): List<SmogStationModel> {
+        fun getStations(): List<AirStationModel> {
             return listOf(
                 LUBLIN,
                 BIALA_PODLASKA,
@@ -75,12 +75,12 @@ data class SmogStationModel constructor(
             )
         }
 
-        fun getStationForGivenId(id: Int): SmogStationModel {
+        fun getStationForGivenId(id: Int): AirStationModel {
             return getStations().single { it.stationId == id }
         }
     }
 
-    enum class SmogSensorType(
+    enum class AirSensorType(
         val paramName: String,
         val paramKey: String,
         val paramId: Int,
@@ -99,7 +99,7 @@ data class SmogStationModel constructor(
         CO("tlenek węgla", "CO", 8, 3, 7, 11, 15, 21)
     }
 
-    enum class QualityIndex(val value: Int, val desc: String) {
+    enum class AirQualityIndex(val value: Int, val desc: String) {
         VERY_GOOD(0, "Bardzo dobry"),
         GOOD(1, "Dobry"),
         MODERATE(2, "Umiarkowany"),

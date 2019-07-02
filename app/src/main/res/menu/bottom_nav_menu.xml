@@ -7,9 +7,9 @@
             android:title="@string/title_temp"/>
 
     <item
-            android:id="@+id/navigation_smog"
+            android:id="@+id/navigation_air"
             android:icon="@drawable/ic_cloud_black"
-            android:title="@string/title_smog"/>
+            android:title="@string/title_air"/>
 
     <item
             android:id="@+id/navigation_map"

@@ -1,35 +1,33 @@
-package pl.sienczykm.templbn.ui.smog
+package pl.sienczykm.templbn.ui.air
 
-import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentSmogBinding
-import pl.sienczykm.templbn.databinding.RowSmogStationBinding
-import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.databinding.FragmentAirBinding
+import pl.sienczykm.templbn.databinding.RowAirStationBinding
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
-class SmogFragment :
-    BaseStationListFragment<SmogStationModel, SmogViewModel, FragmentSmogBinding, RowSmogStationBinding>() {
+class AirFragment :
+    BaseStationListFragment<AirStationModel, AirViewModel, FragmentAirBinding, RowAirStationBinding>() {
 
     companion object {
-        fun newInstance(): SmogFragment {
-            return SmogFragment()
+        fun newInstance(): AirFragment {
+            return AirFragment()
         }
     }
 
-    override fun getViewModel(): SmogViewModel {
+    override fun getViewModel(): AirViewModel {
         return activity?.run {
-            ViewModelProviders.of(this).get(SmogViewModel::class.java)
+            ViewModelProviders.of(this).get(AirViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_smog
+        return R.layout.fragment_air
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {
@@ -44,7 +42,7 @@ class SmogFragment :
         return binding.stationList
     }
 
-    override fun getAdapter(): BaseStationsAdapter<RowSmogStationBinding> {
-        return SmogAdapter(this)
+    override fun getAdapter(): BaseStationsAdapter<RowAirStationBinding> {
+        return AirAdapter(this)
     }
 }

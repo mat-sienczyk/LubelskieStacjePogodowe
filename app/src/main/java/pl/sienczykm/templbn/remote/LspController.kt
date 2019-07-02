@@ -5,8 +5,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.sienczykm.templbn.remote.model.SmogSensor
-import pl.sienczykm.templbn.remote.model.SmogSensorData
+import pl.sienczykm.templbn.remote.model.AirSensor
+import pl.sienczykm.templbn.remote.model.AirSensorData
 import pl.sienczykm.templbn.remote.model.WeatherStationOne
 import pl.sienczykm.templbn.remote.model.WeatherStationTwo
 import pl.sienczykm.templbn.utils.Config
@@ -28,13 +28,13 @@ object LspController {
     }
 
     @WorkerThread
-    fun getSmogSensors(stationId: Int): Response<List<SmogSensor>> {
-        return getSmogService().getSensorsForStation(stationId).execute()
+    fun getAirSensors(stationId: Int): Response<List<AirSensor>> {
+        return getAirService().getSensorsForStation(stationId).execute()
     }
 
     @WorkerThread
-    fun getSmogSensorData(sensorId: Int): Response<SmogSensorData> {
-        return getSmogService().getDataForSensor(sensorId).execute()
+    fun getAirSensorData(sensorId: Int): Response<AirSensorData> {
+        return getAirService().getDataForSensor(sensorId).execute()
     }
 
     private fun getWeatherService(): WeatherService {
@@ -48,15 +48,15 @@ object LspController {
         return retrofit.create(WeatherService::class.java)
     }
 
-    private fun getSmogService(): SmogService {
+    private fun getAirService(): AirService {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(Config.BASE_SMOG_URL)
+            .baseUrl(Config.BASE_AIR_URL)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create(getGson()))
             .build()
 
-        return retrofit.create(SmogService::class.java)
+        return retrofit.create(AirService::class.java)
     }
 
 

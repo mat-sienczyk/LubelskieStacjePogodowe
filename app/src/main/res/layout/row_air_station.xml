@@ -5,11 +5,11 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="pl.sienczykm.templbn.db.model.SmogStationModel.SmogSensorType"/>
+        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
 
         <variable
                 name="station"
-                type="pl.sienczykm.templbn.db.model.SmogStationModel"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -71,32 +71,32 @@
                 <include
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        layout="@layout/smog_value_and_data"
-                        app:sensor="@{SmogSensorType.PM25}"
+                        layout="@layout/air_value_and_data"
+                        app:sensor="@{AirSensorType.PM25}"
                         app:station="@{station}"
                         app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        layout="@layout/smog_value_and_data"
-                        app:sensor="@{SmogSensorType.PM10}"
+                        layout="@layout/air_value_and_data"
+                        app:sensor="@{AirSensorType.PM10}"
                         app:station="@{station}"
                         app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        layout="@layout/smog_value_and_data"
-                        app:sensor="@{SmogSensorType.O3}"
+                        layout="@layout/air_value_and_data"
+                        app:sensor="@{AirSensorType.O3}"
                         app:station="@{station}"
                         app:unit="@{@string/microgram_per_cubic_metre}"/>
 
                 <include
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        layout="@layout/smog_value_and_data"
-                        app:sensor="@{SmogSensorType.NO2}"
+                        layout="@layout/air_value_and_data"
+                        app:sensor="@{AirSensorType.NO2}"
                         app:station="@{station}"
                         app:unit="@{@string/microgram_per_cubic_metre}"/>
 

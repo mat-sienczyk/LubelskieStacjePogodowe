@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.map.MapFragment
-import pl.sienczykm.templbn.ui.smog.SmogFragment
+import pl.sienczykm.templbn.ui.air.AirFragment
 import pl.sienczykm.templbn.ui.weather.WeatherFragment
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_smog -> {
+            R.id.navigation_air -> {
 
-                changeFragment(SmogFragment.newInstance())
+                changeFragment(AirFragment.newInstance())
 
                 return@OnNavigationItemSelectedListener true
             }

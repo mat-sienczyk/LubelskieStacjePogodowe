@@ -7,10 +7,10 @@
 
         <import type="android.view.View" />
 
-        <import type="pl.sienczykm.templbn.db.model.SmogStationModel.SmogSensorType" />
+        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.station.SmogStationViewModel"/>
+                  type="pl.sienczykm.templbn.ui.station.AirStationViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -54,7 +54,7 @@
                                     android:layout_height="wrap_content"
                                     android:textStyle="bold"
                                     android:gravity="center"
-                                    android:text="@string/station_title_smog"/>
+                                    android:text="@string/station_title_air"/>
 
                             <include
                                     layout="@layout/row_station_data"
@@ -69,58 +69,58 @@
                                     app:justifyContent="space_evenly">
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.PM25}"
+                                        app:sensor="@{AirSensorType.PM25}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.PM10}"
+                                        app:sensor="@{AirSensorType.PM10}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.O3}"
+                                        app:sensor="@{AirSensorType.O3}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.NO2}"
+                                        app:sensor="@{AirSensorType.NO2}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.SO2}"
+                                        app:sensor="@{AirSensorType.SO2}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.C6H6}"
+                                        app:sensor="@{AirSensorType.C6H6}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/microgram_per_cubic_metre}" />
 
                                 <include
-                                        layout="@layout/smog_value_and_data"
+                                        layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        app:sensor="@{SmogSensorType.CO}"
+                                        app:sensor="@{AirSensorType.CO}"
                                         app:station="@{viewModel.station}"
                                         app:unit="@{@string/milligram_per_cubic_metre}" />
 

@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.ChartDataModel
-import pl.sienczykm.templbn.db.model.SmogSensorModel
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirSensorModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
-import pl.sienczykm.templbn.remote.model.SmogSensorData
+import pl.sienczykm.templbn.remote.model.AirSensorData
 import pl.sienczykm.templbn.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,17 +18,17 @@ object ProcessingUtils {
     const val ERROR_KEY = "error_key"
 
     @WorkerThread
-    fun updateSmogStation(appContext: Context, stationId: Int) {
+    fun updateAirStation(appContext: Context, stationId: Int) {
 
-        val dao = AppDb.getDatabase(appContext).smogStationDao()
+        val dao = AppDb.getDatabase(appContext).airStationDao()
 
         //TODO przemodelować to żeby nie trzeba było pobierać stacji z bazy najpierw (update nowych danych, upsert w dao?)
         val station = dao.getStationById(stationId)
 
         if (station != null) {
-            dao.insert(constructSmogStationModel(SmogStationModel.getStationForGivenId(stationId), station.favorite))
+            dao.insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId), station.favorite))
         } else {
-            dao.insert(constructSmogStationModel(SmogStationModel.getStationForGivenId(stationId)))
+            dao.insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId)))
         }
     }
 
@@ -52,7 +52,7 @@ object ProcessingUtils {
         }
     }
 
-    private fun constructSmogStationModel(station: SmogStationModel, favorite: Boolean = false): SmogStationModel {
+    private fun constructAirStationModel(station: AirStationModel, favorite: Boolean = false): AirStationModel {
         station.sensors = getSensors(station.stationId)
         station.date = Date(station.sensors?.firstOrNull()?.data?.first{ it.value != null }?.timestamp!!)
         station.favorite = favorite
@@ -147,30 +147,30 @@ object ProcessingUtils {
         }
     }
 
-    private fun getSensors(stationId: Int): List<SmogSensorModel>? {
+    private fun getSensors(stationId: Int): List<AirSensorModel>? {
 
-        val response = LspController.getSmogSensors(stationId)
+        val response = LspController.getAirSensors(stationId)
 
         return when {
             response.isSuccessful -> response.body()
-                ?.filter { smogSensor -> smogSensor.id != null }
-                ?.map { smogSensor ->
-                    SmogSensorModel(
-                        smogSensor.id,
-                        smogSensor.param?.paramName,
-                        smogSensor.param?.paramCode,
-                        parseSensorData(LspController.getSmogSensorData(smogSensor.id!!).body())
+                ?.filter { airSensor -> airSensor.id != null }
+                ?.map { airSensor ->
+                    AirSensorModel(
+                        airSensor.id,
+                        airSensor.param?.paramName,
+                        airSensor.param?.paramCode,
+                        parseSensorData(LspController.getAirSensorData(airSensor.id!!).body())
                     )
                 }
             else -> throw Exception(response.errorBody().toString())
         }
     }
 
-    private fun parseSensorData(smogSensorData: SmogSensorData?): List<ChartDataModel>? {
-        return smogSensorData?.values?.map { ChartDataModel(parseSmogDate(it.date), it.value) }
+    private fun parseSensorData(airSensorData: AirSensorData?): List<ChartDataModel>? {
+        return airSensorData?.values?.map { ChartDataModel(parseAirDate(it.date), it.value) }
     }
 
-    private fun parseSmogDate(stringDate: String?): Long? {
+    private fun parseAirDate(stringDate: String?): Long? {
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("pl", "PL"))
         inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")

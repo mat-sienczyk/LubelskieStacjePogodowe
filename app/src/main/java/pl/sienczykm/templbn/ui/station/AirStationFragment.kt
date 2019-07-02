@@ -5,35 +5,35 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentSmogStationBinding
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.databinding.FragmentAirStationBinding
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationFragment
 
-class SmogStationFragment :
-    BaseStationFragment<SmogStationModel, SmogStationViewModel, FragmentSmogStationBinding>() {
+class AirStationFragment :
+    BaseStationFragment<AirStationModel, AirStationViewModel, FragmentAirStationBinding>() {
 
     companion object {
 
-        fun newInstance(stationId: Int): SmogStationFragment {
+        fun newInstance(stationId: Int): AirStationFragment {
             val args = Bundle()
             args.putInt(StationActivity.STATION_ID_KEY, stationId)
-            val fragment = SmogStationFragment()
+            val fragment = AirStationFragment()
             fragment.arguments = args
             return fragment
         }
     }
 
-    override fun getViewModel(stationId: Int): SmogStationViewModel {
+    override fun getViewModel(stationId: Int): AirStationViewModel {
         return activity?.run {
             ViewModelProviders.of(
                 this,
-                SmogStationViewModelFactory(application, stationId)
-            ).get(SmogStationViewModel::class.java)
+                AirStationViewModelFactory(application, stationId)
+            ).get(AirStationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_smog_station
+        return R.layout.fragment_air_station
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {

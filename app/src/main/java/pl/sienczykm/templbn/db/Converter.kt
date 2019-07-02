@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import pl.sienczykm.templbn.db.model.ChartDataModel
-import pl.sienczykm.templbn.db.model.SmogSensorModel
+import pl.sienczykm.templbn.db.model.AirSensorModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.*
 
@@ -12,7 +12,7 @@ import java.util.*
 class Converter {
 
     val dataArrayType = object : TypeToken<List<ChartDataModel>>() {}.type
-    val sensorArrayType = object : TypeToken<List<SmogSensorModel>>() {}.type
+    val sensorArrayType = object : TypeToken<List<AirSensorModel>>() {}.type
 
     @TypeConverter
     fun timestampToDate(value: Long?): Date? {
@@ -52,7 +52,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun sensorArrayToString(data: List<SmogSensorModel>?): String? {
+    fun sensorArrayToString(data: List<AirSensorModel>?): String? {
         return when (data) {
             null -> null
             else -> Gson().toJson(data, sensorArrayType)
@@ -61,7 +61,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun stringToSensorArray(json: String?): List<SmogSensorModel>? {
+    fun stringToSensorArray(json: String?): List<AirSensorModel>? {
         return when (json) {
             null -> null
             else -> Gson().fromJson(json, sensorArrayType)

@@ -2,7 +2,7 @@
     <string name="app_name">Lubelskie Stacje Pogodowe</string>
 
     <!--Bottom navigation-->
-    <string name="title_smog">Smog</string>
+    <string name="title_air">Powietrze</string>
     <string name="title_temp">Temperatura</string>
     <string name="title_map">Mapa</string>
 
@@ -15,7 +15,7 @@
 
     <!--Station fragment-->
     <string name="station_title_weather">"Stacja pogodowa"</string>
-    <string name="station_title_smog">"Stacja smogowa"</string>
+    <string name="station_title_air">"Stacja powietrzna"</string>
 
     <string name="wind_placeholder">"%1$s %2$s%3$s"</string>
     <string name="data_placeholder">"%1$s%2$s"</string>

@@ -21,7 +21,7 @@ import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
@@ -112,7 +112,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun onClickItem(v: View, position: Int) {
         when (val station = stationViewModel.stations.value?.get(position)) {
             is WeatherStationModel -> openStationActivity(StationActivity.Type.WEATHER, station.stationId)
-            is SmogStationModel -> openStationActivity(StationActivity.Type.SMOG, station.stationId)
+            is AirStationModel -> openStationActivity(StationActivity.Type.AIR, station.stationId)
             else -> throw Exception("Invalid station object")
         }
     }
@@ -124,7 +124,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
                 station.stationId,
                 !station.favorite
             )
-            is SmogStationModel -> AppDb.getDatabase(activity?.applicationContext!!).smogStationDao().updateFavorite(
+            is AirStationModel -> AppDb.getDatabase(activity?.applicationContext!!).airStationDao().updateFavorite(
                 station.stationId,
                 !station.favorite
             )

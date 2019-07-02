@@ -13,5 +13,5 @@ object Config {
 
     val BASE_WEATHER_URL = "http://212.182.4.252/"
 
-    val BASE_SMOG_URL = "http://api.gios.gov.pl/pjp-api/rest/"
+    val BASE_AIR_URL = "http://api.gios.gov.pl/pjp-api/rest/"
 }

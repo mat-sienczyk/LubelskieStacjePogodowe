@@ -9,11 +9,11 @@
 
         <variable
                 name="sensor"
-                type="pl.sienczykm.templbn.db.model.SmogStationModel.SmogSensorType"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
 
         <variable
                 name="station"
-                type="pl.sienczykm.templbn.db.model.SmogStationModel"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel"/>
 
         <variable
                 name="unit"

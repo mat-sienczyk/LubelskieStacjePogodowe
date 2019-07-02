@@ -5,7 +5,7 @@
 
     <data>
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.smog.SmogViewModel"/>
+                  type="pl.sienczykm.templbn.ui.air.AirViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,7 +23,7 @@
                     android:id="@+id/station_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/row_smog_station"
+                    tools:listitem="@layout/row_air_station"
                     app:adapter="@{viewModel.stations}"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

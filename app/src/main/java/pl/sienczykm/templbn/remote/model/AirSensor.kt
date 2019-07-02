@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.remote.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class SmogSensor {
+class AirSensor {
 
     @SerializedName("id")
     @Expose
@@ -15,6 +15,6 @@ class SmogSensor {
 
     @SerializedName("param")
     @Expose
-    var param: SmogSensorParam? = null
+    var param: AirSensorParam? = null
 
 }

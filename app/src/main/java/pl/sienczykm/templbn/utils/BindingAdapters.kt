@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
 @BindingAdapter("adapter")
@@ -17,51 +17,51 @@ fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {
 }
 
 @BindingAdapter("airQuality")
-fun setAirValueAndQuality(textView: TextView, valueAndQuality: Pair<Double, SmogStationModel.QualityIndex>?) {
-    textView.text = valueAndQuality?.first?.toString()
-    when (valueAndQuality?.second) {
-        SmogStationModel.QualityIndex.VERY_GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_very_good))
-        SmogStationModel.QualityIndex.GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_good))
-        SmogStationModel.QualityIndex.MODERATE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_moderate))
-        SmogStationModel.QualityIndex.UNHEALTHY_SENSITIVE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy_sensitive))
-        SmogStationModel.QualityIndex.UNHEALTHY -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy))
-        SmogStationModel.QualityIndex.HAZARDOUS -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_hazardous))
+fun setAirValueAndQuality(textView: TextView, valueAndAirQuality: Pair<Double, AirStationModel.AirQualityIndex>?) {
+    textView.text = valueAndAirQuality?.first?.toString()
+    when (valueAndAirQuality?.second) {
+        AirStationModel.AirQualityIndex.VERY_GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_very_good))
+        AirStationModel.AirQualityIndex.GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_good))
+        AirStationModel.AirQualityIndex.MODERATE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_moderate))
+        AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy_sensitive))
+        AirStationModel.AirQualityIndex.UNHEALTHY -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy))
+        AirStationModel.AirQualityIndex.HAZARDOUS -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_hazardous))
     }
 }
 
 @BindingAdapter("circleData", "maxValue", "unit")
 fun setCircleData(
     circleProgressView: CircleProgressView,
-    valueAndQuality: Pair<Double, SmogStationModel.QualityIndex>?,
-    sensorType: SmogStationModel.SmogSensorType,
+    valueAndAirQuality: Pair<Double, AirStationModel.AirQualityIndex>?,
+    sensorType: AirStationModel.AirSensorType,
     unit: String
 ) {
     circleProgressView.maxValue = sensorType.maxUnhealthy.toFloat()
     circleProgressView.unit = unit
-    if (valueAndQuality != null) {
-        circleProgressView.setValue(valueAndQuality.first.toFloat())
-        when (valueAndQuality.second) {
-            SmogStationModel.QualityIndex.VERY_GOOD -> setColor(
+    if (valueAndAirQuality != null) {
+        circleProgressView.setValue(valueAndAirQuality.first.toFloat())
+        when (valueAndAirQuality.second) {
+            AirStationModel.AirQualityIndex.VERY_GOOD -> setColor(
                 circleProgressView,
                 R.color.quality_very_good
                 )
-            SmogStationModel.QualityIndex.GOOD -> setColor(
+            AirStationModel.AirQualityIndex.GOOD -> setColor(
                 circleProgressView,
                 R.color.quality_good
                 )
-            SmogStationModel.QualityIndex.MODERATE -> setColor(
+            AirStationModel.AirQualityIndex.MODERATE -> setColor(
                 circleProgressView,
                 R.color.quality_moderate
                 )
-            SmogStationModel.QualityIndex.UNHEALTHY_SENSITIVE -> setColor(
+            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> setColor(
                 circleProgressView,
                 R.color.quality_unhealthy_sensitive
                 )
-            SmogStationModel.QualityIndex.UNHEALTHY -> setColor(
+            AirStationModel.AirQualityIndex.UNHEALTHY -> setColor(
                 circleProgressView,
                 R.color.quality_unhealthy
                 )
-            SmogStationModel.QualityIndex.HAZARDOUS -> setColor(
+            AirStationModel.AirQualityIndex.HAZARDOUS -> setColor(
                 circleProgressView,
                 R.color.quality_hazardous
             )

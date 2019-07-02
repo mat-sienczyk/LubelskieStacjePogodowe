@@ -3,14 +3,14 @@ package pl.sienczykm.templbn.remote.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class SmogSensorValue {
+class AirSensorData {
 
-    @SerializedName("date")
+    @SerializedName("key")
     @Expose
-    val date: String? = null
+    val key: String? = null
 
-    @SerializedName("value")
+    @SerializedName("values")
     @Expose
-    val value: Double? = null
+    val values: List<AirSensorValue>? = null
 
 }

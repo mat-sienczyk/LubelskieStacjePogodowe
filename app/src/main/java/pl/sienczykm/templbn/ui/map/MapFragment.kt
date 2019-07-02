@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentMapBinding
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
@@ -72,19 +72,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             markerBoundsBuilder.include(position)
         }
 
-        SmogStationModel.getStations().forEach { smogStationModel ->
-            val position = LatLng(smogStationModel.latitude, smogStationModel.longitude)
+        AirStationModel.getStations().forEach { airStationModel ->
+            val position = LatLng(airStationModel.latitude, airStationModel.longitude)
             val marker: Marker
 
             marker = map.addMarker(
                 MarkerOptions()
                     .position(position)
-                    .title(smogStationModel.name)
+                    .title(airStationModel.name)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .snippet(getString(R.string.station_title_weather))
             )
 
-            markerMap[marker] = smogStationModel
+            markerMap[marker] = airStationModel
             markerBoundsBuilder.include(position)
         }
 
@@ -119,7 +119,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         val intent = Intent(activity, StationActivity::class.java).apply {
             putExtra(
                 StationActivity.STATION_TYPE_KEY,
-                if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.SMOG
+                if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
             )
             putExtra(StationActivity.STATION_ID_KEY, markerMap[marker]?.stationId)
         }

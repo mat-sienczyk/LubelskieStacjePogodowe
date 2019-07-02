@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Handler
 import androidx.work.*
 import pl.sienczykm.templbn.background.AutoUpdateWorker
-import pl.sienczykm.templbn.background.SmogUpdateJob
+import pl.sienczykm.templbn.background.AirUpdateJob
 import pl.sienczykm.templbn.background.StatusReceiver
 import pl.sienczykm.templbn.background.WeatherUpdateJob
-import pl.sienczykm.templbn.db.model.SmogStationModel
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
 
@@ -24,14 +24,14 @@ object UpdateHandler {
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
             context,
-            SmogStationModel.getStations().map { it.stationId },
+            AirStationModel.getStations().map { it.stationId },
             receiver,
-            SmogStationModel.ID_KEY
+            AirStationModel.ID_KEY
         )
     }
 
     fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
-        syncNowStations(context, listOf(stationId), receiver, SmogStationModel.ID_KEY)
+        syncNowStations(context, listOf(stationId), receiver, AirStationModel.ID_KEY)
     }
 
     fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
@@ -54,8 +54,8 @@ object UpdateHandler {
         stationType: String
     ) {
         when (stationType) {
-            SmogStationModel.ID_KEY -> {
-                SmogUpdateJob.enqueueWork(
+            AirStationModel.ID_KEY -> {
+                AirUpdateJob.enqueueWork(
                     context,
                     stationsIds,
                     StatusReceiver(Handler(), receiver),
@@ -79,8 +79,8 @@ object UpdateHandler {
             listOf(
                 periodicWorkRequest(
                     60,
-                    SmogStationModel.getStations().map { it.stationId }.toIntArray(),
-                    SmogStationModel.ID_KEY
+                    AirStationModel.getStations().map { it.stationId }.toIntArray(),
+                    AirStationModel.ID_KEY
                 ),
                 periodicWorkRequest(
                     minutes,

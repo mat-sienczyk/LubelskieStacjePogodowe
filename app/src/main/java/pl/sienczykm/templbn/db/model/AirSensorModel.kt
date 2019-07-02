@@ -1,6 +1,6 @@
 package pl.sienczykm.templbn.db.model
 
-data class SmogSensorModel(
+data class AirSensorModel(
     val sensorId: Int? = null,
     val paramName: String? = null,
     val paramCode: String? = null,

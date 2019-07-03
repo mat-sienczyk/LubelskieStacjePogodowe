@@ -3,9 +3,9 @@ package pl.sienczykm.templbn.background
 import android.content.Context
 import androidx.annotation.WorkerThread
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.AirSensorModel
 import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.AirSensorData
@@ -26,7 +26,7 @@ object ProcessingUtils {
         val station = dao.getStationById(stationId)
 
         if (station != null) {
-            dao.insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId), station.favorite))
+            dao.insert(constructAirStationModel(station))
         } else {
             dao.insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId)))
         }
@@ -41,34 +41,25 @@ object ProcessingUtils {
         val station = dao.getStationById(stationId)
 
         if (station != null) {
-            dao.insert(
-                constructWeatherStationModel(
-                    WeatherStationModel.getStationForGivenId(stationId),
-                    station.favorite
-                )
-            )
+            dao.insert(constructWeatherStationModel(station))
         } else {
             dao.insert(constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId)))
         }
     }
 
-    private fun constructAirStationModel(station: AirStationModel, favorite: Boolean = false): AirStationModel {
+    private fun constructAirStationModel(station: AirStationModel): AirStationModel {
         station.sensors = getSensors(station.stationId)
         station.date = Date(station.sensors?.firstOrNull()?.data?.first{ it.value != null }?.timestamp!!)
-        station.favorite = favorite
         return station
     }
 
     private fun constructWeatherStationModel(
-        station: WeatherStationModel,
-        favorite: Boolean = false
+        station: WeatherStationModel
     ): WeatherStationModel {
         when (station.type) {
             WeatherStationModel.Type.ONE -> {
 
                 val response = LspController.getWeatherStationOne(station.stationId)
-
-                station.favorite = favorite
 
                 when {
                     response.isSuccessful -> {

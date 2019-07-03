@@ -34,6 +34,11 @@ data class AirStationModel constructor(
             ?.value.round(1)
     }
 
+    fun getChartDataForSensor(sensorType: AirSensorType): List<ChartDataModel>? {
+        return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }
+            ?.data?.filter { it.value != null }
+    }
+
     fun getValueAndQualityIndex(sensorType: AirSensorType): Pair<Double, AirQualityIndex>? {
         val value = getValue(sensorType) ?: return null
         return when {

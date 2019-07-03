@@ -24,6 +24,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.snackbarShow
@@ -141,6 +142,10 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 showSnackbar(R.string.error_no_web_browser)
             }
         }
+    }
+
+    override fun showChart(chartData: List<ChartDataModel>) {
+        Timber.e(chartData.joinToString(separator = "\n"))
     }
 
     override fun handleError(message: String?) {

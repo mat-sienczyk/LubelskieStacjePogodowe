@@ -18,6 +18,10 @@
                 name="unit"
                 type="String"/>
 
+        <variable
+                name="drawable"
+                type="android.graphics.drawable.Drawable"/>
+
     </data>
 
     <LinearLayout
@@ -25,8 +29,16 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="5dp"
             android:visibility="@{value == null ? View.GONE : View.VISIBLE}">
+
+        <ImageView
+                android:id="@+id/fav"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:src="@{drawable}"
+                android:tint="@color/grey"
+                android:gravity="center" />
 
         <TextView
                 android:text="@{value + unit}"

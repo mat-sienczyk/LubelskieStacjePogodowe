@@ -102,6 +102,7 @@
                             android:layout_height="wrap_content"
                             app:sensor="@{AirSensorType.PM25}"
                             app:station="@{station}"
+                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
@@ -110,6 +111,7 @@
                             android:layout_height="wrap_content"
                             app:sensor="@{AirSensorType.PM10}"
                             app:station="@{station}"
+                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
@@ -118,6 +120,7 @@
                             android:layout_height="wrap_content"
                             app:sensor="@{AirSensorType.O3}"
                             app:station="@{station}"
+                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
@@ -126,6 +129,7 @@
                             android:layout_height="wrap_content"
                             app:sensor="@{AirSensorType.NO2}"
                             app:station="@{station}"
+                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                 </com.google.android.flexbox.FlexboxLayout>

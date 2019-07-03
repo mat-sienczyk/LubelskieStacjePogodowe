@@ -40,9 +40,10 @@
                             android:layout_marginBottom="8dp" android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp">
 
-                        <LinearLayout android:layout_width="match_parent"
-                                      android:layout_height="match_parent"
-                                      android:orientation="vertical">
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
 
                             <TextView
                                     android:layout_width="match_parent"
@@ -55,7 +56,8 @@
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_date}"
                                     app:value="@{viewModel.station.getParsedDate()}"
-                                    app:showChart="@{false}"/>
+                                    app:chartData="@{null}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
@@ -63,49 +65,56 @@
                                     app:value="@{viewModel.station.getParsedWind(1)}"
                                     app:windDirDouble="@{viewModel.station.windDir}"
                                     app:unit="@{@string/km_per_hour}"
-                                    app:showChart="@{viewModel.station.windSpeedData != null}"/>
+                                    app:chartData="@{viewModel.station.windSpeedData}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_temp}"
                                     app:value="@{viewModel.station.getParsedTemperature(1)}"
                                     app:unit="@{@string/celsius_degree}"
-                                    app:showChart="@{viewModel.station.temperatureData != null}"/>
+                                    app:chartData="@{viewModel.station.temperatureData}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_temp_air}"
                                     app:value="@{viewModel.station.getParsedTemperatureWind(1)}"
                                     app:unit="@{@string/celsius_degree}"
-                                    app:showChart="@{viewModel.station.temperatureWindData != null}"/>
+                                    app:chartData="@{viewModel.station.temperatureWindData}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_temp_ground}"
                                     app:value="@{viewModel.station.getParsedTemperatureGround(1)}"
                                     app:unit="@{@string/celsius_degree}"
-                                    app:showChart="@{false}"/>
+                                    app:chartData="@{null}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_humidity}"
                                     app:value="@{viewModel.station.getParsedHumidity(1)}"
                                     app:unit="@{@string/percent}"
-                                    app:showChart="@{viewModel.station.humidityData != null}"/>
+                                    app:chartData="@{viewModel.station.humidityData}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_pressure}"
                                     app:value="@{viewModel.station.getParsedPressure(1)}"
                                     app:unit="@{@string/hectopascal}"
-                                    app:showChart="@{viewModel.station.pressureData != null}"/>
+                                    app:chartData="@{viewModel.station.pressureData}"
+                                    app:viewModel="@{viewModel}" />
 
                             <include
                                     layout="@layout/row_station_data"
                                     app:metadata="@{@string/station_rain_today}"
                                     app:value="@{viewModel.station.getParsedRain(1)}"
                                     app:unit="@{@string/milliliters}"
-                                    app:showChart="@{viewModel.station.rainTodayData != null}"/>
+                                    app:chartData="@{viewModel.station.rainTodayData}"
+                                    app:viewModel="@{viewModel}" />
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -123,6 +132,7 @@
                             app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/cardView2"
                             android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+                            android:focusable="true"
                             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
                         <TextView

@@ -6,6 +6,8 @@
     <data>
 
         <import type="android.view.View"/>
+        <import type="java.util.List" />
+        <import type="pl.sienczykm.templbn.db.model.ChartDataModel" />
 
         <variable
                 name="metadata"
@@ -20,12 +22,16 @@
                 type="String"/>
 
         <variable
-                name="showChart"
-                type="boolean" />
-
-        <variable
                 name="windDirDouble"
                 type="Double" />
+
+        <variable
+                name="chartData"
+                type="List&lt;ChartDataModel>" />
+
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.common.BaseStationViewModel" />
     </data>
 
     <LinearLayout
@@ -35,6 +41,10 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="@{value == null ? View.GONE : View.VISIBLE}"
+            android:clickable="@{chartData != null ? true : false}"
+            android:focusable="@{chartData != null ? true : false}"
+            android:onClick="@{() -> viewModel.showChart(chartData)}"
+            android:foreground="?android:attr/selectableItemBackground"
             android:padding="5dp">
 
         <TextView
@@ -67,7 +77,7 @@
                 android:id="@+id/chartImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{showChart ? View.VISIBLE : View.GONE}"
+                android:visibility="@{chartData != null ? View.VISIBLE : View.GONE}"
                 android:padding="5dp"
                 android:src="@drawable/ic_chart"
                 android:tint="@color/grey" />

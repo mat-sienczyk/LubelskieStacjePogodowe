@@ -7,6 +7,10 @@
 
         <import type="android.view.View"/>
 
+        <import type="java.util.List" />
+
+        <import type="pl.sienczykm.templbn.db.model.ChartDataModel" />
+
         <variable
                 name="sensor"
                 type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
@@ -19,6 +23,14 @@
                 name="unit"
                 type="String"/>
 
+        <variable
+                name="chartData"
+                type="List&lt;ChartDataModel>" />
+
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.common.BaseStationViewModel" />
+
     </data>
 
     <LinearLayout
@@ -27,6 +39,10 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:visibility="@{station.getValueAndQualityIndex(sensor) == null ? View.GONE : View.VISIBLE}"
+            android:clickable="@{chartData != null ? true : false}"
+            android:focusable="@{chartData != null ? true : false}"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> viewModel.showChart(chartData)}"
             android:padding="5dp">
 
         <at.grabner.circleprogress.CircleProgressView

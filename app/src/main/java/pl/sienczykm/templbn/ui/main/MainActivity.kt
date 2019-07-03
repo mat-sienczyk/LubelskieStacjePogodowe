@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        UpdateHandler.setAutoSync()
+//        UpdateHandler.setAutoSync()
 
         if (savedInstanceState == null) {
             getLocation()

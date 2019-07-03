@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.ui.air
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListViewModel
@@ -13,9 +12,8 @@ class AirViewModel(application: Application) : BaseStationListViewModel<AirStati
         UpdateHandler.syncNowSmogStations(getApplication(), receiver)
     }
 
-    override val stationsLiveData: LiveData<List<AirStationModel>> by lazy {
+    override val stationsLiveData =
         AppDb.getDatabase(getApplication()).airStationDao().getAllStationsLiveData()
-    }
 
     init {
         stations.addSource(stationsLiveData) { result: List<AirStationModel>? ->

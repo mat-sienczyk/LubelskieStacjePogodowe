@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.ui.station
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
@@ -26,9 +25,8 @@ class WeatherStationViewModel(
 ) :
     BaseStationViewModel<WeatherStationModel>(application, stationId) {
 
-    override val station: LiveData<WeatherStationModel> by lazy {
+    override val station =
         AppDb.getDatabase(getApplication()).weatherStationDao().getStationLiveDataById(stationId)
-    }
 
     init {
         refresh()

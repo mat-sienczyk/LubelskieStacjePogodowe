@@ -56,7 +56,9 @@
 
                 <ImageView
                         android:id="@+id/fav"
-                        android:src="@drawable/ic_star"
+                        android:src="@drawable/ic_heart_solid"
+
+                        android:tint="@color/grey"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="@{station.favorite ? View.VISIBLE : View.GONE}"

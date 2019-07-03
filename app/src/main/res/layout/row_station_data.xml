@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{showChart ? View.VISIBLE : View.GONE}"
                 android:padding="5dp"
-                android:src="@drawable/ic_chart" />
+                android:src="@drawable/ic_chart"
+                android:tint="@color/grey" />
     </LinearLayout>
 </layout>

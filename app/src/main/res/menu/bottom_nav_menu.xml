@@ -3,17 +3,17 @@
 
     <item
             android:id="@+id/navigation_weather"
-            android:icon="@drawable/ic_wb_sunny_black"
+            android:icon="@drawable/ic_weather"
             android:title="@string/title_temp"/>
 
     <item
             android:id="@+id/navigation_air"
-            android:icon="@drawable/ic_cloud_black"
+            android:icon="@drawable/ic_air"
             android:title="@string/title_air"/>
 
     <item
             android:id="@+id/navigation_map"
-            android:icon="@drawable/ic_map_black"
+            android:icon="@drawable/ic_map"
             android:title="@string/title_map"/>
 
 </menu>

@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.ui.station
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
@@ -26,9 +25,8 @@ class AirStationViewModel(
 ) :
     BaseStationViewModel<AirStationModel>(application, stationId) {
 
-    override val station: LiveData<AirStationModel> by lazy {
+    override val station =
         AppDb.getDatabase(getApplication()).airStationDao().getStationLiveDataById(stationId)
-    }
 
     init {
         refresh()

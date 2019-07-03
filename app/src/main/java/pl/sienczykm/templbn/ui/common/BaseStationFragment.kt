@@ -1,16 +1,19 @@
 package pl.sienczykm.templbn.ui.common
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -18,7 +21,10 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
@@ -41,10 +47,9 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val stationId = arguments?.getInt(StationActivity.STATION_ID_KEY, 0)!!
-
-        super.onCreate(savedInstanceState)
         viewModel = getViewModel(stationId)
         viewModel.setNavigator(this)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +72,60 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             resources.getColor(R.color.main_green)
         )
 
-        viewModel.station.observe(this, Observer { activity?.title = it.name })
+        viewModel.station.observe(this, Observer { station ->
+            activity?.title = station.name
+        })
+    }
+
+    private fun updateFavorite(favoriteItem: MenuItem?, favorite: Boolean) {
+        favoriteItem?.icon =
+            if (favorite) getDrawable(R.drawable.ic_heart_solid) else getDrawable(R.drawable.ic_heart)
+    }
+
+    private fun getDrawable(@DrawableRes drawableResId: Int, @ColorInt color: Int = Color.WHITE): Drawable? {
+        val originalDrawable = resources.getDrawable(drawableResId)
+        val wrappedDrawable = DrawableCompat.wrap(originalDrawable)
+        DrawableCompat.setTint(wrappedDrawable, color)
+        return wrappedDrawable
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.station_fragment_menu, menu)
+
+        viewModel.station.observe(this, Observer { station ->
+            updateFavorite(menu?.findItem(R.id.favorite), station.favorite)
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.favorite -> {
+                handleFavoriteClick()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun handleFavoriteClick() {
+        val station = viewModel.station.value
+        val updated = when (station) {
+            is WeatherStationModel -> AppDb.getDatabase(activity?.applicationContext!!).weatherStationDao().updateFavorite(
+                station.stationId,
+                !station.favorite
+            )
+            is AirStationModel -> AppDb.getDatabase(activity?.applicationContext!!).airStationDao().updateFavorite(
+                station.stationId,
+                !station.favorite
+            )
+            else -> throw Exception("Invalid station object")
+        }
+
+        if (updated > 0) {
+            if (!station.favorite) showSnackbar(R.string.added_to_favorites) else showSnackbar(R.string.removed_from_favorites)
+        }
     }
 
     override fun openCustomTab(url: String?) {
@@ -80,21 +138,21 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 val customTabsIntent = builder.build()
                 customTabsIntent.launchUrl(activity, webPage)
             } else {
-                showError(R.string.error_no_web_browser)
+                showSnackbar(R.string.error_no_web_browser)
             }
         }
     }
 
     override fun handleError(message: String?) {
         Timber.e(Throwable(message))
-        showError(R.string.error_server)
+        showSnackbar(R.string.error_server)
     }
 
     override fun noConnection() {
-        showError(R.string.error_no_connection)
+        showSnackbar(R.string.error_no_connection)
     }
 
-    private fun showError(@StringRes message: Int) {
+    private fun showSnackbar(@StringRes message: Int) {
         snackbarShow(getCoordinatorLayout(), message)
     }
 }

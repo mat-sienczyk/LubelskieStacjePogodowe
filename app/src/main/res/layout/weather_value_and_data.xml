@@ -43,6 +43,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:gravity="center"
-                tools:text="PM2.5"/>
+                tools:text="Temp."/>
     </LinearLayout>
 </layout>

@@ -91,13 +91,13 @@ data class WeatherStationModel constructor(
 
         val ID_KEY = "weather_station_id"
 
-        val OGROD_BOTANICZNY = WeatherStationModel(10, Type.ONE, "Ogród botaniczny", 51.263975, 22.514608)
+        val OGROD_BOTANICZNY = WeatherStationModel(10, Type.ONE, "Lublin - Ogród botaniczny", 51.263975, 22.514608)
         val GUCIOW = WeatherStationModel(11, Type.ONE, "Guciów", 50.582600, 23.073628)
         val FLORIANKA = WeatherStationModel(12, Type.TWO, "Florianka", 50.554803, 22.988150)
         val LUKOW = WeatherStationModel(13, Type.TWO, "Łuków", 51.930883, 22.389122)
-        val PLAC_LITEWSKI = WeatherStationModel(16, Type.ONE, "Plac Litewski", 51.248831, 22.560531)
-        val ZEMBORZYCKA = WeatherStationModel(17, Type.ONE, "MPWiK Zemborzycka", 51.203525, 22.561972)
-        val HAJDOW = WeatherStationModel(18, Type.TWO, "MPWiK Hajdów", 51.264328, 22.622867)
+        val PLAC_LITEWSKI = WeatherStationModel(16, Type.ONE, "Lublin - Plac Litewski", 51.248831, 22.560531)
+        val ZEMBORZYCKA = WeatherStationModel(17, Type.ONE, "Lublin - MPWiK Zemborzycka", 51.203525, 22.561972)
+        val HAJDOW = WeatherStationModel(18, Type.TWO, "Lublin - MPWiK Hajdów", 51.264328, 22.622867)
         val LUBARTOW = WeatherStationModel(19, Type.ONE, "PGK Lubartów", 51.452850, 22.590253)
         val TRZDNIK = WeatherStationModel(20, Type.TWO, "Trzydnik", 50.851986, 22.134056)
         val LESNIOWICE = WeatherStationModel(21, Type.TWO, "Leśniowice", 50.988278, 23.509881)

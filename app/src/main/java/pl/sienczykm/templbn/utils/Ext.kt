@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.utils
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -35,6 +36,11 @@ fun View.show() {
 
 fun View.hide() {
     visibility = View.GONE
+}
+
+fun View.addRipple() = with(TypedValue()) {
+    context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
+    setBackgroundResource(resourceId)
 }
 
 fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {

@@ -44,7 +44,7 @@
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
             android:onClick="@{() -> viewModel.showChart(chartData)}"
-            android:foreground="?android:attr/selectableItemBackground"
+            app:addRipple="@{true}"
             android:padding="5dp">
 
         <TextView

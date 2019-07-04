@@ -41,7 +41,7 @@
             android:visibility="@{station.getValueAndQualityIndex(sensor) == null ? View.GONE : View.VISIBLE}"
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
-            android:foreground="?android:attr/selectableItemBackground"
+            app:addRipple="@{chartData != null ? true : false}"
             android:onClick="@{() -> viewModel.showChart(chartData)}"
             android:padding="5dp">
 

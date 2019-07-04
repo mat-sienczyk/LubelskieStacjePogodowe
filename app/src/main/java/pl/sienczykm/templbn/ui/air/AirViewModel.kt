@@ -8,6 +8,10 @@ import pl.sienczykm.templbn.utils.UpdateHandler
 
 class AirViewModel(application: Application) : BaseStationListViewModel<AirStationModel>(application) {
 
+    init {
+        refresh()
+    }
+
     override fun refresh() {
         UpdateHandler.syncNowSmogStations(getApplication(), receiver)
     }

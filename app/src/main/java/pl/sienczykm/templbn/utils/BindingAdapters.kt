@@ -1,14 +1,20 @@
 package pl.sienczykm.templbn.utils
 
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
+
+@BindingAdapter("addRipple")
+fun addRippleEffect(view: View, add: Boolean) {
+    if (add) view.addRipple()
+}
 
 @BindingAdapter("adapter")
 fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {

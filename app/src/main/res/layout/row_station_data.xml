@@ -66,6 +66,7 @@
                 app:windDir="@{windDirDouble}"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:drawablePadding="5dp"
                 tools:text="01.04.2015 08:30 CEST"/>
 
         <View

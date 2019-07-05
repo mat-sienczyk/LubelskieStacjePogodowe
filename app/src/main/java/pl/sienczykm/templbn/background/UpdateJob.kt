@@ -6,8 +6,8 @@ import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.utils.NetworkUtils
 import pl.sienczykm.templbn.utils.UpdateHandler
+import pl.sienczykm.templbn.utils.isNetworkAvailable
 
 abstract class UpdateJob : JobIntentService() {
 
@@ -21,7 +21,7 @@ abstract class UpdateJob : JobIntentService() {
 
         receiver.send(StatusReceiver.STATUS_RUNNING, Bundle())
 
-        if (NetworkUtils.isNetworkConnected(applicationContext)) {
+        if (applicationContext.isNetworkAvailable()) {
             intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY).forEach { stationId ->
                 try {
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {

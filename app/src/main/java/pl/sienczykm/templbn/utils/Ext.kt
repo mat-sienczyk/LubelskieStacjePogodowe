@@ -3,6 +3,8 @@ package pl.sienczykm.templbn.utils
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
@@ -20,6 +22,12 @@ fun Context.toast(message: String, duration: Int = Toast.LENGTH_LONG) {
 
 fun Context.toast(@StringRes message: Int, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, this.getText(message), duration).show()
+}
+
+fun Context.isNetworkAvailable(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+    return activeNetwork?.isConnected == true
 }
 
 fun snackbarShow(view: CoordinatorLayout, @StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {

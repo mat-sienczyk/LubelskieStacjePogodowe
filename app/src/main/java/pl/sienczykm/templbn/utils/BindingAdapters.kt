@@ -1,6 +1,10 @@
 package pl.sienczykm.templbn.utils
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.databinding.BindingAdapter
@@ -9,7 +13,9 @@ import at.grabner.circleprogress.CircleProgressView
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
+
 
 @BindingAdapter("addClickEffect")
 fun addClickEffect(view: View, add: Boolean) {
@@ -88,37 +94,24 @@ fun setWeatherData(
     value: String?,
     unit: String?
 ) {
-    if (windDir != null) {
-        textView.text = textView.context.getString(
-            R.string.wind_placeholder,
-            windIntToDir(textView, windDir),
-            value,
-            unit ?: ""
+    textView.text = textView.context.getString(R.string.data_placeholder, value, unit ?: "")
+    windDir?.let {
+        textView.setCompoundDrawablesWithIntrinsicBounds(
+            WeatherStationModel.windIntToDir(
+                windDir,
+                true
+            ), 0, 0, 0
         )
-    } else {
-        textView.text = textView.context.getString(R.string.data_placeholder, value, unit ?: "")
+        for (drawable: Drawable? in textView.compoundDrawables) {
+            drawable?.colorFilter = PorterDuffColorFilter(
+                textView.context.resources.getColor(R.color.grey),
+                PorterDuff.Mode.SRC_IN
+            )
+        }
     }
 }
 
-fun windIntToDir(textView: TextView, windDirInt: Double?): String? {
-    return when {
-        // north N
-        windDirInt == null -> null
-        windDirInt <= 22 || windDirInt >= 338 -> textView.context.getString(R.string.north_wind)
-        // north-east NE
-        windDirInt <= 67 -> textView.context.getString(R.string.north_east_wind)
-        // east E
-        windDirInt <= 112 -> textView.context.getString(R.string.east_wind)
-        // south-east SE
-        windDirInt <= 157 -> textView.context.getString(R.string.south_east_wind)
-        // south S
-        windDirInt <= 202 -> textView.context.getString(R.string.south_wind)
-        // south-west SW
-        windDirInt <= 247 -> textView.context.getString(R.string.south_west_wind)
-        // west W
-        windDirInt <= 292 -> textView.context.getString(R.string.west_wind)
-        // north-west NW
-        windDirInt <= 337 -> textView.context.getString(R.string.north_west_wind)
-        else -> null
-    }
+@BindingAdapter("imageResource")
+fun setImageResource(imageView: ImageView, resource: Int) {
+    imageView.setImageResource(resource)
 }

@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="pl.sienczykm.templbn.R" />
+
         <variable
                 name="station"
                 type="pl.sienczykm.templbn.db.model.WeatherStationModel"/>
@@ -103,7 +105,7 @@
                             android:layout_height="wrap_content"
                             app:metadata="@{@string/station_temp}"
                             app:unit="@{@string/celsius_degree}"
-                            app:drawable="@{@drawable/ic_temperature}"
+                            app:drawableInt="@{R.drawable.ic_temperature}"
                             app:value="@{station.getParsedTemperature(0)}" />
 
                     <include
@@ -112,7 +114,7 @@
                             android:layout_height="wrap_content"
                             app:metadata="@{@string/station_wind}"
                             app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
-                            app:drawable="@{@drawable/ic_wind}"
+                            app:drawableInt="@{station.windDir != null ? station.Companion.windIntToDir(station.windDir, false) : R.drawable.ic_wind}"
                             app:value="@{station.getParsedWind(0)}" />
 
                     <include
@@ -121,7 +123,7 @@
                             android:layout_height="wrap_content"
                             app:metadata="@{@string/station_humidity}"
                             app:unit="@{@string/percent}"
-                            app:drawable="@{@drawable/ic_humidity}"
+                            app:drawableInt="@{R.drawable.ic_humidity}"
                             app:value="@{station.getParsedHumidity(0)}" />
 
                     <include
@@ -130,7 +132,7 @@
                             android:layout_height="wrap_content"
                             app:metadata="@{@string/station_pressure}"
                             app:unit="@{@string/hectopascal}"
-                            app:drawable="@{@drawable/ic_pressure}"
+                            app:drawableInt="@{R.drawable.ic_pressure}"
                             app:value="@{station.getParsedPressure(0)}" />
 
                 </com.google.android.flexbox.FlexboxLayout>

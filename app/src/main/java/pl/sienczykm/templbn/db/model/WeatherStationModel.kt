@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.utils.roundAndGetString
@@ -125,6 +126,28 @@ data class WeatherStationModel constructor(
 
         fun getStationForGivenId(id: Int): WeatherStationModel {
             return getStations().single { it.stationId == id }
+        }
+
+        fun windIntToDir(windDirInt: Double, returnEmpty: Boolean = false): Int {
+            return when {
+                // north N
+                windDirInt <= 22 || windDirInt >= 338 -> R.drawable.ic_arrow_down
+                // north-east NE
+                windDirInt <= 67 -> R.drawable.ic_arrow_bottom_left
+                // east E
+                windDirInt <= 112 -> R.drawable.ic_arrow_left
+                // south-east SE
+                windDirInt <= 157 -> R.drawable.ic_arrow_top_left
+                // south S
+                windDirInt <= 202 -> R.drawable.ic_arrow_up
+                // south-west SW
+                windDirInt <= 247 -> R.drawable.ic_arrow_top_right
+                // west W
+                windDirInt <= 292 -> R.drawable.ic_arrow_right
+                // north-west NW
+                windDirInt <= 337 -> R.drawable.ic_arrow_bottom_right
+                else -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
+            }
         }
     }
 

@@ -21,7 +21,6 @@
     <string name="station_title_weather">"Stacja pogodowa"</string>
     <string name="station_title_air">"Stacja powietrzna"</string>
 
-    <string name="wind_placeholder">"%1$s %2$s%3$s"</string>
     <string name="data_placeholder">"%1$s%2$s"</string>
 
     <string name="station_date">Data</string>

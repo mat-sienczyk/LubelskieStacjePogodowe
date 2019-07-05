@@ -11,9 +11,9 @@ import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
-@BindingAdapter("addRipple")
-fun addRippleEffect(view: View, add: Boolean) {
-    if (add) view.addRipple()
+@BindingAdapter("addClickEffect")
+fun addClickEffect(view: View, add: Boolean) {
+    if (add) view.addClickEffect()
 }
 
 @BindingAdapter("adapter")

@@ -38,7 +38,7 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun View.addRipple() = with(TypedValue()) {
+fun View.addClickEffect() = with(TypedValue()) {
     context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
     setBackgroundResource(resourceId)
 }

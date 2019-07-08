@@ -1,12 +1,11 @@
 package pl.sienczykm.templbn.ui.station
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.ui.common.ActivityWithToolbarAndUpAction
 
 
-class StationActivity : AppCompatActivity(){
+class StationActivity : ActivityWithToolbarAndUpAction() {
 
     enum class Type {
         WEATHER, AIR
@@ -19,9 +18,6 @@ class StationActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_container_with_toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val type = intent.getSerializableExtra(STATION_TYPE_KEY) as Type
         val stationId = intent.getIntExtra(STATION_ID_KEY, 0)

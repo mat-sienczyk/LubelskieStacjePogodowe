@@ -38,27 +38,20 @@ object LspController {
     }
 
     private fun getWeatherService(): WeatherService {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Config.BASE_WEATHER_URL)
-            .client(getClient())
-            .addConverterFactory(GsonConverterFactory.create(getGson()))
-            .build()
-
-        return retrofit.create(WeatherService::class.java)
+        return getRetrofit(Config.BASE_WEATHER_URL).create(WeatherService::class.java)
     }
 
     private fun getAirService(): AirService {
+        return getRetrofit(Config.BASE_AIR_URL).create(AirService::class.java)
+    }
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Config.BASE_AIR_URL)
+    private fun getRetrofit(baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create(getGson()))
             .build()
-
-        return retrofit.create(AirService::class.java)
     }
-
 
     private fun getClient(): OkHttpClient {
 

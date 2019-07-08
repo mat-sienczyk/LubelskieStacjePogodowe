@@ -77,9 +77,9 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
             resources.getColor(R.color.main_green)
         )
 
-        val mLayoutManager = LinearLayoutManager(context)
-        mLayoutManager.orientation = RecyclerView.VERTICAL
-        getList().layoutManager = mLayoutManager
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        getList().layoutManager = layoutManager
         getList().adapter = getAdapter()
 
         if (savedInstanceState == null) updateCoordinate()

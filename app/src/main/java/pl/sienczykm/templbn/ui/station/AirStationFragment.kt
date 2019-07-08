@@ -1,9 +1,11 @@
 package pl.sienczykm.templbn.ui.station
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAirStationBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
@@ -42,5 +44,9 @@ class AirStationFragment :
 
     override fun getCoordinatorLayout(): CoordinatorLayout {
         return binding.coordinatorLayout
+    }
+
+    override fun getBottomSheetLayout(): LinearLayout {
+        return binding.bottomSheet.bottomSheet
     }
 }

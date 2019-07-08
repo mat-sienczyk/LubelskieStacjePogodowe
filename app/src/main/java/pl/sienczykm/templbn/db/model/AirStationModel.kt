@@ -30,7 +30,7 @@ data class AirStationModel constructor(
 
     fun getValue(sensorType: AirSensorType): Double? {
         return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }
-            ?.data?.firstOrNull { chartDataModel -> chartDataModel.value != null }
+            ?.data?.lastOrNull { chartDataModel -> chartDataModel.value != null }
             ?.value.round(1)
     }
 

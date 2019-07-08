@@ -10,6 +10,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.AirSensorData
 import pl.sienczykm.templbn.utils.Constants
+import pl.sienczykm.templbn.utils.round
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -158,7 +159,20 @@ object ProcessingUtils {
     }
 
     private fun parseSensorData(airSensorData: AirSensorData?): List<ChartDataModel>? {
-        return airSensorData?.values?.map { ChartDataModel(parseAirDate(it.date), it.value) }
+        return if (airSensorData?.key == AirStationModel.AirSensorType.CO.paramKey) {
+            airSensorData.values?.reversed()?.map { sensorValue ->
+                ChartDataModel(
+                    parseAirDate(sensorValue.date),
+                    sensorValue.value?.div(1000).round(1)
+                )
+            }
+        } else
+            airSensorData?.values?.reversed()?.map { sensorValue ->
+                ChartDataModel(
+                    parseAirDate(sensorValue.date),
+                    sensorValue.value
+                )
+            }
     }
 
     private fun parseAirDate(stringDate: String?): Long? {

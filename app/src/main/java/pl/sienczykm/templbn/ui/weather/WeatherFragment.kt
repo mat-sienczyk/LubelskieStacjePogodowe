@@ -1,20 +1,18 @@
 package pl.sienczykm.templbn.ui.weather
 
-import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentWeatherBinding
+import pl.sienczykm.templbn.databinding.FragmentWeatherListBinding
 import pl.sienczykm.templbn.databinding.RowWeatherStationBinding
-import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
 import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
 
 class WeatherFragment :
-    BaseStationListFragment<WeatherStationModel, WeatherViewModel, FragmentWeatherBinding, RowWeatherStationBinding>() {
+    BaseStationListFragment<WeatherStationModel, WeatherViewModel, FragmentWeatherListBinding, RowWeatherStationBinding>() {
 
     companion object {
         fun newInstance(): WeatherFragment {
@@ -29,7 +27,7 @@ class WeatherFragment :
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_weather
+        return R.layout.fragment_weather_list
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {

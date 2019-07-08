@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.*
+import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
@@ -19,6 +20,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
@@ -33,6 +36,7 @@ import timber.log.Timber
 abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
     StationNavigator {
 
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var viewModel: T
     lateinit var binding: N
 
@@ -44,6 +48,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
 
     abstract fun getCoordinatorLayout(): CoordinatorLayout
+
+    abstract fun getBottomSheetLayout(): LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +82,9 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         viewModel.station.observe(this, Observer { station ->
             activity?.title = station.name
         })
+
+        bottomSheetBehavior = BottomSheetBehavior.from(getBottomSheetLayout())
+            .apply { state = BottomSheetBehavior.STATE_HIDDEN }
     }
 
     private fun updateFavorite(favoriteItem: MenuItem?, favorite: Boolean) {
@@ -145,7 +154,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     override fun showChart(chartData: List<ChartDataModel>) {
-        Timber.e(chartData.joinToString(separator = "\n"))
+        getBottomSheetLayout().text.text = chartData.joinToString(separator = "\n")
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun handleError(message: String?) {

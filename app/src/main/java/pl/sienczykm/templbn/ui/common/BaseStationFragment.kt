@@ -99,18 +99,18 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         return wrappedDrawable
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.station_fragment_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.station_fragment_menu, menu)
 
         viewModel.station.observe(this, Observer { station ->
-            updateFavorite(menu?.findItem(R.id.favorite), station.favorite)
+            updateFavorite(menu.findItem(R.id.favorite), station.favorite)
         })
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.favorite -> {
                 handleFavoriteClick()
                 true

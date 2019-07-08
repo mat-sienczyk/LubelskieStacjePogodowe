@@ -8,6 +8,7 @@
 
     <!--menu-->
     <string name="favorite">Ulubione</string>
+    <string name="settings">Ustawienia</string>
 
 
     <!--messages-->
@@ -41,6 +42,10 @@
     <string name="station_co">Tlenek węgla CO</string>
 
     <string name="station_open_website">Otwórz stronę stacji</string>
+
+    <!--settings-->
+    <string name="auto_sync">"Automatyczna synchornizacja"</string>
+
 
     <!--units-->
     <string name="m_per_sec">" m/s"</string>

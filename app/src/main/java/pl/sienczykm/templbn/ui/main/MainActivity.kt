@@ -1,7 +1,11 @@
 package pl.sienczykm.templbn.ui.main
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -9,10 +13,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.air.AirFragment
+import pl.sienczykm.templbn.ui.map.MapFragment
+import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.ui.weather.WeatherFragment
-import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
 class MainActivity : AppCompatActivity() {
@@ -52,11 +56,31 @@ class MainActivity : AppCompatActivity() {
 
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        UpdateHandler.setAutoSync()
-
         if (savedInstanceState == null) {
             getLocation()
             changeFragment(WeatherFragment.newInstance())
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                openSettings()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openSettings() {
+        Intent(this, SettingsActivity::class.java).run {
+            startActivity(this)
         }
     }
 

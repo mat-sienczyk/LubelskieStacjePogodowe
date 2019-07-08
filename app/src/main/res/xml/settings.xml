@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="sync"
+            app:title="@string/auto_sync" />
+
+</androidx.preference.PreferenceScreen>

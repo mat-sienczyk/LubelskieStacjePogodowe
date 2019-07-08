@@ -30,6 +30,10 @@
                   android:parentActivityName=".ui.main.MainActivity">
         </activity>
 
+        <activity android:name=".ui.settings.SettingsActivity"
+                android:parentActivityName=".ui.main.MainActivity">
+        </activity>
+
         <service
                 android:name=".background.WeatherUpdateJob"
                 android:permission="android.permission.BIND_JOB_SERVICE"

@@ -50,8 +50,14 @@ object ProcessingUtils {
 
     private fun constructAirStationModel(station: AirStationModel): AirStationModel {
         station.sensors = getSensors(station.stationId)
-        station.date = Date(station.sensors?.firstOrNull()?.data?.first{ it.value != null }?.timestamp!!)
+        station.date = getAirStationDate(station.sensors)
         return station
+    }
+
+    private fun getAirStationDate(sensors: List<AirSensorModel>?): Date? {
+        return Date(sensors?.filter { sensorModel -> sensorModel.data?.isNotEmpty()!! }
+            ?.maxBy { sensorModel -> sensorModel.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp!! }
+            ?.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp!!)
     }
 
     private fun constructWeatherStationModel(

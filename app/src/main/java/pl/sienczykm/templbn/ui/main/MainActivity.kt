@@ -3,6 +3,7 @@ package pl.sienczykm.templbn.ui.main
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import pl.sienczykm.templbn.ui.air.AirFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.ui.weather.WeatherFragment
+import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +57,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        UpdateHandler.handleAutoSync(PreferenceManager.getDefaultSharedPreferences(this), this)
 
         if (savedInstanceState == null) {
             getLocation()

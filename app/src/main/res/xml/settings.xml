@@ -2,30 +2,34 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+            app:iconSpaceReserved="false"
             app:key="@string/auto_sync_key"
             app:title="@string/auto_sync">
 
         <SwitchPreferenceCompat
-                app:defaultValue="false"
+                app:defaultValue="true"
+                app:iconSpaceReserved="false"
                 app:key="@string/enable_auto_sync_key"
                 app:title="@string/enable_auto_sync" />
 
         <ListPreference
+                app:iconSpaceReserved="false"
                 app:defaultValue="15"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/weatherIntervalOptions"
                 app:entryValues="@array/weatherIntervalValues"
                 app:key="@string/weather_sync_interval_key"
-                app:summary="%s"
+                app:summary="@string/sync_every_placeholder"
                 app:title="@string/weather_auto_sync" />
 
         <ListPreference
+                app:iconSpaceReserved="false"
                 app:defaultValue="60"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/airIntervalOptions"
                 app:entryValues="@array/airIntervalValues"
                 app:key="@string/air_sync_interval_key"
-                app:summary="%s"
+                app:summary="@string/sync_every_placeholder"
                 app:title="@string/air_auto_sync" />
 
     </PreferenceCategory>

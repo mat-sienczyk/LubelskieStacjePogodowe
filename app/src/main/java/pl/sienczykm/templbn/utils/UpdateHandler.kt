@@ -1,8 +1,10 @@
 package pl.sienczykm.templbn.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import androidx.work.*
+import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.AirUpdateJob
 import pl.sienczykm.templbn.background.AutoUpdateWorker
 import pl.sienczykm.templbn.background.StatusReceiver
@@ -76,34 +78,41 @@ object UpdateHandler {
 
     }
 
-    fun handleAutoSync(
-        enabled: Boolean,
-        weatherInterval: Long,
-        airInterval: Long
-    ) {
-        when (enabled) {
+    fun handleAutoSync(sharedPreferences: SharedPreferences, context: Context) {
+        when (sharedPreferences.getBoolean(
+            context.getString(R.string.enable_auto_sync_key),
+            true
+        )) {
             true -> {
-                setWeatherStationAutoSync(weatherInterval)
-                setAirStationAutoSync(airInterval)
+                setWeatherStationAutoSync(sharedPreferences, context)
+                setAirStationAutoSync(sharedPreferences, context)
             }
             false -> disableAutoSync()
         }
     }
 
-    fun setWeatherStationAutoSync(interval: Long) {
+    fun setWeatherStationAutoSync(sharedPreferences: SharedPreferences, context: Context, existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP) {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
-            WEATHER_SYNC_WORK_NAME, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest(
-                interval,
+            WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
+                getInterval(
+                    sharedPreferences,
+                    context.getString(R.string.weather_sync_interval_key),
+                    context.getString(R.string.weather_default_interval)
+                ),
                 WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY
             )
         )
     }
 
-    fun setAirStationAutoSync(interval: Long) {
+    fun setAirStationAutoSync(sharedPreferences: SharedPreferences, context: Context, existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP) {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
-            AIR_SYNC_WORK_NAME, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest(
-                interval,
+            AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
+                getInterval(
+                    sharedPreferences,
+                    context.getString(R.string.air_sync_interval_key),
+                    context.getString(R.string.air_default_interval)
+                ),
                 AirStationModel.getStations().map { it.stationId }.toIntArray(),
                 AirStationModel.ID_KEY
             )
@@ -130,4 +139,7 @@ object UpdateHandler {
             .addTag(AUTO_SYNC_TAG)
             .build()
     }
+
+    private fun getInterval(sharedPreferences: SharedPreferences, key: String, defValue: String) =
+        sharedPreferences.getString(key, defValue)!!.toLong()
 }

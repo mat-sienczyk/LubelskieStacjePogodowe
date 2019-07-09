@@ -14,8 +14,18 @@
 
         <ListPreference
                 app:iconSpaceReserved="false"
+                app:defaultValue="@string/sync_default"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/connectionOptions"
+                app:entryValues="@array/connectionValues"
+                app:key="@string/sync_via_key"
+                app:summary="%s"
+                app:title="@string/sync_via" />
+
+        <ListPreference
                 app:defaultValue="15"
                 app:dependency="@string/enable_auto_sync_key"
+                app:iconSpaceReserved="false"
                 app:entries="@array/weatherIntervalOptions"
                 app:entryValues="@array/weatherIntervalValues"
                 app:key="@string/weather_sync_interval_key"

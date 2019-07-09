@@ -14,14 +14,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.LocationServices
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
@@ -133,9 +134,18 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
         if (updated == 1) {
             if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(R.string.added_to_favorites)
+//            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
             getList().smoothScrollToPosition(0)
         }
     }
+
+    private fun getSmoothScrollerToTop(position: Int = 0): LinearSmoothScroller =
+        object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }.apply { targetPosition = position }
+
 
     override fun handleError(message: String?) {
         Timber.e(Throwable(message))

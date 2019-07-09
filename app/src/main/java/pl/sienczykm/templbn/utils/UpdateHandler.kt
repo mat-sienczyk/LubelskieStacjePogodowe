@@ -12,7 +12,6 @@ import pl.sienczykm.templbn.background.WeatherUpdateJob
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
-
 object UpdateHandler {
 
     const val STATION_ID_ARRAY_KEY = "station_id_array_key"
@@ -20,10 +19,6 @@ object UpdateHandler {
     const val AUTO_SYNC_TAG = "auto_sync_tag"
     const val AIR_SYNC_WORK_NAME = "air_sync_tag"
     const val WEATHER_SYNC_WORK_NAME = "auto_sync_tag"
-
-    private val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .build()
 
     fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
@@ -84,14 +79,26 @@ object UpdateHandler {
             true
         )) {
             true -> {
-                setWeatherStationAutoSync(sharedPreferences, context)
-                setAirStationAutoSync(sharedPreferences, context)
+                setWeatherStationAutoSync(
+                    sharedPreferences,
+                    context,
+                    ExistingPeriodicWorkPolicy.KEEP
+                )
+                setAirStationAutoSync(
+                    sharedPreferences,
+                    context,
+                    ExistingPeriodicWorkPolicy.KEEP
+                )
             }
             false -> disableAutoSync()
         }
     }
 
-    fun setWeatherStationAutoSync(sharedPreferences: SharedPreferences, context: Context, existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP) {
+    fun setWeatherStationAutoSync(
+        sharedPreferences: SharedPreferences,
+        context: Context,
+        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
+    ) {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 getInterval(
@@ -100,12 +107,17 @@ object UpdateHandler {
                     context.getString(R.string.weather_default_interval)
                 ),
                 WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
-                WeatherStationModel.ID_KEY
+                WeatherStationModel.ID_KEY,
+                syncViaWifiOnly(sharedPreferences, context)
             )
         )
     }
 
-    fun setAirStationAutoSync(sharedPreferences: SharedPreferences, context: Context, existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP) {
+    fun setAirStationAutoSync(
+        sharedPreferences: SharedPreferences,
+        context: Context,
+        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
+    ) {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 getInterval(
@@ -114,7 +126,8 @@ object UpdateHandler {
                     context.getString(R.string.air_default_interval)
                 ),
                 AirStationModel.getStations().map { it.stationId }.toIntArray(),
-                AirStationModel.ID_KEY
+                AirStationModel.ID_KEY,
+                syncViaWifiOnly(sharedPreferences, context)
             )
         )
     }
@@ -126,7 +139,8 @@ object UpdateHandler {
     private fun periodicWorkRequest(
         minutes: Long,
         stationsIntArray: IntArray,
-        type: String
+        type: String,
+        onlyWifi: Boolean
     ): PeriodicWorkRequest {
         return PeriodicWorkRequestBuilder<AutoUpdateWorker>(minutes, TimeUnit.MINUTES)
             .setInputData(
@@ -135,11 +149,26 @@ object UpdateHandler {
                     STATION_TYPE_KEY to type
                 )
             )
-            .setConstraints(constraints)
+            .setConstraints(buildConstraints(onlyWifi))
             .addTag(AUTO_SYNC_TAG)
             .build()
     }
 
+    private fun buildConstraints(onlyWifi: Boolean) = Constraints.Builder()
+        .setRequiredNetworkType(if (onlyWifi) NetworkType.UNMETERED else NetworkType.CONNECTED)
+        .build()
+
     private fun getInterval(sharedPreferences: SharedPreferences, key: String, defValue: String) =
         sharedPreferences.getString(key, defValue)!!.toLong()
+
+    private fun syncViaWifiOnly(sharedPreferences: SharedPreferences, context: Context): Boolean {
+        return when (sharedPreferences.getString(
+            context.getString(R.string.sync_via_key),
+            context.getString(R.string.sync_default)
+        )) {
+            context.getString(R.string.sync_default) -> false
+            else -> true
+        }
+    }
 }
+

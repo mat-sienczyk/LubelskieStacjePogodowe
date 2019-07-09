@@ -36,6 +36,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 sharedPreferences,
                 context!!
             )
+            getString(R.string.sync_via_key) -> {
+                UpdateHandler.setWeatherStationAutoSync(
+                    sharedPreferences,
+                    context!!,
+                    ExistingPeriodicWorkPolicy.REPLACE
+                )
+                UpdateHandler.setAirStationAutoSync(
+                    sharedPreferences,
+                    context!!,
+                    ExistingPeriodicWorkPolicy.REPLACE
+                )
+            }
             getString(R.string.weather_sync_interval_key) -> UpdateHandler.setWeatherStationAutoSync(
                 sharedPreferences,
                 context!!,

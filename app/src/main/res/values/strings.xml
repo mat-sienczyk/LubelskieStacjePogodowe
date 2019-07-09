@@ -46,17 +46,20 @@
     <!--settings-->
     <string name="auto_sync">"Automatyczna synchornizacja"</string>
     <string name="enable_auto_sync">"Włącz automatyczną synchornizację"</string>
+    <string name="sync_via">"Synchronizowanie przez"</string>
     <string name="weather_auto_sync">"Stacje pogodowe"</string>
     <string name="air_auto_sync">"Stacje powietrzne"</string>
     <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
     <string name="weather_default_interval">"15"</string>
     <string name="air_default_interval">"60"</string>
+    <string name="sync_default">"all"</string>
 
     <!--settings keys-->
     <string name="auto_sync_key">"auto_sync_key"</string>
     <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
     <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
     <string name="air_sync_interval_key">"air_sync_interval_key"</string>
+    <string name="sync_via_key">"sync_via_key"</string>
 
     <!--units-->
     <string name="m_per_sec">" m/s"</string>

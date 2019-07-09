@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="connectionOptions">
+        <item>Wi-Fi i Dane mobilne</item>
+        <item>Wi-Fi</item>
+    </string-array>
+
+    <string-array name="connectionValues">
+        <item>all</item>
+        <item>wifi</item>
+    </string-array>
+
     <string-array name="weatherIntervalOptions">
         <item>15 min</item>
         <item>30 min</item>

@@ -30,12 +30,12 @@ fun Context.isNetworkAvailable(): Boolean {
     return activeNetwork?.isConnected == true
 }
 
-fun snackbarShow(view: CoordinatorLayout, @StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+fun CoordinatorLayout.snackbarShow(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
 }
 
-fun snackbarShow(view: CoordinatorLayout, message: String, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+fun CoordinatorLayout.snackbarShow(message: String, duration: Int = Snackbar.LENGTH_LONG) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
 }
 
 fun View.show() {

@@ -165,7 +165,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     private fun showSnackbar(@StringRes message: Int) {
-        snackbarShow(getCoordinatorLayout(), message)
+        getCoordinatorLayout().snackbarShow(message)
     }
 
 }

@@ -168,6 +168,6 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     private fun showSnackbar(@StringRes message: Int) {
-        snackbarShow(getCoordinatorLayout(), message)
+        getCoordinatorLayout().snackbarShow(message)
     }
 }

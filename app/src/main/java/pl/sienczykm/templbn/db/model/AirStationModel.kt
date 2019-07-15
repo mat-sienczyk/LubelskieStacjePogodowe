@@ -4,9 +4,10 @@ package pl.sienczykm.templbn.db.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.utils.round
+import java.util.*
 
 @Entity
-data class AirStationModel constructor(
+class AirStationModel constructor(
     @Ignore
     override val stationId: Int,
     @Ignore
@@ -18,15 +19,25 @@ data class AirStationModel constructor(
 ) :
     BaseStationModel(stationId, name, latitude, longitude) {
 
-    override fun getStationUrl(): String {
-        return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
-    }
-
-    init {
-        this.url = getStationUrl()
-    }
+    override var url: String =
+        "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
+    override var favorite: Boolean = false
+    override var date: Date? = null
 
     var sensors: List<AirSensorModel>? = null
+
+    // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
+    fun copy(): AirStationModel {
+        val stationCopy =
+            AirStationModel(stationId, name, latitude, longitude)
+        stationCopy.url = url
+        stationCopy.favorite = favorite
+        stationCopy.date = date
+        stationCopy.distance = distance
+
+        stationCopy.sensors = sensors
+        return stationCopy
+    }
 
     fun getValue(sensorType: AirSensorType): Double? {
         return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }

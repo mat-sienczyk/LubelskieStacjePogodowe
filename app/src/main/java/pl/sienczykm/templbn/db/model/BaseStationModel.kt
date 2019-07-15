@@ -14,13 +14,11 @@ abstract class BaseStationModel(
     open val latitude: Double,
     open val longitude: Double
 ) {
-    lateinit var url: String
-    var favorite: Boolean = false
-    var date: Date? = null
+    abstract var url: String
+    abstract var favorite: Boolean
+    abstract var date: Date?
     @Ignore
     var distance: Double? = null
-
-    abstract fun getStationUrl(): String
 
     fun getParsedDate(): String {
         val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("pl", "PL"))

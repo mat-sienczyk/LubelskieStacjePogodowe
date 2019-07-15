@@ -6,9 +6,10 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.utils.roundAndGetString
+import java.util.*
 
 @Entity
-data class WeatherStationModel constructor(
+class WeatherStationModel constructor(
     @Ignore
     override val stationId: Int,
     var type: Type,
@@ -21,13 +22,9 @@ data class WeatherStationModel constructor(
 ) :
     BaseStationModel(stationId, name, latitude, longitude) {
 
-    override fun getStationUrl(): String {
-        return Config.BASE_WEATHER_URL + "podglad/" + stationId
-    }
-
-    init {
-        this.url = getStationUrl()
-    }
+    override var url: String = Config.BASE_WEATHER_URL + "podglad/" + stationId
+    override var favorite: Boolean = false
+    override var date: Date? = null
 
     var temperature: Double? = null
     var temperatureWind: Double? = null
@@ -47,6 +44,38 @@ data class WeatherStationModel constructor(
     //TODO set this value from preferences later
     @Ignore
     val convertWind = true
+
+    // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
+    fun copy(): WeatherStationModel {
+        val stationCopy =
+            WeatherStationModel(
+                stationId,
+                type,
+                name,
+                latitude,
+                longitude
+            )
+        stationCopy.url = url
+        stationCopy.favorite = favorite
+        stationCopy.date = date
+        stationCopy.distance = distance
+
+        stationCopy.temperature = temperature
+        stationCopy.temperatureWind = temperatureWind
+        stationCopy.temperatureGround = temperatureGround
+        stationCopy.windSpeed = windSpeed
+        stationCopy.windDir = windDir
+        stationCopy.humidity = humidity
+        stationCopy.pressure = pressure
+        stationCopy.rainToday = rainToday
+        stationCopy.temperatureData = temperatureData
+        stationCopy.humidityData = humidityData
+        stationCopy.windSpeedData = windSpeedData
+        stationCopy.temperatureWindData = temperatureWindData
+        stationCopy.pressureData = pressureData
+        stationCopy.rainTodayData = rainTodayData
+        return stationCopy
+    }
 
     fun getParsedTemperature(roundPlaces: Int = 0): String? {
         return temperature.roundAndGetString(roundPlaces)

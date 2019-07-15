@@ -87,8 +87,9 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     fun updateCoordinate() {
-        if (activity.isLocationPermissionGranted()) {
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+        if (requireContext().isLocationPermissionGranted()) {
+            val fusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(requireActivity())
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     when {
@@ -121,11 +122,11 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun onLongClickItem(v: View, position: Int) {
         val station = stationViewModel.stations.value?.get(position)
         val updated = when (station) {
-            is WeatherStationModel -> AppDb.getDatabase(activity?.applicationContext!!).weatherStationDao().updateFavorite(
+            is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
                 station.stationId,
                 !station.favorite
             )
-            is AirStationModel -> AppDb.getDatabase(activity?.applicationContext!!).airStationDao().updateFavorite(
+            is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
                 station.stationId,
                 !station.favorite
             )

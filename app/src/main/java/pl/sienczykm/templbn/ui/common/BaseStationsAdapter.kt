@@ -32,12 +32,12 @@ abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: Recyc
             binding.root.setOnLongClickListener(this)
         }
 
-        override fun onClick(v: View?) {
-            clickListener.onClickItem(v!!, layoutPosition)
+        override fun onClick(v: View) {
+            clickListener.onClickItem(v, layoutPosition)
         }
 
-        override fun onLongClick(v: View?): Boolean {
-            clickListener.onLongClickItem(v!!, layoutPosition)
+        override fun onLongClick(v: View): Boolean {
+            clickListener.onLongClickItem(v, layoutPosition)
             return true
         }
 

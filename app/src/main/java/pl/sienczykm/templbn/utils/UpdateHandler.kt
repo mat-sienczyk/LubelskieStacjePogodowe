@@ -159,8 +159,9 @@ object UpdateHandler {
         .setRequiredNetworkType(if (onlyWifi) NetworkType.UNMETERED else NetworkType.CONNECTED)
         .build()
 
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS") // defValue is non-nullable
     private fun getInterval(sharedPreferences: SharedPreferences, key: String, defValue: String) =
-        sharedPreferences.getString(key, defValue)!!.toLong()
+        sharedPreferences.getString(key, defValue).toLong()
 
     private fun syncViaWifiOnly(sharedPreferences: SharedPreferences, context: Context): Boolean {
         return when (sharedPreferences.getString(

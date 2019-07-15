@@ -21,9 +21,7 @@ class AirFragment :
     }
 
     override fun getViewModel(): AirViewModel {
-        return activity?.run {
-            ViewModelProviders.of(this).get(AirViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        return ViewModelProviders.of(requireActivity()).get(AirViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {

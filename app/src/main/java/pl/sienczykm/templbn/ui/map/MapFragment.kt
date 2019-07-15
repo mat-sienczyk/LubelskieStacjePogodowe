@@ -99,7 +99,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
         map.setOnInfoWindowClickListener(this)
 
-        if (activity.isLocationPermissionGranted()) {
+        if (requireContext().isLocationPermissionGranted()) {
             map.isMyLocationEnabled = true
         }
     }
@@ -116,7 +116,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
 
     override fun onInfoWindowClick(marker: Marker) {
-        val intent = Intent(activity, StationActivity::class.java).apply {
+        val intent = Intent(requireContext(), StationActivity::class.java).apply {
             putExtra(
                 StationActivity.STATION_TYPE_KEY,
                 if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR

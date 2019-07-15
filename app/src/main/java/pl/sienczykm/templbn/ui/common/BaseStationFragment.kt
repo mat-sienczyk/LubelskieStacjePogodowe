@@ -14,6 +14,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -53,7 +54,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val stationId = arguments?.getInt(StationActivity.STATION_ID_KEY, 0)!!
+        val stationId = requireArguments().getInt(StationActivity.STATION_ID_KEY, 0)
         viewModel = getViewModel(stationId)
         viewModel.setNavigator(this)
         setHasOptionsMenu(true)
@@ -74,13 +75,13 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
 
         getSwipeToRefreshLayout().setColorSchemeColors(
-            resources.getColor(R.color.main_yellow),
-            resources.getColor(R.color.main_red),
-            resources.getColor(R.color.main_green)
+            ContextCompat.getColor(requireContext(), R.color.main_yellow),
+            ContextCompat.getColor(requireContext(), R.color.main_red),
+            ContextCompat.getColor(requireContext(), R.color.main_green)
         )
 
         viewModel.station.observe(this, Observer { station ->
-            activity?.title = station.name
+            requireActivity().title = station.name
         })
 
         bottomSheetBehavior = BottomSheetBehavior.from(getBottomSheetLayout())
@@ -93,8 +94,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     private fun getDrawable(@DrawableRes drawableResId: Int, @ColorInt color: Int = Color.WHITE): Drawable? {
-        val originalDrawable = resources.getDrawable(drawableResId)
-        val wrappedDrawable = DrawableCompat.wrap(originalDrawable)
+        val originalDrawable = ContextCompat.getDrawable(requireContext(), drawableResId)
+        val wrappedDrawable = originalDrawable?.let { DrawableCompat.wrap(it) } ?: return null
         DrawableCompat.setTint(wrappedDrawable, color)
         return wrappedDrawable
     }
@@ -122,11 +123,11 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     private fun handleFavoriteClick() {
         val station = viewModel.station.value
         val updated = when (station) {
-            is WeatherStationModel -> AppDb.getDatabase(activity?.applicationContext!!).weatherStationDao().updateFavorite(
+            is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
                 station.stationId,
                 !station.favorite
             )
-            is AirStationModel -> AppDb.getDatabase(activity?.applicationContext!!).airStationDao().updateFavorite(
+            is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
                 station.stationId,
                 !station.favorite
             )
@@ -142,11 +143,11 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         if (Patterns.WEB_URL.matcher(url).matches()) {
             val webPage = Uri.parse(url)
             val intent = Intent(Intent.ACTION_VIEW, webPage)
-            if (intent.resolveActivity(activity!!.packageManager) != null) {
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 val builder = CustomTabsIntent.Builder()
 //                builder.setToolbarColor(resources.getColor(R.color.colorPrimary))
                 val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(activity, webPage)
+                customTabsIntent.launchUrl(requireContext(), webPage)
             } else {
                 showSnackbar(R.string.error_no_web_browser)
             }

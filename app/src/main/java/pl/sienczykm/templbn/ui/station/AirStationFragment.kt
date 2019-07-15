@@ -26,12 +26,10 @@ class AirStationFragment :
     }
 
     override fun getViewModel(stationId: Int): AirStationViewModel {
-        return activity?.run {
-            ViewModelProviders.of(
-                this,
-                AirStationViewModelFactory(application, stationId)
-            ).get(AirStationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        return ViewModelProviders.of(
+            requireActivity(),
+            AirStationViewModelFactory(requireActivity().application, stationId)
+        ).get(AirStationViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {

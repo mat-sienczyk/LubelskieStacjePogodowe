@@ -21,9 +21,7 @@ class WeatherFragment :
     }
 
     override fun getViewModel(): WeatherViewModel {
-        return activity?.run {
-            ViewModelProviders.of(this).get(WeatherViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        return ViewModelProviders.of(requireActivity()).get(WeatherViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {

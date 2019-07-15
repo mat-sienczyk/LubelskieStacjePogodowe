@@ -26,12 +26,10 @@ class WeatherStationFragment :
     }
 
     override fun getViewModel(stationId: Int): WeatherStationViewModel {
-        return activity?.run {
-            ViewModelProviders.of(
-                this,
-                WeatherStationViewModelFactory(application, stationId)
-            ).get(WeatherStationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        return ViewModelProviders.of(
+            requireActivity(),
+            WeatherStationViewModelFactory(requireActivity().application, stationId)
+        ).get(WeatherStationViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {

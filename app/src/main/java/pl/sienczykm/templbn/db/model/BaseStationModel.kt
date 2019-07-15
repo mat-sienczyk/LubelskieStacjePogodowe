@@ -22,6 +22,9 @@ abstract class BaseStationModel(
 
     abstract fun getStationUrl(): String
 
+    // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
+    abstract fun copy(): BaseStationModel
+
     fun getParsedDate(): String {
         val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("pl", "PL"))
         return outputFormat.format(date)

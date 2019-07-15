@@ -28,8 +28,7 @@ class AirStationModel constructor(
 
     var sensors: List<AirSensorModel>? = null
 
-    // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
-    fun copy(): AirStationModel {
+    override fun copy(): AirStationModel {
         val stationCopy =
             AirStationModel(stationId, name, latitude, longitude)
         stationCopy.url = url

@@ -48,8 +48,7 @@ class WeatherStationModel constructor(
     @Ignore
     val convertWind = true
 
-    // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
-    fun copy(): WeatherStationModel {
+    override fun copy(): WeatherStationModel {
         val stationCopy =
             WeatherStationModel(
                 stationId,

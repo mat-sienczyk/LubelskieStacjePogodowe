@@ -25,16 +25,8 @@ fun addClickEffect(view: View, add: Boolean) {
 @BindingAdapter("adapter")
 fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {
     val adapter = recyclerView.adapter as BaseStationsAdapter<*>
-    adapter.submitList(stations
-        // need to create deep copy of station list because of problem with ListAdapter.DiffUtil
-        ?.map {
-            when (it) {
-                is AirStationModel -> it.copy()
-                is WeatherStationModel -> it.copy()
-                else -> it
-            }
-        }
-        ?: emptyList())
+    // need to create deep copy of station list because of later problems with ListAdapter.DiffUtil
+    adapter.submitList(stations?.map { stationModel -> stationModel.copy() } ?: emptyList())
 }
 
 @BindingAdapter("airQuality")

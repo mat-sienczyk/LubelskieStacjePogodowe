@@ -6,7 +6,6 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.utils.roundAndGetString
-import java.util.*
 
 @Entity
 class WeatherStationModel constructor(
@@ -22,9 +21,13 @@ class WeatherStationModel constructor(
 ) :
     BaseStationModel(stationId, name, latitude, longitude) {
 
-    override var url: String = Config.BASE_WEATHER_URL + "podglad/" + stationId
-    override var favorite: Boolean = false
-    override var date: Date? = null
+    override fun getStationUrl(): String {
+        return Config.BASE_WEATHER_URL + "podglad/" + stationId
+    }
+
+    init {
+        this.url = getStationUrl()
+    }
 
     var temperature: Double? = null
     var temperatureWind: Double? = null
@@ -75,6 +78,24 @@ class WeatherStationModel constructor(
         stationCopy.pressureData = pressureData
         stationCopy.rainTodayData = rainTodayData
         return stationCopy
+    }
+
+    fun dataTheSame(other: BaseStationModel?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (favorite != other.favorite) return false
+        if (date != other.date) return false
+        if (distance != other.distance) return false
+
+        other as WeatherStationModel
+
+        if (temperature != other.temperature) return false
+        if (windSpeed != other.windSpeed) return false
+        if (windDir != other.windDir) return false
+        if (humidity != other.humidity) return false
+        if (pressure != other.pressure) return false
+
+        return true
     }
 
     fun getParsedTemperature(roundPlaces: Int = 0): String? {

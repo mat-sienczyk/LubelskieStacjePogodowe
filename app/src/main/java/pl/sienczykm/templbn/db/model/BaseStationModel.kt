@@ -14,11 +14,13 @@ abstract class BaseStationModel(
     open val latitude: Double,
     open val longitude: Double
 ) {
-    abstract var url: String
-    abstract var favorite: Boolean
-    abstract var date: Date?
+    lateinit var url: String
+    var favorite: Boolean = false
+    var date: Date? = null
     @Ignore
     var distance: Double? = null
+
+    abstract fun getStationUrl(): String
 
     fun getParsedDate(): String {
         val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale("pl", "PL"))
@@ -32,15 +34,5 @@ abstract class BaseStationModel(
             distance!! < 1 -> (distance.round(3)?.times(1000))?.roundToInt().toString() + " m"
             else -> distance.round(2)?.toString() + " km"
         }
-    }
-
-    fun dataChanged(other: BaseStationModel?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (favorite != other.favorite) return false
-        if (date != other.date) return false
-        if (distance != other.distance) return false
-
-        return true
     }
 }

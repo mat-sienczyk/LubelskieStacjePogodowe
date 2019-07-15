@@ -4,7 +4,6 @@ package pl.sienczykm.templbn.db.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.utils.round
-import java.util.*
 
 @Entity
 class AirStationModel constructor(
@@ -19,10 +18,13 @@ class AirStationModel constructor(
 ) :
     BaseStationModel(stationId, name, latitude, longitude) {
 
-    override var url: String =
-        "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
-    override var favorite: Boolean = false
-    override var date: Date? = null
+    override fun getStationUrl(): String {
+        return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
+    }
+
+    init {
+        this.url = getStationUrl()
+    }
 
     var sensors: List<AirSensorModel>? = null
 
@@ -37,6 +39,20 @@ class AirStationModel constructor(
 
         stationCopy.sensors = sensors
         return stationCopy
+    }
+
+    fun dataTheSame(other: BaseStationModel?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (favorite != other.favorite) return false
+        if (date != other.date) return false
+        if (distance != other.distance) return false
+
+        other as AirStationModel
+
+        if (sensors != other.sensors) return false
+
+        return true
     }
 
     fun getValue(sensorType: AirSensorType): Double? {

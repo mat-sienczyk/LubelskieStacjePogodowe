@@ -8,9 +8,7 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.db.model.WeatherStationModel
 
 abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: RecyclerViewClickListener) :
     ListAdapter<BaseStationModel, BaseStationsAdapter<N>.StationsViewHolder>(DiffCallback()) {
@@ -59,11 +57,7 @@ class DiffCallback : DiffUtil.ItemCallback<BaseStationModel>() {
     }
 
     override fun areContentsTheSame(oldItem: BaseStationModel, newItem: BaseStationModel): Boolean {
-        return when (oldItem) {
-            is AirStationModel -> oldItem.dataTheSame(newItem)
-            is WeatherStationModel -> oldItem.dataTheSame(newItem)
-            else -> false
-        }
+        return oldItem.dataTheSame(newItem)
     }
 
 }

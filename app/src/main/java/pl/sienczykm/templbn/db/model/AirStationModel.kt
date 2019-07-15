@@ -41,18 +41,13 @@ class AirStationModel constructor(
         return stationCopy
     }
 
-    fun dataTheSame(other: BaseStationModel?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (favorite != other.favorite) return false
-        if (date != other.date) return false
-        if (distance != other.distance) return false
+    override fun dataTheSame(other: BaseStationModel?): Boolean {
+        if (super.dataTheSame(other)) {
+            other as AirStationModel
+            if (sensors != other.sensors) return false
+        }
 
-        other as AirStationModel
-
-        if (sensors != other.sensors) return false
-
-        return true
+        return super.dataTheSame(other)
     }
 
     fun getValue(sensorType: AirSensorType): Double? {

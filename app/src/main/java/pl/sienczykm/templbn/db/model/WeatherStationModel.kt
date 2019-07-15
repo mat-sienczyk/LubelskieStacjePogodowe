@@ -80,22 +80,18 @@ class WeatherStationModel constructor(
         return stationCopy
     }
 
-    fun dataTheSame(other: BaseStationModel?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (favorite != other.favorite) return false
-        if (date != other.date) return false
-        if (distance != other.distance) return false
+    override fun dataTheSame(other: BaseStationModel?): Boolean {
+        if (super.dataTheSame(other)) {
+            other as WeatherStationModel
 
-        other as WeatherStationModel
+            if (temperature != other.temperature) return false
+            if (windSpeed != other.windSpeed) return false
+            if (windDir != other.windDir) return false
+            if (humidity != other.humidity) return false
+            if (pressure != other.pressure) return false
+        }
 
-        if (temperature != other.temperature) return false
-        if (windSpeed != other.windSpeed) return false
-        if (windDir != other.windDir) return false
-        if (humidity != other.humidity) return false
-        if (pressure != other.pressure) return false
-
-        return true
+        return super.dataTheSame(other)
     }
 
     fun getParsedTemperature(roundPlaces: Int = 0): String? {

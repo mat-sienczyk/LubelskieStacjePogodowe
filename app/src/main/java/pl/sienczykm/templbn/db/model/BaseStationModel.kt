@@ -35,4 +35,14 @@ abstract class BaseStationModel(
             else -> distance.round(2)?.toString() + " km"
         }
     }
+
+    open fun dataTheSame(other: BaseStationModel?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (favorite != other.favorite) return false
+        if (date != other.date) return false
+        if (distance != other.distance) return false
+
+        return true
+    }
 }

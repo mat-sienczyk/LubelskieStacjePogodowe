@@ -7,8 +7,8 @@
             app:title="@string/auto_sync">
 
         <SwitchPreferenceCompat
-                app:defaultValue="true"
                 app:iconSpaceReserved="false"
+                app:defaultValue="@bool/auto_sync_default"
                 app:key="@string/enable_auto_sync_key"
                 app:title="@string/enable_auto_sync" />
 
@@ -23,9 +23,9 @@
                 app:title="@string/sync_via" />
 
         <ListPreference
-                app:defaultValue="15"
-                app:dependency="@string/enable_auto_sync_key"
+                app:defaultValue="@string/weather_default_interval"
                 app:iconSpaceReserved="false"
+                app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/weatherIntervalOptions"
                 app:entryValues="@array/weatherIntervalValues"
                 app:key="@string/weather_sync_interval_key"
@@ -34,7 +34,7 @@
 
         <ListPreference
                 app:iconSpaceReserved="false"
-                app:defaultValue="60"
+                app:defaultValue="@string/air_default_interval"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/airIntervalOptions"
                 app:entryValues="@array/airIntervalValues"

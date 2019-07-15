@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.preference.PreferenceManager
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
@@ -12,6 +13,7 @@ import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import pl.sienczykm.templbn.R
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.*
@@ -94,4 +96,11 @@ fun Double?.roundAndGetString(places: Int = 0): String? {
             this.round(places)?.toString()?.replace(".", ",")
         }
     }
+}
+
+fun Context.isAutoUpdateEnabled(): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+        getString(R.string.enable_auto_sync_key),
+        resources.getBoolean(R.bool.auto_sync_default)
+    )
 }

@@ -12,6 +12,7 @@ import pl.sienczykm.templbn.background.WeatherUpdateJob
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
+
 object UpdateHandler {
 
     const val STATION_ID_ARRAY_KEY = "station_id_array_key"
@@ -76,7 +77,7 @@ object UpdateHandler {
     fun handleAutoSync(sharedPreferences: SharedPreferences, context: Context) {
         when (sharedPreferences.getBoolean(
             context.getString(R.string.enable_auto_sync_key),
-            true
+            context.resources.getBoolean(R.bool.auto_sync_default)
         )) {
             true -> {
                 setWeatherStationAutoSync(

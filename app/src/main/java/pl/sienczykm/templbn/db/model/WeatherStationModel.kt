@@ -79,8 +79,8 @@ class WeatherStationModel constructor(
         return stationCopy
     }
 
-    override fun dataTheSame(other: BaseStationModel?): Boolean {
-        if (super.dataTheSame(other)) {
+    override fun isContentTheSame(other: BaseStationModel?): Boolean {
+        if (super.isContentTheSame(other)) {
             other as WeatherStationModel
 
             if (temperature != other.temperature) return false
@@ -90,7 +90,7 @@ class WeatherStationModel constructor(
             if (pressure != other.pressure) return false
         }
 
-        return super.dataTheSame(other)
+        return super.isContentTheSame(other)
     }
 
     fun getParsedTemperature(roundPlaces: Int = 0): String? {

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationViewModel
+import pl.sienczykm.templbn.ui.station.common.BaseStationViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 
 class AirStationViewModelFactory(

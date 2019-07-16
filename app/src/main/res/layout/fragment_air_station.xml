@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -9,14 +8,15 @@
 
         <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
-        <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel"/>
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/coordinator_layout">
+            android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_layout"
@@ -33,33 +33,36 @@
                         android:layout_height="wrap_content">
 
                     <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
                             app:cardCornerRadius="6dp"
                             app:cardElevation="6dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/cardView2"
                             app:layout_constraintEnd_toEndOf="parent"
-                            android:id="@+id/cardView"
-                            app:layout_constraintBottom_toTopOf="@+id/cardView2" android:layout_marginStart="8dp"
-                            android:layout_marginBottom="8dp" android:layout_marginEnd="8dp"
-                            android:layout_marginTop="8dp">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <LinearLayout android:layout_width="match_parent"
-                                      android:layout_height="match_parent"
-                                      android:orientation="vertical">
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
 
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:textStyle="bold"
                                     android:gravity="center"
-                                    android:text="@string/station_title_air"/>
+                                    android:text="@string/station_title_air"
+                                    android:textStyle="bold" />
 
                             <include
                                     layout="@layout/row_station_data"
-                                    app:metadata="@{@string/station_date}"
                                     app:chartData="@{null}"
+                                    app:metadata="@{@string/station_date}"
                                     app:value="@{viewModel.station.getParsedDate()}"
                                     app:viewModel="@{viewModel}" />
 
@@ -73,9 +76,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM25)}"
                                         app:sensor="@{AirSensorType.PM25}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM25)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -83,9 +86,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM10)}"
                                         app:sensor="@{AirSensorType.PM10}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM10)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -93,9 +96,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.O3)}"
                                         app:sensor="@{AirSensorType.O3}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.O3)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -103,9 +106,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.NO2)}"
                                         app:sensor="@{AirSensorType.NO2}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.NO2)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -113,9 +116,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.SO2)}"
                                         app:sensor="@{AirSensorType.SO2}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.SO2)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -123,9 +126,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.C6H6)}"
                                         app:sensor="@{AirSensorType.C6H6}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.C6H6)}"
                                         app:unit="@{@string/microgram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -133,9 +136,9 @@
                                         layout="@layout/air_value_and_data"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.CO)}"
                                         app:sensor="@{AirSensorType.CO}"
                                         app:station="@{viewModel.station}"
-                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.CO)}"
                                         app:unit="@{@string/milligram_per_cubic_metre}"
                                         app:viewModel="@{viewModel}" />
 
@@ -146,26 +149,29 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView2"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:onClick="@{() -> viewModel.openCustomTab()}"
                             app:cardCornerRadius="6dp"
                             app:cardElevation="6dp"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            android:onClick="@{() -> viewModel.openCustomTab()}"
-                            android:clickable="true"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/cardView2"
-                            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-                            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
-                            android:focusable="true"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/station_open_website"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center"
+                                android:text="@string/station_open_website" />
 
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAirStationBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationFragment
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.ui.station.common.BaseStationFragment
 
 class AirStationFragment :
     BaseStationFragment<AirStationModel, AirStationViewModel, FragmentAirStationBinding>() {

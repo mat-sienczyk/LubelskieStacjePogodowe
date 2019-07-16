@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.common
+package pl.sienczykm.templbn.ui.list.common
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -19,33 +18,27 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.LocationServices
-import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
-import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
-import pl.sienczykm.templbn.ui.list.common.LatLon
+import pl.sienczykm.templbn.ui.common.BaseNavigator
+import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
-abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, N : ViewDataBinding, L : ViewDataBinding> :
+abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, L : ViewDataBinding> :
     Fragment(), RecyclerViewClickListener, BaseNavigator {
 
-    var coordinates: LatLon? = null
-
     lateinit var stationViewModel: T
-    lateinit var binding: N
+    lateinit var binding: FragmentListBinding
 
     abstract fun getViewModel(): T
-
-    @LayoutRes
-    abstract fun getLayoutId(): Int
 
     abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
 
@@ -56,8 +49,8 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     abstract fun getAdapter(): BaseStationsAdapter<L>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        binding.setVariable(BR.viewModel, stationViewModel)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
+        binding.viewModel = stationViewModel
         binding.lifecycleOwner = this
         return binding.root
     }

@@ -40,13 +40,13 @@ class AirStationModel constructor(
         return stationCopy
     }
 
-    override fun dataTheSame(other: BaseStationModel?): Boolean {
-        if (super.dataTheSame(other)) {
+    override fun isContentTheSame(other: BaseStationModel?): Boolean {
+        if (super.isContentTheSame(other)) {
             other as AirStationModel
             if (sensors != other.sensors) return false
         }
 
-        return super.dataTheSame(other)
+        return super.isContentTheSame(other)
     }
 
     fun getValue(sensorType: AirSensorType): Double? {

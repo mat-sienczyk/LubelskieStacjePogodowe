@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.common
+package pl.sienczykm.templbn.ui.station.common
 
 import android.content.Intent
 import android.graphics.Color
@@ -30,6 +30,7 @@ import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber

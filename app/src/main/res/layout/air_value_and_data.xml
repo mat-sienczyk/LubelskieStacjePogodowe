@@ -29,7 +29,7 @@
 
         <variable
                 name="viewModel"
-                type="pl.sienczykm.templbn.ui.common.BaseStationViewModel" />
+                type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
 
     </data>
 

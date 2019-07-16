@@ -100,7 +100,7 @@ object UpdateHandler {
         context: Context,
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 getInterval(
                     sharedPreferences,

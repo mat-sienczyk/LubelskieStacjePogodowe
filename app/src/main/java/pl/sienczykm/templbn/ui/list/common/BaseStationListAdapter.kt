@@ -60,7 +60,7 @@ class DiffCallback : DiffUtil.ItemCallback<BaseStationModel>() {
     }
 
     override fun areContentsTheSame(oldItem: BaseStationModel, newItem: BaseStationModel): Boolean {
-        return oldItem.dataTheSame(newItem)
+        return oldItem.isContentTheSame(newItem)
     }
 
 }

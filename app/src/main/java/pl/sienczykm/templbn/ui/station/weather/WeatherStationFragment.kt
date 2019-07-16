@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentWeatherStationBinding
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationFragment
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.ui.station.common.BaseStationFragment
 
 class WeatherStationFragment :
     BaseStationFragment<WeatherStationModel, WeatherStationViewModel, FragmentWeatherStationBinding>() {

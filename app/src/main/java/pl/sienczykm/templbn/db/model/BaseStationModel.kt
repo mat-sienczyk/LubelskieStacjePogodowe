@@ -39,7 +39,7 @@ abstract class BaseStationModel(
         }
     }
 
-    open fun dataTheSame(other: BaseStationModel?): Boolean {
+    open fun isContentTheSame(other: BaseStationModel?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         if (favorite != other.favorite) return false

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.station.weather.WeatherStationViewModel"/>
+
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.station.weather.WeatherStationViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,8 +37,10 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             android:id="@+id/cardView"
-                            app:layout_constraintBottom_toTopOf="@+id/cardView2" android:layout_marginStart="8dp"
-                            android:layout_marginBottom="8dp" android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toTopOf="@+id/cardView2"
                             android:layout_marginTop="8dp">
 
                         <LinearLayout
@@ -50,7 +53,7 @@
                                     android:layout_height="wrap_content"
                                     android:textStyle="bold"
                                     android:gravity="center"
-                                    android:text="@string/station_title_weather"/>
+                                    android:text="@string/station_title_weather" />
 
                             <include
                                     layout="@layout/row_station_data"
@@ -129,9 +132,12 @@
                             android:onClick="@{() -> viewModel.openCustomTab()}"
                             android:clickable="true"
                             android:foreground="?android:attr/selectableItemBackground"
-                            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/cardView2"
-                            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-                            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+                            android:id="@+id/cardView2"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             android:focusable="true"
                             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
@@ -139,7 +145,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/station_open_website"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
 
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>

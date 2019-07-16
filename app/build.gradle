@@ -16,7 +16,14 @@ android {
         versionCode Integer.parseInt(new Date().format('yyyyMMddHH'))
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false

@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.weather
+package pl.sienczykm.templbn.ui.list.weather
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
@@ -9,7 +9,7 @@ import pl.sienczykm.templbn.databinding.FragmentWeatherListBinding
 import pl.sienczykm.templbn.databinding.RowWeatherStationBinding
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
-import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
+import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
 
 class WeatherFragment :
     BaseStationListFragment<WeatherStationModel, WeatherViewModel, FragmentWeatherListBinding, RowWeatherStationBinding>() {

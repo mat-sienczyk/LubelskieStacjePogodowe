@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.air
+package pl.sienczykm.templbn.ui.list.air
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
@@ -9,19 +9,19 @@ import pl.sienczykm.templbn.databinding.FragmentAirListBinding
 import pl.sienczykm.templbn.databinding.RowAirStationBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationListFragment
-import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
+import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
 
-class AirFragment :
-    BaseStationListFragment<AirStationModel, AirViewModel, FragmentAirListBinding, RowAirStationBinding>() {
+class AirStationListFragment :
+    BaseStationListFragment<AirStationModel, AirStationListViewModel, FragmentAirListBinding, RowAirStationBinding>() {
 
     companion object {
-        fun newInstance(): AirFragment {
-            return AirFragment()
+        fun newInstance(): AirStationListFragment {
+            return AirStationListFragment()
         }
     }
 
-    override fun getViewModel(): AirViewModel {
-        return ViewModelProviders.of(requireActivity()).get(AirViewModel::class.java)
+    override fun getViewModel(): AirStationListViewModel {
+        return ViewModelProviders.of(requireActivity()).get(AirStationListViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {
@@ -41,6 +41,6 @@ class AirFragment :
     }
 
     override fun getAdapter(): BaseStationsAdapter<RowAirStationBinding> {
-        return AirAdapter(this)
+        return AirStationListAdapter(this)
     }
 }

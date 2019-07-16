@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.common
+package pl.sienczykm.templbn.ui.list.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 
 abstract class BaseStationsAdapter<N : ViewDataBinding>(val clickListener: RecyclerViewClickListener) :
-    ListAdapter<BaseStationModel, BaseStationsAdapter<N>.StationsViewHolder>(DiffCallback()) {
+    ListAdapter<BaseStationModel, BaseStationsAdapter<N>.StationsViewHolder>(
+        DiffCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

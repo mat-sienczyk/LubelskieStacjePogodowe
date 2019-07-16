@@ -3,6 +3,8 @@ package pl.sienczykm.templbn.ui.station
 import android.os.Bundle
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.common.ActivityWithToolbarAndUpAction
+import pl.sienczykm.templbn.ui.station.air.AirStationFragment
+import pl.sienczykm.templbn.ui.station.weather.WeatherStationFragment
 
 
 class StationActivity : ActivityWithToolbarAndUpAction() {

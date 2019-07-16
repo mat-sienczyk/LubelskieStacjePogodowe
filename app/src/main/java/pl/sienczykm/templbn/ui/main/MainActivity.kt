@@ -14,10 +14,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.ui.air.AirFragment
+import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
-import pl.sienczykm.templbn.ui.weather.WeatherFragment
+import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_air -> {
 
-                changeFragment(AirFragment.newInstance())
+                changeFragment(AirStationListFragment.newInstance())
 
                 return@OnNavigationItemSelectedListener true
             }

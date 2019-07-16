@@ -10,7 +10,7 @@
         <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
         <variable name="viewModel"
-                  type="pl.sienczykm.templbn.ui.station.AirStationViewModel"/>
+                  type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

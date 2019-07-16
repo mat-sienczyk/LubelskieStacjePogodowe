@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
@@ -14,7 +15,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationsAdapter
+import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
 
 
 @BindingAdapter("addClickEffect")
@@ -29,19 +30,6 @@ fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {
     adapter.submitList(stations?.map { stationModel -> stationModel.copy() } ?: emptyList())
 }
 
-@BindingAdapter("airQuality")
-fun setAirValueAndQuality(textView: TextView, valueAndAirQuality: Pair<Double, AirStationModel.AirQualityIndex>?) {
-    textView.text = valueAndAirQuality?.first?.toString()
-    when (valueAndAirQuality?.second) {
-        AirStationModel.AirQualityIndex.VERY_GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_very_good))
-        AirStationModel.AirQualityIndex.GOOD -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_good))
-        AirStationModel.AirQualityIndex.MODERATE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_moderate))
-        AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy_sensitive))
-        AirStationModel.AirQualityIndex.UNHEALTHY -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_unhealthy))
-        AirStationModel.AirQualityIndex.HAZARDOUS -> textView.setTextColor(textView.context.resources.getColor(R.color.quality_hazardous))
-    }
-}
-
 @BindingAdapter("circleData", "maxValue", "unit")
 fun setCircleData(
     circleProgressView: CircleProgressView,
@@ -54,27 +42,27 @@ fun setCircleData(
     if (valueAndAirQuality != null) {
         circleProgressView.setValue(valueAndAirQuality.first.toFloat())
         when (valueAndAirQuality.second) {
-            AirStationModel.AirQualityIndex.VERY_GOOD -> setColor(
+            AirStationModel.AirQualityIndex.VERY_GOOD -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_very_good
                 )
-            AirStationModel.AirQualityIndex.GOOD -> setColor(
+            AirStationModel.AirQualityIndex.GOOD -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_good
                 )
-            AirStationModel.AirQualityIndex.MODERATE -> setColor(
+            AirStationModel.AirQualityIndex.MODERATE -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_moderate
                 )
-            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> setColor(
+            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_unhealthy_sensitive
                 )
-            AirStationModel.AirQualityIndex.UNHEALTHY -> setColor(
+            AirStationModel.AirQualityIndex.UNHEALTHY -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_unhealthy
                 )
-            AirStationModel.AirQualityIndex.HAZARDOUS -> setColor(
+            AirStationModel.AirQualityIndex.HAZARDOUS -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_hazardous
             )
@@ -84,8 +72,8 @@ fun setCircleData(
 
 }
 
-fun setColor(circleProgressView: CircleProgressView, @ColorRes colorId: Int) {
-    circleProgressView.setTextColor(circleProgressView.context.resources.getColor(colorId))
+fun setCircleProgressTextColor(circleProgressView: CircleProgressView, @ColorRes colorId: Int) {
+    circleProgressView.setTextColor(ContextCompat.getColor(circleProgressView.context, colorId))
 }
 
 @BindingAdapter(value = ["windDir", "value", "unit"], requireAll = false)
@@ -105,7 +93,7 @@ fun setWeatherData(
         )
         for (drawable: Drawable? in textView.compoundDrawables) {
             drawable?.colorFilter = PorterDuffColorFilter(
-                textView.context.resources.getColor(R.color.grey),
+                ContextCompat.getColor(textView.context, R.color.grey),
                 PorterDuff.Mode.SRC_IN
             )
         }

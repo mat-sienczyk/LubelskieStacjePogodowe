@@ -1,9 +1,11 @@
-package pl.sienczykm.templbn.ui.common
+package pl.sienczykm.templbn.ui.list.common
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import pl.sienczykm.templbn.db.model.BaseStationModel
+import pl.sienczykm.templbn.ui.common.BaseNavigator
+import pl.sienczykm.templbn.ui.common.BaseRefreshViewModel
 import pl.sienczykm.templbn.utils.haversine
 
 class LatLon(val lat: Double, val lon: Double)

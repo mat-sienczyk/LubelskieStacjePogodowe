@@ -1,13 +1,13 @@
-package pl.sienczykm.templbn.ui.air
+package pl.sienczykm.templbn.ui.list.air
 
 import android.app.Application
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationListViewModel
+import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 
-class AirViewModel(application: Application) : BaseStationListViewModel<AirStationModel>(application) {
+class AirStationListViewModel(application: Application) : BaseStationListViewModel<AirStationModel>(application) {
 
     override fun refresh() {
         UpdateHandler.syncNowSmogStations(getApplication(), receiver)

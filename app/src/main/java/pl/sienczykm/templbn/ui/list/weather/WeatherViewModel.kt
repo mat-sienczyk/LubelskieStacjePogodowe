@@ -1,9 +1,9 @@
-package pl.sienczykm.templbn.ui.weather
+package pl.sienczykm.templbn.ui.list.weather
 
 import android.app.Application
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.common.BaseStationListViewModel
+import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -24,6 +25,9 @@ import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
+import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
+import pl.sienczykm.templbn.ui.list.common.LatLon
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
@@ -73,9 +77,9 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         }
 
         getSwipeToRefreshLayout().setColorSchemeColors(
-            resources.getColor(R.color.main_yellow),
-            resources.getColor(R.color.main_red),
-            resources.getColor(R.color.main_green)
+            ContextCompat.getColor(requireContext(), R.color.main_yellow),
+            ContextCompat.getColor(requireContext(), R.color.main_red),
+            ContextCompat.getColor(requireContext(), R.color.main_green)
         )
 
         val layoutManager = LinearLayoutManager(context)
@@ -93,7 +97,11 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     when {
-                        location != null -> stationViewModel.coordinates = LatLon(location.latitude, location.longitude)
+                        location != null -> stationViewModel.coordinates =
+                            LatLon(
+                                location.latitude,
+                                location.longitude
+                            )
                         else -> stationViewModel.coordinates = null
                     }
                 }

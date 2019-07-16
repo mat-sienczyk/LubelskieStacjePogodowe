@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.station
+package pl.sienczykm.templbn.ui.station.air
 
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -7,33 +7,37 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentWeatherStationBinding
-import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.databinding.FragmentAirStationBinding
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.ui.common.BaseStationFragment
+import pl.sienczykm.templbn.ui.station.StationActivity
 
-class WeatherStationFragment :
-    BaseStationFragment<WeatherStationModel, WeatherStationViewModel, FragmentWeatherStationBinding>() {
+class AirStationFragment :
+    BaseStationFragment<AirStationModel, AirStationViewModel, FragmentAirStationBinding>() {
 
     companion object {
 
-        fun newInstance(stationId: Int): WeatherStationFragment {
+        fun newInstance(stationId: Int): AirStationFragment {
             val args = Bundle()
             args.putInt(StationActivity.STATION_ID_KEY, stationId)
-            val fragment = WeatherStationFragment()
+            val fragment = AirStationFragment()
             fragment.arguments = args
             return fragment
         }
     }
 
-    override fun getViewModel(stationId: Int): WeatherStationViewModel {
+    override fun getViewModel(stationId: Int): AirStationViewModel {
         return ViewModelProviders.of(
             requireActivity(),
-            WeatherStationViewModelFactory(requireActivity().application, stationId)
-        ).get(WeatherStationViewModel::class.java)
+            AirStationViewModelFactory(
+                requireActivity().application,
+                stationId
+            )
+        ).get(AirStationViewModel::class.java)
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_weather_station
+        return R.layout.fragment_air_station
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {

@@ -10,7 +10,6 @@
     <string name="favorite">Ulubione</string>
     <string name="settings">Ustawienia</string>
 
-
     <!--messages-->
     <string name="added_to_favorites">Stacja dodana do Ulubionych.</string>
     <string name="removed_from_favorites">Stacja usunięta z Ulubionych.</string>

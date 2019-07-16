@@ -64,7 +64,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         binding.setVariable(BR.viewModel, viewModel)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

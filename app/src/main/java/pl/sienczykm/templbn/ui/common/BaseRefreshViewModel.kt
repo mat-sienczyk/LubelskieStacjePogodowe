@@ -12,7 +12,7 @@ abstract class BaseRefreshViewModel<N : BaseNavigator>(application: Application)
 
     // changed to ObservableBoolean from LiveData because of bug https://stackoverflow.com/questions/57051586/problem-with-databinding-and-mutablelivedata/57052499?noredirect=1#comment100634672_57052499
     // also it's not a big deal according to https://medium.com/androiddevelopers/android-data-binding-library-from-observable-fields-to-livedata-in-two-steps-690a384218f2
-    val isRefreshing = ObservableBoolean().apply { set(false) }
+    val isRefreshing = ObservableBoolean(false)
     private lateinit var navigator: WeakReference<N>
 
     val receiver = object : StatusReceiver.Receiver {

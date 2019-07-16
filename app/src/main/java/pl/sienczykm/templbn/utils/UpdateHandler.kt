@@ -91,7 +91,7 @@ object UpdateHandler {
                     ExistingPeriodicWorkPolicy.KEEP
                 )
             }
-            false -> disableAutoSync()
+            false -> disableAutoSync(context)
         }
     }
 
@@ -119,7 +119,7 @@ object UpdateHandler {
         context: Context,
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 getInterval(
                     sharedPreferences,
@@ -133,8 +133,8 @@ object UpdateHandler {
         )
     }
 
-    private fun disableAutoSync() {
-        WorkManager.getInstance().cancelAllWorkByTag(AUTO_SYNC_TAG)
+    private fun disableAutoSync(context: Context) {
+        WorkManager.getInstance(context).cancelAllWorkByTag(AUTO_SYNC_TAG)
     }
 
     private fun periodicWorkRequest(

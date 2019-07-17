@@ -140,7 +140,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
     }
 
-    override fun openCustomTab(url: String?) {
+    override fun openCustomTab(url: String) {
         if (Patterns.WEB_URL.matcher(url).matches()) {
             val webPage = Uri.parse(url)
             val intent = Intent(Intent.ACTION_VIEW, webPage)

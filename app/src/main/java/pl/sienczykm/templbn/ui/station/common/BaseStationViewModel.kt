@@ -16,7 +16,7 @@ abstract class BaseStationViewModel<T : BaseStationModel>(
     abstract val station: LiveData<T>
 
     fun openCustomTab() {
-        getNavigator()?.openCustomTab(station.value?.url)
+        station.value?.let { getNavigator()?.openCustomTab(it.url) }
     }
 
     fun showChart(chartData: List<ChartDataModel>?) {

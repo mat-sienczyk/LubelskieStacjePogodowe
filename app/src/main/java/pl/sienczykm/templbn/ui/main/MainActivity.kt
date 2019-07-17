@@ -3,21 +3,21 @@ package pl.sienczykm.templbn.ui.main
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
+import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
-import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 

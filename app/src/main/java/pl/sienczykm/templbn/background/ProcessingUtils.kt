@@ -126,7 +126,7 @@ object ProcessingUtils {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("pl", "PL"))
         inputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
-        return inputFormat.parse(stringDate)
+        return stringDate?.let { inputFormat.parse(it) }
     }
 
     private fun parseChartData(chartData: List<List<Double>?>?): List<ChartDataModel>? {
@@ -168,24 +168,24 @@ object ProcessingUtils {
         return if (airSensorData?.key == AirStationModel.AirSensorType.CO.paramKey) {
             airSensorData.values?.reversed()?.map { sensorValue ->
                 ChartDataModel(
-                    parseAirDate(sensorValue.date),
+                    parseAirDate(sensorValue.date)?.time,
                     sensorValue.value?.div(1000).round(1)
                 )
             }
         } else
             airSensorData?.values?.reversed()?.map { sensorValue ->
                 ChartDataModel(
-                    parseAirDate(sensorValue.date),
+                    parseAirDate(sensorValue.date)?.time,
                     sensorValue.value
                 )
             }
     }
 
-    private fun parseAirDate(stringDate: String?): Long? {
+    private fun parseAirDate(stringDate: String?): Date? {
 
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("pl", "PL"))
         inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
 
-        return inputFormat.parse(stringDate).time
+        return stringDate?.let { inputFormat.parse(it) }
     }
 }

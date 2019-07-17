@@ -7,11 +7,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "pl.sienczykm.templbn2"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionName "1.0"
         versionCode Integer.parseInt(new Date().format('yyyyMMddHH'))
 

@@ -17,12 +17,12 @@ abstract class UpdateJob : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
 
-        val receiver: ResultReceiver = intent.getParcelableExtra(RECEIVER_KEY)
+        val receiver: ResultReceiver? = intent.getParcelableExtra(RECEIVER_KEY)
 
-        receiver.send(StatusReceiver.STATUS_RUNNING, Bundle())
+        receiver?.send(StatusReceiver.STATUS_RUNNING, Bundle())
 
         if (applicationContext.isNetworkAvailable()) {
-            intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY).forEach { stationId ->
+            intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY)?.forEach { stationId ->
                 try {
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {
                         AirStationModel.ID_KEY -> ProcessingUtils.updateAirStation(
@@ -39,13 +39,13 @@ abstract class UpdateJob : JobIntentService() {
                     val errorBundle = Bundle().apply{
                         putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
                     }
-                    receiver.send(StatusReceiver.STATUS_ERROR, errorBundle)
+                    receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)
                 }
             }
         } else {
-            receiver.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
+            receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }
 
-        receiver.send(StatusReceiver.STATUS_IDLE, Bundle())
+        receiver?.send(StatusReceiver.STATUS_IDLE, Bundle())
     }
 }

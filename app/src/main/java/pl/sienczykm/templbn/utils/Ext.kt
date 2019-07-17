@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.preference.PreferenceManager
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import java.math.BigDecimal

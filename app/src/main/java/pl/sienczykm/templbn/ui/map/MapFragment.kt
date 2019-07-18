@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.ui.map
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources.NotFoundException
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,9 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
+import pl.sienczykm.templbn.utils.isNightModeActive
+import timber.log.Timber
+
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
@@ -53,6 +57,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onMapReady(googleMap: GoogleMap) {
         //TODO przenieść do viewModelu?
         map = googleMap
+
+        if (requireContext().isNightModeActive()) {
+            try {
+                val success = map.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.night_map)
+                )
+
+                if (!success) {
+                    Timber.e("Style parsing failed.")
+                }
+            } catch (e: NotFoundException) {
+                Timber.e("Can't find style. Error: ${e.localizedMessage}")
+            }
+        }
+
 
         val markerBoundsBuilder = LatLngBounds.Builder()
 

@@ -3,12 +3,14 @@ package pl.sienczykm.templbn.utils
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -103,4 +105,22 @@ fun Context.isAutoUpdateEnabled(): Boolean {
         getString(R.string.enable_auto_sync_key),
         resources.getBoolean(R.bool.auto_sync_default)
     )
+}
+
+fun Context.handleNightMode() {
+    when (PreferenceManager.getDefaultSharedPreferences(this).getString(
+        getString(R.string.night_mode_key),
+        getString(R.string.night_mode_default)
+    )!!.toInt()) {
+        1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        3 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
+}
+
+fun Context.isNightModeActive(): Boolean {
+    return when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+        Configuration.UI_MODE_NIGHT_YES -> true
+        else -> false
+    }
 }

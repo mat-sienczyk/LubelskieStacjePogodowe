@@ -83,20 +83,13 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         if (savedInstanceState == null) updateCoordinate()
     }
 
-    fun updateCoordinate() {
+    private fun updateCoordinate() {
         if (requireContext().isLocationPermissionGranted()) {
             val fusedLocationClient =
                 LocationServices.getFusedLocationProviderClient(requireActivity())
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    when {
-                        location != null -> stationViewModel.coordinates =
-                            LatLon(
-                                location.latitude,
-                                location.longitude
-                            )
-                        else -> stationViewModel.coordinates = null
-                    }
+                    stationViewModel.coordinates = location
                 }
         }
     }

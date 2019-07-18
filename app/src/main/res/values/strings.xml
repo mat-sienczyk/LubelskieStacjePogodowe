@@ -43,22 +43,27 @@
     <string name="station_open_website">Otwórz stronę stacji</string>
 
     <!--settings-->
-    <string name="auto_sync">"Automatyczna synchornizacja"</string>
-    <string name="enable_auto_sync">"Włącz automatyczną synchornizację"</string>
-    <string name="sync_via">"Synchronizowanie przez"</string>
-    <string name="weather_auto_sync">"Stacje pogodowe"</string>
-    <string name="air_auto_sync">"Stacje powietrzne"</string>
+    <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>
+    <string name="app_settings_title">"Ustawienia aplikacji"</string>
+    <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
+    <string name="sync_via_title">"Synchronizowanie przez"</string>
+    <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
+    <string name="air_auto_sync_title">"Stacje powietrzne"</string>
+    <string name="night_mode_title">"Tryb ciemny"</string>
     <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
     <string name="weather_default_interval">"15"</string>
     <string name="air_default_interval">"60"</string>
     <string name="sync_default">"all"</string>
+    <string name="night_mode_default">"1"</string>
 
     <!--settings keys-->
     <string name="auto_sync_key">"auto_sync_key"</string>
+    <string name="app_settings_key">"app_settings_key"</string>
     <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
     <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
     <string name="air_sync_interval_key">"air_sync_interval_key"</string>
     <string name="sync_via_key">"sync_via_key"</string>
+    <string name="night_mode_key">"night_mode_key"</string>
 
     <!--units-->
     <string name="m_per_sec">" m/s"</string>

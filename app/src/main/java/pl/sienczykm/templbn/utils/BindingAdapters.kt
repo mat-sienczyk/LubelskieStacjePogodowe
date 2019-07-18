@@ -66,7 +66,6 @@ fun setCircleData(
                 circleProgressView,
                 R.color.quality_hazardous
             )
-
         }
     }
 

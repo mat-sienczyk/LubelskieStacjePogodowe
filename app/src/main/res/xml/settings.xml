@@ -3,14 +3,30 @@
 
     <PreferenceCategory
             app:iconSpaceReserved="false"
+            app:key="@string/app_settings_key"
+            app:title="@string/app_settings_title">
+
+        <ListPreference
+                app:defaultValue="@string/night_mode_default"
+                app:entries="@array/nightModeOptions"
+                app:entryValues="@array/nightModeValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/night_mode_key"
+                app:summary="%s"
+                app:title="@string/night_mode_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
             app:key="@string/auto_sync_key"
-            app:title="@string/auto_sync">
+            app:title="@string/auto_sync_title">
 
         <SwitchPreferenceCompat
                 app:iconSpaceReserved="false"
                 app:defaultValue="@bool/auto_sync_default"
                 app:key="@string/enable_auto_sync_key"
-                app:title="@string/enable_auto_sync" />
+                app:title="@string/enable_auto_sync_title" />
 
         <ListPreference
                 app:iconSpaceReserved="false"
@@ -20,7 +36,7 @@
                 app:entryValues="@array/connectionValues"
                 app:key="@string/sync_via_key"
                 app:summary="%s"
-                app:title="@string/sync_via" />
+                app:title="@string/sync_via_title" />
 
         <ListPreference
                 app:defaultValue="@string/weather_default_interval"
@@ -30,7 +46,7 @@
                 app:entryValues="@array/weatherIntervalValues"
                 app:key="@string/weather_sync_interval_key"
                 app:summary="@string/sync_every_placeholder"
-                app:title="@string/weather_auto_sync" />
+                app:title="@string/weather_auto_sync_title" />
 
         <ListPreference
                 app:iconSpaceReserved="false"
@@ -40,7 +56,7 @@
                 app:entryValues="@array/airIntervalValues"
                 app:key="@string/air_sync_interval_key"
                 app:summary="@string/sync_every_placeholder"
-                app:title="@string/air_auto_sync" />
+                app:title="@string/air_auto_sync_title" />
 
     </PreferenceCategory>
 

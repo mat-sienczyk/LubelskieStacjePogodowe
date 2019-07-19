@@ -68,6 +68,7 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    //noinspection LifecycleAnnotationProcessorWithJava8 because using Kotlin kapt instead
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'

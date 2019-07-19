@@ -65,6 +65,7 @@
                 app:cpv_barColor2="@color/quality_moderate"
                 app:cpv_barColor3="@color/quality_hazardous"
                 app:cpv_rimColor="@color/shadow"
+                app:cpv_unitColor="?android:attr/textColorTertiary"
                 app:maxValue="@{sensor}"
                 app:unit="@{unit}"
                 app:circleData="@{station.getValueAndQualityIndex(sensor)}"/>

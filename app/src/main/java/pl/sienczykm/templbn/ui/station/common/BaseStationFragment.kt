@@ -80,7 +80,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
 
         viewModel.station.observe(this, Observer { station ->
-            requireActivity().title = station.name
+            requireActivity().title = station.getName()
         })
 
         bottomSheetBehavior = BottomSheetBehavior.from(getBottomSheetLayout())

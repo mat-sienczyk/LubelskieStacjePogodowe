@@ -10,13 +10,15 @@ class AirStationModel constructor(
     @Ignore
     override val stationId: Int,
     @Ignore
-    override val name: String,
-    @Ignore
     override val latitude: Double,
     @Ignore
-    override val longitude: Double
+    override val longitude: Double,
+    @Ignore
+    override val city: String,
+    @Ignore
+    override val location: String? = null
 ) :
-    BaseStationModel(stationId, name, latitude, longitude) {
+    BaseStationModel(stationId, latitude, longitude, city, location) {
 
     override fun getStationUrl(): String {
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
@@ -30,7 +32,7 @@ class AirStationModel constructor(
 
     override fun copy(): AirStationModel {
         val stationCopy =
-            AirStationModel(stationId, name, latitude, longitude)
+            AirStationModel(stationId, latitude, longitude, city, location)
         stationCopy.url = url
         stationCopy.favorite = favorite
         stationCopy.date = date
@@ -77,15 +79,16 @@ class AirStationModel constructor(
 
         val ID_KEY = "air_station_id"
 
-        val LUBLIN = AirStationModel(266, "Lublin", 51.259431, 22.569133)
-        val BIALA_PODLASKA = AirStationModel(236, "Biała Podlaska", 52.029194, 23.149389)
-        val JARCZEW = AirStationModel(248, "Jarczew", 51.814367, 21.972375)
-        val WILCZOPOLE = AirStationModel(282, "Wilczopole", 51.163542, 22.598608)
-        val ZAMOSC = AirStationModel(285, "Zamość", 50.716628, 23.290247)
-        val PULAWY = AirStationModel(9593, "Puławy", 51.419047, 21.961089)
-        val FLORAINKA = AirStationModel(10874, "Florianka", 50.551894, 22.982861)
-        val CHELM = AirStationModel(11360, "Chełm", 51.122190, 23.472870)
-        val NALECZOW = AirStationModel(11362, "Nałęczów", 51.284931, 22.210242)
+        val LUBLIN = AirStationModel(266, 51.259431, 22.569133, "Lublin", "ul. Obywatelska")
+        val BIALA_PODLASKA =
+            AirStationModel(236, 52.029194, 23.149389, "Biała Podlaska", "ul. Orzechowa")
+        val JARCZEW = AirStationModel(248, 51.814367, 21.972375, "Jarczew")
+        val WILCZOPOLE = AirStationModel(282, 51.163542, 22.598608, "Wilczopole")
+        val ZAMOSC = AirStationModel(285, 50.716628, 23.290247, "Zamość", "ul. Hrubieszowska 69A")
+        val PULAWY = AirStationModel(9593, 51.419047, 21.961089, "Puławy", "ul. Karpińskiego")
+        val FLORAINKA = AirStationModel(10874, 50.551894, 22.982861, "Florianka")
+        val CHELM = AirStationModel(11360, 51.122190, 23.472870, "Chełm", "ul. Połaniecka")
+        val NALECZOW = AirStationModel(11362, 51.284931, 22.210242, "Nałęczów")
 
         fun getStations(): List<AirStationModel> {
             return listOf(

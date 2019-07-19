@@ -10,9 +10,10 @@ import kotlin.math.roundToInt
 abstract class BaseStationModel(
     @PrimaryKey
     open val stationId: Int,
-    open val name: String,
     open val latitude: Double,
-    open val longitude: Double
+    open val longitude: Double,
+    open val city: String,
+    open val location: String?
 ) {
     lateinit var url: String
     var favorite: Boolean = false
@@ -37,6 +38,10 @@ abstract class BaseStationModel(
             distance!! < 1 -> (distance.round(3)?.times(1000))?.roundToInt().toString() + " m"
             else -> distance.round(2)?.toString() + " km"
         }
+    }
+
+    fun getName(): String {
+        location?.let { return "$city - $location" } ?: return city
     }
 
     open fun isContentTheSame(other: BaseStationModel?): Boolean {

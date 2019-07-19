@@ -26,10 +26,10 @@ abstract class BaseStationListViewModel<T : BaseStationModel>(application: Appli
         return when (coordinates) {
             null -> stations
                 .onEach { it.distance = null }
-                .sortedWith(compareBy({ !it.favorite }, { it.name }))
+                .sortedWith(compareBy({ !it.favorite }, { it.getName() }))
             else -> stations
                 .onEach { it.distance = haversine(coordinates!!.latitude, coordinates!!.longitude, it.latitude, it.longitude) }
-                .sortedWith(compareBy({ !it.favorite }, { it.distance }, { it.name }))
+                .sortedWith(compareBy({ !it.favorite }, { it.distance }, { it.getName() }))
         }
     }
 }

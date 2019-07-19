@@ -3,11 +3,14 @@ package pl.sienczykm.templbn.utils
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.text.SpannableStringBuilder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.text.bold
+import androidx.core.text.scale
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
@@ -28,6 +31,19 @@ fun addStations(recyclerView: RecyclerView, stations: List<BaseStationModel>?) {
     val adapter = recyclerView.adapter as BaseStationsAdapter<*>
     // need to create deep copy of station list because of later problems with ListAdapter.DiffUtil
     adapter.submitList(stations?.map { stationModel -> stationModel.copy() } ?: emptyList())
+}
+
+@BindingAdapter("stationName")
+fun setStationName(textView: TextView, station: BaseStationModel) {
+
+    val proportion = 1.2f
+
+    textView.text = station.location?.let {
+        SpannableStringBuilder()
+            .bold { scale(proportion) { append(station.city + " ") } }
+            .append(station.location)
+    } ?: SpannableStringBuilder()
+        .bold { scale(proportion) { append(station.city) } }
 }
 
 @BindingAdapter("circleData", "maxValue", "unit")

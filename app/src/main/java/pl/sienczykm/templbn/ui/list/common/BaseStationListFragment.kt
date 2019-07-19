@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -29,6 +28,7 @@ import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
+import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
@@ -64,20 +64,16 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getSwipeToRefreshLayout().setOnRefreshListener {
-            stationViewModel.refresh()
-            updateCoordinate()
+        getSwipeToRefreshLayout().apply {
+            setOnRefreshListener {
+                stationViewModel.refresh()
+                updateCoordinate()
+            }
+            setColors()
         }
 
-        getSwipeToRefreshLayout().setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.main_yellow),
-            ContextCompat.getColor(requireContext(), R.color.main_red),
-            ContextCompat.getColor(requireContext(), R.color.main_green)
-        )
-
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = RecyclerView.VERTICAL
-        getList().layoutManager = layoutManager
+        getList().layoutManager =
+            LinearLayoutManager(requireContext()).apply { orientation = RecyclerView.VERTICAL }
         getList().adapter = getAdapter()
 
         if (savedInstanceState == null) updateCoordinate()
@@ -135,7 +131,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     private fun getSmoothScrollerToTop(position: Int = 0): LinearSmoothScroller =
-        object : LinearSmoothScroller(context) {
+        object : LinearSmoothScroller(requireContext()) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_START
             }

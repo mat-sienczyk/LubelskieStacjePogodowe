@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import java.math.BigDecimal
@@ -123,4 +124,12 @@ fun Context.isNightModeActive(): Boolean {
         Configuration.UI_MODE_NIGHT_YES -> true
         else -> false
     }
+}
+
+fun SwipeRefreshLayout.setColors() {
+    setColorSchemeColors(
+        ContextCompat.getColor(context, R.color.main_yellow),
+        ContextCompat.getColor(context, R.color.main_red),
+        ContextCompat.getColor(context, R.color.main_green)
+    )
 }

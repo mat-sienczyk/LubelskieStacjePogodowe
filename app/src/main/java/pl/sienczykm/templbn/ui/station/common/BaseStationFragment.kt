@@ -32,6 +32,7 @@ import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
@@ -71,15 +72,12 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getSwipeToRefreshLayout().setOnRefreshListener {
-            viewModel.refresh()
+        getSwipeToRefreshLayout().apply {
+            setOnRefreshListener {
+                viewModel.refresh()
+            }
+            setColors()
         }
-
-        getSwipeToRefreshLayout().setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.main_yellow),
-            ContextCompat.getColor(requireContext(), R.color.main_red),
-            ContextCompat.getColor(requireContext(), R.color.main_green)
-        )
 
         viewModel.station.observe(this, Observer { station ->
             requireActivity().title = station.name

@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 app:imageResource="@{drawableInt}"
-                android:tint="@color/grey"
+                android:tint="@color/drawable_tint"
                 android:gravity="center" />
 
         <TextView

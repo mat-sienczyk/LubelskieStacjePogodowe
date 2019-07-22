@@ -108,7 +108,7 @@ fun setWeatherData(
         )
         for (drawable: Drawable? in textView.compoundDrawables) {
             drawable?.colorFilter = PorterDuffColorFilter(
-                ContextCompat.getColor(textView.context, R.color.grey),
+                ContextCompat.getColor(textView.context, R.color.drawable_tint),
                 PorterDuff.Mode.SRC_IN
             )
         }

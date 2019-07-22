@@ -127,9 +127,6 @@ fun Context.isNightModeActive(): Boolean {
 }
 
 fun SwipeRefreshLayout.setColors() {
-    setColorSchemeColors(
-        ContextCompat.getColor(context, R.color.main_yellow),
-        ContextCompat.getColor(context, R.color.main_red),
-        ContextCompat.getColor(context, R.color.main_green)
-    )
+    setProgressBackgroundColorSchemeResource(R.color.refresh_bg)
+    setColorSchemeResources(R.color.refresh_yellow, R.color.refresh_red, R.color.refresh_green)
 }

@@ -88,7 +88,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:src="@drawable/ic_heart_solid"
-                            android:tint="@color/grey"
+                            android:tint="@color/drawable_tint"
                             android:visibility="@{station.favorite ? View.VISIBLE : View.INVISIBLE}" />
 
                 </com.google.android.flexbox.FlexboxLayout>

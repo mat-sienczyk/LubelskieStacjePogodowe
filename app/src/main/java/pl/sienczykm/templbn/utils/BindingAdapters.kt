@@ -14,6 +14,10 @@ import androidx.core.text.scale
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
+import com.github.chrisbanes.photoview.PhotoView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
@@ -44,6 +48,17 @@ fun setStationName(textView: TextView, station: BaseStationModel) {
             .append(station.location)
     } ?: SpannableStringBuilder()
         .bold { scale(proportion) { append(station.city) } }
+}
+
+@BindingAdapter("load")
+fun loadPicture(photoView: PhotoView, url: String?) {
+    url?.let {
+        Picasso.get()
+            .load(it)
+            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+            .into(photoView)
+    }
 }
 
 @BindingAdapter("circleData", "maxValue", "unit")

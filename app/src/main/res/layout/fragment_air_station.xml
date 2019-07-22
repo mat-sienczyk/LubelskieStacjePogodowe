@@ -16,7 +16,8 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_layout"
@@ -32,6 +33,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
+                    <include
+                            android:id="@+id/include"
+                            layout="@layout/station_title_clickable"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:title="@{@string/station_title_air}"
+                            app:viewModel="@{viewModel}" />
+
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView"
                             android:layout_width="match_parent"
@@ -42,22 +57,15 @@
                             android:layout_marginBottom="8dp"
                             app:cardCornerRadius="6dp"
                             app:cardElevation="6dp"
-                            app:layout_constraintBottom_toTopOf="@+id/cardView2"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintTop_toBottomOf="@+id/include">
 
                         <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="vertical">
-
-                            <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="@string/station_title_air"
-                                    android:textStyle="bold" />
 
                             <include
                                     layout="@layout/row_station_data"
@@ -145,33 +153,6 @@
                             </com.google.android.flexbox.FlexboxLayout>
 
                         </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:onClick="@{() -> viewModel.openCustomTab()}"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="6dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/station_open_website" />
 
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>

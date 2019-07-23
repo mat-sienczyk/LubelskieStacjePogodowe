@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         UpdateHandler.handleAutoSync(PreferenceManager.getDefaultSharedPreferences(this), this)
 
         if (savedInstanceState == null) {
-            getLocation()
+            getLocationPermission()
             changeFragment(WeatherFragment.newInstance())
         }
     }
@@ -88,21 +88,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getLocation() {
+    fun getLocationPermission() {
         if (!isLocationPermissionGranted()) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        supportFragmentManager.fragments.forEach {
-            it.onRequestPermissionsResult(
-                requestCode,
-                permissions,
-                grantResults
             )
         }
     }

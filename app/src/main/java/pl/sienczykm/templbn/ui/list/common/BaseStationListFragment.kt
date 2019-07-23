@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.ui.list.common
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
@@ -25,7 +27,6 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.BaseNavigator
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
-import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.setColors
@@ -48,6 +49,13 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     abstract fun getAdapter(): BaseStationsAdapter<L>
 
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            locationResult ?: return
+            updateLocation(locationResult.lastLocation)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
         binding.viewModel = stationViewModel
@@ -67,7 +75,6 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         getSwipeToRefreshLayout().apply {
             setOnRefreshListener {
                 stationViewModel.refresh()
-                updateCoordinate()
             }
             setColors()
         }
@@ -75,30 +82,30 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         getList().layoutManager =
             LinearLayoutManager(requireContext()).apply { orientation = RecyclerView.VERTICAL }
         getList().adapter = getAdapter()
-
-        if (savedInstanceState == null) updateCoordinate()
     }
 
-    private fun updateCoordinate() {
+    override fun onResume() {
+        super.onResume()
         if (requireContext().isLocationPermissionGranted()) {
-            val fusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(requireActivity())
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    stationViewModel.coordinates = location
-                }
+            LocationServices.getFusedLocationProviderClient(requireContext())
+                .requestLocationUpdates(
+                    LocationRequest.create()?.apply {
+                        priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+                    },
+                    locationCallback,
+                    null
+                )
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MainActivity.PERMISSIONS_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    updateCoordinate()
-                }
-                return
-            }
-        }
+    override fun onPause() {
+        LocationServices.getFusedLocationProviderClient(requireContext())
+            .removeLocationUpdates(locationCallback)
+        super.onPause()
+    }
+
+    private fun updateLocation(location: Location?) {
+        stationViewModel.coordinates = location
     }
 
     override fun onClickItem(v: View, position: Int) {

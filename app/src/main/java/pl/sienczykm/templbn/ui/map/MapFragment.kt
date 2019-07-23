@@ -1,8 +1,8 @@
 package pl.sienczykm.templbn.ui.map
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,14 +19,14 @@ import pl.sienczykm.templbn.databinding.FragmentMapBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
 import timber.log.Timber
 
 
-class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+class MapFragment : Fragment(), OnMapReadyCallback,
+    GoogleMap.OnInfoWindowClickListener {
 
     companion object {
         fun newInstance(): MapFragment {
@@ -120,17 +120,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
         if (requireContext().isLocationPermissionGranted()) {
             map.isMyLocationEnabled = true
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MainActivity.PERMISSIONS_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    map.isMyLocationEnabled = true
-                }
-                return
-            }
         }
     }
 

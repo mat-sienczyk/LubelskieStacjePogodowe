@@ -6,6 +6,8 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.utils.roundAndGetString
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Entity
 class WeatherStationModel constructor(
@@ -140,11 +142,26 @@ class WeatherStationModel constructor(
     }
 
     fun getForecastPhotoUrl(): String {
-        return "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=2019072200&row=$forecastY&col=$forecastX&lang=pl"
+        return "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=${getForecastDate()}&row=$forecastY&col=$forecastX&lang=pl"
     }
 
     fun getForecastUrl(): String {
         return "http://www.meteo.pl/um/php/meteorogram_map_um.php?ntype=0u&row=$forecastY&col=$forecastX&lang=pl"
+    }
+
+    fun getForecastDate(): String {
+        val outputFormat = SimpleDateFormat("yyyyMMddHH", Locale("pl", "PL"))
+        val now = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"), Locale("pl", "PL"))
+        when (now.get(Calendar.HOUR_OF_DAY)) {
+            in 0..6 -> now.apply {
+                set(Calendar.DAY_OF_MONTH, -1)
+                set(Calendar.HOUR_OF_DAY, 18)
+            }
+            in 7..12 -> now.set(Calendar.HOUR_OF_DAY, 0)
+            in 13..18 -> now.set(Calendar.HOUR_OF_DAY, 6)
+            in 19..24 -> now.set(Calendar.HOUR_OF_DAY, 12)
+        }
+        return outputFormat.format(now.time)
     }
 
     companion object {

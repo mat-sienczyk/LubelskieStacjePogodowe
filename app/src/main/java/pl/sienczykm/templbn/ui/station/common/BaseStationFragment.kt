@@ -27,9 +27,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
@@ -127,7 +124,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     private fun handleFavoriteClick() {
-        CoroutineScope(Dispatchers.IO).launch {
+//        CoroutineScope(Dispatchers.IO).launch {
             val station = viewModel.station.value
             val updated = when (station) {
                 is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
@@ -144,7 +141,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             if (updated > 0) {
                 if (!station.favorite) showSnackbar(R.string.added_to_favorites) else showSnackbar(R.string.removed_from_favorites)
             }
-        }
+//        }
     }
 
     override fun openCustomTab(url: String) {

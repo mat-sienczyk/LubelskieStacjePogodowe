@@ -19,9 +19,6 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.AppDb
@@ -120,7 +117,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     override fun onLongClickItem(v: View, position: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+//        CoroutineScope(Dispatchers.IO).launch {
             val station = stationViewModel.stations.value?.get(position)
             val updated =
                 when (station) {
@@ -142,7 +139,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 //            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
                 getList().smoothScrollToPosition(0)
             }
-        }
+//        }
     }
 
     private fun getSmoothScrollerToTop(position: Int = 0): LinearSmoothScroller =

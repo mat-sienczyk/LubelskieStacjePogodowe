@@ -55,8 +55,6 @@ fun loadPicture(photoView: PhotoView, url: String?) {
     url?.let {
         Picasso.get()
             .load(it)
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .into(photoView)
     }
 }

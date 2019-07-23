@@ -23,6 +23,9 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
@@ -120,21 +123,23 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     private fun handleFavoriteClick() {
-        val station = viewModel.station.value
-        val updated = when (station) {
-            is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
-                station.stationId,
-                !station.favorite
-            )
-            is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
-                station.stationId,
-                !station.favorite
-            )
-            else -> throw Exception("Invalid station object")
-        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val station = viewModel.station.value
+            val updated = when (station) {
+                is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
+                    station.stationId,
+                    !station.favorite
+                )
+                is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
+                    station.stationId,
+                    !station.favorite
+                )
+                else -> throw Exception("Invalid station object")
+            }
 
-        if (updated > 0) {
-            if (!station.favorite) showSnackbar(R.string.added_to_favorites) else showSnackbar(R.string.removed_from_favorites)
+            if (updated > 0) {
+                if (!station.favorite) showSnackbar(R.string.added_to_favorites) else showSnackbar(R.string.removed_from_favorites)
+            }
         }
     }
 

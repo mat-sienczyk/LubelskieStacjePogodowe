@@ -19,6 +19,9 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.AppDb
@@ -117,23 +120,28 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     override fun onLongClickItem(v: View, position: Int) {
-        val station = stationViewModel.stations.value?.get(position)
-        val updated = when (station) {
-            is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
-                station.stationId,
-                !station.favorite
-            )
-            is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
-                station.stationId,
-                !station.favorite
-            )
-            else -> throw Exception("Invalid station object")
-        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val station = stationViewModel.stations.value?.get(position)
+            val updated =
+                when (station) {
+                    is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
+                        station.stationId,
+                        !station.favorite
+                    )
+                    is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
+                        station.stationId,
+                        !station.favorite
+                    )
+                    else -> throw Exception("Invalid station object")
+                }
 
-        if (updated == 1) {
-            if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(R.string.added_to_favorites)
+            if (updated == 1) {
+                if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(
+                    R.string.added_to_favorites
+                )
 //            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
-            getList().smoothScrollToPosition(0)
+                getList().smoothScrollToPosition(0)
+            }
         }
     }
 

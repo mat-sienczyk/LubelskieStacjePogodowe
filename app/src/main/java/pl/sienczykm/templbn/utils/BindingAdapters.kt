@@ -15,8 +15,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
 import com.github.chrisbanes.photoview.PhotoView
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.AirStationModel

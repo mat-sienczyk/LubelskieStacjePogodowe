@@ -143,6 +143,10 @@ class WeatherStationModel constructor(
         return "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=2019072200&row=$forecastY&col=$forecastX&lang=pl"
     }
 
+    fun getForecastUrl(): String {
+        return "http://www.meteo.pl/um/php/meteorogram_map_um.php?ntype=0u&row=$forecastY&col=$forecastX&lang=pl"
+    }
+
     companion object {
 
         val ID_KEY = "weather_station_id"

@@ -15,12 +15,12 @@ abstract class BaseStationViewModel<T : BaseStationModel>(
 
     abstract val station: LiveData<T>
 
-    fun openCustomTab() {
-        station.value?.let { getNavigator()?.openCustomTab(it.url) }
+    fun openCustomTab(url: String?) {
+        url?.let { getNavigator()?.openCustomTab(it) }
     }
 
     fun showChart(chartData: List<ChartDataModel>?) {
-        if (chartData != null) getNavigator()?.showChart(chartData)
+        chartData?.let { getNavigator()?.showChart(it) }
     }
 
     override fun refresh() {

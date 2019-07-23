@@ -12,8 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/coordinator_layout"
-            android:animateLayoutChanges="true">
+            android:id="@+id/coordinator_layout">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_layout"
@@ -31,7 +30,7 @@
 
                     <include
                             android:id="@+id/include"
-                            layout="@layout/station_title_clickable"
+                            layout="@layout/title_clickable_url"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginStart="8dp"
@@ -41,6 +40,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:title="@{@string/station_title_weather}"
+                            app:hyperlink="@{@string/station_open_website}"
+                            app:url="@{viewModel.station.url}"
                             app:viewModel="@{viewModel}" />
 
                     <androidx.cardview.widget.CardView
@@ -128,6 +129,22 @@
 
                     </androidx.cardview.widget.CardView>
 
+                    <include
+                            android:id="@+id/include2"
+                            layout="@layout/title_clickable_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView"
+                            app:title="@{@string/forecast_title}"
+                            app:hyperlink="@{@string/forecast_open_website}"
+                            app:url="@{viewModel.station.getForecastUrl()}"
+                            app:viewModel="@{viewModel}" />
+
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView3"
                             android:layout_width="match_parent"
@@ -141,7 +158,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardView">
+                            app:layout_constraintTop_toBottomOf="@+id/include2">
 
                         <com.github.chrisbanes.photoview.PhotoView
                                 android:id="@+id/photo_view"

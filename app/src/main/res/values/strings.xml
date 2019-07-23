@@ -20,6 +20,7 @@
     <!--Station fragment-->
     <string name="station_title_weather">"Stacja pogodowa"</string>
     <string name="station_title_air">"Stacja powietrzna"</string>
+    <string name="forecast_title">"Prognoza"</string>
 
     <string name="data_placeholder">"%1$s%2$s"</string>
 
@@ -41,6 +42,7 @@
     <string name="station_co">Tlenek węgla CO</string>
 
     <string name="station_open_website">Otwórz stronę stacji</string>
+    <string name="forecast_open_website">Otwórz stronę prognozy</string>
 
     <!--settings-->
     <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>

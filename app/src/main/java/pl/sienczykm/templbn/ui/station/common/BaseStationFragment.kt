@@ -21,6 +21,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -159,7 +163,39 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     override fun showChart(chartData: List<ChartDataModel>) {
-        getBottomSheetLayout().text.text = chartData.joinToString(separator = "\n")
+        getBottomSheetLayout().chart.apply {
+            clear()
+            description.isEnabled = false
+            setNoDataText(getString(R.string.chart_empty))
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(false)
+            isScaleXEnabled = true
+            isDoubleTapToZoomEnabled = true
+//            setExtraOffsets(0f, 0f, 0f, 5f)
+            data = LineData(LineDataSet(chartData.map {
+                Entry(
+                    it.timestamp!!.toFloat(),
+                    it.value!!.toFloat()
+                )
+            }, null).apply {
+                axisDependency = YAxis.AxisDependency.LEFT
+                setDrawCircles(false)
+                setDrawValues(false)
+//                setColor()
+//                lineWidth = 1.5f
+//                highLightColor
+//                highlightLineWidth
+                setDrawFilled(true)
+//                fillColor
+            })
+            legend.isEnabled = false
+
+
+            fitScreen()
+            invalidate()
+        }
+//        getBottomSheetLayout().text.text = chartData.joinToString(separator = "\n")
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 

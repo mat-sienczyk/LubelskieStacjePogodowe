@@ -7,10 +7,16 @@
         android:background="?android:attr/colorBackground"
         android:elevation="4dp"
         app:behavior_hideable="true"
+        android:orientation="vertical"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <TextView
-            android:id="@+id/text"
+<!--    <TextView-->
+<!--            android:id="@+id/text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 </LinearLayout>

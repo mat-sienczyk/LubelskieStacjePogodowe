@@ -67,6 +67,10 @@
     <string name="sync_via_key">"sync_via_key"</string>
     <string name="night_mode_key">"night_mode_key"</string>
 
+    <!--chart-->
+    <string name="chart_empty">"Brak danych"</string>
+
+
     <!--units-->
     <string name="m_per_sec">" m/s"</string>
     <string name="km_per_hour">" km/h"</string>

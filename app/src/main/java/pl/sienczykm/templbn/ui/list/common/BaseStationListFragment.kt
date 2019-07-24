@@ -11,6 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.AppDb
@@ -117,7 +119,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     override fun onLongClickItem(v: View, position: Int) {
-//        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             val station = stationViewModel.stations.value?.get(position)
             val updated =
                 when (station) {
@@ -139,7 +141,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 //            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
                 getList().smoothScrollToPosition(0)
             }
-//        }
+        }
     }
 
     private fun getSmoothScrollerToTop(position: Int = 0): LinearSmoothScroller =

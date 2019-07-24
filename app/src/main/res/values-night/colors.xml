@@ -6,7 +6,7 @@
     <color name="colorPrimary">#2e7d32</color>
     <color name="colorPrimaryDark">#005005</color>
 
-    <color name="refresh_bg">#1b1b1b</color>
+    <color name="refresh_bg">#2B2B2B</color>
 
     <!--  text color in dark theme -->
     <color name="drawable_tint">#d5d5d5</color>

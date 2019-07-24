@@ -2,7 +2,6 @@ package pl.sienczykm.templbn.ui.map
 
 import android.content.Intent
 import android.content.res.Resources.NotFoundException
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,6 +77,8 @@ class MapFragment : Fragment(), OnMapReadyCallback,
         WeatherStationModel.getStations().forEach { weatherStationModel ->
             val position = LatLng(weatherStationModel.latitude, weatherStationModel.longitude)
             val marker: Marker
+
+//            val icon = IconGenerator(requireContext()).makeIcon().apply { setC }
 
             marker = map.addMarker(
                 MarkerOptions()

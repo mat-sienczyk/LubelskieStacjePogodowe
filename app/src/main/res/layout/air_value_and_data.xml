@@ -42,7 +42,7 @@
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
             app:addClickEffect="@{chartData != null ? true : false}"
-            android:onClick="@{() -> viewModel.showChart(chartData)}"
+            android:onClick="@{() -> viewModel.showChart(chartData, true)}"
             android:padding="5dp">
 
         <at.grabner.circleprogress.CircleProgressView

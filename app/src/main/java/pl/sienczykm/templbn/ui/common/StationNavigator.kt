@@ -4,5 +4,5 @@ import pl.sienczykm.templbn.db.model.ChartDataModel
 
 interface StationNavigator : BaseNavigator {
     fun openCustomTab(url: String)
-    fun showChart(chartData: List<ChartDataModel>)
+    fun showChart(chartData: List<ChartDataModel>, minIsZero: Boolean)
 }

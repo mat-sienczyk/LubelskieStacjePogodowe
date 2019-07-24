@@ -22,10 +22,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import kotlinx.coroutines.launch
@@ -41,6 +45,9 @@ import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
     StationNavigator {
@@ -161,7 +168,9 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
     }
 
-    override fun showChart(chartData: List<ChartDataModel>) {
+    override fun showChart(chartData: List<ChartDataModel>, minIsZero: Boolean) {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        // TODO create and configure chart earlier
         getBottomSheetLayout().chart.apply {
             clear()
             description.isEnabled = false
@@ -170,8 +179,51 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             isDragEnabled = true
             setScaleEnabled(false)
             isScaleXEnabled = true
+            setPinchZoom(false)
             isDoubleTapToZoomEnabled = true
-//            setExtraOffsets(0f, 0f, 0f, 5f)
+            setExtraOffsets(0f, 0f, 0f, 5f)
+            xAxis.apply {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        return SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
+                            timeZone = TimeZone.getTimeZone("Europe/Warsaw")
+                        }.format(Date(value.toLong()))
+                    }
+                }
+                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textSize = 14f
+                labelRotationAngle = -25f
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = (60 * 1000 * 10).toFloat()
+            }
+            axisLeft.apply {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        return NumberFormat.getInstance().apply {
+                            minimumFractionDigits = 1
+                            maximumFractionDigits = 1
+                        }.format(value)
+                    }
+                }
+                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textSize = 14f
+                setLabelCount(7, true)
+                addLimitLine(LimitLine(0f).apply {
+                    lineWidth = 2.5f
+                    lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                })
+                setDrawZeroLine(true)
+                resetAxisMinimum()
+                when(minIsZero){
+                    true -> axisMinimum = 0f
+                    false -> {
+                        spaceTop = 2f
+                        spaceBottom = 2f
+                    }
+                }
+            }
+            axisRight.apply { isEnabled = false }
+            legend.isEnabled = false
             data = LineData(LineDataSet(chartData.map {
                 Entry(
                     it.timestamp!!.toFloat(),
@@ -181,15 +233,13 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 axisDependency = YAxis.AxisDependency.LEFT
                 setDrawCircles(false)
                 setDrawValues(false)
-//                setColor()
-//                lineWidth = 1.5f
-//                highLightColor
-//                highlightLineWidth
+                color = ContextCompat.getColor(requireContext(), R.color.colorAccent)
+                lineWidth = 1.5f
+                highLightColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                highlightLineWidth = 0.7f
                 setDrawFilled(true)
-//                fillColor
+                fillColor = ContextCompat.getColor(requireContext(), R.color.colorAccent)
             })
-            legend.isEnabled = false
-
 
             fitScreen()
             invalidate()

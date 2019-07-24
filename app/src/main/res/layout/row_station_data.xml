@@ -30,6 +30,10 @@
                 type="List&lt;ChartDataModel>" />
 
         <variable
+                name="chartMinZero"
+                type="boolean" />
+
+        <variable
                 name="viewModel"
                 type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
     </data>
@@ -43,7 +47,7 @@
             android:visibility="@{value == null ? View.GONE : View.VISIBLE}"
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
-            android:onClick="@{() -> viewModel.showChart(chartData)}"
+            android:onClick="@{() -> viewModel.showChart(chartData, chartMinZero)}"
             app:addClickEffect="@{true}"
             android:padding="5dp">
 

@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.station.common
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -22,16 +23,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
+import kotlinx.android.synthetic.main.chart_marker_view.view.*
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
@@ -55,6 +56,15 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var viewModel: T
     lateinit var binding: N
+
+    val timeChartFormatter = SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
+        timeZone = TimeZone.getTimeZone("Europe/Warsaw")
+    }
+
+    val valueChartFormatter: NumberFormat = NumberFormat.getInstance().apply {
+        minimumFractionDigits = 1
+        maximumFractionDigits = 1
+    }
 
     abstract fun getViewModel(stationId: Int): T
 
@@ -116,9 +126,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             xAxis.apply {
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
-                            timeZone = TimeZone.getTimeZone("Europe/Warsaw")
-                        }.format(Date(value.toLong()))
+                        return timeChartFormatter.format(Date(value.toLong()))
                     }
                 }
                 textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
@@ -130,10 +138,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             axisLeft.apply {
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return NumberFormat.getInstance().apply {
-                            minimumFractionDigits = 1
-                            maximumFractionDigits = 1
-                        }.format(value)
+                        return valueChartFormatter.format(value)
                     }
                 }
                 textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
@@ -239,6 +244,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
 
         getBottomSheetLayout().chart.apply {
             clear()
+            marker = MyMarkerView(requireContext(), R.layout.chart_marker_view, unit)
             axisLeft.apply {
                 removeAllLimitLines()
                 addLimitLine(limitLine)
@@ -284,4 +290,36 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     private fun showSnackbar(@StringRes message: Int) {
         getCoordinatorLayout().snackbarShow(message)
     }
+
+    inner class MyMarkerView(context: Context, res: Int, val unit: String) :
+        MarkerView(context, res) {
+
+        init {
+            marker_bg.background = getDrawable(
+                R.drawable.ic_marker,
+                ContextCompat.getColor(context, R.color.colorPrimary)
+            )
+        }
+
+        private var myOffset: MPPointF? = null
+
+        override fun refreshContent(e: Entry, highlight: Highlight) {
+
+            val time = timeChartFormatter.format(Date(highlight.x.toLong()))
+
+            val value = valueChartFormatter.format(highlight.y) + unit
+
+            content.text = "$time - $value"
+
+            super.refreshContent(e, highlight)
+        }
+
+        override fun getOffset(): MPPointF? {
+            if (myOffset == null) {
+                myOffset = MPPointF((-(width / 2)).toFloat(), (-height).toFloat())
+            }
+            return myOffset
+        }
+    }
 }
+

@@ -31,7 +31,7 @@ class WeatherStationModel constructor(
         return Config.BASE_WEATHER_URL + "podglad/" + stationId
     }
 
-    override fun getOldDateTimeInMinutes() = 30L
+    override fun getOldDateTimeInMinutes(): Long = 30
 
     init {
         this.url = getStationUrl()

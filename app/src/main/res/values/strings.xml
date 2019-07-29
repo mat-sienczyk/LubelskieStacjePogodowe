@@ -52,7 +52,7 @@
     <string name="sync_via_title">"Synchronizowanie przez"</string>
     <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
     <string name="air_auto_sync_title">"Stacje powietrza"</string>
-    <string name="night_mode_title">"Tryb ciemny"</string>
+    <string name="night_mode_title">"Motyw interfejsu"</string>
     <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
     <string name="weather_default_interval">"15"</string>
     <string name="air_default_interval">"60"</string>

@@ -24,7 +24,7 @@ class AirStationModel constructor(
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
     }
 
-    override fun getOldDateTimeInMinutes() = 120L
+    override fun getOldDateTimeInMinutes(): Long = 180
 
     init {
         this.url = getStationUrl()

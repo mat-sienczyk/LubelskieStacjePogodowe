@@ -19,10 +19,6 @@ abstract class BaseStationViewModel<T : BaseStationModel>(
         url?.let { getNavigator()?.openCustomTab(it) }
     }
 
-    fun showChart(chartData: List<ChartDataModel>?, minIsZero: Boolean = false) {
-        chartData?.let { getNavigator()?.showChart(it, minIsZero) }
-    }
-
     override fun refresh() {
         if (stationId == 0) throw Exception("Invalid stationId")
     }

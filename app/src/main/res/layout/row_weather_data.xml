@@ -35,7 +35,7 @@
 
         <variable
                 name="viewModel"
-                type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
+                type="pl.sienczykm.templbn.ui.station.weather.WeatherStationViewModel" />
     </data>
 
     <LinearLayout
@@ -47,7 +47,7 @@
             android:visibility="@{value == null ? View.GONE : View.VISIBLE}"
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
-            android:onClick="@{() -> viewModel.showChart(chartData, chartMinZero)}"
+            android:onClick="@{() -> viewModel.showChart(chartData, chartMinZero, unit, metadata)}"
             app:addClickEffect="@{true}"
             android:padding="5dp">
 

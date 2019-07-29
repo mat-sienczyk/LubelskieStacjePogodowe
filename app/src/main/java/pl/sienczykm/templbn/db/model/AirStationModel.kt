@@ -119,13 +119,13 @@ class AirStationModel constructor(
         val maxUnhealthySensitive: Int,
         val maxUnhealthy: Int
     ) {
-        PM10("pył zawieszony PM10", "PM10", 3, 21, 61, 101, 141, 201),
-        PM25("pył zawieszony PM2.5", "PM2.5", 69, 13, 37, 61, 85, 121),
-        O3("ozon", "O3", 5, 71, 121, 151, 181, 241),
-        NO2("dwutlenek azotu", "NO2", 6, 41, 101, 151, 201, 401),
-        SO2("dwutlenek siarki", "SO2", 1, 51, 101, 201, 351, 501),
-        C6H6("benzen", "C6H6", 10, 6, 11, 16, 21, 51),
-        CO("tlenek węgla", "CO", 8, 3, 7, 11, 15, 21)
+        PM10("Pył zawieszony PM10", "PM10", 3, 21, 61, 101, 141, 201),
+        PM25("Pył zawieszony PM2.5", "PM2.5", 69, 13, 37, 61, 85, 121),
+        O3("Ozon", "O3", 5, 71, 121, 151, 181, 241),
+        NO2("Dwutlenek azotu", "NO2", 6, 41, 101, 151, 201, 401),
+        SO2("Dwutlenek siarki", "SO2", 1, 51, 101, 201, 351, 501),
+        C6H6("Benzen", "C6H6", 10, 6, 11, 16, 21, 51),
+        CO("Tlenek węgla", "CO", 8, 3, 7, 11, 15, 21)
     }
 
     enum class AirQualityIndex(val value: Int, val desc: String) {

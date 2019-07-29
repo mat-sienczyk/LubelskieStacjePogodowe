@@ -29,7 +29,7 @@
 
         <variable
                 name="viewModel"
-                type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
+                type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel" />
 
     </data>
 
@@ -42,7 +42,7 @@
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
             app:addClickEffect="@{chartData != null ? true : false}"
-            android:onClick="@{() -> viewModel.showChart(chartData, true)}"
+            android:onClick="@{() -> viewModel.showChart(chartData, sensor.maxGood, unit, sensor.paramName)}"
             android:padding="5dp">
 
         <at.grabner.circleprogress.CircleProgressView

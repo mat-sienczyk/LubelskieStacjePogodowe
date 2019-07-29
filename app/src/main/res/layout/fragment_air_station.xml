@@ -69,11 +69,8 @@
                                 android:orientation="vertical">
 
                             <include
-                                    layout="@layout/row_station_data"
-                                    app:chartData="@{null}"
-                                    app:metadata="@{@string/station_date}"
-                                    app:value="@{viewModel.station.getParsedDate()}"
-                                    app:viewModel="@{viewModel}" />
+                                    layout="@layout/row_date"
+                                    app:dateValue="@{viewModel.station.getParsedDate()}" />
 
                             <com.google.android.flexbox.FlexboxLayout
                                     android:layout_width="match_parent"

@@ -98,6 +98,52 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
 
         bottomSheetBehavior = BottomSheetBehavior.from(getBottomSheetLayout())
             .apply { state = BottomSheetBehavior.STATE_HIDDEN }
+
+        prepareChart()
+    }
+
+    private fun prepareChart() {
+        getBottomSheetLayout().chart.apply {
+            description.isEnabled = false
+            setNoDataText(getString(R.string.chart_empty))
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(false)
+            isScaleXEnabled = true
+            setPinchZoom(false)
+            isDoubleTapToZoomEnabled = true
+            setExtraOffsets(0f, 0f, 0f, 5f)
+            xAxis.apply {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        return SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
+                            timeZone = TimeZone.getTimeZone("Europe/Warsaw")
+                        }.format(Date(value.toLong()))
+                    }
+                }
+                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textSize = 14f
+                labelRotationAngle = -25f
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = (60 * 1000 * 10).toFloat()
+            }
+            axisLeft.apply {
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        return NumberFormat.getInstance().apply {
+                            minimumFractionDigits = 1
+                            maximumFractionDigits = 1
+                        }.format(value)
+                    }
+                }
+                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textSize = 14f
+                setLabelCount(7, true)
+                setDrawZeroLine(true)
+            }
+            axisRight.apply { isEnabled = false }
+            legend.isEnabled = false
+        }
     }
 
     private fun updateFavorite(favoriteItem: MenuItem?, favorite: Boolean) {
@@ -168,51 +214,34 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
     }
 
-    override fun showChart(chartData: List<ChartDataModel>, minIsZero: Boolean) {
+    override fun showChart(
+        chartData: List<ChartDataModel>,
+        minIsZero: Boolean,
+        limitValue: Float?,
+        unit: String,
+        title: String
+    ) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        // TODO create and configure chart earlier
+
+        getBottomSheetLayout().unit.text = unit
+        getBottomSheetLayout().title.text = getString(R.string.chart_title, title)
+
+        val limitLine = limitValue?.let {
+            LimitLine(it).apply {
+                lineWidth = 2.5f
+                lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                label = "100%"
+            }
+        } ?: LimitLine(0f).apply {
+            lineWidth = 2.5f
+            lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+        }
+
         getBottomSheetLayout().chart.apply {
             clear()
-            description.isEnabled = false
-            setNoDataText(getString(R.string.chart_empty))
-            setTouchEnabled(true)
-            isDragEnabled = true
-            setScaleEnabled(false)
-            isScaleXEnabled = true
-            setPinchZoom(false)
-            isDoubleTapToZoomEnabled = true
-            setExtraOffsets(0f, 0f, 0f, 5f)
-            xAxis.apply {
-                valueFormatter = object : ValueFormatter() {
-                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
-                            timeZone = TimeZone.getTimeZone("Europe/Warsaw")
-                        }.format(Date(value.toLong()))
-                    }
-                }
-                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-                textSize = 14f
-                labelRotationAngle = -25f
-                position = XAxis.XAxisPosition.BOTTOM
-                granularity = (60 * 1000 * 10).toFloat()
-            }
             axisLeft.apply {
-                valueFormatter = object : ValueFormatter() {
-                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return NumberFormat.getInstance().apply {
-                            minimumFractionDigits = 1
-                            maximumFractionDigits = 1
-                        }.format(value)
-                    }
-                }
-                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-                textSize = 14f
-                setLabelCount(7, true)
-                addLimitLine(LimitLine(0f).apply {
-                    lineWidth = 2.5f
-                    lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-                })
-                setDrawZeroLine(true)
+                removeAllLimitLines()
+                addLimitLine(limitLine)
                 resetAxisMinimum()
                 when(minIsZero){
                     true -> axisMinimum = 0f
@@ -222,8 +251,6 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                     }
                 }
             }
-            axisRight.apply { isEnabled = false }
-            legend.isEnabled = false
             data = LineData(LineDataSet(chartData.map {
                 Entry(
                     it.timestamp!!.toFloat(),
@@ -236,15 +263,12 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 color = ContextCompat.getColor(requireContext(), R.color.colorAccent)
                 lineWidth = 1.5f
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-                highlightLineWidth = 0.7f
+                highlightLineWidth = 0.8f
                 setDrawFilled(true)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.colorAccent)
             })
-
             fitScreen()
-            invalidate()
         }
-//        getBottomSheetLayout().text.text = chartData.joinToString(separator = "\n")
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 

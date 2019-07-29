@@ -69,7 +69,7 @@
 
     <!--chart-->
     <string name="chart_empty">"Brak danych"</string>
-    <string name="chart_title">"Ostatnie 24h"</string>
+    <string name="chart_title">"%1$s - ostatnie 24h"</string>
 
     <!--units-->
     <string name="m_per_sec">" m/s"</string>

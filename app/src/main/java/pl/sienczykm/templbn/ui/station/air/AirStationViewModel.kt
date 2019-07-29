@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.ui.station.common.BaseStationViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 
@@ -35,5 +36,14 @@ class AirStationViewModel(
     override fun refresh() {
         super.refresh()
         UpdateHandler.syncNowSmogStation(getApplication(), stationId, receiver)
+    }
+
+    fun showChart(
+        chartData: List<ChartDataModel>?,
+        healthyValue: Float,
+        unit: String,
+        title: String
+    ) {
+        chartData?.let { getNavigator()?.showChart(it, true, healthyValue, unit, title) }
     }
 }

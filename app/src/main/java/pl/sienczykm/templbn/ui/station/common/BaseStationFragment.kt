@@ -232,22 +232,19 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         getBottomSheetLayout().title.text = getString(R.string.chart_title, title)
 
         val limitLine = limitValue?.let {
-            LimitLine(it).apply {
-                lineWidth = 2.5f
-                lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-                label = "100%"
-            }
-        } ?: LimitLine(0f).apply {
-            lineWidth = 2.5f
-            lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-        }
+            LimitLine(it, "100%")
+        } ?: LimitLine(0f)
 
         getBottomSheetLayout().chart.apply {
             clear()
             marker = MyMarkerView(requireContext(), R.layout.chart_marker_view, unit)
             axisLeft.apply {
                 removeAllLimitLines()
-                addLimitLine(limitLine)
+                addLimitLine(limitLine.apply {
+                    lineWidth = 2.5f
+                    lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                    textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                })
                 resetAxisMinimum()
                 when(minIsZero){
                     true -> axisMinimum = 0f

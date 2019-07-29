@@ -20,7 +20,7 @@
     <color name="quality_hazardous">#ff5722</color>
 
     <!--  text color in light theme -->
-    <color name="drawable_tint">#717171</color>
+    <color name="base_color">#717171</color>
 
     <color name="shadow">#26000000</color>
 </resources>

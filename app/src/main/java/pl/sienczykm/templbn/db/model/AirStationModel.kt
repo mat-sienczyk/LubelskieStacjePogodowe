@@ -24,6 +24,8 @@ class AirStationModel constructor(
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
     }
 
+    override fun getOldDateTimeInMinutes() = 120L
+
     init {
         this.url = getStationUrl()
     }
@@ -109,6 +111,8 @@ class AirStationModel constructor(
         }
     }
 
+
+    //TODO hardcoded strings to resources!!!
     enum class AirSensorType(
         val paramName: String,
         val paramKey: String,

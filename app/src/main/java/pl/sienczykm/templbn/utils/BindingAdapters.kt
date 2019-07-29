@@ -119,7 +119,7 @@ fun setWeatherData(
         )
         for (drawable: Drawable? in textView.compoundDrawables) {
             drawable?.colorFilter = PorterDuffColorFilter(
-                ContextCompat.getColor(textView.context, R.color.drawable_tint),
+                ContextCompat.getColor(textView.context, R.color.base_color),
                 PorterDuff.Mode.SRC_IN
             )
         }
@@ -129,4 +129,24 @@ fun setWeatherData(
 @BindingAdapter("imageResource")
 fun setImageResource(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
+}
+
+@BindingAdapter("oldDate")
+fun setOldDate(textView: TextView, isDateOld: Boolean) {
+    if (isDateOld) textView.apply {
+        setTextColor(
+            ContextCompat.getColor(
+                textView.context,
+                R.color.colorAccent
+            )
+        )
+        text = textView.context.getString(R.string.station_date_old, text)
+    } else textView.apply {
+        setTextColor(
+            ContextCompat.getColor(
+                textView.context,
+                R.color.base_color
+            )
+        )
+    }
 }

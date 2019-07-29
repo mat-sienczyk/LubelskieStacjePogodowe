@@ -129,7 +129,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                         return timeChartFormatter.format(Date(value.toLong()))
                     }
                 }
-                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
                 textSize = 14f
                 labelRotationAngle = -25f
                 position = XAxis.XAxisPosition.BOTTOM
@@ -141,7 +141,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                         return valueChartFormatter.format(value)
                     }
                 }
-                textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
                 textSize = 14f
                 setLabelCount(7, true)
                 setDrawZeroLine(true)
@@ -232,7 +232,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         getBottomSheetLayout().title.text = getString(R.string.chart_title, title)
 
         val limitLine = limitValue?.let {
-            LimitLine(it, "100%")
+            LimitLine(it, getString(R.string.limit_line_label))
         } ?: LimitLine(0f)
 
         getBottomSheetLayout().chart.apply {
@@ -242,8 +242,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 removeAllLimitLines()
                 addLimitLine(limitLine.apply {
                     lineWidth = 2.5f
-                    lineColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
-                    textColor = ContextCompat.getColor(requireContext(), R.color.drawable_tint)
+                    lineColor = ContextCompat.getColor(requireContext(), R.color.base_color)
+                    textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
                 })
                 resetAxisMinimum()
                 when(minIsZero){
@@ -306,7 +306,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
 
             val value = valueChartFormatter.format(highlight.y) + unit
 
-            content.text = "$time - $value"
+            content.text = getString(R.string.marker_text, time, value)
 
             super.refreshContent(e, highlight)
         }

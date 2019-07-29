@@ -5,8 +5,12 @@
 
     <data>
         <variable
-                name="dateValue"
+                name="date"
                 type="String"/>
+
+        <variable
+                name="isOld"
+                type="Boolean" />
     </data>
 
     <LinearLayout
@@ -32,7 +36,8 @@
                 android:padding="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:value="@{dateValue}"
+                android:text="@{date}"
+                app:oldDate="@{isOld}"
                 tools:text="01.04.2015 08:30 CEST" />
     </LinearLayout>
 </layout>

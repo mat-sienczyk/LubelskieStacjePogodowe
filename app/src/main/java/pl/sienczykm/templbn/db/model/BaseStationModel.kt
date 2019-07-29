@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import pl.sienczykm.templbn.utils.isOlderThan
 import pl.sienczykm.templbn.utils.round
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,6 +23,7 @@ abstract class BaseStationModel(
     var distance: Double? = null
 
     abstract fun getStationUrl(): String
+    abstract fun getOldDateTimeInMinutes(): Long
 
     // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
     abstract fun copy(): BaseStationModel
@@ -42,6 +44,10 @@ abstract class BaseStationModel(
 
     fun getName(): String {
         location?.let { return "$city - $location" } ?: return city
+    }
+
+    fun isDateObsolete(): Boolean {
+        return date.isOlderThan(getOldDateTimeInMinutes())
     }
 
     open fun isContentTheSame(other: BaseStationModel?): Boolean {

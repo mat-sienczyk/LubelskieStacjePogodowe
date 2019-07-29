@@ -9,5 +9,5 @@
     <color name="refresh_bg">#2B2B2B</color>
 
     <!--  text color in dark theme -->
-    <color name="drawable_tint">#d5d5d5</color>
+    <color name="base_color">#d5d5d5</color>
 </resources>

@@ -80,7 +80,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:text="@{station.parsedDate}" />
+                            android:text="@{station.getParsedDate()}"
+                            app:oldDate="@{station.isDateObsolete()}" />
 
                     <ImageView
                             android:id="@+id/fav"
@@ -88,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:src="@drawable/ic_heart_solid"
-                            android:tint="@color/drawable_tint"
+                            android:tint="@color/base_color"
                             android:visibility="@{station.favorite ? View.VISIBLE : View.INVISIBLE}" />
 
                 </com.google.android.flexbox.FlexboxLayout>

@@ -64,7 +64,8 @@
 
                             <include
                                     layout="@layout/row_date"
-                                    app:dateValue="@{viewModel.station.getParsedDate()}" />
+                                    app:date="@{viewModel.station.getParsedDate()}"
+                                    app:isOld="@{viewModel.station.isDateObsolete()}" />
 
                             <include
                                     layout="@layout/row_weather_data"

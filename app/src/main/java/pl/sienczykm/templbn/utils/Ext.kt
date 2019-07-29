@@ -19,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_LONG) {
@@ -129,4 +131,11 @@ fun Context.isNightModeActive(): Boolean {
 fun SwipeRefreshLayout.setColors() {
     setProgressBackgroundColorSchemeResource(R.color.refresh_bg)
     setColorSchemeResources(R.color.refresh_yellow, R.color.refresh_red, R.color.refresh_green)
+}
+
+fun Date?.isOlderThan(minutes: Long): Boolean {
+    return when {
+        this == null -> false
+        else -> System.currentTimeMillis() - this.time > TimeUnit.MINUTES.toMillis(minutes)
+    }
 }

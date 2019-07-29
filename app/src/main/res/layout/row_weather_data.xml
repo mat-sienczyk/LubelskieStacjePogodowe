@@ -85,6 +85,6 @@
                 android:visibility="@{chartData != null ? View.VISIBLE : View.GONE}"
                 android:padding="5dp"
                 android:src="@drawable/ic_chart"
-                android:tint="@color/drawable_tint" />
+                android:tint="@color/base_color" />
     </LinearLayout>
 </layout>

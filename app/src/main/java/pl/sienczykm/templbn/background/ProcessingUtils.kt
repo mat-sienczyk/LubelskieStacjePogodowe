@@ -9,11 +9,12 @@ import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.AirSensorData
-import pl.sienczykm.templbn.utils.Constants
 import pl.sienczykm.templbn.utils.dateFormat
 import pl.sienczykm.templbn.utils.dateFormatPoland
+import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object ProcessingUtils {
 
@@ -81,13 +82,18 @@ object ProcessingUtils {
                         station.humidity = responseStation?.humidity
                         station.pressure = responseStation?.pressure
                         station.rainToday = responseStation?.rainToday
-                        station.temperatureData = parseChartData(responseStation?.temperatureData?.data)
-                        station.humidityData = parseChartData(responseStation?.humidityData?.data)
-                        station.windSpeedData = parseChartData(responseStation?.windSpeedData?.data)
+                        station.temperatureData =
+                            parseWeatherChartData(responseStation?.temperatureData?.data)
+                        station.humidityData =
+                            parseWeatherChartData(responseStation?.humidityData?.data)
+                        station.windSpeedData =
+                            parseWeatherChartData(responseStation?.windSpeedData?.data)
                         station.temperatureWindData =
-                            parseChartData(responseStation?.temperatureWindChart?.data)
-                        station.pressureData = parseChartData(responseStation?.pressureData?.data, true)
-                        station.rainTodayData = parseChartData(responseStation?.rainData?.data)
+                            parseWeatherChartData(responseStation?.temperatureWindChart?.data)
+                        station.pressureData =
+                            parseWeatherChartData(responseStation?.pressureData?.data, true)
+                        station.rainTodayData =
+                            parseWeatherChartData(responseStation?.rainData?.data)
 
                     }
                     else -> throw Exception(response.errorBody().toString())
@@ -109,8 +115,10 @@ object ProcessingUtils {
                         station.windDir = responseStation?.windDir
                         station.humidity = responseStation?.humidity
                         station.rainToday = responseStation?.rainToday
-                        station.temperatureWindData = parseChartData(responseStation?.temperatureData?.data)
-                        station.humidityData = parseChartData(responseStation?.humidityData?.data)
+                        station.temperatureWindData =
+                            parseWeatherChartData(responseStation?.temperatureData?.data)
+                        station.humidityData =
+                            parseWeatherChartData(responseStation?.humidityData?.data)
 
 
                     }
@@ -125,12 +133,13 @@ object ProcessingUtils {
     private fun parseWeatherDate(stringDate: String?): Date? =
         stringDate?.let { dateFormat("yyyy-MM-dd HH:mm", "UTC").parse(it) }
 
-    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartDataModel>? =
-        parseChartData(chartData, false)
-
-    private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<ChartDataModel>? {
-        val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
-        val offset = if (isDaylightTime) Constants.TWO_HOURS else Constants.ONE_HOUR
+    private fun parseWeatherChartData(
+        chartData: List<List<Double>?>?,
+        isPressure: Boolean = false
+    ): List<ChartDataModel>? {
+        val offset =
+            if (nowInPoland().timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
+            else TimeUnit.HOURS.toMillis(1)
 
         return if (chartData.isNullOrEmpty()) null
         else {
@@ -152,14 +161,14 @@ object ProcessingUtils {
                         airSensor.id,
                         airSensor.param?.paramName,
                         airSensor.param?.paramCode,
-                        parseSensorData(LspController.getAirSensorData(airSensor.id!!).body())
+                        parseAirChartData(LspController.getAirSensorData(airSensor.id!!).body())
                     )
                 }
             else -> throw Exception(response.errorBody().toString())
         }
     }
 
-    private fun parseSensorData(airSensorData: AirSensorData?): List<ChartDataModel>? {
+    private fun parseAirChartData(airSensorData: AirSensorData?): List<ChartDataModel>? {
         return if (airSensorData?.key == AirStationModel.AirSensorType.CO.paramKey) {
             airSensorData.values?.reversed()?.map { sensorValue ->
                 ChartDataModel(

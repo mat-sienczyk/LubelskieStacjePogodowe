@@ -3,10 +3,7 @@ package pl.sienczykm.templbn.db.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.utils.Config
-import pl.sienczykm.templbn.utils.round
-import pl.sienczykm.templbn.utils.roundAndGetString
-import java.text.SimpleDateFormat
+import pl.sienczykm.templbn.utils.*
 import java.util.*
 
 @Entity
@@ -152,8 +149,7 @@ class WeatherStationModel constructor(
     }
 
     fun getForecastDate(): String {
-        val outputFormat = SimpleDateFormat("yyyyMMddHH", Locale("pl", "PL"))
-        val now = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"), Locale("pl", "PL"))
+        val now = nowInPoland()
         when (now.get(Calendar.HOUR_OF_DAY)) {
             in 0..6 -> now.apply {
                 set(Calendar.DAY_OF_MONTH, -1)
@@ -163,7 +159,7 @@ class WeatherStationModel constructor(
             in 13..18 -> now.set(Calendar.HOUR_OF_DAY, 6)
             in 19..24 -> now.set(Calendar.HOUR_OF_DAY, 12)
         }
-        return outputFormat.format(now.time)
+        return dateFormatPoland("yyyyMMddHH").format(now.time)
     }
 
     companion object {

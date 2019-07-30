@@ -10,8 +10,9 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.AirSensorData
 import pl.sienczykm.templbn.utils.Constants
+import pl.sienczykm.templbn.utils.dateFormat
+import pl.sienczykm.templbn.utils.dateFormatPoland
 import pl.sienczykm.templbn.utils.round
-import java.text.SimpleDateFormat
 import java.util.*
 
 object ProcessingUtils {
@@ -121,17 +122,11 @@ object ProcessingUtils {
         return station
     }
 
-    private fun parseWeatherDate(stringDate: String?): Date? {
+    private fun parseWeatherDate(stringDate: String?): Date? =
+        stringDate?.let { dateFormat("yyyy-MM-dd HH:mm", "UTC").parse(it) }
 
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("pl", "PL"))
-        inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-
-        return stringDate?.let { inputFormat.parse(it) }
-    }
-
-    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartDataModel>? {
-        return parseChartData(chartData, false)
-    }
+    private fun parseChartData(chartData: List<List<Double>?>?): List<ChartDataModel>? =
+        parseChartData(chartData, false)
 
     private fun parseChartData(chartData: List<List<Double>?>?, isPressure: Boolean): List<ChartDataModel>? {
         val isDaylightTime = TimeZone.getTimeZone("Europe/Warsaw").inDaylightTime(Date())
@@ -181,11 +176,6 @@ object ProcessingUtils {
             }
     }
 
-    private fun parseAirDate(stringDate: String?): Date? {
-
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("pl", "PL"))
-        inputFormat.timeZone = TimeZone.getTimeZone("Europe/Warsaw")
-
-        return stringDate?.let { inputFormat.parse(it) }
-    }
+    private fun parseAirDate(stringDate: String?): Date? =
+        stringDate?.let { dateFormatPoland("yyyy-MM-dd HH:mm:ss").parse(it) }
 }

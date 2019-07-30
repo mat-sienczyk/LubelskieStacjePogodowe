@@ -43,11 +43,11 @@ import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.utils.dateFormatPoland
 import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
@@ -57,9 +57,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     lateinit var viewModel: T
     lateinit var binding: N
 
-    val timeChartFormatter = SimpleDateFormat("HH:mm", Locale("pl", "PL")).apply {
-        timeZone = TimeZone.getTimeZone("Europe/Warsaw")
-    }
+    val timeChartFormatter = dateFormatPoland("HH:mm")
 
     val valueChartFormatter: NumberFormat = NumberFormat.getInstance().apply {
         minimumFractionDigits = 1

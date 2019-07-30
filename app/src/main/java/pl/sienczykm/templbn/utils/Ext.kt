@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
@@ -133,9 +134,19 @@ fun SwipeRefreshLayout.setColors() {
     setColorSchemeResources(R.color.refresh_yellow, R.color.refresh_red, R.color.refresh_green)
 }
 
+fun nowInPoland(): Calendar =
+    Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"), Locale("pl", "PL"))
+
+fun dateFormatPoland(pattern: String): SimpleDateFormat = dateFormat(pattern, "Europe/Warsaw")
+
+fun dateFormat(pattern: String, timeZoneString: String): SimpleDateFormat =
+    SimpleDateFormat(pattern, Locale("pl", "PL")).apply {
+        timeZone = TimeZone.getTimeZone(timeZoneString)
+    }
+
 fun Date?.isOlderThan(minutes: Long): Boolean {
     return when {
         this == null -> false
-        else -> System.currentTimeMillis() - this.time > TimeUnit.MINUTES.toMillis(minutes)
+        else -> nowInPoland().timeInMillis - this.time > TimeUnit.MINUTES.toMillis(minutes)
     }
 }

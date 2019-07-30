@@ -3,7 +3,9 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
+import java.util.*
 
 @Entity
 class AirStationModel constructor(
@@ -60,8 +62,14 @@ class AirStationModel constructor(
     }
 
     fun getChartDataForSensor(sensorType: AirSensorType): List<ChartDataModel>? {
+
+        val yestreday = nowInPoland().apply {
+            add(Calendar.HOUR_OF_DAY, -1)
+            add(Calendar.DAY_OF_MONTH, -1)
+        }
+
         return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }
-            ?.data?.filter { it.value != null }
+            ?.data?.filter { (it.timestamp!! > yestreday.timeInMillis) and (it.value != null) }
     }
 
     fun getValueAndQualityIndex(sensorType: AirSensorType): Pair<Double, AirQualityIndex>? {

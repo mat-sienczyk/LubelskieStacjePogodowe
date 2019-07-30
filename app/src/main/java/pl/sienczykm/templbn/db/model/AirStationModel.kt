@@ -63,19 +63,19 @@ class AirStationModel constructor(
 
     fun getChartDataForSensor(sensorType: AirSensorType): List<ChartDataModel>? {
 
-        val yestreday = nowInPoland().apply {
+        val yesterday = nowInPoland().apply {
             add(Calendar.HOUR_OF_DAY, -1)
             add(Calendar.DAY_OF_MONTH, -1)
         }
 
         return sensors?.find { airSensorModel -> airSensorModel.paramCode == sensorType.paramKey }
-            ?.data?.filter { (it.timestamp!! > yestreday.timeInMillis) and (it.value != null) }
+            ?.data?.filter { (it.timestamp!! > yesterday.timeInMillis) and (it.value != null) }
     }
 
     fun getValueAndQualityIndex(sensorType: AirSensorType): Pair<Double, AirQualityIndex>? {
         val value = getValue(sensorType) ?: return null
         return when {
-            (value > 0) and (value <= sensorType.maxVeryGood) -> value to AirQualityIndex.VERY_GOOD
+            (value >= 0) and (value <= sensorType.maxVeryGood) -> value to AirQualityIndex.VERY_GOOD
             (value > sensorType.maxVeryGood) and (value <= sensorType.maxGood) -> value to AirQualityIndex.GOOD
             (value > sensorType.maxGood) and (value <= sensorType.maxModerate) -> value to AirQualityIndex.MODERATE
             (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> value to AirQualityIndex.UNHEALTHY_SENSITIVE

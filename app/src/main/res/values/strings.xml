@@ -27,12 +27,12 @@
     <string name="station_date">Data</string>
     <string name="station_date_old">%1$s - dane nieaktualne</string>
     <string name="station_wind">Wiatr</string>
-    <string name="station_temp">Temp.</string>
+    <string name="station_temp">Temperatura</string>
     <string name="station_temp_air">Temp. odczuwalna</string>
     <string name="station_temp_ground">Temp. przygruntowa</string>
     <string name="station_humidity">Wilgotność</string>
     <string name="station_pressure">Ciśnienie</string>
-    <string name="station_rain_today">Opdad dziś</string>
+    <string name="station_rain_today">Opad dziś</string>
 
     <string name="station_pm10">Pył zawieszony PM10</string>
     <string name="station_pm25">Pył zawieszony PM2.5</string>

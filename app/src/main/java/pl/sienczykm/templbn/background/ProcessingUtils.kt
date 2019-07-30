@@ -10,7 +10,6 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.remote.LspController
 import pl.sienczykm.templbn.remote.model.AirSensorData
 import pl.sienczykm.templbn.utils.dateFormat
-import pl.sienczykm.templbn.utils.dateFormatPoland
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import java.util.*
@@ -186,5 +185,5 @@ object ProcessingUtils {
     }
 
     private fun parseAirDate(stringDate: String?): Date? =
-        stringDate?.let { dateFormatPoland("yyyy-MM-dd HH:mm:ss").parse(it) }
+        stringDate?.let { dateFormat("yyyy-MM-dd HH:mm:ss").parse(it) }
 }

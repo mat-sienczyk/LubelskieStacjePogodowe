@@ -2,7 +2,7 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import pl.sienczykm.templbn.utils.dateFormatPoland
+import pl.sienczykm.templbn.utils.dateFormat
 import pl.sienczykm.templbn.utils.isOlderThan
 import pl.sienczykm.templbn.utils.round
 import java.util.*
@@ -28,7 +28,7 @@ abstract class BaseStationModel(
     // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance
     abstract fun copy(): BaseStationModel
 
-    fun getParsedDate(): String? = date?.let { dateFormatPoland("dd.MM.yyyy HH:mm").format(it) }
+    fun getParsedDate(): String? = date?.let { dateFormat("dd.MM.yyyy HH:mm").format(it) }
 
     fun getParsedDistance(): String? {
         return when {

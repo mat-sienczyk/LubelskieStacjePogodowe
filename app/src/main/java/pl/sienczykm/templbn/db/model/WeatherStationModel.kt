@@ -159,7 +159,7 @@ class WeatherStationModel constructor(
             in 13..18 -> now.set(Calendar.HOUR_OF_DAY, 6)
             in 19..24 -> now.set(Calendar.HOUR_OF_DAY, 12)
         }
-        return dateFormatPoland("yyyyMMddHH").format(now.time)
+        return dateFormat("yyyyMMddHH").format(now.time)
     }
 
     companion object {

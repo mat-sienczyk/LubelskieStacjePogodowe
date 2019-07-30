@@ -137,9 +137,7 @@ fun SwipeRefreshLayout.setColors() {
 fun nowInPoland(): Calendar =
     Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"), Locale("pl", "PL"))
 
-fun dateFormatPoland(pattern: String): SimpleDateFormat = dateFormat(pattern, "Europe/Warsaw")
-
-fun dateFormat(pattern: String, timeZoneString: String): SimpleDateFormat =
+fun dateFormat(pattern: String, timeZoneString: String = "Europe/Warsaw"): SimpleDateFormat =
     SimpleDateFormat(pattern, Locale("pl", "PL")).apply {
         timeZone = TimeZone.getTimeZone(timeZoneString)
     }

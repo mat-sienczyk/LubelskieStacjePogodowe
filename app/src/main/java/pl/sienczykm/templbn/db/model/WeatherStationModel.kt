@@ -126,7 +126,7 @@ class WeatherStationModel constructor(
 
     fun getParsedPressure(roundPlaces: Int = 0): String? {
         return if (pressure == 0.0) {
-            pressureData?.last()?.value.roundAndGetString(roundPlaces)
+            pressureData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
         } else {
             pressure.roundAndGetString(roundPlaces)
         }

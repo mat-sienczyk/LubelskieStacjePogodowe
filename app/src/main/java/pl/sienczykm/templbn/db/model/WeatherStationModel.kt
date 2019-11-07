@@ -101,39 +101,50 @@ class WeatherStationModel constructor(
     }
 
     fun getParsedTemperature(roundPlaces: Int = 0): String? {
-        return temperature.roundAndGetString(roundPlaces)
+        return getLatestParsedData(roundPlaces, temperature, temperatureData)
     }
 
     fun getParsedTemperatureWind(roundPlaces: Int = 0): String? {
-        return temperatureWind.roundAndGetString(roundPlaces)
+        return getLatestParsedData(roundPlaces, temperatureWind, temperatureWindData)
     }
 
     fun getParsedTemperatureGround(roundPlaces: Int = 0): String? {
-        return temperatureGround.roundAndGetString(roundPlaces)
+        return getLatestParsedData(roundPlaces, temperatureGround, null)
     }
 
     fun getParsedWind(roundPlaces: Int = 0): String? {
-        return if (convertWind) {
-            convertMetersToKm(windSpeed).roundAndGetString(roundPlaces)
-        } else {
-            windSpeed.roundAndGetString(roundPlaces)
-        }
+        return getLatestParsedData(roundPlaces, windSpeed, windSpeedData, convertWind)
     }
 
     fun getParsedHumidity(roundPlaces: Int = 0): String? {
-        return humidity.roundAndGetString(roundPlaces)
+        return getLatestParsedData(roundPlaces, humidity, humidityData)
     }
 
     fun getParsedPressure(roundPlaces: Int = 0): String? {
         return if (pressure == 0.0) {
             pressureData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
         } else {
-            pressure.roundAndGetString(roundPlaces)
+            getLatestParsedData(roundPlaces, pressure, pressureData)
         }
     }
 
     fun getParsedRain(roundPlaces: Int = 0): String? {
-        return rainToday.roundAndGetString(roundPlaces)
+        return getLatestParsedData(roundPlaces, rainToday, rainTodayData)
+    }
+
+    private fun getLatestParsedData(
+        roundPlaces: Int,
+        data: Double?,
+        chartData: List<ChartDataModel>?,
+        convertWind: Boolean = false
+    ): String? {
+        return if (convertWind) {
+            convertMetersToKm(data).roundAndGetString(roundPlaces)
+                ?: convertMetersToKm(chartData?.lastOrNull()?.value).roundAndGetString(roundPlaces)
+        } else {
+            data.roundAndGetString(roundPlaces)
+                ?: chartData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
+        }
     }
 
     fun convertMetersToKm(wind: Double?): Double? {

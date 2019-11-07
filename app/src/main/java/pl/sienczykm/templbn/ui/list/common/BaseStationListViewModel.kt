@@ -12,7 +12,7 @@ import pl.sienczykm.templbn.utils.haversine
 abstract class BaseStationListViewModel<T : BaseStationModel>(application: Application) :
     BaseRefreshViewModel<BaseNavigator>(application) {
 
-    val stations = MediatorLiveData<List<T>>()
+    val stations = MediatorLiveData<List<BaseStationModel>>()
 
     abstract val stationsLiveData: LiveData<List<T>>
 

@@ -8,6 +8,8 @@
 
         <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
+        <import type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
+
         <variable
                 name="viewModel"
                 type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel" />
@@ -40,13 +42,13 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
+                            app:hyperlink="@{@string/station_open_website}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:title="@{@string/station_title_air}"
-                            app:hyperlink="@{@string/station_open_website}"
                             app:url="@{viewModel.station.url}"
-                            app:viewModel="@{viewModel}" />
+                            app:viewModel="@{(BaseStationViewModel) viewModel}" />
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView"

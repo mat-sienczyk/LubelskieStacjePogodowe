@@ -4,15 +4,17 @@
 
     <data>
 
+        <import type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
+
         <variable
                 name="viewModel"
                 type="pl.sienczykm.templbn.ui.station.weather.WeatherStationViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/coordinator_layout">
+            android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_layout"
@@ -36,13 +38,13 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
+                            app:hyperlink="@{@string/station_open_website}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:title="@{@string/station_title_weather}"
-                            app:hyperlink="@{@string/station_open_website}"
                             app:url="@{viewModel.station.url}"
-                            app:viewModel="@{viewModel}" />
+                            app:viewModel="@{(BaseStationViewModel) viewModel}" />
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView"
@@ -137,13 +139,13 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
+                            app:hyperlink="@{@string/forecast_open_website}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/cardView"
                             app:title="@{@string/forecast_title}"
-                            app:hyperlink="@{@string/forecast_open_website}"
                             app:url="@{viewModel.station.getForecastUrl()}"
-                            app:viewModel="@{viewModel}" />
+                            app:viewModel="@{(BaseStationViewModel) viewModel}" />
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView3"

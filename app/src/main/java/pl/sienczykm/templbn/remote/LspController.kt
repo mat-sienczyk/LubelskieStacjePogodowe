@@ -54,17 +54,15 @@ object LspController {
     }
 
     private fun getClient(): OkHttpClient {
-
-            val okHttpClientBuilder = OkHttpClient().newBuilder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-
-            return okHttpClientBuilder.build()
-        }
+        return OkHttpClient().newBuilder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }).build()
+    }
 
     private fun getGson(): Gson {
-        val gsonBuilder = GsonBuilder()
-            .setLenient()
-
-        return gsonBuilder.create()
+        return GsonBuilder().apply {
+            setLenient()
+        }.create()
     }
 }

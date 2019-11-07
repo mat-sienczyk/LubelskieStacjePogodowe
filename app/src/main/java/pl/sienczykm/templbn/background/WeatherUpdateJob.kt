@@ -10,17 +10,15 @@ class WeatherUpdateJob : UpdateJob() {
         private const val JOB_ID = 101
 
         fun enqueueWork(context: Context, stationsIds: List<Int>, statusReceiver: StatusReceiver, stationType: String) {
-
-            val intent = Intent(context, WeatherUpdateJob::class.java)
-            intent.putExtra(UpdateHandler.STATION_ID_ARRAY_KEY, stationsIds.toIntArray())
-            intent.putExtra(UpdateHandler.STATION_TYPE_KEY, stationType)
-            intent.putExtra(RECEIVER_KEY, statusReceiver)
-
             enqueueWork(
                 context,
                 WeatherUpdateJob::class.java,
                 JOB_ID,
-                intent
+                Intent(context, WeatherUpdateJob::class.java).apply {
+                    putExtra(UpdateHandler.STATION_ID_ARRAY_KEY, stationsIds.toIntArray())
+                    putExtra(UpdateHandler.STATION_TYPE_KEY, stationType)
+                    putExtra(RECEIVER_KEY, statusReceiver)
+                }
             )
         }
     }

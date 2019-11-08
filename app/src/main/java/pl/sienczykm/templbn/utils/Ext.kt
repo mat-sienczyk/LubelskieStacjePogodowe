@@ -8,7 +8,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -70,9 +72,9 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
 }
 
 fun Context?.isLocationPermissionGranted(): Boolean {
-    return if(this == null){
+    return if (this == null) {
         false
-    }else{
+    } else {
         ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -142,9 +144,14 @@ fun dateFormat(pattern: String, timeZoneString: String = "Europe/Warsaw"): Simpl
         timeZone = TimeZone.getTimeZone(timeZoneString)
     }
 
-fun Date?.isOlderThan(minutes: Long): Boolean {
-    return when {
-        this == null -> false
-        else -> nowInPoland().timeInMillis - this.time > TimeUnit.MINUTES.toMillis(minutes)
-    }
+fun Date.isOlderThan(minutes: Long): Boolean =
+    nowInPoland().timeInMillis - this.time > TimeUnit.MINUTES.toMillis(minutes)
+
+fun TextView.setColor(@ColorRes colorResId: Int) {
+    setTextColor(
+        ContextCompat.getColor(
+            context,
+            colorResId
+        )
+    )
 }

@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:text="@{station.getParsedDate()}"
-                            app:oldDate="@{station.isDateObsolete()}" />
+                            app:oldDate="@{station.isDateObsoleteOrNull()}" />
 
                     <ImageView
                             android:id="@+id/fav"

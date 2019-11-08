@@ -56,9 +56,9 @@ object ProcessingUtils {
     }
 
     private fun getAirStationDate(sensors: List<AirSensorModel>?): Date? {
-        return Date(sensors?.filter { sensorModel -> sensorModel.data?.isNotEmpty()!! }
+        return sensors?.filter { sensorModel -> sensorModel.data?.isNotEmpty()!! }
             ?.maxBy { sensorModel -> sensorModel.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp!! }
-            ?.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp!!)
+            ?.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp?.let { Date(it) }
     }
 
     private fun constructWeatherStationModel(

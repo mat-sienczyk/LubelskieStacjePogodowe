@@ -73,7 +73,7 @@
                             <include
                                     layout="@layout/row_date"
                                     app:date="@{viewModel.station.getParsedDate()}"
-                                    app:isOld="@{viewModel.station.isDateObsolete()}" />
+                                    app:isOld="@{viewModel.station.isDateObsoleteOrNull()}" />
 
                             <com.google.android.flexbox.FlexboxLayout
                                     android:layout_width="match_parent"

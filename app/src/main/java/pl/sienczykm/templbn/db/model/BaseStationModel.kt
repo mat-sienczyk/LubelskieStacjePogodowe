@@ -43,8 +43,8 @@ abstract class BaseStationModel(
         location?.let { return "$city - $location" } ?: return city
     }
 
-    fun isDateObsolete(): Boolean {
-        return date.isOlderThan(getOldDateTimeInMinutes())
+    fun isDateObsoleteOrNull(): Boolean? {
+        return date?.isOlderThan(getOldDateTimeInMinutes())
     }
 
     open fun isContentTheSame(other: BaseStationModel?): Boolean {

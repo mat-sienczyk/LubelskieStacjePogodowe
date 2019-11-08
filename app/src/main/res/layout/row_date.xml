@@ -4,9 +4,12 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
                 name="date"
-                type="String"/>
+                type="String" />
 
         <variable
                 name="isOld"
@@ -26,7 +29,8 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/station_date"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="@{isOld != null ? View.VISIBLE : View.GONE}" />
 
         <TextView
                 android:id="@+id/dataText"
@@ -34,9 +38,9 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
                 android:padding="5dp"
+                android:text="@{date}"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@{date}"
                 app:oldDate="@{isOld}"
                 tools:text="01.04.2015 08:30 CEST" />
     </LinearLayout>

@@ -72,23 +72,23 @@ fun setCircleData(
             AirStationModel.AirQualityIndex.VERY_GOOD -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_very_good
-                )
+            )
             AirStationModel.AirQualityIndex.GOOD -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_good
-                )
+            )
             AirStationModel.AirQualityIndex.MODERATE -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_moderate
-                )
+            )
             AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_unhealthy_sensitive
-                )
+            )
             AirStationModel.AirQualityIndex.UNHEALTHY -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_unhealthy
-                )
+            )
             AirStationModel.AirQualityIndex.HAZARDOUS -> setCircleProgressTextColor(
                 circleProgressView,
                 R.color.quality_hazardous
@@ -132,21 +132,18 @@ fun setImageResource(imageView: ImageView, resource: Int) {
 }
 
 @BindingAdapter("oldDate")
-fun setOldDate(textView: TextView, isDateOld: Boolean) {
-    if (isDateOld) textView.apply {
-        setTextColor(
-            ContextCompat.getColor(
-                textView.context,
-                R.color.colorAccent
-            )
-        )
-        text = textView.context.getString(R.string.station_date_old, text)
-    } else textView.apply {
-        setTextColor(
-            ContextCompat.getColor(
-                textView.context,
-                R.color.base_color
-            )
-        )
+fun setOldDate(textView: TextView, isDateOld: Boolean?) {
+    when {
+        isDateOld == null -> textView.apply {
+            setColor(R.color.colorAccent)
+            text = textView.context.getString(R.string.chart_empty)
+        }
+        isDateOld -> textView.apply {
+            setColor(R.color.colorAccent)
+            text = textView.context.getString(R.string.station_date_old, text)
+        }
+        else -> textView.apply {
+            setColor(R.color.base_color)
+        }
     }
 }

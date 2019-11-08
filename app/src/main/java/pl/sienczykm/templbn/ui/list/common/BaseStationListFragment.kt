@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
@@ -139,6 +140,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
                     R.string.added_to_favorites
                 )
 //            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
+                delay(500)
                 getList().smoothScrollToPosition(0)
             }
         }

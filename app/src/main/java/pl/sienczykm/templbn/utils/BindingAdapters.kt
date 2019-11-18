@@ -15,7 +15,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
 import com.github.chrisbanes.photoview.PhotoView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.clearCache
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
@@ -51,9 +53,18 @@ fun setStationName(textView: TextView, station: BaseStationModel) {
 @BindingAdapter("load")
 fun loadPicture(photoView: PhotoView, url: String?) {
     url?.let {
-        Picasso.get()
-            .load(it)
-            .into(photoView)
+        Picasso.get().apply {
+            load(it)
+                .into(photoView, object : Callback {
+                    override fun onSuccess() {
+                        if (photoView.context.isNightModeActive()) photoView.invertColors()
+                    }
+
+                    override fun onError(e: Exception?) {
+                        this@apply.clearCache(url)
+                    }
+                })
+        }
     }
 }
 

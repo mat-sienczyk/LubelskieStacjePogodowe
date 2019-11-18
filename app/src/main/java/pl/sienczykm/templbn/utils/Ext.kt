@@ -4,10 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -154,4 +157,20 @@ fun TextView.setColor(@ColorRes colorResId: Int) {
             colorResId
         )
     )
+}
+
+fun ImageView.invertColors() {
+    drawable.invertColors()
+}
+
+fun Drawable.invertColors() {
+    colorFilter =
+        ColorMatrixColorFilter(
+            floatArrayOf(
+                -1.0f, 0f, 0f, 0f, 255f, // red
+                0f, -1.0f, 0f, 0f, 255f, // green
+                0f, 0f, -1.0f, 0f, 255f, // blue
+                0f, 0f, 0f, 1.0f, 0f  // alpha
+            )
+        )
 }

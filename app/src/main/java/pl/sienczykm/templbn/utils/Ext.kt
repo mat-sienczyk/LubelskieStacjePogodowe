@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.ColorMatrixColorFilter
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -37,11 +35,8 @@ fun Context.toast(@StringRes message: Int, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, this.getText(message), duration).show()
 }
 
-fun Context.isNetworkAvailable(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-    return activeNetwork?.isConnected == true
-}
+fun Context.isNetworkAvailable(): Boolean =
+    (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected == true
 
 fun CoordinatorLayout.snackbarShow(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
@@ -74,17 +69,11 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     return 2 * R * asin(sqrt(sin(Δλ / 2).pow(2.0) + sin(Δφ / 2).pow(2.0) * cos(λ1) * cos(λ2)))
 }
 
-fun Context?.isLocationPermissionGranted(): Boolean {
-    return if (this == null) {
-        false
-    } else {
-        ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-
-    }
-}
+fun Context.isLocationPermissionGranted(): Boolean =
+    ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
 
 fun Double?.round(places: Int = 0): Double? {
     return when {
@@ -160,10 +149,6 @@ fun TextView.setColor(@ColorRes colorResId: Int) {
 }
 
 fun ImageView.invertColors() {
-    drawable.invertColors()
-}
-
-fun Drawable.invertColors() {
     colorFilter =
         ColorMatrixColorFilter(
             floatArrayOf(

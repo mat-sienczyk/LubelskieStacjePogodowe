@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getLocationPermission() {
+    private fun getLocationPermission() {
         if (!isLocationPermissionGranted()) {
             ActivityCompat.requestPermissions(
                 this,

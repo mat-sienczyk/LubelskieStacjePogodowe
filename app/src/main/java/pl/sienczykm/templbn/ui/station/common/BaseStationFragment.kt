@@ -50,7 +50,8 @@ import timber.log.Timber
 import java.text.NumberFormat
 import java.util.*
 
-abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> : Fragment(),
+abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewModel<K>, N : ViewDataBinding> :
+    Fragment(),
     StationNavigator {
 
     lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -83,7 +84,11 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         binding.setVariable(BR.viewModel, viewModel)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -100,7 +105,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             setColors()
         }
 
-        viewModel.station.observe(this, Observer { station ->
+        viewModel.station.observe(viewLifecycleOwner, Observer { station ->
             requireActivity().title = station.getName()
         })
 
@@ -244,7 +249,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                     textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
                 })
                 resetAxisMinimum()
-                when(minIsZero){
+                when (minIsZero) {
                     true -> axisMinimum = 0f
                     false -> {
                         spaceTop = 2f

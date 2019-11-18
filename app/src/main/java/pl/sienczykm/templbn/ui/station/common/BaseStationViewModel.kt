@@ -3,7 +3,6 @@ package pl.sienczykm.templbn.ui.station.common
 import android.app.Application
 import androidx.lifecycle.LiveData
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.ui.common.BaseRefreshViewModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 

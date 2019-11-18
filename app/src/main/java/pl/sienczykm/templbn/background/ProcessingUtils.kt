@@ -7,8 +7,8 @@ import pl.sienczykm.templbn.db.model.AirSensorModel
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.remote.LspController
-import pl.sienczykm.templbn.remote.model.AirSensorData
+import pl.sienczykm.templbn.webservice.LspController
+import pl.sienczykm.templbn.webservice.model.AirSensorData
 import pl.sienczykm.templbn.utils.dateFormat
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round

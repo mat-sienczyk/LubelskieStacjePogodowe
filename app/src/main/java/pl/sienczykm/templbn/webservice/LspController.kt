@@ -1,14 +1,14 @@
-package pl.sienczykm.templbn.remote
+package pl.sienczykm.templbn.webservice
 
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.sienczykm.templbn.remote.model.AirSensor
-import pl.sienczykm.templbn.remote.model.AirSensorData
-import pl.sienczykm.templbn.remote.model.WeatherStationOne
-import pl.sienczykm.templbn.remote.model.WeatherStationTwo
+import pl.sienczykm.templbn.webservice.model.AirSensor
+import pl.sienczykm.templbn.webservice.model.AirSensorData
+import pl.sienczykm.templbn.webservice.model.WeatherStationOne
+import pl.sienczykm.templbn.webservice.model.WeatherStationTwo
 import pl.sienczykm.templbn.utils.Config
 import retrofit2.Response
 import retrofit2.Retrofit

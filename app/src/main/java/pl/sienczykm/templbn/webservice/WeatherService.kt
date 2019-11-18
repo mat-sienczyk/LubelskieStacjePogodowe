@@ -1,7 +1,7 @@
-package pl.sienczykm.templbn.remote
+package pl.sienczykm.templbn.webservice
 
-import pl.sienczykm.templbn.remote.model.WeatherStationOne
-import pl.sienczykm.templbn.remote.model.WeatherStationTwo
+import pl.sienczykm.templbn.webservice.model.WeatherStationOne
+import pl.sienczykm.templbn.webservice.model.WeatherStationTwo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

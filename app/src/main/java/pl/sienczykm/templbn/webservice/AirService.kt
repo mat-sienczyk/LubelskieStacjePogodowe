@@ -1,7 +1,7 @@
-package pl.sienczykm.templbn.remote
+package pl.sienczykm.templbn.webservice
 
-import pl.sienczykm.templbn.remote.model.AirSensor
-import pl.sienczykm.templbn.remote.model.AirSensorData
+import pl.sienczykm.templbn.webservice.model.AirSensor
+import pl.sienczykm.templbn.webservice.model.AirSensorData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

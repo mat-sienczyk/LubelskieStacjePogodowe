@@ -14,5 +14,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build and deply APK with Gradle
+    - name: Build APK
       run: ./gradlew assembleDebug
+    - name: Deploy APK
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: app-debug.apk
+        path: app/build/outputs/apk/debug

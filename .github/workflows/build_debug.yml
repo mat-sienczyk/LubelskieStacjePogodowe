@@ -22,7 +22,10 @@ jobs:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk
     - name: Upload to Release
-      uses: AButler/upload-release-assets@v1.0
+      uses: xresloader/upload-to-github-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: 'app-debug.apk'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        file: "*.apk"
+        overwrite: true
+        draft: false

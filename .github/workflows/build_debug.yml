@@ -16,8 +16,7 @@ jobs:
         java-version: 1.8
     - name: Build Debug APK
       run: ./gradlew assembleDebug
-    - name: Upload Artifact
-      uses: Shopify/upload-to-release
+    - uses: Shopify/upload-to-release
       with:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk

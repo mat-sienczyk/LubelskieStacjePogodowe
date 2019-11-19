@@ -39,11 +39,11 @@ fun Context.isNetworkAvailable(): Boolean =
     (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected == true
 
 fun CoordinatorLayout.snackbarShow(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(this, message, duration).show()
 }
 
 fun CoordinatorLayout.snackbarShow(message: String, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(this, message, duration).show()
 }
 
 fun View.show() {

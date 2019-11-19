@@ -21,11 +21,7 @@ jobs:
       with:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk
-    - name: Upload to Release
-      uses: xresloader/upload-to-github-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Download Artifact
+      uses: actions/download-artifact@v1.0.0
       with:
-        file: "*.zip"
-        overwrite: true
-        draft: false
+        name: lsp_debug

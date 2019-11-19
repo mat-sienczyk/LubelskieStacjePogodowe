@@ -22,8 +22,8 @@ jobs:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk
     - name: Releasing using Hub
-      uses: ShaunLWM/action-release-debugapk@master
+      uses: ShaunLWM/action-release-debugapk@0.0.5
       env:
        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-       APP_FOLDER: app/build/outputs/apk/debug/
-       RELEASE_TITLE: Lates Debug Version
+       APP_FOLDER: app
+       RELEASE_TITLE: Latest Debug Version

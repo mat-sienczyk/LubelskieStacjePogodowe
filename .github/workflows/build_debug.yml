@@ -16,8 +16,13 @@ jobs:
         java-version: 1.8
     - name: Build Debug APK
       run: ./gradlew assembleDebug
+    - name: Save Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: lsp_debug
+        path: app/build/outputs/apk/debug/app-debug.apk
     - name: Upload to Release
       uses: AButler/upload-release-assets@v1.0
       with:
-        files: 'app/build/outputs/apk/debug/app-debug.apk'
+        files: 'app-debug.apk'
         repo-token: ${{ secrets.GITHUB_TOKEN }}

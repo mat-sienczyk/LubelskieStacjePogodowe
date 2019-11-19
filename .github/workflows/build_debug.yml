@@ -21,4 +21,5 @@ jobs:
       with:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk
+        content-type: application/zip
         repo-token: ${{ secrets.GITHUB_TOKEN }}

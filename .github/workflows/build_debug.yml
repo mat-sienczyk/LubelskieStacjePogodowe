@@ -17,9 +17,7 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug
     - name: Upload to Release
-      uses: Shopify/upload-to-release@1.0.0
+      uses: AButler/upload-release-assets@v1.0
       with:
-        name: lsp_debug
-        path: app/build/outputs/apk/debug/app-debug.apk
-        content-type: application/zip
+        files: 'app/build/outputs/apk/debug/app-debug.apk'
         repo-token: ${{ secrets.GITHUB_TOKEN }}

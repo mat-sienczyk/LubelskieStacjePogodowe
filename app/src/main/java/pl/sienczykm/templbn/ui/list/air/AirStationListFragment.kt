@@ -1,7 +1,7 @@
 package pl.sienczykm.templbn.ui.list.air
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.databinding.RowAirStationBinding
@@ -19,7 +19,7 @@ class AirStationListFragment :
     }
 
     override fun getViewModel(): AirStationListViewModel {
-        return ViewModelProviders.of(requireActivity()).get(AirStationListViewModel::class.java)
+        return ViewModelProvider(requireActivity()).get(AirStationListViewModel::class.java)
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {

@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.ui.station.weather
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
@@ -27,7 +27,7 @@ class WeatherStationFragment :
     }
 
     override fun getViewModel(stationId: Int): WeatherStationViewModel {
-        return ViewModelProviders.of(
+        return ViewModelProvider(
             requireActivity(),
             WeatherStationViewModelFactory(
                 requireActivity().application,

@@ -1,7 +1,7 @@
 package pl.sienczykm.templbn.ui.list.weather
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.databinding.RowWeatherStationBinding
@@ -19,7 +19,7 @@ class WeatherFragment :
     }
 
     override fun getViewModel(): WeatherViewModel {
-        return ViewModelProviders.of(requireActivity()).get(WeatherViewModel::class.java)
+        return ViewModelProvider(requireActivity()).get(WeatherViewModel::class.java)
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {

@@ -17,9 +17,8 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug
     - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: Shopify/upload-to-release
       with:
         name: lsp_debug
         path: app/build/outputs/apk/debug/app-debug.apk
-    - name: Upload to Release
-      uses: JasonEtco/upload-to-release@v0.1.1
+        repo-token: ${{ secrets.GITHUB_TOKEN }}

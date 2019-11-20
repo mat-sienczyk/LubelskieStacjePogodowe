@@ -42,4 +42,11 @@ W actionbarze strzałka wstecz, nazwa stacji i serduszko po kliknięciu któego 
 - widok danych stacji na cardview z danymmi stacji i odnośnikiem do jej strony który otwiera customTabs (tak jak jest obecnie)
 - przy danych z wykresami, wykres wysuwa sie z dołu - na wykresie linia pokazująca wczoraj/dziś
 
+TODO:
+- rysowanie wykresu
+- zaznaczanie nieaktualnych danych
+- stałe powiadomienie z temperaturą
+- powiadomienie gdy jakość powietrza jest słaba
+- widgety dla temperatury (z konfiguracją?)
+- widget dla smogu
 

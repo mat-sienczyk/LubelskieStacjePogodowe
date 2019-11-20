@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <!--  used Material Color 500 palette -->
+
+    <color name="colorPrimary">#4caf50</color>
+    <color name="colorPrimaryDark">#087f23</color>
+    <color name="colorAccent">#f44336</color>
+
+    <color name="refresh_bg">#FAFAFA</color>
+    <color name="refresh_green">#4caf50</color>
+    <color name="refresh_yellow">#ffeb3b</color>
+    <color name="refresh_red">#f44336</color>
+
+    <color name="quality_very_good">#4caf50</color>
+    <color name="quality_good">#8bc34a</color>
+    <color name="quality_moderate">#ffeb3b</color>
+    <color name="quality_unhealthy_sensitive">#ffc107</color>
+    <color name="quality_unhealthy">#ff9800</color>
+    <color name="quality_hazardous">#ff5722</color>
+
+    <!--  text color in light theme -->
+    <color name="base_color">#717171</color>
+
+    <color name="shadow">#26000000</color>
+
+    <color name="widget_fresh">#c03aab35</color>
+    <color name="widget_old">#c0e03a2a</color>
 </resources>

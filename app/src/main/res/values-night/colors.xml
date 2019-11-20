@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  used Material Color 800 palette -->
+
+    <color name="colorPrimary">#2e7d32</color>
+    <color name="colorPrimaryDark">#005005</color>
+
+    <color name="refresh_bg">#2B2B2B</color>
+
+    <!--  text color in dark theme -->
+    <color name="base_color">#d5d5d5</color>
+</resources>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <import type="java.util.List" />
+        <import type="pl.sienczykm.templbn.db.model.ChartDataModel" />
+
+        <variable
+                name="metadata"
+                type="String"/>
+
+        <variable
+                name="value"
+                type="String"/>
+
+        <variable
+                name="unit"
+                type="String"/>
+
+        <variable
+                name="windDirDouble"
+                type="Double" />
+
+        <variable
+                name="chartData"
+                type="List&lt;ChartDataModel>" />
+
+        <variable
+                name="chartMinZero"
+                type="boolean" />
+
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.station.weather.WeatherStationViewModel" />
+    </data>
+
+    <LinearLayout
+            android:id="@+id/data_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="@{value == null ? View.GONE : View.VISIBLE}"
+            android:clickable="@{chartData != null ? true : false}"
+            android:focusable="@{chartData != null ? true : false}"
+            android:onClick="@{() -> viewModel.showChart(chartData, chartMinZero, unit, metadata)}"
+            app:addClickEffect="@{true}"
+            android:padding="5dp">
+
+        <TextView
+                android:text="@{metadata}"
+                android:id="@+id/metadataText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="18sp"
+                tools:text="Data:"/>
+
+        <TextView
+                android:padding="5dp"
+                app:unit="@{unit}"
+                app:value="@{value}"
+                android:id="@+id/dataText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:windDir="@{windDirDouble}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:drawablePadding="5dp"
+                tools:text="01.04.2015 08:30 CEST"/>
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        <ImageView
+                android:id="@+id/chartImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{chartData != null ? View.VISIBLE : View.GONE}"
+                android:padding="5dp"
+                android:src="@drawable/ic_chart"
+                android:tint="@color/base_color" />
+    </LinearLayout>
+</layout>

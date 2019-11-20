@@ -2,7 +2,105 @@
     <string name="app_name">Lubelskie Stacje Pogodowe</string>
 
     <!--Bottom navigation-->
-    <string name="title_smog">Smog</string>
+    <string name="title_air">Powietrze</string>
     <string name="title_temp">Temperatura</string>
     <string name="title_map">Mapa</string>
+
+    <!--menu-->
+    <string name="favorite">Ulubione</string>
+    <string name="settings">Ustawienia</string>
+
+    <!--messages-->
+    <string name="added_to_favorites">Stacja dodana do Ulubionych.</string>
+    <string name="removed_from_favorites">Stacja usunięta z Ulubionych.</string>
+    <string name="error_no_connection">Brak połączenia z Internetem.</string>
+    <string name="error_no_web_browser">Brak przeglądarki Internetowej.</string>
+    <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>
+
+    <!--Station fragment-->
+    <string name="station_title_weather">"Stacja pogodowa"</string>
+    <string name="station_title_air">"Stacja powietrza"</string>
+    <string name="forecast_title">"Prognoza"</string>
+
+    <string name="data_placeholder">"%1$s%2$s"</string>
+
+    <string name="station_date">Data</string>
+    <string name="station_date_old">%1$s - dane nieaktualne</string>
+    <string name="station_wind">Wiatr</string>
+    <string name="station_temp">Temperatura</string>
+    <string name="station_temp_air">Temp. odczuwalna</string>
+    <string name="station_temp_ground">Temp. przygruntowa</string>
+    <string name="station_humidity">Wilgotność</string>
+    <string name="station_pressure">Ciśnienie</string>
+    <string name="station_rain_today">Opad dziś</string>
+
+    <string name="station_pm10">Pył zawieszony PM10</string>
+    <string name="station_pm25">Pył zawieszony PM2.5</string>
+    <string name="station_o3">Ozon O3</string>
+    <string name="station_no2">Dwutlenek azotu NO2</string>
+    <string name="station_so2">Dwutlenek siarki SO2</string>
+    <string name="station_c6h6">Benzen C6H6</string>
+    <string name="station_co">Tlenek węgla CO</string>
+
+    <string name="station_open_website">Otwórz stronę stacji</string>
+    <string name="forecast_open_website">Otwórz stronę prognozy</string>
+
+    <!--settings-->
+    <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>
+    <string name="app_settings_title">"Ustawienia aplikacji"</string>
+    <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
+    <string name="sync_via_title">"Synchronizowanie przez"</string>
+    <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
+    <string name="air_auto_sync_title">"Stacje powietrza"</string>
+    <string name="night_mode_title">"Motyw interfejsu"</string>
+    <string name="widget_station_title">"Stacja na widgecie"</string>
+    <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
+    <string name="weather_default_interval">"15"</string>
+    <string name="air_default_interval">"60"</string>
+    <string name="sync_default">"all"</string>
+    <string name="night_mode_default">"1"</string>
+    <string name="widget_station_default">"16"</string>
+
+    <!--settings keys-->
+    <string name="auto_sync_key">"auto_sync_key"</string>
+    <string name="app_settings_key">"app_settings_key"</string>
+    <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
+    <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
+    <string name="air_sync_interval_key">"air_sync_interval_key"</string>
+    <string name="sync_via_key">"sync_via_key"</string>
+    <string name="night_mode_key">"night_mode_key"</string>
+    <string name="widget_station_key">"widget_station_key"</string>
+
+    <!--chart-->
+    <string name="chart_empty">"Brak danych"</string>
+    <string name="chart_title">"%1$s - ostatnie 24h"</string>
+    <string name="limit_line_label">"100%"</string>
+    <string name="marker_text">"%1$s - %2$s"</string>
+
+    <!--units-->
+    <string name="m_per_sec">" m/s"</string>
+    <string name="km_per_hour">" km/h"</string>
+    <string name="celsius_degree">"\u00B0C"</string>
+    <string name="percent">" %"</string>
+    <string name="hectopascal">" hPa"</string>
+    <string name="milliliters">" mm"</string>
+    <string name="km">" km"</string>
+    <string name="m">" m"</string>
+    <string name="degree">"\u00B0"</string>
+    <string name="microgram_per_cubic_metre">" µg/m\u00B3"</string>
+    <string name="milligram_per_cubic_metre">" mg/m\u00B3"</string>
+
+    <string name="east_wind">"\u2190"</string>
+    <string name="south_wind">"\u2191"</string>
+    <string name="west_wind">"\u2192"</string>
+    <string name="north_wind">"\u2193"</string>
+    <string name="south_east_wind">"\u2196"</string>
+    <string name="south_west_wind">"\u2197"</string>
+    <string name="north_west_wind">"\u2198"</string>
+    <string name="north_east_wind">"\u2199"</string>
+
+    <!--widget-->
+    <string name="appwidget_text"> - </string>
+    <string name="add_widget">Dodaj widget</string>
+
 </resources>

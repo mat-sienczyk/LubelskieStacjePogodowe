@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
+            app:key="@string/app_settings_key"
+            app:title="@string/app_settings_title">
+
+        <ListPreference
+                app:defaultValue="@string/night_mode_default"
+                app:entries="@array/nightModeOptions"
+                app:entryValues="@array/nightModeValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/night_mode_key"
+                app:summary="%s"
+                app:title="@string/night_mode_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
+            app:key="@string/auto_sync_key"
+            app:title="@string/auto_sync_title">
+
+        <SwitchPreferenceCompat
+                app:defaultValue="@bool/auto_sync_default"
+                app:iconSpaceReserved="false"
+                app:key="@string/enable_auto_sync_key"
+                app:title="@string/enable_auto_sync_title" />
+
+        <ListPreference
+                app:defaultValue="@string/sync_default"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/connectionOptions"
+                app:entryValues="@array/connectionValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/sync_via_key"
+                app:summary="%s"
+                app:title="@string/sync_via_title" />
+
+        <ListPreference
+                app:defaultValue="@string/widget_station_default"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/stationOptions"
+                app:entryValues="@array/stationValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/widget_station_key"
+                app:summary="%s"
+                app:title="@string/widget_station_title" />
+
+        <ListPreference
+                app:defaultValue="@string/weather_default_interval"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/weatherIntervalOptions"
+                app:entryValues="@array/weatherIntervalValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/weather_sync_interval_key"
+                app:summary="@string/sync_every_placeholder"
+                app:title="@string/weather_auto_sync_title" />
+
+        <ListPreference
+                app:defaultValue="@string/air_default_interval"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/airIntervalOptions"
+                app:entryValues="@array/airIntervalValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/air_sync_interval_key"
+                app:summary="@string/sync_every_placeholder"
+                app:title="@string/air_auto_sync_title" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="metadata"
+                type="String"/>
+
+        <variable
+                name="value"
+                type="String"/>
+
+        <variable
+                name="unit"
+                type="String"/>
+
+        <variable
+                name="drawableInt"
+                type="Integer" />
+
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="@{value == null ? View.GONE : View.VISIBLE}">
+
+        <ImageView
+                android:id="@+id/fav"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                app:imageResource="@{drawableInt}"
+                android:tint="@color/base_color"
+                android:gravity="center" />
+
+        <TextView
+                android:text="@{value + unit}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                tools:text="17 C"/>
+
+        <TextView
+                android:text="@{metadata}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="center"
+                tools:text="Temp."/>
+    </LinearLayout>
+</layout>

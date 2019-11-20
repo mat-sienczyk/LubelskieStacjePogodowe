@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
+
+        <variable
+                name="station"
+                type="pl.sienczykm.templbn.db.model.AirStationModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexboxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:flexWrap="wrap"
+                app:justifyContent="space_between"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:stationName="@{station}"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Lublin" />
+
+            <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{station.parsedDistance}"
+                    android:visibility="@{station.parsedDistance != null ? View.VISIBLE : View.INVISIBLE}" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flexboxLayout">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flexWrap="wrap"
+                        app:justifyContent="space_between">
+
+                    <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@{station.getParsedDate()}"
+                            app:oldDate="@{station.isDateObsoleteOrNull()}" />
+
+                    <ImageView
+                            android:id="@+id/fav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_heart_solid"
+                            android:tint="@color/base_color"
+                            android:visibility="@{station.favorite ? View.VISIBLE : View.INVISIBLE}" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:flexWrap="wrap"
+                        app:justifyContent="space_evenly">
+
+                    <include
+                            layout="@layout/air_value_and_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sensor="@{AirSensorType.PM25}"
+                            app:station="@{station}"
+                            app:chartData="@{null}"
+                            app:unit="@{@string/microgram_per_cubic_metre}" />
+
+                    <include
+                            layout="@layout/air_value_and_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sensor="@{AirSensorType.PM10}"
+                            app:station="@{station}"
+                            app:chartData="@{null}"
+                            app:unit="@{@string/microgram_per_cubic_metre}" />
+
+                    <include
+                            layout="@layout/air_value_and_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sensor="@{AirSensorType.O3}"
+                            app:station="@{station}"
+                            app:chartData="@{null}"
+                            app:unit="@{@string/microgram_per_cubic_metre}" />
+
+                    <include
+                            layout="@layout/air_value_and_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sensor="@{AirSensorType.NO2}"
+                            app:station="@{station}"
+                            app:chartData="@{null}"
+                            app:unit="@{@string/microgram_per_cubic_metre}" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

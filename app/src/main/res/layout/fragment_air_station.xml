@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
+
+        <import type="pl.sienczykm.templbn.ui.station.common.BaseStationViewModel" />
+
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.station.air.AirStationViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:refreshing="@{viewModel.isRefreshing}">
+
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <include
+                            android:id="@+id/include"
+                            layout="@layout/title_clickable_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:hyperlink="@{@string/station_open_website}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:title="@{@string/station_title_air}"
+                            app:url="@{viewModel.station.url}"
+                            app:viewModel="@{(BaseStationViewModel) viewModel}" />
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="6dp"
+                            app:cardElevation="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/include">
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                            <include
+                                    layout="@layout/row_date"
+                                    app:date="@{viewModel.station.getParsedDate()}"
+                                    app:isOld="@{viewModel.station.isDateObsoleteOrNull()}" />
+
+                            <com.google.android.flexbox.FlexboxLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:flexWrap="wrap"
+                                    app:justifyContent="space_evenly">
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM25)}"
+                                        app:sensor="@{AirSensorType.PM25}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.PM10)}"
+                                        app:sensor="@{AirSensorType.PM10}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.O3)}"
+                                        app:sensor="@{AirSensorType.O3}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.NO2)}"
+                                        app:sensor="@{AirSensorType.NO2}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.SO2)}"
+                                        app:sensor="@{AirSensorType.SO2}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.C6H6)}"
+                                        app:sensor="@{AirSensorType.C6H6}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/microgram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                                <include
+                                        layout="@layout/air_value_and_data"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:chartData="@{viewModel.station.getChartDataForSensor(AirSensorType.CO)}"
+                                        app:sensor="@{AirSensorType.CO}"
+                                        app:station="@{viewModel.station}"
+                                        app:unit="@{@string/milligram_per_cubic_metre}"
+                                        app:viewModel="@{viewModel}" />
+
+                            </com.google.android.flexbox.FlexboxLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+                android:id="@+id/bottomSheet"
+                layout="@layout/bottom_sheet" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

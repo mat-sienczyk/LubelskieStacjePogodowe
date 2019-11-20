@@ -35,7 +35,6 @@ abstract class AppDb : RoomDatabase() {
                     Config.DB_NAME
                 )
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries() // for now, only for load data form db in widget
                     .build()
                 INSTANCE = instance
                 return instance

@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.HandlerThread
 import android.os.SystemClock
 import android.view.View
 import android.widget.RemoteViews
@@ -27,7 +29,6 @@ class SimpleWidget : AppWidgetProvider() {
     }
 
     private var setOld = true
-
     private val noExists = "-"
 
     override fun onUpdate(
@@ -78,57 +79,62 @@ class SimpleWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
+        val handlerThread = HandlerThread("Update widget").apply { start() }
+        Handler(handlerThread.looper).post {
+            val weatherStation =
+                AppDb.getDatabase(context).weatherStationDao()
+                    .getStationById(context.widgetStationId())
 
-        val weatherStation =
-            AppDb.getDatabase(context).weatherStationDao().getStationById(context.widgetStationId())
+            // Construct the RemoteViews object
+            val views = RemoteViews(context.packageName, R.layout.simple_widget)
 
-        // Construct the RemoteViews object
-        val views = RemoteViews(context.packageName, R.layout.simple_widget)
+            views.setOnClickPendingIntent(
+                R.id.widget,
+                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0)
+            )
 
-        views.setOnClickPendingIntent(
-            R.id.widget,
-            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0)
-        )
+            views.setTextViewText(
+                R.id.widget_temp,
+                (weatherStation?.getParsedTemperature(1) ?: noExists)
+                        + context.getString(R.string.celsius_degree)
+            )
+            views.setTextViewText(
+                R.id.widget_humidity,
+                (weatherStation?.getParsedHumidity(1)
+                    ?: noExists) + context.getString(R.string.percent)
+            )
+            views.setTextViewText(
+                R.id.widget_wind,
+                (weatherStation?.getParsedWind(1)
+                    ?: noExists) + context.getString(R.string.km_per_hour)
+            )
 
-        views.setTextViewText(
-            R.id.widget_temp,
-            (weatherStation?.getParsedTemperature(1) ?: noExists)
-                    + context.getString(R.string.celsius_degree)
-        )
-        views.setTextViewText(
-            R.id.widget_humidity,
-            (weatherStation?.getParsedHumidity(1)
-                ?: noExists) + context.getString(R.string.percent)
-        )
-        views.setTextViewText(
-            R.id.widget_wind,
-            (weatherStation?.getParsedWind(1)
-                ?: noExists) + context.getString(R.string.km_per_hour)
-        )
+            views.setTextViewText(
+                R.id.widget_pressure,
+                (weatherStation?.getParsedPressure(1) ?: noExists)
+                        + context.getString(R.string.hectopascal)
+            )
 
-        views.setTextViewText(
-            R.id.widget_pressure,
-            (weatherStation?.getParsedPressure(1) ?: noExists)
-                    + context.getString(R.string.hectopascal)
-        )
+            val windDir =
+                WeatherStationModel.windIntToDir(weatherStation?.windDir, true)
+            if (windDir != android.R.id.empty) {
+                views.setImageViewResource(R.id.widget_wind_dir, windDir)
+                views.setViewVisibility(R.id.widget_wind_dir, View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
+            }
 
-        val windDir =
-            WeatherStationModel.windIntToDir(weatherStation?.windDir, true)
-        if (windDir != android.R.id.empty) {
-            views.setImageViewResource(R.id.widget_wind_dir, windDir)
-            views.setViewVisibility(R.id.widget_wind_dir, View.VISIBLE)
-        } else {
-            views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
+            if (setOld) {
+                Timber.i("Old data on widget")
+                views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
+            } else {
+                views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)
+            }
+
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views)
+
         }
-
-        if (setOld) {
-            Timber.i("Old data on widget")
-            views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
-        } else {
-            views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)
-        }
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views)
+        handlerThread.quitSafely()
     }
 }

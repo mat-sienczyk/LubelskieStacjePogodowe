@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - develop
+    - master
 
 name: Build and deploy Debug APK
 

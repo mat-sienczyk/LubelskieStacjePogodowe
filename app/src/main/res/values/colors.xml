@@ -23,4 +23,7 @@
     <color name="base_color">#717171</color>
 
     <color name="shadow">#26000000</color>
+
+    <color name="widget_fresh">#c03aab35</color>
+    <color name="widget_old">#c0e03a2a</color>
 </resources>

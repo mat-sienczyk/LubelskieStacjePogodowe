@@ -23,37 +23,47 @@
             app:title="@string/auto_sync_title">
 
         <SwitchPreferenceCompat
-                app:iconSpaceReserved="false"
                 app:defaultValue="@bool/auto_sync_default"
+                app:iconSpaceReserved="false"
                 app:key="@string/enable_auto_sync_key"
                 app:title="@string/enable_auto_sync_title" />
 
         <ListPreference
-                app:iconSpaceReserved="false"
                 app:defaultValue="@string/sync_default"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/connectionOptions"
                 app:entryValues="@array/connectionValues"
+                app:iconSpaceReserved="false"
                 app:key="@string/sync_via_key"
                 app:summary="%s"
                 app:title="@string/sync_via_title" />
 
         <ListPreference
-                app:defaultValue="@string/weather_default_interval"
+                app:defaultValue="@string/widget_station_default"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/stationOptions"
+                app:entryValues="@array/stationValues"
                 app:iconSpaceReserved="false"
+                app:key="@string/widget_station_key"
+                app:summary="%s"
+                app:title="@string/widget_station_title" />
+
+        <ListPreference
+                app:defaultValue="@string/weather_default_interval"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/weatherIntervalOptions"
                 app:entryValues="@array/weatherIntervalValues"
+                app:iconSpaceReserved="false"
                 app:key="@string/weather_sync_interval_key"
                 app:summary="@string/sync_every_placeholder"
                 app:title="@string/weather_auto_sync_title" />
 
         <ListPreference
-                app:iconSpaceReserved="false"
                 app:defaultValue="@string/air_default_interval"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/airIntervalOptions"
                 app:entryValues="@array/airIntervalValues"
+                app:iconSpaceReserved="false"
                 app:key="@string/air_sync_interval_key"
                 app:summary="@string/sync_every_placeholder"
                 app:title="@string/air_auto_sync_title" />

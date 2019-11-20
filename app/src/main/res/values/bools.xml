@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="auto_sync_default">false</bool>
+    <bool name="auto_sync_default">true</bool>
 </resources>

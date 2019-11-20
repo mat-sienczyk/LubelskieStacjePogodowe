@@ -7,11 +7,9 @@ import pl.sienczykm.templbn.db.model.AirSensorModel
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.utils.*
 import pl.sienczykm.templbn.webservice.LspController
 import pl.sienczykm.templbn.webservice.model.AirSensorData
-import pl.sienczykm.templbn.utils.dateFormat
-import pl.sienczykm.templbn.utils.nowInPoland
-import pl.sienczykm.templbn.utils.round
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -47,6 +45,9 @@ object ProcessingUtils {
         } else {
             dao.insert(constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId)))
         }
+
+        if (stationId == appContext.widgetStationId())
+            appContext.updateWidget()
     }
 
     private fun constructAirStationModel(station: AirStationModel): AirStationModel {

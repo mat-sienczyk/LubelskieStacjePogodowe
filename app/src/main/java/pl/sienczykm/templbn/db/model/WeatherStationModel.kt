@@ -258,8 +258,9 @@ class WeatherStationModel constructor(
             return getStations().single { it.stationId == id }
         }
 
-        fun windIntToDir(windDirInt: Double, returnEmpty: Boolean = false): Int {
+        fun windIntToDir(windDirInt: Double?, returnEmpty: Boolean = false): Int {
             return when {
+                windDirInt == null -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
                 // north N
                 windDirInt <= 22 || windDirInt >= 338 -> R.drawable.ic_arrow_down
                 // north-east NE

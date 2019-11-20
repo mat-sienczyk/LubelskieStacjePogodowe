@@ -1,7 +1,10 @@
 package pl.sienczykm.templbn.utils
 
 import android.Manifest
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.ColorMatrixColorFilter
@@ -20,6 +23,7 @@ import androidx.preference.PreferenceManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.widget.SimpleWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -158,4 +162,28 @@ fun ImageView.invertColors() {
                 0f, 0f, 0f, 1.0f, 0f  // alpha
             )
         )
+}
+
+fun Context.updateWidget() {
+    val widgetUpdateIntent = Intent(this, SimpleWidget::class.java).apply {
+        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        putExtra(
+            AppWidgetManager.EXTRA_APPWIDGET_IDS,
+            AppWidgetManager.getInstance(this@updateWidget).getAppWidgetIds(
+                ComponentName(
+                    this@updateWidget,
+                    SimpleWidget::class.java
+                )
+            )
+        )
+        putExtra(SimpleWidget.OLD_KEY, false)
+    }
+    sendBroadcast(widgetUpdateIntent)
+}
+
+fun Context.widgetStationId(): Int {
+    return PreferenceManager.getDefaultSharedPreferences(this).getString(
+        getString(R.string.widget_station_key),
+        getString(R.string.widget_station_default)
+    )!!.toInt()
 }

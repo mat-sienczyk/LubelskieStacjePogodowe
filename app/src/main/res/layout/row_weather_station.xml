@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             app:metadata="@{@string/station_wind}"
                             app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
-                            app:drawableInt="@{station.windDir != null ? station.Companion.windIntToDir(station.windDir, false) : R.drawable.ic_wind}"
+                            app:drawableInt="@{station.Companion.windIntToDir(station.windDir, false)}"
                             app:value="@{station.getParsedWind(0)}" />
 
                     <include

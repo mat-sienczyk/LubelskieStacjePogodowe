@@ -17,7 +17,10 @@ interface AirStationDao {
     fun update(station: AirStationModel)
 
     @Query("UPDATE AirStationModel SET favorite = :favorite WHERE stationId LIKE :id")
-    suspend fun updateFavorite(id: Int, favorite: Boolean): Int
+    fun updateFavorite(id: Int, favorite: Boolean): Int
+
+    @Query("UPDATE AirStationModel SET favorite = :favorite WHERE stationId LIKE :id")
+    suspend fun updateFavoriteSuspend(id: Int, favorite: Boolean): Int
 
     @Delete
     fun delete(station: AirStationModel)

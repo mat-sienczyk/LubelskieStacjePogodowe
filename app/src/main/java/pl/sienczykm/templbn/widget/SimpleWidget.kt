@@ -6,17 +6,18 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.HandlerThread
 import android.os.SystemClock
 import android.view.View
 import android.widget.RemoteViews
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.utils.widgetStationId
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /**
@@ -79,13 +80,14 @@ class SimpleWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-        val handlerThread = HandlerThread("Update widget").apply { start() }
-        Handler(handlerThread.looper).post {
-            val weatherStation =
-                AppDb.getDatabase(context).weatherStationDao()
-                    .getStationById(context.widgetStationId())
 
-            // Construct the RemoteViews object
+        CoroutineScope(Dispatchers.Main.immediate).launch {
+
+            // Room suspend functions can be used on Main dispatchers: https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5, https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
+            val weatherStation = AppDb.getDatabase(context).weatherStationDao()
+                .getStationByIdSuspend(context.widgetStationId())
+
+            // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)
 
             views.setOnClickPendingIntent(
@@ -125,7 +127,6 @@ class SimpleWidget : AppWidgetProvider() {
             }
 
             if (setOld) {
-                Timber.i("Old data on widget")
                 views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
             } else {
                 views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)
@@ -134,7 +135,7 @@ class SimpleWidget : AppWidgetProvider() {
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
 
+            cancel()
         }
-        handlerThread.quitSafely()
     }
 }

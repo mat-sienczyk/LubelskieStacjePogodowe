@@ -17,7 +17,10 @@ interface WeatherStationDao {
     fun update(station: WeatherStationModel)
 
     @Query("UPDATE WeatherStationModel SET favorite = :favorite WHERE stationId LIKE :id")
-    suspend fun updateFavorite(id: Int, favorite: Boolean): Int
+    fun updateFavorite(id: Int, favorite: Boolean): Int
+
+    @Query("UPDATE WeatherStationModel SET favorite = :favorite WHERE stationId LIKE :id")
+    suspend fun updateFavoriteSuspend(id: Int, favorite: Boolean): Int
 
     @Delete
     fun delete(station: WeatherStationModel)
@@ -30,6 +33,9 @@ interface WeatherStationDao {
 
     @Query("SELECT * FROM WeatherStationModel WHERE stationId LIKE :id")
     fun getStationById(id: Int): WeatherStationModel?
+
+    @Query("SELECT * FROM WeatherStationModel WHERE stationId LIKE :id")
+    suspend fun getStationByIdSuspend(id: Int): WeatherStationModel?
 
     @Query("SELECT * FROM WeatherStationModel")
     fun getAllStations(): List<WeatherStationModel>?

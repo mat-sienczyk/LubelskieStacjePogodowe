@@ -190,11 +190,11 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         lifecycleScope.launch {
             val station = viewModel.station.value
             val updated = when (station) {
-                is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
+                is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavoriteSuspend(
                     station.stationId,
                     !station.favorite
                 )
-                is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
+                is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavoriteSuspend(
                     station.stationId,
                     !station.favorite
                 )

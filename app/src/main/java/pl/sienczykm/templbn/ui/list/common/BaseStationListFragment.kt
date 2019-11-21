@@ -124,11 +124,11 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
             val station = stationViewModel.stations.value?.get(position)
             val updated =
                 when (station) {
-                    is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavorite(
+                    is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavoriteSuspend(
                         station.stationId,
                         !station.favorite
                     )
-                    is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavorite(
+                    is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavoriteSuspend(
                         station.stationId,
                         !station.favorite
                     )

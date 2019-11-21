@@ -7,7 +7,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.handleNightMode
-import pl.sienczykm.templbn.utils.updateWidget
+import pl.sienczykm.templbn.utils.updateOldWeatherWidget
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -35,7 +35,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
             getString(R.string.night_mode_key) -> requireContext().handleNightMode()
-            getString(R.string.widget_station_key) -> requireContext().updateWidget()
+            getString(R.string.widget_station_key), getString(R.string.widget_location_key) -> requireContext().updateOldWeatherWidget()
             getString(R.string.enable_auto_sync_key) -> UpdateHandler.handleAutoSync(
                 sharedPreferences,
                 requireContext()

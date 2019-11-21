@@ -45,9 +45,6 @@ object ProcessingUtils {
         } else {
             dao.insert(constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId)))
         }
-
-        if (stationId == appContext.widgetStationId())
-            appContext.updateWidget()
     }
 
     private fun constructAirStationModel(station: AirStationModel): AirStationModel {

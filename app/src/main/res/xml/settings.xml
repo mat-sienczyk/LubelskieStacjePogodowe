@@ -39,6 +39,16 @@
                 app:title="@string/sync_via_title" />
 
         <ListPreference
+                app:defaultValue="@string/weather_default_interval"
+                app:dependency="@string/enable_auto_sync_key"
+                app:entries="@array/weatherIntervalOptions"
+                app:entryValues="@array/weatherIntervalValues"
+                app:iconSpaceReserved="false"
+                app:key="@string/weather_sync_interval_key"
+                app:summary="@string/sync_every_placeholder"
+                app:title="@string/weather_auto_sync_title" />
+
+        <ListPreference
                 app:defaultValue="@string/widget_station_default"
                 app:dependency="@string/enable_auto_sync_key"
                 app:entries="@array/stationOptions"
@@ -48,15 +58,13 @@
                 app:summary="%s"
                 app:title="@string/widget_station_title" />
 
-        <ListPreference
-                app:defaultValue="@string/weather_default_interval"
+        <SwitchPreferenceCompat
+                app:defaultValue="@bool/widget_location_default"
                 app:dependency="@string/enable_auto_sync_key"
-                app:entries="@array/weatherIntervalOptions"
-                app:entryValues="@array/weatherIntervalValues"
                 app:iconSpaceReserved="false"
-                app:key="@string/weather_sync_interval_key"
-                app:summary="@string/sync_every_placeholder"
-                app:title="@string/weather_auto_sync_title" />
+                app:key="@string/widget_location_key"
+                app:summary="@string/widget_location_summary"
+                app:title="@string/widget_location_title" />
 
         <ListPreference
                 app:defaultValue="@string/air_default_interval"

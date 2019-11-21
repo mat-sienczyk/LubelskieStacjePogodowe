@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.UpdateHandler
+import pl.sienczykm.templbn.utils.updateOldWeatherWidget
 
 class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
 
@@ -31,6 +32,7 @@ class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) : Wo
                             stationId
                         )
                     }
+                    applicationContext.updateOldWeatherWidget()
                 }
                 else -> throw Exception("Invalid station key")
             }

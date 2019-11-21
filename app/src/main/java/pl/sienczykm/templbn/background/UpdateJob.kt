@@ -36,7 +36,7 @@ abstract class UpdateJob : JobIntentService() {
                         else -> throw Exception("Invalid station key")
                     }
                 } catch (e: Exception) {
-                    val errorBundle = Bundle().apply{
+                    val errorBundle = Bundle().apply {
                         putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
                     }
                     receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)

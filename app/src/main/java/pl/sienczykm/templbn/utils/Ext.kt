@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.ColorMatrixColorFilter
+import android.location.Location
 import android.net.ConnectivityManager
 import android.util.TypedValue
 import android.view.View
@@ -16,13 +17,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.widget.SimpleWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -164,14 +169,14 @@ fun ImageView.invertColors() {
         )
 }
 
-fun Context.updateWidget() {
+fun Context.updateOldWeatherWidget() {
     val widgetUpdateIntent = Intent(this, SimpleWidget::class.java).apply {
         action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         putExtra(
             AppWidgetManager.EXTRA_APPWIDGET_IDS,
-            AppWidgetManager.getInstance(this@updateWidget).getAppWidgetIds(
+            AppWidgetManager.getInstance(this@updateOldWeatherWidget).getAppWidgetIds(
                 ComponentName(
-                    this@updateWidget,
+                    this@updateOldWeatherWidget,
                     SimpleWidget::class.java
                 )
             )
@@ -182,8 +187,52 @@ fun Context.updateWidget() {
 }
 
 fun Context.widgetStationId(): Int {
-    return PreferenceManager.getDefaultSharedPreferences(this).getString(
+    val defaultStationId = PreferenceManager.getDefaultSharedPreferences(this).getString(
         getString(R.string.widget_station_key),
         getString(R.string.widget_station_default)
     )!!.toInt()
+
+    val useLocationForWidget = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+        getString(R.string.widget_location_key),
+        resources.getBoolean(R.bool.widget_location_default)
+    )
+
+    return if (useLocationForWidget) {
+        this.getLastKnownLocation()?.let { getNearestStationId(it) } ?: defaultStationId
+    } else {
+        defaultStationId
+    }
+}
+
+fun getNearestStationId(location: Location): Int =
+    WeatherStationModel.getStations().minWith(Comparator { station1, station2 ->
+        station1.distance =
+            haversine(
+                location.latitude,
+                location.longitude,
+                station1.latitude,
+                station1.longitude
+            )
+        station2.distance =
+            haversine(
+                location.latitude,
+                location.longitude,
+                station2.latitude,
+                station2.longitude
+            )
+
+        if (station1.distance!! > station2.distance!!) 1 else 0
+    })!!.stationId
+
+@WorkerThread
+fun Context.getLastKnownLocation(): Location? {
+    var location: Location? = null
+    val task = LocationServices.getFusedLocationProviderClient(this)
+        .lastLocation.addOnSuccessListener { location = it }
+    try {
+        Tasks.await(task)
+    } catch (e: Exception) {
+        return null
+    }
+    return location
 }

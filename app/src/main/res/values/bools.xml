@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="auto_sync_default">true</bool>
+    <bool name="widget_location_default">false</bool>
 </resources>

@@ -81,7 +81,7 @@ class SimpleWidget : AppWidgetProvider() {
         appWidgetId: Int
     ) {
 
-        CoroutineScope(Dispatchers.Main.immediate).launch {
+        CoroutineScope(Dispatchers.IO).launch {
 
             // Room suspend functions can be used on Main dispatchers: https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5, https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
             val weatherStation = AppDb.getDatabase(context).weatherStationDao()
@@ -134,6 +134,7 @@ class SimpleWidget : AppWidgetProvider() {
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
+
 
             cancel()
         }

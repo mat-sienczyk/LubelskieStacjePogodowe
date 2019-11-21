@@ -49,11 +49,13 @@
     <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>
     <string name="app_settings_title">"Ustawienia aplikacji"</string>
     <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
+    <string name="widget_location_title">"Użyj lokalizacji"</string>
+    <string name="widget_location_summary">Pokazuj na widgecie najbliższą stację</string>
     <string name="sync_via_title">"Synchronizowanie przez"</string>
     <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
     <string name="air_auto_sync_title">"Stacje powietrza"</string>
     <string name="night_mode_title">"Motyw interfejsu"</string>
-    <string name="widget_station_title">"Stacja na widgecie"</string>
+    <string name="widget_station_title">"Stacja podstawowa"</string>
     <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
     <string name="weather_default_interval">"15"</string>
     <string name="air_default_interval">"60"</string>
@@ -65,6 +67,7 @@
     <string name="auto_sync_key">"auto_sync_key"</string>
     <string name="app_settings_key">"app_settings_key"</string>
     <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
+    <string name="widget_location_key">"widget_location_key"</string>
     <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
     <string name="air_sync_interval_key">"air_sync_interval_key"</string>
     <string name="sync_via_key">"sync_via_key"</string>

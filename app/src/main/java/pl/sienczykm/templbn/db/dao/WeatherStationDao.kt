@@ -34,9 +34,6 @@ interface WeatherStationDao {
     @Query("SELECT * FROM WeatherStationModel WHERE stationId LIKE :id")
     fun getStationById(id: Int): WeatherStationModel?
 
-    @Query("SELECT * FROM WeatherStationModel WHERE stationId LIKE :id")
-    suspend fun getStationByIdSuspend(id: Int): WeatherStationModel?
-
     @Query("SELECT * FROM WeatherStationModel")
     fun getAllStations(): List<WeatherStationModel>?
 

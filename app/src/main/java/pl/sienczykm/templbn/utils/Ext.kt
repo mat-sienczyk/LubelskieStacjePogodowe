@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.widget.SimpleWidget
+import pl.sienczykm.templbn.widget.OldWeatherWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -118,7 +118,7 @@ fun Context.handleNightMode() {
     when (PreferenceManager.getDefaultSharedPreferences(this).getString(
         getString(R.string.night_mode_key),
         getString(R.string.night_mode_default)
-    )!!.toInt()) {
+    )!!.toInt()) { // default value provided
         1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         3 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -170,18 +170,18 @@ fun ImageView.invertColors() {
 }
 
 fun Context.updateOldWeatherWidget() {
-    val widgetUpdateIntent = Intent(this, SimpleWidget::class.java).apply {
+    val widgetUpdateIntent = Intent(this, OldWeatherWidget::class.java).apply {
         action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         putExtra(
             AppWidgetManager.EXTRA_APPWIDGET_IDS,
             AppWidgetManager.getInstance(this@updateOldWeatherWidget).getAppWidgetIds(
                 ComponentName(
                     this@updateOldWeatherWidget,
-                    SimpleWidget::class.java
+                    OldWeatherWidget::class.java
                 )
             )
         )
-        putExtra(SimpleWidget.OLD_KEY, false)
+        putExtra(OldWeatherWidget.OLD_KEY, false)
     }
     sendBroadcast(widgetUpdateIntent)
 }
@@ -190,7 +190,7 @@ fun Context.widgetStationId(): Int {
     val defaultStationId = PreferenceManager.getDefaultSharedPreferences(this).getString(
         getString(R.string.widget_station_key),
         getString(R.string.widget_station_default)
-    )!!.toInt()
+    )!!.toInt() // default value provided
 
     val useLocationForWidget = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
         getString(R.string.widget_location_key),
@@ -198,7 +198,7 @@ fun Context.widgetStationId(): Int {
     )
 
     return if (useLocationForWidget) {
-        this.getLastKnownLocation()?.let { getNearestStationId(it) } ?: defaultStationId
+        getLastKnownLocation()?.let { getNearestStationId(it) } ?: defaultStationId
     } else {
         defaultStationId
     }
@@ -222,7 +222,7 @@ fun getNearestStationId(location: Location): Int =
             )
 
         if (station1.distance!! > station2.distance!!) 1 else 0
-    })!!.stationId
+    })!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {

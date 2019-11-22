@@ -8,6 +8,7 @@ import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isNetworkAvailable
+import pl.sienczykm.templbn.utils.updateOldWeatherWidget
 
 abstract class UpdateJob : JobIntentService() {
 
@@ -42,6 +43,7 @@ abstract class UpdateJob : JobIntentService() {
                     receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)
                 }
             }
+            applicationContext.updateOldWeatherWidget()
         } else {
             receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }

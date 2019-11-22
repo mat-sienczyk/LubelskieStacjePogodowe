@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Implementation of App Widget functionality.
  */
-class SimpleWidget : AppWidgetProvider() {
+class OldWeatherWidget : AppWidgetProvider() {
 
     companion object {
         const val OLD_KEY = "setOld"
@@ -38,7 +38,7 @@ class SimpleWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
 
-        val widgetUpdateIntent = Intent(context, SimpleWidget::class.java).apply {
+        val widgetUpdateIntent = Intent(context, OldWeatherWidget::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
             putExtra(OLD_KEY, true)
@@ -82,10 +82,8 @@ class SimpleWidget : AppWidgetProvider() {
     ) {
 
         CoroutineScope(Dispatchers.IO).launch {
-
-            // Room suspend functions can be used on Main dispatchers: https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5, https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
             val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                .getStationByIdSuspend(context.widgetStationId())
+                .getStationById(context.widgetStationId())
 
             // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)
@@ -134,7 +132,6 @@ class SimpleWidget : AppWidgetProvider() {
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
-
 
             cancel()
         }

@@ -7,7 +7,9 @@ import pl.sienczykm.templbn.db.model.AirSensorModel
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.utils.*
+import pl.sienczykm.templbn.utils.dateFormat
+import pl.sienczykm.templbn.utils.nowInPoland
+import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.webservice.LspController
 import pl.sienczykm.templbn.webservice.model.AirSensorData
 import java.util.*
@@ -19,31 +21,20 @@ object ProcessingUtils {
 
     @WorkerThread
     fun updateAirStation(appContext: Context, stationId: Int) {
-
-        val dao = AppDb.getDatabase(appContext).airStationDao()
-
-        //TODO przemodelować to żeby nie trzeba było pobierać stacji z bazy najpierw (update nowych danych, upsert w dao?)
-        val station = dao.getStationById(stationId)
-
-        if (station != null) {
-            dao.insert(constructAirStationModel(station))
-        } else {
-            dao.insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId)))
+        AppDb.getDatabase(appContext).airStationDao().apply {
+            getStationById(stationId)?.let { insert(constructAirStationModel(it)) }
+                ?: insert(constructAirStationModel(AirStationModel.getStationForGivenId(stationId)))
         }
+
     }
 
     @WorkerThread
     fun updateWeatherStation(appContext: Context, stationId: Int) {
-
-        val dao = AppDb.getDatabase(appContext).weatherStationDao()
-
-        //TODO przemodelować to żeby nie trzeba było pobierać stacji z bazy najpierw (update nowych danych, upsert w dao?)
-        val station = dao.getStationById(stationId)
-
-        if (station != null) {
-            dao.insert(constructWeatherStationModel(station))
-        } else {
-            dao.insert(constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId)))
+        AppDb.getDatabase(appContext).weatherStationDao().apply {
+            getStationById(stationId)?.let { insert(constructWeatherStationModel(it)) }
+                ?: insert(
+                    constructWeatherStationModel(WeatherStationModel.getStationForGivenId(stationId))
+                )
         }
     }
 
@@ -59,68 +50,50 @@ object ProcessingUtils {
             ?.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp?.let { Date(it) }
     }
 
-    private fun constructWeatherStationModel(
-        station: WeatherStationModel
-    ): WeatherStationModel {
+    private fun constructWeatherStationModel(station: WeatherStationModel): WeatherStationModel {
         when (station.type) {
-            WeatherStationModel.Type.ONE -> {
-
-                val response = LspController.getWeatherStationOne(station.stationId)
-
-                when {
-                    response.isSuccessful -> {
-                        val responseStation = response.body()
-
-                        station.date = parseWeatherDate(responseStation?.data)
-                        station.temperature = responseStation?.temperature
-                        station.temperatureWind = responseStation?.temperatureWindChill
-                        station.windSpeed = responseStation?.windSpeed
-                        station.windDir = responseStation?.windDir
-                        station.humidity = responseStation?.humidity
-                        station.pressure = responseStation?.pressure
-                        station.rainToday = responseStation?.rainToday
+            WeatherStationModel.Type.ONE -> LspController.getWeatherStationOne(station.stationId).apply {
+                if (isSuccessful) {
+                    body()?.apply {
+                        station.date = parseWeatherDate(data)
+                        station.temperature = temperature
+                        station.temperatureWind = temperatureWindChill
+                        station.windSpeed = windSpeed
+                        station.windDir = windDir
+                        station.humidity = humidity
+                        station.pressure = pressure
+                        station.rainToday = rainToday
                         station.temperatureData =
-                            parseWeatherChartData(responseStation?.temperatureData?.data)
+                            parseWeatherChartData(temperatureData?.data)
                         station.humidityData =
-                            parseWeatherChartData(responseStation?.humidityData?.data)
+                            parseWeatherChartData(humidityData?.data)
                         station.windSpeedData =
-                            parseWeatherChartData(responseStation?.windSpeedData?.data)
+                            parseWeatherChartData(windSpeedData?.data)
                         station.temperatureWindData =
-                            parseWeatherChartData(responseStation?.temperatureWindChart?.data)
+                            parseWeatherChartData(temperatureWindChart?.data)
                         station.pressureData =
-                            parseWeatherChartData(responseStation?.pressureData?.data, true)
+                            parseWeatherChartData(pressureData?.data, true)
                         station.rainTodayData =
-                            parseWeatherChartData(responseStation?.rainData?.data)
-
+                            parseWeatherChartData(rainData?.data)
                     }
-                    else -> throw Exception(response.errorBody().toString())
-                }
-
+                } else throw Exception(errorBody().toString())
             }
-            WeatherStationModel.Type.TWO -> {
-
-                val response = LspController.getWeatherStationTwo(station.stationId)
-
-                when {
-                    response.isSuccessful -> {
-                        val responseStation = response.body()
-
-                        station.date = parseWeatherDate(responseStation?.data)
-                        station.temperature = responseStation?.temperature
-                        station.temperatureGround = responseStation?.temperatureGround
-                        station.windSpeed = responseStation?.windSpeed
-                        station.windDir = responseStation?.windDir
-                        station.humidity = responseStation?.humidity
-                        station.rainToday = responseStation?.rainToday
+            WeatherStationModel.Type.TWO -> LspController.getWeatherStationTwo(station.stationId).apply {
+                if (isSuccessful) {
+                    body()?.apply {
+                        station.date = parseWeatherDate(data)
+                        station.temperature = temperature
+                        station.temperatureGround = temperatureGround
+                        station.windSpeed = windSpeed
+                        station.windDir = windDir
+                        station.humidity = humidity
+                        station.rainToday = rainToday
                         station.temperatureWindData =
-                            parseWeatherChartData(responseStation?.temperatureData?.data)
+                            parseWeatherChartData(temperatureData?.data)
                         station.humidityData =
-                            parseWeatherChartData(responseStation?.humidityData?.data)
-
-
+                            parseWeatherChartData(humidityData?.data)
                     }
-                    else -> throw Exception(response.errorBody().toString())
-                }
+                } else throw Exception(errorBody().toString())
             }
         }
 
@@ -147,11 +120,8 @@ object ProcessingUtils {
     }
 
     private fun getSensors(stationId: Int): List<AirSensorModel>? {
-
-        val response = LspController.getAirSensors(stationId)
-
-        return when {
-            response.isSuccessful -> response.body()
+        LspController.getAirSensors(stationId).apply {
+            return if (isSuccessful) body()
                 ?.filter { airSensor -> airSensor.id != null }
                 ?.map { airSensor ->
                     AirSensorModel(
@@ -161,7 +131,7 @@ object ProcessingUtils {
                         parseAirChartData(LspController.getAirSensorData(airSensor.id!!).body())
                     )
                 }
-            else -> throw Exception(response.errorBody().toString())
+            else throw Exception(errorBody().toString())
         }
     }
 

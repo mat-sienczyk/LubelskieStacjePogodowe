@@ -71,7 +71,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.windSpeedData}"
+                                    app:chartData="@{viewModel.station.properWindSpeedData}"
                                     app:chartMinZero="@{true}"
                                     app:metadata="@{@string/station_wind}"
                                     app:unit="@{@string/km_per_hour}"

@@ -132,6 +132,12 @@ class WeatherStationModel constructor(
         return getLatestParsedData(roundPlaces, rainToday, rainTodayData)
     }
 
+    fun getProperWindSpeedData(): List<ChartDataModel>? {
+        return if (convertWind) {
+            windSpeedData?.map { ChartDataModel(it.timestamp, convertMetersToKm(it.value)) }
+        } else windSpeedData
+    }
+
     private fun getLatestParsedData(
         roundPlaces: Int,
         data: Double?,

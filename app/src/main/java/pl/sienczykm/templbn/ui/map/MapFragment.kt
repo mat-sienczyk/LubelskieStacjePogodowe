@@ -33,11 +33,11 @@ class MapFragment : Fragment(), OnMapReadyCallback,
         }
     }
 
-    //TODO przenieść do viewModelu?
+    //TODO move to viewModel?
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
     private lateinit var binding: FragmentMapBinding
-    //TODO przenieść do viewModelu?
+    //TODO move to viewModel?
     private val markerMap = hashMapOf<Marker, BaseStationModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,7 +54,7 @@ class MapFragment : Fragment(), OnMapReadyCallback,
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        //TODO przenieść do viewModelu?
+        //TODO move to viewModel?
         map = googleMap
 
         if (requireContext().isNightModeActive()) {

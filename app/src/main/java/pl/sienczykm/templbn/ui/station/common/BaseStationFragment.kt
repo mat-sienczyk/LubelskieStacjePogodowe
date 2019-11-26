@@ -227,12 +227,13 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         minIsZero: Boolean,
         limitValue: Float?,
         unit: String,
-        title: String
+        title: String?,
+        @StringRes titleId: Int?
     ) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         getBottomSheetLayout().unit.text = unit
-        getBottomSheetLayout().title.text = getString(R.string.chart_title, title)
+        getBottomSheetLayout().title.text = getString(R.string.chart_title, title ?: getString(titleId!!))
 
         val limitLine = limitValue?.let {
             LimitLine(it, getString(R.string.limit_line_label))

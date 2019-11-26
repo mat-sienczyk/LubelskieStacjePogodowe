@@ -16,10 +16,7 @@ class WeatherStationViewModelFactory(
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return WeatherStationViewModel(
-            application,
-            stationId
-        ) as T
+        return WeatherStationViewModel(application, stationId) as T
     }
 }
 
@@ -47,6 +44,14 @@ class WeatherStationViewModel(
         unit: String,
         title: String
     ) {
-        chartData?.let { getNavigator()?.showChart(it, minIsZero, null, unit, title) }
+        chartData?.let {
+            getNavigator()?.showChart(
+                chartData = it,
+                minIsZero = minIsZero,
+                limitValue = null,
+                unit = unit,
+                title = title
+            )
+        }
     }
 }

@@ -44,7 +44,8 @@ fun setStationName(textView: TextView, station: BaseStationModel) {
 
     textView.text = station.location?.let {
         SpannableStringBuilder()
-            .bold { scale(proportion) { append(station.city + " ") } }
+            .bold { scale(proportion) { append(station.city) } }
+            .append(" ")
             .append(station.location)
     } ?: SpannableStringBuilder()
         .bold { scale(proportion) { append(station.city) } }

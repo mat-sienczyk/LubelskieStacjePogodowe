@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.ui.station.air
 
 import android.app.Application
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
@@ -42,8 +43,16 @@ class AirStationViewModel(
         chartData: List<ChartDataModel>?,
         healthyValue: Float,
         unit: String,
-        title: String
+        @StringRes titleId: Int
     ) {
-        chartData?.let { getNavigator()?.showChart(it, true, healthyValue, unit, title) }
+        chartData?.let {
+            getNavigator()?.showChart(
+                chartData = it,
+                minIsZero = true,
+                limitValue = healthyValue,
+                unit = unit,
+                titleId = titleId
+            )
+        }
     }
 }

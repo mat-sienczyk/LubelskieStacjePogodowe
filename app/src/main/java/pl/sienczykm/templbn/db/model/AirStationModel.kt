@@ -1,8 +1,10 @@
 package pl.sienczykm.templbn.db.model
 
 
+import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.Ignore
+import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import java.util.*
@@ -87,7 +89,7 @@ class AirStationModel constructor(
 
     companion object {
 
-        val ID_KEY = "air_station_id"
+        const val ID_KEY = "air_station_id"
 
         val LUBLIN = AirStationModel(266, 51.259431, 22.569133, "Lublin", "ul. Obywatelska")
         val BIALA_PODLASKA =
@@ -119,10 +121,8 @@ class AirStationModel constructor(
         }
     }
 
-
-    //TODO hardcoded strings to resources!!!
     enum class AirSensorType(
-        val paramName: String,
+        @StringRes val paramName: Int,
         val paramKey: String,
         val paramId: Int,
         val maxVeryGood: Int,
@@ -131,21 +131,21 @@ class AirStationModel constructor(
         val maxUnhealthySensitive: Int,
         val maxUnhealthy: Int
     ) {
-        PM10("Pył zawieszony PM10", "PM10", 3, 21, 61, 101, 141, 201),
-        PM25("Pył zawieszony PM2.5", "PM2.5", 69, 13, 37, 61, 85, 121),
-        O3("Ozon", "O3", 5, 71, 121, 151, 181, 241),
-        NO2("Dwutlenek azotu", "NO2", 6, 41, 101, 151, 201, 401),
-        SO2("Dwutlenek siarki", "SO2", 1, 51, 101, 201, 351, 501),
-        C6H6("Benzen", "C6H6", 10, 6, 11, 16, 21, 51),
-        CO("Tlenek węgla", "CO", 8, 3, 7, 11, 15, 21)
+        PM10(R.string.sensor_type_pm10, "PM10", 3, 21, 61, 101, 141, 201),
+        PM25(R.string.sensor_type_pm25, "PM2.5", 69, 13, 37, 61, 85, 121),
+        O3(R.string.sensor_type_o3, "O3", 5, 71, 121, 151, 181, 241),
+        NO2(R.string.sensor_type_no2, "NO2", 6, 41, 101, 151, 201, 401),
+        SO2(R.string.sensor_type_so2, "SO2", 1, 51, 101, 201, 351, 501),
+        C6H6(R.string.sensor_type_c6h6, "C6H6", 10, 6, 11, 16, 21, 51),
+        CO(R.string.sensor_type_co, "CO", 8, 3, 7, 11, 15, 21)
     }
 
-    enum class AirQualityIndex(val value: Int, val desc: String) {
-        VERY_GOOD(0, "Bardzo dobry"),
-        GOOD(1, "Dobry"),
-        MODERATE(2, "Umiarkowany"),
-        UNHEALTHY_SENSITIVE(3, "Dostateczny"),
-        UNHEALTHY(4, "Zły"),
-        HAZARDOUS(5, "Bardzo zły"),
+    enum class AirQualityIndex(val value: Int, @StringRes val desc: Int) {
+        VERY_GOOD(0, R.string.sensor_quality_very_good),
+        GOOD(1, R.string.sensor_quality_good),
+        MODERATE(2, R.string.sensor_quality_moderate),
+        UNHEALTHY_SENSITIVE(3, R.string.sensor_quality_unhealthy),
+        UNHEALTHY(4, R.string.sensor_quality_unhealthy_sensitive),
+        HAZARDOUS(5, R.string.sensor_quality_hazardous),
     }
 }

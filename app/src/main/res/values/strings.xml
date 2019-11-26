@@ -23,6 +23,7 @@
     <string name="forecast_title">"Prognoza"</string>
 
     <string name="data_placeholder">"%1$s%2$s"</string>
+    <string name="placeholder">"%1$s"</string>
 
     <string name="station_date">Data</string>
     <string name="station_date_old">%1$s - dane nieaktualne</string>
@@ -93,6 +94,7 @@
     <string name="microgram_per_cubic_metre">" µg/m\u00B3"</string>
     <string name="milligram_per_cubic_metre">" mg/m\u00B3"</string>
 
+    <!--wind arrows-->
     <string name="east_wind">"\u2190"</string>
     <string name="south_wind">"\u2191"</string>
     <string name="west_wind">"\u2192"</string>
@@ -105,5 +107,23 @@
     <!--widget-->
     <string name="appwidget_text"> - </string>
     <string name="add_widget">Dodaj widget</string>
+
+    <!--air sensor type-->
+    <string name="sensor_type_pm10">Pył zawieszony PM10</string>
+    <string name="sensor_type_pm25">Pył zawieszony PM2.5</string>
+    <string name="sensor_type_o3">Ozon</string>
+    <string name="sensor_type_no2">Dwutlenek azotu</string>
+    <string name="sensor_type_so2">Dwutlenek siarki</string>
+    <string name="sensor_type_c6h6">Benzen</string>
+    <string name="sensor_type_co">Tlenek węgla</string>
+
+    <!--air quality index-->
+    <string name="sensor_quality_very_good">Bardzo dobry</string>
+    <string name="sensor_quality_good">Dobry</string>
+    <string name="sensor_quality_moderate">Umiarkowany</string>
+    <string name="sensor_quality_unhealthy_sensitive">Dostateczny</string>
+    <string name="sensor_quality_unhealthy">Zły</string>
+    <string name="sensor_quality_hazardous">Bardzo zły</string>
+
 
 </resources>

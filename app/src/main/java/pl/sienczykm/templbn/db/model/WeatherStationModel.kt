@@ -181,7 +181,7 @@ class WeatherStationModel constructor(
 
     companion object {
 
-        val ID_KEY = "weather_station_id"
+        const val ID_KEY = "weather_station_id"
 
         val PLAC_LITEWSKI =
             WeatherStationModel(

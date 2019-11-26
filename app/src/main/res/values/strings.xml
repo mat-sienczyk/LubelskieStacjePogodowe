@@ -18,9 +18,9 @@
     <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>
 
     <!--Station fragment-->
-    <string name="station_title_weather">"Stacja pogodowa"</string>
-    <string name="station_title_air">"Stacja powietrza"</string>
-    <string name="forecast_title">"Prognoza"</string>
+    <string name="station_title_weather">"Stacja pogodowa UMCS"</string>
+    <string name="station_title_air">"Stacja powietrza GIOŚ"</string>
+    <string name="forecast_title">"Prognoza ICM"</string>
 
     <string name="data_placeholder">"%1$s%2$s"</string>
     <string name="placeholder">"%1$s"</string>

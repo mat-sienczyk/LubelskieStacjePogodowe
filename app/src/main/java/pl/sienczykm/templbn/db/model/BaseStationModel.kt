@@ -1,5 +1,8 @@
 package pl.sienczykm.templbn.db.model
 
+import android.text.SpannableStringBuilder
+import androidx.core.text.bold
+import androidx.core.text.scale
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import pl.sienczykm.templbn.utils.dateFormat
@@ -55,5 +58,16 @@ abstract class BaseStationModel(
         if (distance != other.distance) return false
 
         return true
+    }
+
+    fun getFullStationName(): SpannableStringBuilder {
+        val proportion = 1.2f
+        return location?.let {
+            SpannableStringBuilder()
+                .bold { scale(proportion) { append(city) } }
+                .append(" ")
+                .append(location)
+        } ?: SpannableStringBuilder()
+            .bold { scale(proportion) { append(city) } }
     }
 }

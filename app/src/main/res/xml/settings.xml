@@ -66,6 +66,14 @@
                 app:summary="@string/widget_location_summary"
                 app:title="@string/widget_location_title" />
 
+        <SwitchPreferenceCompat
+                app:defaultValue="@bool/show_weather_notification_default"
+                app:dependency="@string/enable_auto_sync_key"
+                app:iconSpaceReserved="false"
+                app:key="@string/show_weather_notification_key"
+                app:summary="@string/show_weather_notification_summary"
+                app:title="@string/show_weather_notification_title" />
+
         <ListPreference
                 app:defaultValue="@string/air_default_interval"
                 app:dependency="@string/enable_auto_sync_key"

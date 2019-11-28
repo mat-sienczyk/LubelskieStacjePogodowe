@@ -6,9 +6,9 @@ import android.os.ResultReceiver
 import androidx.core.app.JobIntentService
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isNetworkAvailable
-import pl.sienczykm.templbn.utils.updateOldWeatherWidget
 
 abstract class UpdateJob : JobIntentService() {
 
@@ -43,7 +43,7 @@ abstract class UpdateJob : JobIntentService() {
                     receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)
                 }
             }
-            applicationContext.updateOldWeatherWidget()
+            ExternalDisplaysHandler.updateExternalDisplays(applicationContext)
         } else {
             receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }

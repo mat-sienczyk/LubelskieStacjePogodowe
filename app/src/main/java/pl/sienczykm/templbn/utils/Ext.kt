@@ -1,21 +1,21 @@
 package pl.sienczykm.templbn.utils
 
 import android.Manifest
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.ColorMatrixColorFilter
+import android.graphics.*
+import android.graphics.drawable.Icon
 import android.location.Location
 import android.net.ConnectivityManager
+import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
@@ -27,8 +27,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.widget.OldWeatherWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -169,61 +167,6 @@ fun ImageView.invertColors() {
         )
 }
 
-fun Context.updateOldWeatherWidget() {
-    val widgetUpdateIntent = Intent(this, OldWeatherWidget::class.java).apply {
-        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        putExtra(
-            AppWidgetManager.EXTRA_APPWIDGET_IDS,
-            AppWidgetManager.getInstance(this@updateOldWeatherWidget).getAppWidgetIds(
-                ComponentName(
-                    this@updateOldWeatherWidget,
-                    OldWeatherWidget::class.java
-                )
-            )
-        )
-        putExtra(OldWeatherWidget.OLD_KEY, false)
-    }
-    sendBroadcast(widgetUpdateIntent)
-}
-
-fun Context.widgetStationId(): Int {
-    val defaultStationId = PreferenceManager.getDefaultSharedPreferences(this).getString(
-        getString(R.string.widget_station_key),
-        getString(R.string.widget_station_default)
-    )!!.toInt() // default value provided
-
-    val useLocationForWidget = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-        getString(R.string.widget_location_key),
-        resources.getBoolean(R.bool.widget_location_default)
-    )
-
-    return if (useLocationForWidget) {
-        getLastKnownLocation()?.let { getNearestStationId(it) } ?: defaultStationId
-    } else {
-        defaultStationId
-    }
-}
-
-fun getNearestStationId(location: Location): Int =
-    WeatherStationModel.getStations().minWith(Comparator { station1, station2 ->
-        station1.distance =
-            haversine(
-                location.latitude,
-                location.longitude,
-                station1.latitude,
-                station1.longitude
-            )
-        station2.distance =
-            haversine(
-                location.latitude,
-                location.longitude,
-                station2.latitude,
-                station2.longitude
-            )
-
-        if (station1.distance!! > station2.distance!!) 1 else 0
-    })!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
-
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
     var location: Location? = null
@@ -235,4 +178,46 @@ fun Context.getLastKnownLocation(): Location? {
         return null
     }
     return location
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun createIconFromString(text: String, context: Context): Icon = Icon.createWithBitmap(
+    drawTextOnBitmap(
+        context = context,
+        width = 24,
+        height = 24,
+        textXScale = 1.03f - (text.length * 0.1f),
+        textSize = 22,
+        scalable = true,
+        text = text
+    )
+)
+
+fun drawTextOnBitmap(
+    context: Context,
+    width: Int,
+    height: Int,
+    textXScale: Float,
+    textSize: Int,
+    scalable: Boolean,
+    text: String
+): Bitmap {
+    val scale = if (scalable) context.resources.displayMetrics.density else 1.0f
+    val bitmap = Bitmap.createBitmap(
+        (width * scale).toInt(),
+        (height * scale).toInt(),
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.WHITE
+        textScaleX = textXScale
+        this.textSize = textSize * scale
+    }
+    val bounds = Rect()
+    paint.getTextBounds(text, 0, text.length, bounds)
+    val x = (bitmap.width - bounds.width()) / 2
+    val y = (bitmap.height + bounds.height()) / 2
+    canvas.drawText(text, x.toFloat(), y.toFloat(), paint)
+    return bitmap
 }

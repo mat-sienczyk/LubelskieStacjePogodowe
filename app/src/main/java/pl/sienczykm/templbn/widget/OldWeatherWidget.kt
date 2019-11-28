@@ -17,7 +17,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
-import pl.sienczykm.templbn.utils.widgetStationId
+import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import java.util.concurrent.TimeUnit
 
 /**
@@ -83,7 +83,7 @@ class OldWeatherWidget : AppWidgetProvider() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                .getStationById(context.widgetStationId())
+                .getStationById(ExternalDisplaysHandler.getProperStationId(context))
 
             // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)

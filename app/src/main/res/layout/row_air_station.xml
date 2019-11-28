@@ -33,7 +33,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    app:stationName="@{station}"
+                    android:text="@{station.fullStationName}"
                     app:layout_constraintStart_toStartOf="@+id/cardView3"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Lublin" />

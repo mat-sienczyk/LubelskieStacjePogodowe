@@ -43,6 +43,8 @@
     <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
     <string name="widget_location_title">"Użyj lokalizacji"</string>
     <string name="widget_location_summary">Pokazuj na widgecie najbliższą stację</string>
+    <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
+    <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
     <string name="sync_via_title">"Synchronizowanie przez"</string>
     <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
     <string name="air_auto_sync_title">"Stacje powietrza"</string>
@@ -59,6 +61,7 @@
     <string name="auto_sync_key">"auto_sync_key"</string>
     <string name="app_settings_key">"app_settings_key"</string>
     <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
+    <string name="show_weather_notification_key">"show_weather_notification_key"</string>
     <string name="widget_location_key">"widget_location_key"</string>
     <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
     <string name="air_sync_interval_key">"air_sync_interval_key"</string>
@@ -87,6 +90,10 @@
     <!--widget-->
     <string name="appwidget_text"> - </string>
     <string name="add_widget">Dodaj widget</string>
+
+    <!--weather notification-->
+    <string name="weather_notification_channel_name">Temperatura</string>
+    <string name="weather_notification_channel_description">Wyświetla temperaturę dla najbliższej lub podstawowej stacji</string>
 
     <!--air sensor type-->
     <string name="sensor_type_pm10">Pył zawieszony PM10</string>

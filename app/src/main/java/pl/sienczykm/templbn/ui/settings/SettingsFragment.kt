@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.handleNightMode
-import pl.sienczykm.templbn.utils.updateOldWeatherWidget
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -35,11 +35,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
             getString(R.string.night_mode_key) -> requireContext().handleNightMode()
-            getString(R.string.widget_station_key), getString(R.string.widget_location_key) -> requireContext().updateOldWeatherWidget()
-            getString(R.string.enable_auto_sync_key) -> UpdateHandler.handleAutoSync(
-                sharedPreferences,
-                requireContext()
-            )
+            getString(R.string.widget_station_key), getString(R.string.widget_location_key) ->
+                ExternalDisplaysHandler.updateOldWeatherWidget(requireContext())
+            getString(R.string.show_weather_notification_key) ->
+                ExternalDisplaysHandler.setWeatherNotification(requireContext())
+            getString(R.string.enable_auto_sync_key) ->
+                UpdateHandler.handleAutoSync(sharedPreferences, requireContext())
             getString(R.string.sync_via_key) -> {
                 UpdateHandler.setWeatherStationAutoSync(
                     sharedPreferences,

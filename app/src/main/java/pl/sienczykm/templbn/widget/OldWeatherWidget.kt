@@ -7,14 +7,13 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
-import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
@@ -106,16 +105,6 @@ class OldWeatherWidget : AppWidgetProvider() {
                 (weatherStation?.getParsedTemperature(1) ?: noExists)
                         + context.getString(R.string.celsius_degree)
             )
-            views.setTextViewText(
-                R.id.widget_humidity,
-                (weatherStation?.getParsedHumidity(1)
-                    ?: noExists) + context.getString(R.string.percent)
-            )
-            views.setTextViewText(
-                R.id.widget_wind,
-                (weatherStation?.getParsedWind(1)
-                    ?: noExists) + getWindUnit(weatherStation, context)
-            )
 
             views.setTextViewText(
                 R.id.widget_pressure,
@@ -123,19 +112,24 @@ class OldWeatherWidget : AppWidgetProvider() {
                         + context.getString(R.string.hectopascal)
             )
 
-            val windDir =
-                WeatherStationModel.windIntToDir(weatherStation?.windDir, true)
-            if (windDir != android.R.id.empty) {
-                views.setImageViewResource(R.id.widget_wind_dir, windDir)
-                views.setViewVisibility(R.id.widget_wind_dir, View.VISIBLE)
-            } else {
-                views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
-            }
-
             if (setOld || weatherStation?.isDateObsoleteOrNull() != false) {
-                views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
+                views.setTextColor(
+                    R.id.widget_temp,
+                    ContextCompat.getColor(context, R.color.widget_old)
+                )
+                views.setTextColor(
+                    R.id.widget_pressure,
+                    ContextCompat.getColor(context, R.color.widget_old)
+                )
             } else {
-                views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)
+                views.setTextColor(
+                    R.id.widget_temp,
+                    ContextCompat.getColor(context, android.R.color.white)
+                )
+                views.setTextColor(
+                    R.id.widget_pressure,
+                    ContextCompat.getColor(context, android.R.color.white)
+                )
             }
 
             // Instruct the widget manager to update the widget
@@ -143,17 +137,5 @@ class OldWeatherWidget : AppWidgetProvider() {
 
             cancel()
         }
-    }
-
-    private fun getWindUnit(
-        weatherStation: WeatherStationModel?,
-        context: Context,
-    ): String {
-        return weatherStation?.run {
-            if (convertWind)
-                context.getString(R.string.km_per_hour)
-            else
-                context.getString(R.string.m_per_sec)
-        } ?: return ""
     }
 }

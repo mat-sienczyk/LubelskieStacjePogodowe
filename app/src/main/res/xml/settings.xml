@@ -19,7 +19,6 @@
 
     <PreferenceCategory
             app:iconSpaceReserved="false"
-            app:key="@string/auto_sync_key"
             app:title="@string/auto_sync_title">
 
         <SwitchPreferenceCompat
@@ -38,51 +37,71 @@
                 app:summary="%s"
                 app:title="@string/sync_via_title" />
 
-        <ListPreference
-                app:defaultValue="@string/weather_default_interval"
-                app:dependency="@string/enable_auto_sync_key"
-                app:entries="@array/weatherIntervalOptions"
-                app:entryValues="@array/weatherIntervalValues"
+        <PreferenceCategory
                 app:iconSpaceReserved="false"
-                app:key="@string/weather_sync_interval_key"
-                app:summary="@string/sync_every_placeholder"
-                app:title="@string/weather_auto_sync_title" />
+                app:title="@string/auto_sync_weather_title">
 
-        <ListPreference
-                app:defaultValue="@string/widget_station_default"
-                app:dependency="@string/enable_auto_sync_key"
-                app:entries="@array/stationOptions"
-                app:entryValues="@array/stationValues"
-                app:iconSpaceReserved="false"
-                app:key="@string/widget_station_key"
-                app:summary="%s"
-                app:title="@string/widget_station_title" />
+            <ListPreference
+                    app:defaultValue="@string/weather_default_interval"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:entries="@array/weatherIntervalOptions"
+                    app:entryValues="@array/weatherIntervalValues"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/weather_sync_interval_key"
+                    app:summary="@string/sync_every_placeholder"
+                    app:title="@string/weather_auto_sync_title" />
 
-        <SwitchPreferenceCompat
-                app:defaultValue="@bool/widget_location_default"
-                app:dependency="@string/enable_auto_sync_key"
-                app:iconSpaceReserved="false"
-                app:key="@string/widget_location_key"
-                app:summary="@string/widget_location_summary"
-                app:title="@string/widget_location_title" />
+            <ListPreference
+                    app:defaultValue="@string/widget_station_default"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:entries="@array/stationOptions"
+                    app:entryValues="@array/stationValues"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/widget_station_key"
+                    app:summary="%s"
+                    app:title="@string/widget_station_title" />
 
-        <SwitchPreferenceCompat
-                app:defaultValue="@bool/show_weather_notification_default"
-                app:dependency="@string/enable_auto_sync_key"
-                app:iconSpaceReserved="false"
-                app:key="@string/show_weather_notification_key"
-                app:summary="@string/show_weather_notification_summary"
-                app:title="@string/show_weather_notification_title" />
+            <SwitchPreferenceCompat
+                    app:defaultValue="@bool/widget_location_default"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/widget_location_key"
+                    app:summary="@string/widget_location_summary"
+                    app:title="@string/widget_location_title" />
 
-        <ListPreference
-                app:defaultValue="@string/air_default_interval"
-                app:dependency="@string/enable_auto_sync_key"
-                app:entries="@array/airIntervalOptions"
-                app:entryValues="@array/airIntervalValues"
+            <SwitchPreferenceCompat
+                    app:defaultValue="@bool/show_weather_notification_default"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/show_weather_notification_key"
+                    app:summary="@string/show_weather_notification_summary"
+                    app:title="@string/show_weather_notification_title" />
+
+            <SwitchPreferenceCompat
+                    app:defaultValue="@bool/show_weather_notification_icon_default"
+                    app:dependency="@string/show_weather_notification_key"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/show_weather_notification_icon_key"
+                    app:summary="@string/show_weather_notification_icon_summary"
+                    app:title="@string/show_weather_notification_icon_title" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
                 app:iconSpaceReserved="false"
-                app:key="@string/air_sync_interval_key"
-                app:summary="@string/sync_every_placeholder"
-                app:title="@string/air_auto_sync_title" />
+                app:title="@string/auto_sync_air_title">
+
+            <ListPreference
+                    app:defaultValue="@string/air_default_interval"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:entries="@array/airIntervalOptions"
+                    app:entryValues="@array/airIntervalValues"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/air_sync_interval_key"
+                    app:summary="@string/sync_every_placeholder"
+                    app:title="@string/air_auto_sync_title" />
+
+        </PreferenceCategory>
 
     </PreferenceCategory>
 

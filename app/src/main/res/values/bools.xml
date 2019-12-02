@@ -3,4 +3,5 @@
     <bool name="auto_sync_default">true</bool>
     <bool name="widget_location_default">false</bool>
     <bool name="show_weather_notification_default">false</bool>
+    <bool name="show_weather_notification_icon_default">false</bool>
 </resources>

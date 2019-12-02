@@ -82,58 +82,52 @@ class OldWeatherWidget : AppWidgetProvider() {
     ) {
 
         CoroutineScope(Dispatchers.IO).launch {
+            val weatherStation = AppDb.getDatabase(context).weatherStationDao()
+                .getStationById(ExternalDisplaysHandler.getProperStationId(context))
 
             // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)
 
             views.setOnClickPendingIntent(
                 R.id.widget,
-                PendingIntent.getActivity(
-                    context,
-                    0,
-                    Intent(context, MainActivity::class.java),
-                    0
-                )
+                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0)
             )
 
-            if (setOld) views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
-            else {
+            views.setTextViewText(
+                R.id.widget_temp,
+                (weatherStation?.getParsedTemperature(1) ?: noExists)
+                        + context.getString(R.string.celsius_degree)
+            )
+            views.setTextViewText(
+                R.id.widget_humidity,
+                (weatherStation?.getParsedHumidity(1)
+                    ?: noExists) + context.getString(R.string.percent)
+            )
+            views.setTextViewText(
+                R.id.widget_wind,
+                (weatherStation?.getParsedWind(1)
+                    ?: noExists) + context.getString(R.string.km_per_hour)
+            )
 
+            views.setTextViewText(
+                R.id.widget_pressure,
+                (weatherStation?.getParsedPressure(1) ?: noExists)
+                        + context.getString(R.string.hectopascal)
+            )
+
+            val windDir =
+                WeatherStationModel.windIntToDir(weatherStation?.windDir, true)
+            if (windDir != android.R.id.empty) {
+                views.setImageViewResource(R.id.widget_wind_dir, windDir)
+                views.setViewVisibility(R.id.widget_wind_dir, View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
+            }
+
+            if (setOld) {
+                views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
+            } else {
                 views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)
-
-                val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                    .getStationById(ExternalDisplaysHandler.getProperStationId(context))
-
-                views.setTextViewText(
-                    R.id.widget_temp,
-                    (weatherStation?.getParsedTemperature(1) ?: noExists)
-                            + context.getString(R.string.celsius_degree)
-                )
-                views.setTextViewText(
-                    R.id.widget_humidity,
-                    (weatherStation?.getParsedHumidity(1)
-                        ?: noExists) + context.getString(R.string.percent)
-                )
-                views.setTextViewText(
-                    R.id.widget_wind,
-                    (weatherStation?.getParsedWind(1)
-                        ?: noExists) + context.getString(R.string.km_per_hour)
-                )
-
-                views.setTextViewText(
-                    R.id.widget_pressure,
-                    (weatherStation?.getParsedPressure(1) ?: noExists)
-                            + context.getString(R.string.hectopascal)
-                )
-
-                val windDir =
-                    WeatherStationModel.windIntToDir(weatherStation?.windDir, true)
-                if (windDir != android.R.id.empty) {
-                    views.setImageViewResource(R.id.widget_wind_dir, windDir)
-                    views.setViewVisibility(R.id.widget_wind_dir, View.VISIBLE)
-                } else {
-                    views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
-                }
             }
 
             // Instruct the widget manager to update the widget

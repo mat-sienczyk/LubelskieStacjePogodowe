@@ -39,12 +39,16 @@
 
     <!--settings-->
     <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>
+    <string name="auto_sync_weather_title">"Ustawienia stacji pogodowych"</string>
+    <string name="auto_sync_air_title">"Ustawienia stacji powietrza"</string>
     <string name="app_settings_title">"Ustawienia aplikacji"</string>
     <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
     <string name="widget_location_title">"Użyj lokalizacji"</string>
     <string name="widget_location_summary">Pokazuj na widgecie i powiadomieniu najbliższą stację</string>
     <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
     <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
+    <string name="show_weather_notification_icon_title">Wyświetlaj ikonę jako temperaturę</string>
+    <string name="show_weather_notification_icon_summary">Funkcja eksperymentalna, polecane dla Always-on display</string>
     <string name="sync_via_title">"Synchronizowanie przez"</string>
     <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
     <string name="air_auto_sync_title">"Stacje powietrza"</string>
@@ -58,10 +62,10 @@
     <string name="widget_station_default">"16"</string>
 
     <!--settings keys-->
-    <string name="auto_sync_key">"auto_sync_key"</string>
     <string name="app_settings_key">"app_settings_key"</string>
     <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
     <string name="show_weather_notification_key">"show_weather_notification_key"</string>
+    <string name="show_weather_notification_icon_key">"show_weather_notification_icon_key"</string>
     <string name="widget_location_key">"widget_location_key"</string>
     <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
     <string name="air_sync_interval_key">"air_sync_interval_key"</string>

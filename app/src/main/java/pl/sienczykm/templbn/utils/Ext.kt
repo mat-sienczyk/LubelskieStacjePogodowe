@@ -112,6 +112,13 @@ fun Context.isAutoUpdateEnabled(): Boolean {
     )
 }
 
+fun Context.createIconForNotification(): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+        getString(R.string.show_weather_notification_icon_key),
+        resources.getBoolean(R.bool.show_weather_notification_icon_default)
+    )
+}
+
 fun Context.handleNightMode() {
     when (PreferenceManager.getDefaultSharedPreferences(this).getString(
         getString(R.string.night_mode_key),
@@ -179,19 +186,6 @@ fun Context.getLastKnownLocation(): Location? {
     }
     return location
 }
-
-@RequiresApi(Build.VERSION_CODES.M)
-fun createIconFromString(text: String, context: Context): Icon = Icon.createWithBitmap(
-    drawTextOnBitmap(
-        context = context,
-        width = 24,
-        height = 24,
-        textXScale = 1.03f - (text.length * 0.1f),
-        textSize = 22,
-        scalable = true,
-        text = text
-    )
-)
 
 fun drawTextOnBitmap(
     context: Context,

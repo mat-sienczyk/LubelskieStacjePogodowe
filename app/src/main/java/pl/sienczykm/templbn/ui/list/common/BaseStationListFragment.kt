@@ -113,7 +113,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     private fun updateLocation(location: Location?) {
         stationViewModel.coordinates = location
-        getList().smoothScrollToPosition(0)
+//        getList().smoothScrollToPosition(0) // TODO: calls when we come back from detail view, need to rethink
     }
 
     override fun onClickItem(v: View, position: Int) {

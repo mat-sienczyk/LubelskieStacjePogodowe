@@ -250,7 +250,7 @@ class WeatherStationModel constructor(
                 HAJDOW,
                 LUBARTOW,
                 GUCIOW,
-                FLORIANKA,
+//                FLORIANKA,
                 LUKOW,
                 TRZDNIK,
                 LESNIOWICE,

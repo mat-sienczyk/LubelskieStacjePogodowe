@@ -8,8 +8,10 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.location.Location
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +55,7 @@ object ExternalDisplaysHandler {
         if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
                 context.getString(R.string.show_weather_notification_key),
                 context.resources.getBoolean(R.bool.show_weather_notification_default)
-            )
+            ) && context.isAutoUpdateEnabled()
         ) {
             val weatherChannelId = "weather_notification"
 
@@ -99,8 +101,8 @@ object ExternalDisplaysHandler {
                     .setOngoing(true)
                     .apply {
                         temperatureString?.let { text ->
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                setSmallIcon(createIconFromString(text, context))
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.createIconForNotification()) {
+                                setSmallIcon(getNotificationIcon(text, context))
                             } else {
                                 setSmallIcon(R.drawable.ic_temperature)
                             }
@@ -119,6 +121,19 @@ object ExternalDisplaysHandler {
             }
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getNotificationIcon(text: String, context: Context): Icon = Icon.createWithBitmap(
+        drawTextOnBitmap(
+            context = context,
+            width = 28,
+            height = 28,
+            textXScale = 1.03f - (text.length * 0.1f),
+            textSize = 22,
+            scalable = true,
+            text = text
+        )
+    )
 
     fun getProperStationId(context: Context): Int {
         val defaultStationId = PreferenceManager.getDefaultSharedPreferences(context).getString(

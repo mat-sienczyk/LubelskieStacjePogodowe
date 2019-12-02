@@ -9,10 +9,10 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "pl.sienczykm.templbn2"
+        applicationId "pl.sienczykm.templbn.beta"
         minSdkVersion 21
         targetSdkVersion 29
-        versionName "1.0"
+        versionName "1.0-beta"
         versionCode Integer.parseInt(new Date().format('yyyyMMddHH'))
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

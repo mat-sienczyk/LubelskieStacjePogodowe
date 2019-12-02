@@ -42,7 +42,7 @@
     <string name="app_settings_title">"Ustawienia aplikacji"</string>
     <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
     <string name="widget_location_title">"Użyj lokalizacji"</string>
-    <string name="widget_location_summary">Pokazuj na widgecie najbliższą stację</string>
+    <string name="widget_location_summary">Pokazuj na widgecie i powiadomieniu najbliższą stację</string>
     <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
     <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
     <string name="sync_via_title">"Synchronizowanie przez"</string>

@@ -96,7 +96,8 @@ object ExternalDisplaysHandler {
                     .setContentTitle("$temperatureString - $hourString")
                     .setContentText(weatherStation?.getFullStationName())
                     .setContentIntent(pendingIntent)
-                    .setOngoing(true).apply {
+                    .setOngoing(true)
+                    .apply {
                         temperatureString?.let { text ->
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 setSmallIcon(createIconFromString(text, context))

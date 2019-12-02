@@ -59,7 +59,11 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
         binding.viewModel = stationViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -109,11 +113,15 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     private fun updateLocation(location: Location?) {
         stationViewModel.coordinates = location
+        getList().smoothScrollToPosition(0)
     }
 
     override fun onClickItem(v: View, position: Int) {
         when (val station = stationViewModel.stations.value?.get(position)) {
-            is WeatherStationModel -> openStationActivity(StationActivity.Type.WEATHER, station.stationId)
+            is WeatherStationModel -> openStationActivity(
+                StationActivity.Type.WEATHER,
+                station.stationId
+            )
             is AirStationModel -> openStationActivity(StationActivity.Type.AIR, station.stationId)
             else -> throw Exception("Invalid station object")
         }

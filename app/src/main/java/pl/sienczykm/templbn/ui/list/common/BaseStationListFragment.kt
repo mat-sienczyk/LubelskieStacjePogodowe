@@ -27,7 +27,7 @@ import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.common.BaseNavigator
+import pl.sienczykm.templbn.ui.common.BaseRefreshNavigator
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
@@ -36,7 +36,7 @@ import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
 abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, L : ViewDataBinding> :
-    Fragment(), RecyclerViewClickListener, BaseNavigator {
+    Fragment(), RecyclerViewClickListener, BaseRefreshNavigator {
 
     lateinit var stationViewModel: T
     lateinit var binding: FragmentListBinding

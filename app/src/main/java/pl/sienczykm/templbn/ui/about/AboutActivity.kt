@@ -14,5 +14,4 @@ class AboutActivity : ActivityWithToolbarAndUpAction() {
             .replace(R.id.container, AboutFragment.newInstance())
             .commit()
     }
-
 }

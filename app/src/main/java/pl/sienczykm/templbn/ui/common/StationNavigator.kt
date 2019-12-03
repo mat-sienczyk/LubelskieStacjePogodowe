@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.ui.common
 import androidx.annotation.StringRes
 import pl.sienczykm.templbn.db.model.ChartDataModel
 
-interface StationNavigator : BaseNavigator {
+interface StationNavigator : BaseRefreshNavigator {
     fun openCustomTab(url: String)
     fun showChart(
         chartData: List<ChartDataModel>,

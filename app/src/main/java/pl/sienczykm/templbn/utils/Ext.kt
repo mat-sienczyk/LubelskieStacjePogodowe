@@ -5,17 +5,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
-import android.graphics.drawable.Icon
 import android.location.Location
 import android.net.ConnectivityManager
-import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate

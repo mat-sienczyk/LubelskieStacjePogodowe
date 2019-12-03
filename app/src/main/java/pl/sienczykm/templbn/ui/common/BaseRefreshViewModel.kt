@@ -8,7 +8,7 @@ import pl.sienczykm.templbn.background.ProcessingUtils
 import pl.sienczykm.templbn.background.StatusReceiver
 import java.lang.ref.WeakReference
 
-abstract class BaseRefreshViewModel<N : BaseNavigator>(application: Application) :
+abstract class BaseRefreshViewModel<N : BaseRefreshNavigator>(application: Application) :
     AndroidViewModel(application) {
 
     val isRefreshing = MutableLiveData<Boolean>().apply { value = false }

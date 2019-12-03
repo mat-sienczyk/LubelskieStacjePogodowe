@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.ui.common.BaseNavigator
+import pl.sienczykm.templbn.ui.common.BaseRefreshNavigator
 import pl.sienczykm.templbn.ui.common.BaseRefreshViewModel
 import pl.sienczykm.templbn.utils.haversine
 
 abstract class BaseStationListViewModel<T : BaseStationModel>(application: Application) :
-    BaseRefreshViewModel<BaseNavigator>(application) {
+    BaseRefreshViewModel<BaseRefreshNavigator>(application) {
 
     // change this BaseStationModel to T when databinding lib is fixed
     val stations = MediatorLiveData<List<BaseStationModel>>()

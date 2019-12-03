@@ -21,7 +21,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.Entry
@@ -33,14 +32,10 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import kotlinx.android.synthetic.main.chart_marker_view.view.*
-import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.AppDb
-import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
-import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.dateFormat
@@ -54,7 +49,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     Fragment(),
     StationNavigator {
 
-    lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     lateinit var viewModel: T
     lateinit var binding: N
 
@@ -187,24 +182,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     private fun handleFavoriteClick() {
-        lifecycleScope.launch {
-            val station = viewModel.station.value
-            val updated = when (station) {
-                is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavoriteSuspend(
-                    station.stationId,
-                    !station.favorite
-                )
-                is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavoriteSuspend(
-                    station.stationId,
-                    !station.favorite
-                )
-                else -> throw Exception("Invalid station object")
-            }
-
-            if (updated > 0) {
-                if (!station.favorite) showSnackbar(R.string.added_to_favorites) else showSnackbar(R.string.removed_from_favorites)
-            }
-        }
+        viewModel.handleFavorite()
     }
 
     override fun openCustomTab(url: String) {
@@ -233,7 +211,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         getBottomSheetLayout().unit.text = unit
-        getBottomSheetLayout().title.text = getString(R.string.chart_title, title ?: getString(titleId!!))
+        getBottomSheetLayout().title.text =
+            getString(R.string.chart_title, title ?: getString(titleId!!))
 
         val limitLine = limitValue?.let {
             LimitLine(it, getString(R.string.limit_line_label))
@@ -282,6 +261,10 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun handleError(message: String?) {
         Timber.e(Throwable(message))
         showSnackbar(R.string.error_server)
+    }
+
+    override fun showInfo(message: Int) {
+        showSnackbar(message)
     }
 
     override fun noConnection() {

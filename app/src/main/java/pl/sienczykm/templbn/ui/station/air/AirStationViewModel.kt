@@ -39,6 +39,11 @@ class AirStationViewModel(
         UpdateHandler.syncNowSmogStation(getApplication(), stationId, receiver)
     }
 
+    override suspend fun updateFavourite(station: AirStationModel): Int =
+        AppDb.getDatabase(getApplication()).airStationDao().updateFavoriteSuspend(
+            station.stationId, !station.favorite
+        )
+
     fun showChart(
         chartData: List<ChartDataModel>?,
         healthyValue: Float,

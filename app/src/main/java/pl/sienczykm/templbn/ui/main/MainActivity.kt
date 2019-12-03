@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.ui.about.AboutActivity
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
 import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
@@ -27,29 +28,24 @@ class MainActivity : AppCompatActivity() {
         const val PERMISSIONS_REQUEST_CODE = 111
     }
 
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_weather -> {
-
-                changeFragment(WeatherFragment.newInstance())
-
-                return@OnNavigationItemSelectedListener true
+    private val onNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_weather -> {
+                    changeFragment(WeatherFragment.newInstance())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_air -> {
+                    changeFragment(AirStationListFragment.newInstance())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_map -> {
+                    changeFragment(MapFragment.newInstance())
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            R.id.navigation_air -> {
-
-                changeFragment(AirStationListFragment.newInstance())
-
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_map -> {
-
-                changeFragment(MapFragment.newInstance())
-
-                return@OnNavigationItemSelectedListener true
-            }
+            false
         }
-        false
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +74,17 @@ class MainActivity : AppCompatActivity() {
                 openSettings()
                 true
             }
+            R.id.about -> {
+                openAboutPage()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openAboutPage() {
+        Intent(this, AboutActivity::class.java).run {
+            startActivity(this)
         }
     }
 

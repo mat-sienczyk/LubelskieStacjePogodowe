@@ -36,6 +36,11 @@
                 android:label="@string/settings"
                 android:parentActivityName=".ui.main.MainActivity" />
 
+        <activity
+                android:name=".ui.about.AboutActivity"
+                android:label="@string/about"
+                android:parentActivityName=".ui.main.MainActivity" />
+
         <service
                 android:name=".background.WeatherUpdateJob"
                 android:exported="false"

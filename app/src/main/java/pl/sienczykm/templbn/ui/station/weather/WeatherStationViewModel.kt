@@ -38,6 +38,11 @@ class WeatherStationViewModel(
         UpdateHandler.syncNowWeatherStation(getApplication(), stationId, receiver)
     }
 
+    override suspend fun updateFavourite(station: WeatherStationModel): Int =
+        AppDb.getDatabase(getApplication()).weatherStationDao().updateFavoriteSuspend(
+            station.stationId, !station.favorite
+        )
+
     fun showChart(
         chartData: List<ChartDataModel>?,
         minIsZero: Boolean,

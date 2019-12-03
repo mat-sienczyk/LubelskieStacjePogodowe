@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentListBinding
-import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
@@ -128,30 +127,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     override fun onLongClickItem(v: View, position: Int) {
-        lifecycleScope.launch {
-            val station = stationViewModel.stations.value?.get(position)
-            val updated =
-                when (station) {
-                    is WeatherStationModel -> AppDb.getDatabase(requireContext()).weatherStationDao().updateFavoriteSuspend(
-                        station.stationId,
-                        !station.favorite
-                    )
-                    is AirStationModel -> AppDb.getDatabase(requireContext()).airStationDao().updateFavoriteSuspend(
-                        station.stationId,
-                        !station.favorite
-                    )
-                    else -> throw Exception("Invalid station object")
-                }
-
-            if (updated == 1) {
-                if (station.favorite) showSnackbar(R.string.removed_from_favorites) else showSnackbar(
-                    R.string.added_to_favorites
-                )
-//            getList().layoutManager?.startSmoothScroll(getSmoothScrollerToTop())
-                delay(500)
-                getList().smoothScrollToPosition(0)
-            }
-        }
+        getViewModel().handleFavorite(position)
     }
 
     private fun getSmoothScrollerToTop(position: Int = 0): LinearSmoothScroller =
@@ -165,6 +141,15 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun handleError(message: String?) {
         Timber.e(Throwable(message))
         showSnackbar(R.string.error_server)
+    }
+
+    override fun showInfo(message: Int) {
+        showSnackbar(message)
+        // TODO: ugly, rethink this, besides call this in showInfo is unclear
+        lifecycleScope.launch {
+            delay(500)
+            getList().smoothScrollToPosition(0)
+        }
     }
 
     override fun noConnection() {

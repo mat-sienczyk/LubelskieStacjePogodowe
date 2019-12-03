@@ -9,6 +9,7 @@
     <!--menu-->
     <string name="favorite">Ulubione</string>
     <string name="settings">Ustawienia</string>
+    <string name="about">O aplikacji</string>
 
     <!--messages-->
     <string name="added_to_favorites">Stacja dodana do Ulubionych.</string>
@@ -115,4 +116,14 @@
     <string name="sensor_quality_unhealthy_sensitive">Dostateczny</string>
     <string name="sensor_quality_unhealthy">Zły</string>
     <string name="sensor_quality_hazardous">Bardzo zły</string>
+
+    <!--about-->
+    <string name="version">Wersja</string>
+    <string name="author">\u00A9 2015–2019 Mateusz Sieńczyk</string>
+    <string name="email">mat.sienczyk@gmail.com</string>
+    <string name="rate_app">Oceń aplikację</string>
+    <string name="license">Licencje Open Source</string>
+    <string name="terms">Warunki i informacje</string>
+    <string name="info_part">Lubelskie Stacje Pogodowe to darmowa aplikacja pozwalająca sprawdzić aktualny stan pogody na terenie województwa lubelskiego.</string>
+
 </resources>

@@ -2,12 +2,14 @@ package pl.sienczykm.templbn.ui.list.weather
 
 import android.app.Application
 import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 
-class WeatherViewModel(application: Application) : BaseStationListViewModel<WeatherStationModel>(application) {
+class WeatherViewModel(application: Application) :
+    BaseStationListViewModel<WeatherStationModel>(application) {
 
     override fun refresh() {
         UpdateHandler.syncNowWeatherStations(getApplication(), receiver)
@@ -25,4 +27,9 @@ class WeatherViewModel(application: Application) : BaseStationListViewModel<Weat
             }
         }
     }
+
+    override suspend fun updateFavourite(station: BaseStationModel): Int =
+        AppDb.getDatabase(getApplication()).weatherStationDao().updateFavoriteSuspend(
+            station.stationId, !station.favorite
+        )
 }

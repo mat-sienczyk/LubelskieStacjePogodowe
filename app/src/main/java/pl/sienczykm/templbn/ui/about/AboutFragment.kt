@@ -1,11 +1,15 @@
 package pl.sienczykm.templbn.ui.about
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -55,7 +59,20 @@ class AboutFragment : Fragment(), AboutNavigator {
     }
 
     override fun openDialog(dialogType: DialogType) {
-        Timber.d(dialogType.name)
+        val webView = WebView(requireContext()).apply {
+//            setBackgroundColor(Color.BLACK) // have to invert colors too, but works fine
+//            settings.forceDark = WebSettings.FORCE_DARK_ON // not working on older devices
+            loadUrl("file:///android_asset/${dialogType.name.toLowerCase()}.html")
+        }
+
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(dialogType.name)
+            setPositiveButton(R.string.ok) { dialogInterface, _ -> dialogInterface.dismiss() }
+            setView(webView)
+        }.create().apply {
+            setCancelable(true)
+            setCanceledOnTouchOutside(true)
+        }.show()
     }
 
     enum class DialogType {

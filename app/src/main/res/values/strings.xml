@@ -126,5 +126,6 @@
     <string name="terms">Warunki i informacje</string>
     <string name="info_part">Lubelskie Stacje Pogodowe to darmowa aplikacja pozwalająca sprawdzić aktualny stan pogody na terenie województwa lubelskiego.</string>
     <string name="error_play_store">Problem ze Sklepem Play.</string>
+    <string name="ok">OK</string>
 
 </resources>

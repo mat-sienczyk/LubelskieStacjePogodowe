@@ -28,8 +28,8 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:onClick="@{() -> viewModel.openCustomTab(url)}"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="6dp">
+            app:cardCornerRadius="@dimen/card_view_radius"
+            app:cardElevation="@dimen/card_view_elevation">
 
         <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"

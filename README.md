@@ -1,52 +1,47 @@
-# LubelskieStacjePogodowe
+# Lubelskie Stacje Pogodowe
 
-Lubelskie Stacje Pogodowe v2
+## Techologie
 
-Techologie:
-- Koltin
-- Android Jetpack (Room, LivaData, DataBinding, ViewModel, WorkManager)
-- Retrofit2, OkHttp3
-- Google Play Services (Maps, Location)
+- Koltin, Coroutines,
+- Android Jetpack (AndroidKTX, Lifecycle, Room, LivaData, DataBinding, ViewModel, WorkManager),
+- AndroidX, Retrofit2, OkHttp4,
+- Google Play Services (Maps, Location).
 
-Ekran głowny:
+## Warunki i informacje
 
-Bottom bar navigation podzielona na 3 sekcje: Temperatura, Smog, Mapa
+Lubelskie Stacje Pogodowe to projekt open-source i jest w fazie rozwoju - możliwe są różne błędy i awarie, będę również wdzięczny za wszystkie uwagi, propozycje i inne sugestie.
 
-Temperatura:
-- Na górze sekcja Ulubione
-- pozniej sekcja "Pozostałe" z posortowanymi stacjami po lookalizacji albo (jesli brak zgody) to alfabetycznie
+Aplikacja powstała aby ułatwić szybki dostęp do ogólnodostępnych danych - nie odpowiadam za ich poprawność, brak oraz ewentualną niedostępność. Jest to aplikacja non-profit, nie czerpię z niej żadnych korzyści finansowych.
 
-Smog:
-- Na górze sekcja Ulubione
-- pozniej sekcja "Pozostałe" z posortowanymi stacjami po lookalizacji albo (jesli brak zgody) to alfabetycznie
+Dane pogodowe są własnością Katedry Hydrologii i Klimatologii Uniwersytetu Marii Curie-Skłodowskiej w Lublinie.
 
-Mapa:
-- lokalizacja stacji pogodowych i smogowych rozróżnione kolorami, możliwość przełączania warstwy (satelitarna/zwykła) (?)
+https://www.umcs.pl/pl/pogoda-w-regionie,2812.htm
 
-Na toolbarze nazwa aplikacji (Lubelskie Stacje Pogodowe) a w overflowmenu 3 opcje (te co były) - Ustawienia, Co nowego? i O aplikacji
+Dane o jakości powietrza są własnością Głównego Inspektoratu Ochrony Środowiska.
 
-To wszystko w jednej aktywności, stacje wyświetlane w liscie recyclerview na cardView, po kliknięciu w stacje lub odnośnik na mapie otwiera nam się aktywność ze stacją (ta sama dla smogowej i pogodowej)
+http://powietrze.gios.gov.pl/pjp/content/terms_of_service
 
-Stacje na liście:
+Prognoza została udostępniona nieodpłatnie przez serwis meteo.pl prowadzony przez ICM, Uniwersytet Warszawski. Wyniki uzyskano przy użyciu oprogramowania Met Office.
 
-- na cardview
-- na górze nazwa, data, rodzaj stacji, odległość
-- najwazneijsze 3-4 dane (temp, wiatr, wilgotność, ciśnienie, PM2,5, PM10) poziomo z ikonkami
+http://www.meteo.pl/
 
-Po kliknięciu przechodzmi z animacja do nowej aktywności - szczegóły stacji.
+## Google Play
 
-Ekran szczegółów stacji:
+Aplikacja: https://play.google.com/store/apps/details?id=pl.sienczykm.templbn
 
-W actionbarze strzałka wstecz, nazwa stacji i serduszko po kliknięciu któego ddoajemy stacje do ulubionych (czerwone lub puste)
+Licencja
+--------
 
-- widok danych stacji na cardview z danymmi stacji i odnośnikiem do jej strony który otwiera customTabs (tak jak jest obecnie)
-- przy danych z wykresami, wykres wysuwa sie z dołu - na wykresie linia pokazująca wczoraj/dziś
+    Copyright 2019 Mateusz Sieńczyk
 
-TODO:
-- rysowanie wykresu
-- zaznaczanie nieaktualnych danych
-- stałe powiadomienie z temperaturą
-- powiadomienie gdy jakość powietrza jest słaba
-- widgety dla temperatury (z konfiguracją?)
-- widget dla smogu
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

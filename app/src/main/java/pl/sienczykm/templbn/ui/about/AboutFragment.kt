@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.about
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -7,9 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAboutBinding
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
+import java.util.*
 
 class AboutFragment : Fragment(), AboutNavigator {
     companion object {
@@ -27,6 +30,7 @@ class AboutFragment : Fragment(), AboutNavigator {
 
     private lateinit var aboutViewModel: AboutViewModel
     private lateinit var binding: FragmentAboutBinding
+    private var dialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +49,11 @@ class AboutFragment : Fragment(), AboutNavigator {
         aboutViewModel.setNavigator(this)
     }
 
+    override fun onStop() {
+        dialog?.dismiss()
+        super.onStop()
+    }
+
     override fun openGooglePlay(appId: String) {
         val rateAppIntent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("market://details?id=$appId")
@@ -58,24 +67,35 @@ class AboutFragment : Fragment(), AboutNavigator {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun openDialog(dialogType: DialogType) {
-        val webView = WebView(requireContext()).apply {
-//            setBackgroundColor(Color.BLACK) // have to invert colors too, but works fine
-//            settings.forceDark = WebSettings.FORCE_DARK_ON // not working on older devices
-            loadUrl("file:///android_asset/${dialogType.name.toLowerCase()}.html")
+        val webView = WebView(requireContext().applicationContext).apply {
+            setBackgroundColor(Color.TRANSPARENT)
+            settings.javaScriptEnabled = true
+            val color = ContextCompat.getColor(requireContext(), R.color.base_color)
+            val hexColor = String.format("#%06X", 0xFFFFFF and color)
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    view?.loadUrl("javascript:document.body.style.setProperty(\"color\", \"$hexColor\");")
+                }
+            }
+            loadUrl("file:///android_asset/${dialogType.name.toLowerCase(Locale.ENGLISH)}.html")
         }
 
-        AlertDialog.Builder(requireContext()).apply {
+        dialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(dialogType.name)
             setPositiveButton(R.string.ok) { dialogInterface, _ -> dialogInterface.dismiss() }
             setView(webView)
         }.create().apply {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
-        }.show()
+        }
+
+        dialog?.show()
     }
 
     enum class DialogType {
         TERMS, LICENSE
+
     }
 }

@@ -20,7 +20,6 @@ import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 
 class MainActivity : AppCompatActivity() {
 
@@ -95,12 +94,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getLocationPermission() {
-        if (!isLocationPermissionGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CODE
-            )
-        }
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ), PERMISSIONS_REQUEST_CODE
+        )
     }
 
     fun changeFragment(fragment: Fragment) {

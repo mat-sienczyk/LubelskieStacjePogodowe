@@ -52,22 +52,22 @@
                     app:title="@string/weather_auto_sync_title" />
 
             <ListPreference
-                    app:defaultValue="@string/widget_station_default"
+                    app:defaultValue="@string/default_station_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:entries="@array/stationOptions"
                     app:entryValues="@array/stationValues"
                     app:iconSpaceReserved="false"
-                    app:key="@string/widget_station_key"
+                    app:key="@string/default_station_key"
                     app:summary="%s"
-                    app:title="@string/widget_station_title" />
+                    app:title="@string/default_station_title" />
 
             <SwitchPreferenceCompat
-                    app:defaultValue="@bool/widget_location_default"
+                    app:defaultValue="@bool/default_location_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:iconSpaceReserved="false"
-                    app:key="@string/widget_location_key"
-                    app:summary="@string/widget_location_summary"
-                    app:title="@string/widget_location_title" />
+                    app:key="@string/default_location_key"
+                    app:summary="@string/default_location_summary"
+                    app:title="@string/default_location_title" />
 
             <SwitchPreferenceCompat
                     app:defaultValue="@bool/show_weather_notification_default"

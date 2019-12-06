@@ -74,10 +74,10 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
 }
 
 fun Context.isLocationPermissionGranted(): Boolean =
-    ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.ACCESS_FINE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED
+    isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
+
+fun Context.isPermissionGranted(permission: String): Boolean =
+    ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 fun Double?.round(places: Int = 0): Double? {
     return when {

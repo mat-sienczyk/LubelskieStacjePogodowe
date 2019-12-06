@@ -137,14 +137,14 @@ object ExternalDisplaysHandler {
 
     fun getProperStationId(context: Context): Int {
         val defaultStationId = PreferenceManager.getDefaultSharedPreferences(context).getString(
-            context.getString(R.string.widget_station_key),
-            context.getString(R.string.widget_station_default)
+            context.getString(R.string.default_station_key),
+            context.getString(R.string.default_station_default)
         )!!.toInt() // default value provided
 
         val useLocationForWidget =
             PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-                context.getString(R.string.widget_location_key),
-                context.resources.getBoolean(R.bool.widget_location_default)
+                context.getString(R.string.default_location_key),
+                context.resources.getBoolean(R.bool.default_location_default)
             )
 
         return if (useLocationForWidget) {

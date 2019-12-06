@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
@@ -94,7 +93,7 @@ fun setCircleData(
 }
 
 fun setCircleProgressTextColor(circleProgressView: CircleProgressView, @ColorRes colorId: Int) {
-    circleProgressView.setTextColor(ContextCompat.getColor(circleProgressView.context, colorId))
+    circleProgressView.setTextColor(circleProgressView.context.getColorCompact(colorId))
 }
 
 @BindingAdapter(value = ["windDir", "value", "unit"], requireAll = false)
@@ -114,7 +113,7 @@ fun setWeatherData(
         )
         for (drawable: Drawable? in textView.compoundDrawables) {
             drawable?.colorFilter = PorterDuffColorFilter(
-                ContextCompat.getColor(textView.context, R.color.base_color),
+                textView.context.getColorCompact(R.color.base_color),
                 PorterDuff.Mode.SRC_IN
             )
         }

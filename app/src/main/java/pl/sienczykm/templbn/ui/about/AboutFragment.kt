@@ -10,13 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAboutBinding
+import pl.sienczykm.templbn.utils.getColorHex
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 import java.util.*
@@ -72,8 +73,7 @@ class AboutFragment : Fragment(), AboutNavigator {
         val webView = WebView(requireContext().applicationContext).apply {
             setBackgroundColor(Color.TRANSPARENT)
             settings.javaScriptEnabled = true
-            val color = ContextCompat.getColor(requireContext(), R.color.base_color)
-            val hexColor = String.format("#%06X", 0xFFFFFF and color)
+            val hexColor = requireContext().getColorHex(R.color.base_color)
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     view?.loadUrl("javascript:document.body.style.setProperty(\"color\", \"$hexColor\");")
@@ -83,7 +83,7 @@ class AboutFragment : Fragment(), AboutNavigator {
         }
 
         dialog = AlertDialog.Builder(requireContext()).apply {
-            setTitle(dialogType.name)
+            setTitle(dialogType.title)
             setPositiveButton(R.string.ok) { dialogInterface, _ -> dialogInterface.dismiss() }
             setView(webView)
         }.create().apply {
@@ -94,8 +94,8 @@ class AboutFragment : Fragment(), AboutNavigator {
         dialog?.show()
     }
 
-    enum class DialogType {
-        TERMS, LICENSE
+    enum class DialogType(@StringRes val title: Int) {
+        TERMS(R.string.terms), LICENSE(R.string.license)
 
     }
 }

@@ -39,6 +39,7 @@ import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.dateFormat
+import pl.sienczykm.templbn.utils.getColorCompact
 import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
@@ -127,7 +128,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                         return timeChartFormatter.format(Date(value.toLong()))
                     }
                 }
-                textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
+                textColor = requireContext().getColorCompact(R.color.base_color)
                 textSize = 14f
                 labelRotationAngle = -25f
                 position = XAxis.XAxisPosition.BOTTOM
@@ -139,7 +140,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                         return valueChartFormatter.format(value)
                     }
                 }
-                textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
+                textColor = requireContext().getColorCompact(R.color.base_color)
                 textSize = 14f
                 setLabelCount(7, true)
                 setDrawZeroLine(true)
@@ -225,8 +226,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 removeAllLimitLines()
                 addLimitLine(limitLine.apply {
                     lineWidth = 2.5f
-                    lineColor = ContextCompat.getColor(requireContext(), R.color.base_color)
-                    textColor = ContextCompat.getColor(requireContext(), R.color.base_color)
+                    lineColor = requireContext().getColorCompact(R.color.base_color)
+                    textColor = requireContext().getColorCompact(R.color.base_color)
                 })
                 resetAxisMinimum()
                 when (minIsZero) {
@@ -246,12 +247,12 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
                 axisDependency = YAxis.AxisDependency.LEFT
                 setDrawCircles(false)
                 setDrawValues(false)
-                color = ContextCompat.getColor(requireContext(), R.color.colorAccent)
+                color = requireContext().getColorCompact(R.color.colorAccent)
                 lineWidth = 1.5f
-                highLightColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                highLightColor = requireContext().getColorCompact(R.color.colorPrimary)
                 highlightLineWidth = 0.8f
                 setDrawFilled(true)
-                fillColor = ContextCompat.getColor(requireContext(), R.color.colorAccent)
+                fillColor = requireContext().getColorCompact(R.color.colorAccent)
             })
             fitScreen()
         }
@@ -281,7 +282,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         init {
             marker_bg.background = getDrawable(
                 R.drawable.ic_marker,
-                ContextCompat.getColor(context, R.color.colorPrimary)
+                context.getColorCompact(R.color.colorPrimary)
             )
         }
 

@@ -151,12 +151,7 @@ fun Date.isOlderThan(minutes: Long): Boolean =
     nowInPoland().timeInMillis - this.time > TimeUnit.MINUTES.toMillis(minutes)
 
 fun TextView.setColor(@ColorRes colorResId: Int) {
-    setTextColor(
-        ContextCompat.getColor(
-            context,
-            colorResId
-        )
-    )
+    setTextColor(context.getColorCompact(colorResId))
 }
 
 fun ImageView.invertColors() {
@@ -170,6 +165,12 @@ fun ImageView.invertColors() {
             )
         )
 }
+
+fun Context.getColorCompact(@ColorRes colorResId: Int): Int =
+    ContextCompat.getColor(this, colorResId)
+
+fun Context.getColorHex(@ColorRes colorResId: Int): String =
+    String.format("#%06X", 0xFFFFFF and getColorCompact(colorResId))
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {

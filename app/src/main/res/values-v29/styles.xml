@@ -1,7 +1,0 @@
-<!-- values-v29/themes.xml -->
-<resources>
-
-    <style name="AppTheme" parent="BaseAppTheme">
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-    </style>
-</resources>

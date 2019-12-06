@@ -52,11 +52,11 @@ class AboutFragment : Fragment(), AboutNavigator {
         aboutViewModel.setNavigator(this)
     }
 
-    override fun onStop() {
+    override fun onDestroyView() {
         dialog?.dismiss()
-        super.onStop()
+        super.onDestroyView()
     }
-
+    
     override fun openGooglePlay(appId: String) {
         val rateAppIntent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("market://details?id=$appId")

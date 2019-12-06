@@ -41,12 +41,12 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.1"
+    def room_version = "2.2.2"
     def okhttp_version = '4.2.2'
     def retrofit_version = '2.6.2'
     def work_version = "2.2.0"
     def preference_version = "1.1.0"
-    def lifecycle_version = "2.2.0-rc02"
+    def lifecycle_version = "2.2.0-rc03"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

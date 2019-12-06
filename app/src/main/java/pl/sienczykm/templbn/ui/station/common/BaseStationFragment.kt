@@ -1,19 +1,15 @@
 package pl.sienczykm.templbn.ui.station.common
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Patterns
 import android.view.*
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -38,10 +34,7 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.ui.common.StationNavigator
 import pl.sienczykm.templbn.ui.station.StationActivity
-import pl.sienczykm.templbn.utils.dateFormat
-import pl.sienczykm.templbn.utils.getColorCompact
-import pl.sienczykm.templbn.utils.setColors
-import pl.sienczykm.templbn.utils.snackbarShow
+import pl.sienczykm.templbn.utils.*
 import timber.log.Timber
 import java.text.NumberFormat
 import java.util.*
@@ -187,17 +180,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     }
 
     override fun openCustomTab(url: String) {
-        if (Patterns.WEB_URL.matcher(url).matches()) {
-            val webPage = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, webPage)
-            if (intent.resolveActivity(requireActivity().packageManager) != null) {
-                val builder = CustomTabsIntent.Builder()
-//                builder.setToolbarColor(resources.getColor(R.color.colorPrimary))
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(requireContext(), webPage)
-            } else {
-                showSnackbar(R.string.error_no_web_browser)
-            }
+        if (!requireContext().openUrl(url)) {
+            showSnackbar(R.string.error_no_web_browser)
         }
     }
 

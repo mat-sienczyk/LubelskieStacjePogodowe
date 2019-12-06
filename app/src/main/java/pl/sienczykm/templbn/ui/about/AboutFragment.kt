@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.StringRes
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAboutBinding
 import pl.sienczykm.templbn.utils.getColorHex
+import pl.sienczykm.templbn.utils.openUrl
 import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 import java.util.*
@@ -77,6 +79,12 @@ class AboutFragment : Fragment(), AboutNavigator {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     view?.loadUrl("javascript:document.body.style.setProperty(\"color\", \"$hexColor\");")
+                }
+
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?, request: WebResourceRequest?
+                ): Boolean {
+                    return requireContext().openUrl(request?.url.toString())
                 }
             }
             loadUrl("file:///android_asset/${dialogType.name.toLowerCase(Locale.ENGLISH)}.html")

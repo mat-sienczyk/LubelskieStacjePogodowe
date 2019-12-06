@@ -2,11 +2,14 @@ package pl.sienczykm.templbn.utils
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
 import android.location.Location
 import android.net.ConnectivityManager
+import android.net.Uri
+import android.util.Patterns
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -16,6 +19,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -183,6 +187,21 @@ fun Context.getLastKnownLocation(): Location? {
         return null
     }
     return location
+}
+
+fun Context.openUrl(url: String): Boolean {
+    return if (Patterns.WEB_URL.matcher(url).matches()) {
+        val webPage = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webPage)
+        if (intent.resolveActivity(packageManager) == null) {
+            val builder = CustomTabsIntent.Builder()
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(this, webPage)
+            true
+        } else {
+            false
+        }
+    } else false
 }
 
 fun drawTextOnBitmap(

@@ -178,15 +178,11 @@ fun Context.getColorHex(@ColorRes colorResId: Int): String =
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
-    var location: Location? = null
-    val task = LocationServices.getFusedLocationProviderClient(this)
-        .lastLocation.addOnSuccessListener { location = it }
-    try {
-        Tasks.await(task)
+    return try {
+        Tasks.await(LocationServices.getFusedLocationProviderClient(this).lastLocation)
     } catch (e: Exception) {
-        return null
+        null
     }
-    return location
 }
 
 fun Context.openUrl(url: String): Boolean {

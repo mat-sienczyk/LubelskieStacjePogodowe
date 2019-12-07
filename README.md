@@ -26,8 +26,7 @@ Prognoza została udostępniona nieodpłatnie przez serwis meteo.pl prowadzony p
 http://www.meteo.pl/
 
 ## Google Play
-
-Aplikacja: https://play.google.com/store/apps/details?id=pl.sienczykm.templbn
+[![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/pl_badge_web_generic.png)](https://play.google.com/store/apps/details?id=pl.sienczykm.templbn)
 
 Licencja
 --------

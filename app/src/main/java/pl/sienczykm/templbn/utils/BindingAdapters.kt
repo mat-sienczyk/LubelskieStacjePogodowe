@@ -3,10 +3,11 @@ package pl.sienczykm.templbn.utils
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.text.SpannableStringBuilder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorRes
+import androidx.core.text.color
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.grabner.circleprogress.CircleProgressView
@@ -59,14 +60,11 @@ fun setAirPercent(
 ) {
     if (valueAndAirQuality != null) {
         val rawPercent = (valueAndAirQuality.first * 100) / sensorType.maxGood
-        textView.text = rawPercent.roundAndGetString() + textView.context.getString(R.string.percent)
-        when (valueAndAirQuality.second) {
-            AirStationModel.AirQualityIndex.VERY_GOOD -> textView.setColor(R.color.quality_very_good)
-            AirStationModel.AirQualityIndex.GOOD -> textView.setColor(R.color.quality_good)
-            AirStationModel.AirQualityIndex.MODERATE -> textView.setColor(R.color.quality_moderate)
-            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> textView.setColor(R.color.quality_unhealthy_sensitive)
-            AirStationModel.AirQualityIndex.UNHEALTHY -> textView.setColor(R.color.quality_unhealthy)
-            AirStationModel.AirQualityIndex.HAZARDOUS -> textView.setColor(R.color.quality_hazardous)
+        textView.apply {
+            text = SpannableStringBuilder()
+                .append(rawPercent.roundAndGetString())
+                .append(context.getString(R.string.percent).trim())
+            setColor(valueAndAirQuality.second.color)
         }
     }
 }
@@ -81,39 +79,11 @@ fun setCircleData(
     circleProgressView.maxValue = sensorType.maxUnhealthy.toFloat()
     circleProgressView.unit = unit
     if (valueAndAirQuality != null) {
-        circleProgressView.setValue(valueAndAirQuality.first.toFloat())
-        when (valueAndAirQuality.second) {
-            AirStationModel.AirQualityIndex.VERY_GOOD -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_very_good
-            )
-            AirStationModel.AirQualityIndex.GOOD -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_good
-            )
-            AirStationModel.AirQualityIndex.MODERATE -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_moderate
-            )
-            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_unhealthy_sensitive
-            )
-            AirStationModel.AirQualityIndex.UNHEALTHY -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_unhealthy
-            )
-            AirStationModel.AirQualityIndex.HAZARDOUS -> setCircleProgressTextColor(
-                circleProgressView,
-                R.color.quality_hazardous
-            )
+        circleProgressView.apply {
+            setValue(valueAndAirQuality.first.toFloat())
+            setTextColor(context.getColorCompact(valueAndAirQuality.second.color))
         }
     }
-
-}
-
-fun setCircleProgressTextColor(circleProgressView: CircleProgressView, @ColorRes colorId: Int) {
-    circleProgressView.setTextColor(circleProgressView.context.getColorCompact(colorId))
 }
 
 @BindingAdapter(value = ["windDir", "value", "unit"], requireAll = false)
@@ -158,6 +128,20 @@ fun setOldDate(textView: TextView, isDateOld: Boolean?) {
         }
         else -> textView.apply {
             setColor(R.color.base_color)
+        }
+    }
+}
+
+@BindingAdapter("airQuality")
+fun setAirQualityIndex(textView: TextView, airQualityIndex: AirStationModel.AirQualityIndex?) {
+    airQualityIndex?.let {
+        textView.apply {
+            text = SpannableStringBuilder()
+                .append(context.getString(R.string.air_quality))
+                .append(" ")
+                .color(context.getColorCompact(airQualityIndex.color)) {
+                    append(context.getString(airQualityIndex.description))
+                }
         }
     }
 }

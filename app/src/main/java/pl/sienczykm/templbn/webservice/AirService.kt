@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.webservice
 
+import pl.sienczykm.templbn.webservice.model.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.AirSensor
 import pl.sienczykm.templbn.webservice.model.AirSensorData
 import retrofit2.Call
@@ -12,4 +13,7 @@ interface AirService {
 
     @GET("data/getData/{id}")
     fun getDataForSensor(@Path("id") sensorId: Int): Call<AirSensorData>
+
+    @GET("aqindex/getIndex/{id}")
+    fun getAirQualityIndex(@Path("id") stationId: Int): Call<AirIndexQuality>
 }

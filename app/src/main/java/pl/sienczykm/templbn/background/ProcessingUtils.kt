@@ -39,6 +39,7 @@ object ProcessingUtils {
     }
 
     private fun constructAirStationModel(station: AirStationModel): AirStationModel {
+        station.airQualityIndex = getOverallAirQualityIndex(station.stationId)
         station.sensors = getSensors(station.stationId)
         station.date = getAirStationDate(station.sensors)
         return station
@@ -134,6 +135,14 @@ object ProcessingUtils {
             else throw Exception(errorBody().toString())
         }
     }
+
+    private fun getOverallAirQualityIndex(stationId: Int): Int? {
+        LspController.getAirQualityIndex(stationId).apply {
+            return if (isSuccessful) body()?.stIndexLevel?.id
+            else throw Exception(errorBody().toString())
+        }
+    }
+
 
     private fun parseAirChartData(airSensorData: AirSensorData?): List<ChartDataModel>? {
         return if (airSensorData?.key == AirStationModel.AirSensorType.CO.paramKey) {

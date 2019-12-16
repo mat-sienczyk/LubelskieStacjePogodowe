@@ -73,6 +73,10 @@
                                     app:date="@{viewModel.station.getParsedDate()}"
                                     app:isOld="@{viewModel.station.isDateObsoleteOrNull()}" />
 
+                            <include
+                                    layout="@layout/air_quality_index"
+                                    app:overallAirQuality="@{viewModel.station.getOverallAirQualityIndex()}" />
+
                             <com.google.android.flexbox.FlexboxLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"

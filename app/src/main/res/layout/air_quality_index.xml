@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+                name="overallAirQuality"
+                type="pl.sienczykm.templbn.db.model.AirStationModel.AirQualityIndex" />
+    </data>
+
+
+    <TextView
+            android:id="@+id/air_quality_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="@{overallAirQuality == null ? View.GONE : View.VISIBLE}"
+            app:airQuality="@{overallAirQuality}" />
+
+</layout>

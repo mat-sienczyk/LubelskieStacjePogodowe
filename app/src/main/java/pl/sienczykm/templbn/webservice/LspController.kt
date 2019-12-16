@@ -5,11 +5,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.sienczykm.templbn.webservice.model.AirSensor
-import pl.sienczykm.templbn.webservice.model.AirSensorData
-import pl.sienczykm.templbn.webservice.model.WeatherStationOne
-import pl.sienczykm.templbn.webservice.model.WeatherStationTwo
 import pl.sienczykm.templbn.utils.Config
+import pl.sienczykm.templbn.webservice.model.*
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -35,6 +32,11 @@ object LspController {
     @WorkerThread
     fun getAirSensorData(sensorId: Int): Response<AirSensorData> {
         return getAirService().getDataForSensor(sensorId).execute()
+    }
+
+    @WorkerThread
+    fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> {
+        return getAirService().getAirQualityIndex(stationId).execute()
     }
 
     private fun getWeatherService(): WeatherService {

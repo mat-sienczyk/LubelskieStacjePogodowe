@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.db.model
 
 
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -35,6 +36,7 @@ class AirStationModel constructor(
     }
 
     var sensors: List<AirSensorModel>? = null
+    var airQualityIndex: Int? = null
 
     override fun copy(): AirStationModel {
         val stationCopy =
@@ -43,7 +45,7 @@ class AirStationModel constructor(
         stationCopy.favorite = favorite
         stationCopy.date = date
         stationCopy.distance = distance
-
+        stationCopy.airQualityIndex = airQualityIndex
         stationCopy.sensors = sensors
         return stationCopy
     }
@@ -83,6 +85,18 @@ class AirStationModel constructor(
             (value > sensorType.maxModerate) and (value <= sensorType.maxUnhealthySensitive) -> value to AirQualityIndex.UNHEALTHY_SENSITIVE
             (value > sensorType.maxUnhealthySensitive) and (value <= sensorType.maxUnhealthy) -> value to AirQualityIndex.UNHEALTHY
             value > sensorType.maxUnhealthy -> value to AirQualityIndex.HAZARDOUS
+            else -> null
+        }
+    }
+
+    fun getOverallAirQualityIndex(): AirQualityIndex? {
+        return when (airQualityIndex) {
+            0 -> AirQualityIndex.VERY_GOOD
+            1 -> AirQualityIndex.GOOD
+            2 -> AirQualityIndex.MODERATE
+            3 -> AirQualityIndex.UNHEALTHY_SENSITIVE
+            4 -> AirQualityIndex.UNHEALTHY
+            5 -> AirQualityIndex.HAZARDOUS
             else -> null
         }
     }
@@ -144,12 +158,12 @@ class AirStationModel constructor(
         CO(R.string.sensor_type_co, "CO", 8, 3, 7, 11, 15, 21)
     }
 
-    enum class AirQualityIndex(val value: Int, @StringRes val desc: Int) {
-        VERY_GOOD(0, R.string.sensor_quality_very_good),
-        GOOD(1, R.string.sensor_quality_good),
-        MODERATE(2, R.string.sensor_quality_moderate),
-        UNHEALTHY_SENSITIVE(3, R.string.sensor_quality_unhealthy),
-        UNHEALTHY(4, R.string.sensor_quality_unhealthy_sensitive),
-        HAZARDOUS(5, R.string.sensor_quality_hazardous),
+    enum class AirQualityIndex(val value: Int, @StringRes val description: Int, @ColorRes val color: Int) {
+        VERY_GOOD(0, R.string.sensor_quality_very_good, R.color.quality_very_good),
+        GOOD(1, R.string.sensor_quality_good, R.color.quality_good),
+        MODERATE(2, R.string.sensor_quality_moderate, R.color.quality_moderate),
+        UNHEALTHY_SENSITIVE(3, R.string.sensor_quality_unhealthy_sensitive, R.color.quality_unhealthy_sensitive),
+        UNHEALTHY(4, R.string.sensor_quality_unhealthy, R.color.quality_unhealthy),
+        HAZARDOUS(5, R.string.sensor_quality_hazardous, R.color.quality_hazardous),
     }
 }

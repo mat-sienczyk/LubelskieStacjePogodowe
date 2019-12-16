@@ -112,6 +112,7 @@
     <string name="sensor_type_co">Tlenek węgla</string>
 
     <!--air quality index-->
+    <string name="air_quality">Stan powietrza:</string>
     <string name="sensor_quality_very_good">Bardzo dobry</string>
     <string name="sensor_quality_good">Dobry</string>
     <string name="sensor_quality_moderate">Umiarkowany</string>

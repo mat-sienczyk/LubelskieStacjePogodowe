@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
-        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
+
+        <import type="android.view.View" />
+
+        <import type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
         <variable
                 name="station"
-                type="pl.sienczykm.templbn.db.model.AirStationModel"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,6 +92,10 @@
                             android:visibility="@{station.favorite ? View.VISIBLE : View.INVISIBLE}" />
                 </com.google.android.flexbox.FlexboxLayout>
 
+                <include
+                        layout="@layout/air_quality_index"
+                        app:overallAirQuality="@{station.getOverallAirQualityIndex()}" />
+
                 <com.google.android.flexbox.FlexboxLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -100,36 +106,36 @@
                             layout="@layout/air_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:chartData="@{null}"
                             app:sensor="@{AirSensorType.PM25}"
                             app:station="@{station}"
-                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
                             layout="@layout/air_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:chartData="@{null}"
                             app:sensor="@{AirSensorType.PM10}"
                             app:station="@{station}"
-                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
                             layout="@layout/air_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:chartData="@{null}"
                             app:sensor="@{AirSensorType.O3}"
                             app:station="@{station}"
-                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                     <include
                             layout="@layout/air_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:chartData="@{null}"
                             app:sensor="@{AirSensorType.NO2}"
                             app:station="@{station}"
-                            app:chartData="@{null}"
                             app:unit="@{@string/microgram_per_cubic_metre}" />
 
                 </com.google.android.flexbox.FlexboxLayout>

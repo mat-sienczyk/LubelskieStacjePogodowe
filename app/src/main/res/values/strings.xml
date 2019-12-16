@@ -22,9 +22,11 @@
     <string name="station_title_weather">"Stacja pogodowa UMCS"</string>
     <string name="station_title_air">"Stacja powietrza GIOŚ"</string>
     <string name="forecast_title">"Prognoza ICM"</string>
+    <string name="air_index_title">"O indeksie jakości powietrza"</string>
 
     <string name="station_open_website">Otwórz stronę stacji</string>
     <string name="forecast_open_website">Otwórz stronę prognozy</string>
+    <string name="open_website">Otwórz stronę</string>
 
     <string name="data_placeholder">"%1$s%2$s"</string>
 

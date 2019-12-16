@@ -57,10 +57,8 @@
                             android:layout_marginStart="@dimen/activity_horizontal_margin"
                             android:layout_marginTop="@dimen/margin_between_cards"
                             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                            android:layout_marginBottom="@dimen/activity_vertical_margin"
                             app:cardCornerRadius="@dimen/card_view_radius"
                             app:cardElevation="@dimen/card_view_elevation"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/include">
@@ -156,6 +154,24 @@
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
+
+                    <include
+                            android:id="@+id/include2"
+                            layout="@layout/title_clickable_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/margin_between_cards"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin"
+                            app:hyperlink="@{@string/open_website}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardView"
+                            app:title="@{@string/air_index_title}"
+                            app:url="@{viewModel.station.aboutAirIndexUrl()}"
+                            app:viewModel="@{(BaseStationViewModel) viewModel}" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

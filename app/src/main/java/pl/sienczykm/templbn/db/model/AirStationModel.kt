@@ -87,6 +87,10 @@ class AirStationModel constructor(
         }
     }
 
+    fun aboutAirIndexUrl(): String {
+        return "https://powietrze.gios.gov.pl/pjp/content/show/1001197"
+    }
+
     companion object {
 
         const val ID_KEY = "air_station_id"

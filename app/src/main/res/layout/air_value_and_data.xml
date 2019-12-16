@@ -49,10 +49,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{sensor.paramKey}"
                 android:textSize="18sp"
-                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}"
                 app:sensorType="@{sensor}"
+                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}"
                 tools:text="69%" />
 
         <at.grabner.circleprogress.CircleProgressView
@@ -76,9 +75,9 @@
                 app:cpv_unitColor="?android:attr/textColorTertiary"
                 app:cpv_unitPosition="bottom"
                 app:cpv_unitScale="1"
-                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}"
                 app:sensorType="@{sensor}"
-                app:unit="@{unit}" />
+                app:unit="@{unit}"
+                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}" />
 
         <TextView
                 android:layout_width="match_parent"

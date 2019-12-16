@@ -158,7 +158,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.station_fragment_menu, menu)
 
-        viewModel.station.observe(this, Observer { station ->
+        viewModel.station.observe(viewLifecycleOwner, Observer { station ->
             updateFavorite(menu.findItem(R.id.favorite), station.favorite)
         })
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+    <shortcut
+            android:enabled="true"
+            android:icon="@mipmap/ic_shortcut_weather"
+            android:shortcutId="weather_shortcut"
+            android:shortcutLongLabel="@string/title_temp"
+            android:shortcutShortLabel="@string/title_temp"
+            tools:targetApi="n_mr1">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="pl.sienczykm.templbn.ui.main.MainActivity"
+                android:targetPackage="pl.sienczykm.templbn">
+
+            <extra
+                    android:name="shortcut_key"
+                    android:value="weather" />
+
+        </intent>
+    </shortcut>
+    <shortcut
+            android:enabled="true"
+            android:icon="@mipmap/ic_shortcut_air"
+            android:shortcutId="air_shortcut"
+            android:shortcutLongLabel="@string/title_air"
+            android:shortcutShortLabel="@string/title_air"
+            tools:targetApi="n_mr1">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="pl.sienczykm.templbn.ui.main.MainActivity"
+                android:targetPackage="pl.sienczykm.templbn">
+
+            <extra
+                    android:name="shortcut_key"
+                    android:value="air" />
+
+        </intent>
+    </shortcut>
+    <shortcut
+            android:enabled="true"
+            android:icon="@mipmap/ic_shortcut_map"
+            android:shortcutId="map_shortcut"
+            android:shortcutLongLabel="@string/title_map"
+            android:shortcutShortLabel="@string/title_map"
+            tools:targetApi="n_mr1">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="pl.sienczykm.templbn.ui.main.MainActivity"
+                android:targetPackage="pl.sienczykm.templbn">
+
+            <extra
+                    android:name="shortcut_key"
+                    android:value="map" />
+
+        </intent>
+    </shortcut>
+</shortcuts>

@@ -57,7 +57,13 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             getLocationPermission()
-            changeFragment(WeatherFragment.newInstance())
+            intent.extras?.getString("shortcut_key")?.let {
+                when (it) {
+                    "map" -> nav_view.selectedItemId = R.id.navigation_map
+                    "air" -> nav_view.selectedItemId = R.id.navigation_air
+                    else -> nav_view.selectedItemId = R.id.navigation_weather
+                }
+            } ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it is not an expression
         }
     }
 
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun changeFragment(fragment: Fragment) {
+    private fun changeFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)

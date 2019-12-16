@@ -14,7 +14,7 @@
                 android:targetPackage="pl.sienczykm.templbn">
 
             <extra
-                    android:name="shortcut_key"
+                    android:name="navigation_key"
                     android:value="weather" />
 
         </intent>
@@ -32,7 +32,7 @@
                 android:targetPackage="pl.sienczykm.templbn">
 
             <extra
-                    android:name="shortcut_key"
+                    android:name="navigation_key"
                     android:value="air" />
 
         </intent>
@@ -50,7 +50,7 @@
                 android:targetPackage="pl.sienczykm.templbn">
 
             <extra
-                    android:name="shortcut_key"
+                    android:name="navigation_key"
                     android:value="map" />
 
         </intent>

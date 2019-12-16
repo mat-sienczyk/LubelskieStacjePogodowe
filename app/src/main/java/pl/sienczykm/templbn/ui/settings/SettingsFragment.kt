@@ -46,6 +46,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
             getString(R.string.show_weather_notification_key), getString(R.string.show_weather_notification_icon_key) ->
                 ExternalDisplaysHandler.setWeatherNotification(requireContext())
 
+            getString(R.string.show_air_quality_notification_key) ->
+                ExternalDisplaysHandler.checkAirQuality(requireContext())
+
             getString(R.string.enable_auto_sync_key) ->
                 UpdateHandler.handleAutoSync(sharedPreferences, requireContext())
 

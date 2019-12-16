@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             getLocationPermission()
-            intent.extras?.getString("shortcut_key")?.let {
+            intent.extras?.getString("navigation_key")?.let {
                 when (it) {
                     "map" -> nav_view.selectedItemId = R.id.navigation_map
                     "air" -> nav_view.selectedItemId = R.id.navigation_air

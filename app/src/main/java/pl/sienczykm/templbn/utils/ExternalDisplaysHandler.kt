@@ -12,6 +12,7 @@ import android.graphics.drawable.Icon
 import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
@@ -20,15 +21,78 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
+import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.widget.OldWeatherWidget
 
+// TODO this is quick written and it's ugly as fuck
 object ExternalDisplaysHandler {
 
     fun updateExternalDisplays(context: Context) {
         setWeatherNotification(context)
         updateOldWeatherWidget(context)
+    }
+
+    // TODO: call only when air station is updated!
+    fun checkAirQuality(context: Context) {
+        val notificationId = 70
+
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+                context.getString(R.string.show_air_quality_notification_key),
+                context.resources.getBoolean(R.bool.show_air_quality_notification)
+            ) && context.isAutoUpdateEnabled()
+        ) {
+            val airChannelId = "air_quality_notification"
+
+            CoroutineScope(Dispatchers.IO).launch {
+                getNearestAirStationId(context)?.let {
+                    val airStation = AppDb.getDatabase(context).airStationDao().getStationById(it)
+
+                    if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! > 1) {
+
+                        val pendingIntent = PendingIntent.getActivity(
+                            context,
+                            0,
+                            Intent(context, MainActivity::class.java).apply {
+                                putExtra("navigation_key", "air") // TODO: this is not working
+                            },
+                            0
+                        )
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                            val channel = NotificationChannel(
+                                airChannelId,
+                                context.getString(R.string.air_index_notification_channel_name),
+                                NotificationManager.IMPORTANCE_DEFAULT
+                            ).apply {
+                                description =
+                                    context.getString(R.string.air_index_notification_channel_description)
+                            }
+
+                            (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                                .createNotificationChannel(channel)
+
+                        }
+
+                        val builder = NotificationCompat.Builder(context, airChannelId)
+                            .setContentTitle(airStation.getFullStationName())
+                            .setContentText(context.getString(R.string.air_index_notification_content))
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
+                            .setSmallIcon(R.drawable.ic_air)
+
+                        with(NotificationManagerCompat.from(context)) {
+                            notify(notificationId, builder.build())
+                        }
+                    }
+                }
+
+                cancel()
+            }
+        }
     }
 
     fun updateOldWeatherWidget(context: Context) {
@@ -61,7 +125,7 @@ object ExternalDisplaysHandler {
 
             CoroutineScope(Dispatchers.IO).launch {
                 val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                    .getStationById(getProperStationId(context))
+                    .getStationById(getProperWeatherStationId(context))
 
                 val temperatureString = weatherStation?.getParsedTemperature()?.let {
                     "$it${context.getString(R.string.celsius_degree)}"
@@ -72,7 +136,9 @@ object ExternalDisplaysHandler {
                 val pendingIntent = PendingIntent.getActivity(
                     context,
                     0,
-                    Intent(context, MainActivity::class.java),
+                    Intent(context, MainActivity::class.java).apply {
+                        putExtra("navigation_key", "weather") // TODO: this is not working
+                    },
                     0
                 )
 
@@ -135,7 +201,7 @@ object ExternalDisplaysHandler {
         )
     )
 
-    fun getProperStationId(context: Context): Int {
+    fun getProperWeatherStationId(context: Context): Int {
         val defaultStationId = PreferenceManager.getDefaultSharedPreferences(context).getString(
             context.getString(R.string.default_station_key),
             context.getString(R.string.default_station_default)
@@ -148,29 +214,40 @@ object ExternalDisplaysHandler {
             )
 
         return if (useLocationForWidget) {
-            context.getLastKnownLocation()?.let { getNearestStationId(it) } ?: defaultStationId
+            context.getLastKnownLocation()?.let { getNearestWeatherStationId(it) }
+                ?: defaultStationId
         } else {
             defaultStationId
         }
     }
 
-    private fun getNearestStationId(location: Location): Int =
-        WeatherStationModel.getStations().minWith(Comparator { station1, station2 ->
+    fun getNearestAirStationId(context: Context): Int? {
+        return context.getLastKnownLocation()?.let {
+            AirStationModel.getStations().minWith(distanceComparator(it))!!.stationId // since AirStationModel.getStations() is list of static objects, minWith will never returns null
+        }
+    }
+
+    private fun getNearestWeatherStationId(location: Location): Int =
+        WeatherStationModel.getStations().minWith(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
+
+    private fun distanceComparator(it: Location): Comparator<BaseStationModel> {
+        return Comparator { station1, station2 ->
             station1.distance =
                 haversine(
-                    location.latitude,
-                    location.longitude,
+                    it.latitude,
+                    it.longitude,
                     station1.latitude,
                     station1.longitude
                 )
             station2.distance =
                 haversine(
-                    location.latitude,
-                    location.longitude,
+                    it.latitude,
+                    it.longitude,
                     station2.latitude,
                     station2.longitude
                 )
 
             if (station1.distance!! > station2.distance!!) 1 else 0
-        })!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
+        }
+    }
 }

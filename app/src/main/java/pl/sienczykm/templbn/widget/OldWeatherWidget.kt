@@ -83,14 +83,21 @@ class OldWeatherWidget : AppWidgetProvider() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                .getStationById(ExternalDisplaysHandler.getProperStationId(context))
+                .getStationById(ExternalDisplaysHandler.getProperWeatherStationId(context))
 
             // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)
 
             views.setOnClickPendingIntent(
                 R.id.widget,
-                PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0)
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    Intent(context, MainActivity::class.java).apply {
+                        putExtra("navigation_key", "weather") // TODO: this is not working
+                    },
+                    0
+                )
             )
 
             views.setTextViewText(

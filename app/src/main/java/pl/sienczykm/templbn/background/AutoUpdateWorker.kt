@@ -25,6 +25,7 @@ class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
                             stationId
                         )
                     }
+                    ExternalDisplaysHandler.checkAirQuality(applicationContext)
                 }
                 WeatherStationModel.ID_KEY -> {
                     stationsId?.forEach { stationId ->

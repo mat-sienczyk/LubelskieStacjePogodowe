@@ -51,7 +51,27 @@ fun loadPicture(photoView: PhotoView, url: String?) {
     }
 }
 
-@BindingAdapter("circleData", "maxValue", "unit")
+@BindingAdapter("valueAndAirQuality", "sensorType")
+fun setAirPercent(
+    textView: TextView,
+    valueAndAirQuality: Pair<Double, AirStationModel.AirQualityIndex>?,
+    sensorType: AirStationModel.AirSensorType
+) {
+    if (valueAndAirQuality != null) {
+        val rawPercent = (valueAndAirQuality.first * 100) / sensorType.maxGood
+        textView.text = rawPercent.roundAndGetString() + textView.context.getString(R.string.percent)
+        when (valueAndAirQuality.second) {
+            AirStationModel.AirQualityIndex.VERY_GOOD -> textView.setColor(R.color.quality_very_good)
+            AirStationModel.AirQualityIndex.GOOD -> textView.setColor(R.color.quality_good)
+            AirStationModel.AirQualityIndex.MODERATE -> textView.setColor(R.color.quality_moderate)
+            AirStationModel.AirQualityIndex.UNHEALTHY_SENSITIVE -> textView.setColor(R.color.quality_unhealthy_sensitive)
+            AirStationModel.AirQualityIndex.UNHEALTHY -> textView.setColor(R.color.quality_unhealthy)
+            AirStationModel.AirQualityIndex.HAZARDOUS -> textView.setColor(R.color.quality_hazardous)
+        }
+    }
+}
+
+@BindingAdapter("valueAndAirQuality", "sensorType", "unit")
 fun setCircleData(
     circleProgressView: CircleProgressView,
     valueAndAirQuality: Pair<Double, AirStationModel.AirQualityIndex>?,

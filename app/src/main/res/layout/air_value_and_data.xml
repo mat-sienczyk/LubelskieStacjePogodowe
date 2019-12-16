@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <import type="java.util.List" />
 
@@ -13,15 +13,15 @@
 
         <variable
                 name="sensor"
-                type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel.AirSensorType" />
 
         <variable
                 name="station"
-                type="pl.sienczykm.templbn.db.model.AirStationModel"/>
+                type="pl.sienczykm.templbn.db.model.AirStationModel" />
 
         <variable
                 name="unit"
-                type="String"/>
+                type="String" />
 
         <variable
                 name="chartData"
@@ -36,46 +36,56 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:visibility="@{station.getValueAndQualityIndex(sensor) == null ? View.GONE : View.VISIBLE}"
             android:clickable="@{chartData != null ? true : false}"
             android:focusable="@{chartData != null ? true : false}"
-            app:addClickEffect="@{chartData != null ? true : false}"
+            android:gravity="center_vertical"
             android:onClick="@{() -> viewModel.showChart(chartData, sensor.maxGood, unit, sensor.paramName)}"
-            android:padding="5dp">
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="@{station.getValueAndQualityIndex(sensor) == null ? View.GONE : View.VISIBLE}"
+            app:addClickEffect="@{chartData != null ? true : false}">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{sensor.paramKey}"
+                android:textSize="18sp"
+                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}"
+                app:sensorType="@{sensor}"
+                tools:text="69%" />
 
         <at.grabner.circleprogress.CircleProgressView
                 android:id="@+id/circleView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                app:cpv_autoTextSize="true"
-                app:cpv_textMode="Value"
-                app:cpv_innerContourSize="0dp"
-                app:cpv_outerContourSize="0dp"
-                app:cpv_rimWidth="10dp"
-                app:cpv_barWidth="10dp"
-                app:cpv_showUnit="true"
-                app:cpv_textScale="1"
-                app:cpv_unitPosition="bottom"
-                app:cpv_unitScale="1"
                 android:layout_gravity="center"
+                app:cpv_autoTextSize="true"
                 app:cpv_barColor="@color/quality_very_good"
                 app:cpv_barColor1="@color/quality_good"
                 app:cpv_barColor2="@color/quality_moderate"
                 app:cpv_barColor3="@color/quality_hazardous"
+                app:cpv_barWidth="10dp"
+                app:cpv_innerContourSize="0dp"
+                app:cpv_outerContourSize="0dp"
                 app:cpv_rimColor="@color/shadow"
+                app:cpv_rimWidth="10dp"
+                app:cpv_showUnit="true"
+                app:cpv_textMode="Value"
+                app:cpv_textScale="1"
                 app:cpv_unitColor="?android:attr/textColorTertiary"
-                app:maxValue="@{sensor}"
-                app:unit="@{unit}"
-                app:circleData="@{station.getValueAndQualityIndex(sensor)}"/>
+                app:cpv_unitPosition="bottom"
+                app:cpv_unitScale="1"
+                app:valueAndAirQuality="@{station.getValueAndQualityIndex(sensor)}"
+                app:sensorType="@{sensor}"
+                app:unit="@{unit}" />
 
         <TextView
-                android:text="@{sensor.paramKey}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:gravity="center"
-                tools:text="PM2.5"/>
+                android:text="@{sensor.paramKey}"
+                android:textSize="18sp"
+                tools:text="PM2.5" />
     </LinearLayout>
 </layout>

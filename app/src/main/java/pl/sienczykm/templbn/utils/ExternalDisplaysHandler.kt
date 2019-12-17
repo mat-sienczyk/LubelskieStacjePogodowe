@@ -3,7 +3,6 @@ package pl.sienczykm.templbn.utils
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -26,13 +25,11 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.widget.OldWeatherWidget
 
-// TODO this is quick written and it's ugly, refactor notification handling for sure!
+// TODO refactor this
 object ExternalDisplaysHandler {
 
     fun cancelAllNotifications(context: Context) {
-        with(NotificationManagerCompat.from(context)) {
-            cancelAll()
-        }
+        NotificationManagerCompat.from(context).cancelAll()
     }
 
     fun updateExternalDisplays(context: Context) {
@@ -40,30 +37,19 @@ object ExternalDisplaysHandler {
         updateOldWeatherWidget(context)
     }
 
-    // TODO: call only when air station is updated!
     fun checkAirQuality(context: Context) {
+
         val notificationId = 70
 
         if (context.showAirQualityNotification()) {
-            val airChannelId = "air_quality_notification"
-
             CoroutineScope(Dispatchers.IO).launch {
                 getNearestAirStationId(context)?.let {
+
                     val airStation = AppDb.getDatabase(context).airStationDao().getStationById(it)
 
                     if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! >= context.getAirQualityLevel()) {
 
-                        val pendingIntent = PendingIntent.getActivity(
-                            context,
-                            notificationId,
-                            Intent(context, MainActivity::class.java).apply {
-                                putExtra(
-                                    context.getString(R.string.navigation_key),
-                                    context.getString(R.string.navigation_air)
-                                )
-                            },
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                        )
+                        val airChannelId = "air_quality_notification"
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -84,17 +70,14 @@ object ExternalDisplaysHandler {
                         val builder = NotificationCompat.Builder(context, airChannelId)
                             .setContentTitle(airStation.getFullStationName())
                             .setContentText(context.getString(R.string.air_index_notification_content))
-                            .setContentIntent(pendingIntent)
+                            .setContentIntent(MainActivity.openAirPendingIntent(context))
                             .setAutoCancel(true)
                             .setSmallIcon(R.drawable.ic_app_icon)
 
-                        with(NotificationManagerCompat.from(context)) {
-                            notify(notificationId, builder.build())
-                        }
+                        NotificationManagerCompat.from(context)
+                            .notify(notificationId, builder.build())
                     } else {
-                        with(NotificationManagerCompat.from(context)) {
-                            cancel(notificationId)
-                        }
+                        NotificationManagerCompat.from(context).cancel(notificationId)
                     }
                 }
 
@@ -125,8 +108,6 @@ object ExternalDisplaysHandler {
         val notificationId = 69
 
         if (context.showWeatherNotification()) {
-            val weatherChannelId = "weather_notification"
-
             CoroutineScope(Dispatchers.IO).launch {
                 val weatherStation = AppDb.getDatabase(context).weatherStationDao()
                     .getStationById(getProperWeatherStationId(context))
@@ -137,17 +118,7 @@ object ExternalDisplaysHandler {
 
                 val hourString = "${weatherStation?.date?.let { dateFormat("HH:mm").format(it) }}"
 
-                val pendingIntent = PendingIntent.getActivity(
-                    context,
-                    notificationId,
-                    Intent(context, MainActivity::class.java).apply {
-                        putExtra(
-                            context.getString(R.string.navigation_key),
-                            context.getString(R.string.navigation_weather)
-                        )
-                    },
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
+                val weatherChannelId = "weather_notification"
 
                 val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -170,7 +141,7 @@ object ExternalDisplaysHandler {
                 }
                     .setContentTitle("$temperatureString - $hourString")
                     .setContentText(weatherStation?.getFullStationName())
-                    .setContentIntent(pendingIntent)
+                    .setContentIntent(MainActivity.openWeatherPendingIntent(context))
                     .setOngoing(true)
                     .apply {
                         temperatureString?.let { text ->
@@ -182,16 +153,12 @@ object ExternalDisplaysHandler {
                         } ?: setSmallIcon(R.drawable.ic_temperature)
                     }
 
-                with(NotificationManagerCompat.from(context)) {
-                    notify(notificationId, builder.build())
-                }
+                NotificationManagerCompat.from(context).notify(notificationId, builder.build())
 
                 cancel()
             }
         } else {
-            with(NotificationManagerCompat.from(context)) {
-                cancel(notificationId)
-            }
+            NotificationManagerCompat.from(context).cancel(notificationId)
         }
     }
 

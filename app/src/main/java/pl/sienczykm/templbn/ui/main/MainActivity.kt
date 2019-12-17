@@ -1,11 +1,14 @@
 package pl.sienczykm.templbn.ui.main
 
 import android.Manifest
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +27,25 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val PERMISSIONS_REQUEST_CODE = 111
+
+        fun openWeatherPendingIntent(context: Context) =
+            getNavigationPendingIntent(context, R.string.navigation_weather, 69)
+
+        fun openAirPendingIntent(context: Context) =
+            getNavigationPendingIntent(context, R.string.navigation_air, 70)
+
+        private fun getNavigationPendingIntent(
+            context: Context,
+            @StringRes navigation: Int,
+            code: Int
+        ): PendingIntent = PendingIntent.getActivity(
+            context, code, Intent(context, MainActivity::class.java).apply {
+                putExtra(
+                    context.getString(R.string.navigation_key),
+                    context.getString(navigation)
+                )
+            }, PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     private val onNavigationItemSelectedListener =

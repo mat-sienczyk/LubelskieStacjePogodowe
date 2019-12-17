@@ -43,7 +43,7 @@
     <!--settings-->
     <string name="auto_sync_title">Ustawienia automatycznej synchronizacji</string>
     <string name="auto_sync_weather_title">Ustawienia stacji pogodowych</string>
-    <string name="auto_sync_air_title">Ustawienia stacji powietrz</string>
+    <string name="auto_sync_air_title">Ustawienia stacji powietrza</string>
     <string name="app_settings_title">Ustawienia aplikacji</string>
     <string name="enable_auto_sync_title">Włącz automatyczną synchronizację</string>
     <string name="default_location_title">Użyj lokalizacji</string>

@@ -91,17 +91,7 @@ class OldWeatherWidget : AppWidgetProvider() {
 
             views.setOnClickPendingIntent(
                 R.id.widget,
-                PendingIntent.getActivity(
-                    context,
-                    0,
-                    Intent(context, MainActivity::class.java).apply {
-                        putExtra(
-                            context.getString(R.string.navigation_key),
-                            context.getString(R.string.navigation_weather)
-                        )
-                    },
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
+                MainActivity.openWeatherPendingIntent(context)
             )
 
             views.setTextViewText(

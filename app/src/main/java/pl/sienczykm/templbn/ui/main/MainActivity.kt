@@ -56,10 +56,12 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             getLocationPermission()
-            intent.extras?.getString("navigation_key")?.let {
+            intent.extras?.getString(getString(R.string.navigation_key))?.let {
                 when (it) {
-                    "map" -> nav_view.selectedItemId = R.id.navigation_map
-                    "air" -> nav_view.selectedItemId = R.id.navigation_air
+                    getString(R.string.navigation_map) -> nav_view.selectedItemId =
+                        R.id.navigation_map
+                    getString(R.string.navigation_air) -> nav_view.selectedItemId =
+                        R.id.navigation_air
                     else -> nav_view.selectedItemId = R.id.navigation_weather
                 }
             }

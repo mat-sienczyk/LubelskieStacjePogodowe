@@ -15,7 +15,7 @@
 
             <extra
                     android:name="navigation_key"
-                    android:value="weather" />
+                    android:value="navigation_weather" />
 
         </intent>
     </shortcut>
@@ -33,7 +33,7 @@
 
             <extra
                     android:name="navigation_key"
-                    android:value="air" />
+                    android:value="navigation_air" />
 
         </intent>
     </shortcut>
@@ -51,7 +51,7 @@
 
             <extra
                     android:name="navigation_key"
-                    android:value="map" />
+                    android:value="navigation_map" />
 
         </intent>
     </shortcut>

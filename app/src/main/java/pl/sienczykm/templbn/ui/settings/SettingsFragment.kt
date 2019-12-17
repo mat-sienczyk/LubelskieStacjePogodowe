@@ -22,7 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            preferenceScreen.removePreferenceRecursively("show_weather_notification_icon_key")
+            preferenceScreen.removePreferenceRecursively(getString(R.string.show_weather_notification_icon_key))
         }
     }
 

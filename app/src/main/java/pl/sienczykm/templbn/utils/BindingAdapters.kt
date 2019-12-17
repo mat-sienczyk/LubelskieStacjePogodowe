@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.bold
 import androidx.core.text.color
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -140,7 +141,7 @@ fun setAirQualityIndex(textView: TextView, airQualityIndex: AirStationModel.AirQ
                 .append(context.getString(R.string.air_quality))
                 .append(" ")
                 .color(context.getColorCompact(airQualityIndex.color)) {
-                    append(context.getString(airQualityIndex.description))
+                    bold { append(context.getString(airQualityIndex.description)) }
                 }
         }
     }

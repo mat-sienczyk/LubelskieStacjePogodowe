@@ -110,17 +110,17 @@
     <string name="limit_line_label">100%</string>
     <string name="marker_text">%1$s - %2$s</string>
 
-    <!--units-->
-    <string name="m_per_sec"> m/s</string>
-    <string name="km_per_hour"> km/h</string>
+    <!--units TODO get rid ot this hardcoded whitespaces and " "-->
+    <string name="m_per_sec">" m/s"</string>
+    <string name="km_per_hour">" km/h"</string>
     <string name="celsius_degree">\u00B0C</string>
-    <string name="percent"> %</string>
-    <string name="hectopascal"> hPa</string>
-    <string name="milliliters"> mm</string>
-    <string name="km"> km</string>
-    <string name="m"> m</string>
-    <string name="microgram_per_cubic_metre"> µg/m\u00B3</string>
-    <string name="milligram_per_cubic_metre"> mg/m\u00B3</string>
+    <string name="percent">" %"</string>
+    <string name="hectopascal">" hPa"</string>
+    <string name="milliliters">" mm"</string>
+    <string name="km">" km"</string>
+    <string name="m">" m"</string>
+    <string name="microgram_per_cubic_metre">" µg/m\u00B3"</string>
+    <string name="milligram_per_cubic_metre">" mg/m\u00B3"</string>
 
     <!--widget-->
     <string name="appwidget_text"> - </string>
@@ -164,5 +164,11 @@
     <string name="info_part">Lubelskie Stacje Pogodowe to darmowa aplikacja pozwalająca sprawdzić aktualny stan pogody na terenie województwa lubelskiego.</string>
     <string name="error_play_store">Problem ze Sklepem Play.</string>
     <string name="ok">OK</string>
+
+    <!--navigation keys, check if it match in shortcuts.xml due to unable to use res there-->
+    <string name="navigation_key">navigation_key</string>
+    <string name="navigation_map">navigation_map</string>
+    <string name="navigation_air">navigation_air</string>
+    <string name="navigation_weather">navigation_weather</string>
 
 </resources>

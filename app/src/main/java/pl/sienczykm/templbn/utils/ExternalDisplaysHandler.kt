@@ -29,6 +29,12 @@ import pl.sienczykm.templbn.widget.OldWeatherWidget
 // TODO this is quick written and it's ugly, refactor notification handling for sure!
 object ExternalDisplaysHandler {
 
+    fun cancelAllNotifications(context: Context) {
+        with(NotificationManagerCompat.from(context)) {
+            cancelAll()
+        }
+    }
+
     fun updateExternalDisplays(context: Context) {
         setWeatherNotification(context)
         updateOldWeatherWidget(context)
@@ -51,7 +57,10 @@ object ExternalDisplaysHandler {
                             context,
                             0,
                             Intent(context, MainActivity::class.java).apply {
-                                putExtra("navigation_key", "air") // TODO: this is not working
+                                putExtra(
+                                    context.getString(R.string.navigation_key),
+                                    context.getString(R.string.navigation_air)
+                                ) // TODO: this is working partially, when app is closed
                             },
                             PendingIntent.FLAG_UPDATE_CURRENT
                         )
@@ -132,7 +141,10 @@ object ExternalDisplaysHandler {
                     context,
                     0,
                     Intent(context, MainActivity::class.java).apply {
-                        putExtra("navigation_key", "weather") // TODO: this is not working
+                        putExtra(
+                            context.getString(R.string.navigation_key),
+                            context.getString(R.string.navigation_weather)
+                        ) // TODO: this is working partially, when app is closed
                     },
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
@@ -211,10 +223,10 @@ object ExternalDisplaysHandler {
         val nearestStation = context.getLastKnownLocation()?.let {
             AirStationModel.getStations()
                 .minWith(distanceComparator(it)) // since AirStationModel.getStations() is list of static objects, minWith will never returns null
-        }
+        } ?: return null
 
-        // distance is not null if we run distanceComparator() (if we not, nearestStation is null and this is secured)
-        return if (nearestStation?.distance!! <= 10) { // TODO: move this 10 km into options perhaps?
+        // distance is not null if we run distanceComparator()
+        return if (nearestStation.distance!! <= 10) { // TODO: move this 10 km into options perhaps?
             nearestStation.stationId
         } else null
 

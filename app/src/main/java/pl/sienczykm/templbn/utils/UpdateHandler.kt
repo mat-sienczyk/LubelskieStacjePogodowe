@@ -2,7 +2,6 @@ package pl.sienczykm.templbn.utils
 
 import android.content.Context
 import android.os.Handler
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.AirUpdateJob
@@ -111,10 +110,8 @@ object UpdateHandler {
 
     private fun disableAutoSync(context: Context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(AUTO_SYNC_TAG)
-        //TODO: ugly, move this to ExternalDisplaysHandler?
-        with(NotificationManagerCompat.from(context)) {
-            cancelAll()
-        }
+        //TODO: ugly?
+        ExternalDisplaysHandler.cancelAllNotifications(context)
     }
 
     private fun periodicWorkRequest(

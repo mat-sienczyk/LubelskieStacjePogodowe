@@ -55,12 +55,12 @@ object ExternalDisplaysHandler {
 
                         val pendingIntent = PendingIntent.getActivity(
                             context,
-                            0,
+                            notificationId,
                             Intent(context, MainActivity::class.java).apply {
                                 putExtra(
                                     context.getString(R.string.navigation_key),
                                     context.getString(R.string.navigation_air)
-                                ) // TODO: this is working partially, when app is closed
+                                )
                             },
                             PendingIntent.FLAG_UPDATE_CURRENT
                         )
@@ -139,12 +139,12 @@ object ExternalDisplaysHandler {
 
                 val pendingIntent = PendingIntent.getActivity(
                     context,
-                    0,
+                    notificationId,
                     Intent(context, MainActivity::class.java).apply {
                         putExtra(
                             context.getString(R.string.navigation_key),
                             context.getString(R.string.navigation_weather)
-                        ) // TODO: this is working partially, when app is closed
+                        )
                     },
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )

@@ -56,16 +56,21 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             getLocationPermission()
-            intent.extras?.getString(getString(R.string.navigation_key))?.let {
-                when (it) {
-                    getString(R.string.navigation_map) -> nav_view.selectedItemId =
-                        R.id.navigation_map
-                    getString(R.string.navigation_air) -> nav_view.selectedItemId =
-                        R.id.navigation_air
-                    else -> nav_view.selectedItemId = R.id.navigation_weather
-                }
-            }
-                ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it's not an expression
+            handleIntent()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        this.intent = intent
+        handleIntent()
+    }
+
+    private fun handleIntent() {
+        when (intent.extras?.getString(getString(R.string.navigation_key))) {
+            getString(R.string.navigation_map) -> nav_view.selectedItemId = R.id.navigation_map
+            getString(R.string.navigation_air) -> nav_view.selectedItemId = R.id.navigation_air
+            else -> nav_view.selectedItemId = R.id.navigation_weather
         }
     }
 

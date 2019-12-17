@@ -41,17 +41,17 @@
     <string name="station_rain_today">Opad dziś</string>
 
     <!--settings-->
-    <string name="auto_sync_title">Ustawienia automatycznej synchornizacji</string>
+    <string name="auto_sync_title">Ustawienia automatycznej synchronizacji</string>
     <string name="auto_sync_weather_title">Ustawienia stacji pogodowych</string>
     <string name="auto_sync_air_title">Ustawienia stacji powietrz</string>
     <string name="app_settings_title">Ustawienia aplikacji</string>
-    <string name="enable_auto_sync_title">Włącz automatyczną synchornizację</string>
+    <string name="enable_auto_sync_title">Włącz automatyczną synchronizację</string>
     <string name="default_location_title">Użyj lokalizacji</string>
     <string name="default_location_summary">Pokazuj na widgecie i w powiadomieniu najbliższą stację (wymaga dostępu do lokalizacji w tle)</string>
     <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
     <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
     <string name="show_air_quality_notification_title">Monitoruj stan powietrza</string>
-    <string name="show_air_quality_notification_summary">Wyświetl powiadomienie gdy jakość powietrza przekroczy dopuszczalną normę (wymaga dostępu do lokalizacji w tle)</string>
+    <string name="show_air_quality_notification_summary">Wyświetl powiadomienie gdy jakość powietrza przekroczy dopuszczalną normę (wymaga dostępu do lokalizacji w tle, stacja nie może być dalej niż 10 km)</string>
     <string name="show_weather_notification_icon_title">Wyświetlaj ikonę jako temperaturę</string>
     <string name="show_weather_notification_icon_summary">Funkcja eksperymentalna, polecane dla Always-on display</string>
     <string name="sync_via_title">Synchronizowanie przez</string>

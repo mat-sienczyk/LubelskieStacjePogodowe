@@ -106,7 +106,7 @@
                             app:metadata="@{@string/station_temp}"
                             app:unit="@{@string/celsius_degree}"
                             app:drawableInt="@{R.drawable.ic_temperature}"
-                            app:value="@{station.getParsedTemperature(0)}" />
+                            app:value="@{station.getParsedTemperature(1)}" />
 
                     <include
                             layout="@layout/weather_value_and_data"

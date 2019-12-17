@@ -98,7 +98,7 @@ class OldWeatherWidget : AppWidgetProvider() {
                         putExtra(
                             context.getString(R.string.navigation_key),
                             context.getString(R.string.navigation_weather)
-                        ) // TODO: this is working partially, when app is closed
+                        )
                     },
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )

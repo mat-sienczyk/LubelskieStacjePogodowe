@@ -67,6 +67,7 @@ fun View.addClickEffect() = with(TypedValue()) {
     setBackgroundResource(resourceId)
 }
 
+// returns distance in in km
 fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val R = 6372.8 // in kilometers
 

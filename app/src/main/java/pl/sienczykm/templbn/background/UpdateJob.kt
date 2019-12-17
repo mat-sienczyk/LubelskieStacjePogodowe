@@ -44,7 +44,6 @@ abstract class UpdateJob : JobIntentService() {
                 }
             }
             ExternalDisplaysHandler.updateExternalDisplays(applicationContext)
-            ExternalDisplaysHandler.checkAirQuality(applicationContext)
         } else {
             receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }

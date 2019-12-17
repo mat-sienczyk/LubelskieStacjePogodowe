@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="connectionOptions">
-        <item>Wi-Fi i Dane mobilne</item>
-        <item>Wi-Fi</item>
+        <item>@string/connected_options_all</item>
+        <item>@string/connected_options_wifi</item>
     </string-array>
 
     <string-array name="connectionValues">
@@ -12,11 +12,11 @@
     </string-array>
 
     <string-array name="weatherIntervalOptions">
-        <item>15 min</item>
-        <item>30 min</item>
-        <item>1 godz</item>
-        <item>3 godz</item>
-        <item>6 godz</item>
+        <item>@string/weather_interval_options_15_min</item>
+        <item>@string/weather_interval_options_30_min</item>
+        <item>@string/weather_interval_options_1_h</item>
+        <item>@string/weather_interval_options_3_h</item>
+        <item>@string/weather_interval_options_6_h</item>
     </string-array>
 
     <string-array name="weatherIntervalValues">
@@ -28,12 +28,12 @@
     </string-array>
 
     <string-array name="airIntervalOptions">
-        <item>1 godz</item>
-        <item>2 godz</item>
-        <item>3 godz</item>
-        <item>4 godz</item>
-        <item>5 godz</item>
-        <item>6 godz</item>
+        <item>@string/air_interval_options_1_h</item>
+        <item>@string/air_interval_options_2_h</item>
+        <item>@string/air_interval_options_3_h</item>
+        <item>@string/air_interval_options_4_h</item>
+        <item>@string/air_interval_options_5_h</item>
+        <item>@string/air_interval_options_6_h</item>
     </string-array>
 
     <string-array name="airIntervalValues">
@@ -46,9 +46,9 @@
     </string-array>
 
     <string-array name="nightModeOptions">
-        <item>Zgodny z ustawieniami systemu</item>
-        <item>Jasny</item>
-        <item>Ciemny</item>
+        <item>@string/night_mode_options_default</item>
+        <item>@string/night_mode_options_light</item>
+        <item>@string/night_mode_options_dark</item>
     </string-array>
 
     <string-array name="nightModeValues">
@@ -57,13 +57,15 @@
         <item>3</item>
     </string-array>
 
+
+    <!--    TODO move this to string an unify somehow with WeatherStationModel?  -->
     <string-array name="stationOptions">
         <item>Lublin Plac Litewski</item>
         <item>Lublin Ogród botaniczny</item>
         <item>Lublin MPWiK Zemborzycka</item>
         <item>Lublin MPWiK Hajdów</item>
         <item>Guciów</item>
-<!--        <item>Florianka</item>-->
+        <!--        <item>Florianka</item>-->
         <item>Łuków</item>
         <item>Lubartów PGK</item>
         <item>Trzydnik</item>
@@ -79,7 +81,7 @@
         <item>17</item>
         <item>18</item>
         <item>11</item>
-<!--        <item>12</item>-->
+        <!--        <item>12</item>-->
         <item>13</item>
         <item>19</item>
         <item>20</item>
@@ -87,5 +89,17 @@
         <item>22</item>
         <item>23</item>
         <item>24</item>
+    </string-array>
+
+    <string-array name="airQualityOptions">
+        <item>@string/sensor_quality_moderate</item>
+        <item>@string/sensor_quality_unhealthy_sensitive</item>
+        <item>@string/sensor_quality_unhealthy</item>
+    </string-array>
+
+    <string-array name="airQualityValues">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 </resources>

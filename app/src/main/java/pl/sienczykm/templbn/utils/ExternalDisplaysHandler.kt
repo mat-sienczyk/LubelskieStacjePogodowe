@@ -27,7 +27,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.widget.OldWeatherWidget
 
-// TODO this is quick written and it's ugly as fuck
+// TODO this is quick written and it's ugly, refactor notification handling for sure!
 object ExternalDisplaysHandler {
 
     fun updateExternalDisplays(context: Context) {
@@ -41,7 +41,7 @@ object ExternalDisplaysHandler {
 
         if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
                 context.getString(R.string.show_air_quality_notification_key),
-                context.resources.getBoolean(R.bool.show_air_quality_notification)
+                context.resources.getBoolean(R.bool.show_air_quality_notification_default)
             ) && context.isAutoUpdateEnabled()
         ) {
             val airChannelId = "air_quality_notification"
@@ -50,7 +50,13 @@ object ExternalDisplaysHandler {
                 getNearestAirStationId(context)?.let {
                     val airStation = AppDb.getDatabase(context).airStationDao().getStationById(it)
 
-                    if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! > 1) {
+                    if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! >= PreferenceManager.getDefaultSharedPreferences(
+                            context
+                        ).getString(
+                            context.getString(R.string.air_quality_warning_key),
+                            context.getString(R.string.air_quality_warning_default)
+                        )!!.toInt()
+                    ) {
 
                         val pendingIntent = PendingIntent.getActivity(
                             context,
@@ -58,7 +64,7 @@ object ExternalDisplaysHandler {
                             Intent(context, MainActivity::class.java).apply {
                                 putExtra("navigation_key", "air") // TODO: this is not working
                             },
-                            0
+                            PendingIntent.FLAG_UPDATE_CURRENT
                         )
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -82,10 +88,14 @@ object ExternalDisplaysHandler {
                             .setContentText(context.getString(R.string.air_index_notification_content))
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
-                            .setSmallIcon(R.drawable.ic_air)
+                            .setSmallIcon(R.drawable.ic_app_icon)
 
                         with(NotificationManagerCompat.from(context)) {
                             notify(notificationId, builder.build())
+                        }
+                    } else {
+                        with(NotificationManagerCompat.from(context)) {
+                            cancel(notificationId)
                         }
                     }
                 }
@@ -139,7 +149,7 @@ object ExternalDisplaysHandler {
                     Intent(context, MainActivity::class.java).apply {
                         putExtra("navigation_key", "weather") // TODO: this is not working
                     },
-                    0
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
 
                 val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -221,10 +231,17 @@ object ExternalDisplaysHandler {
         }
     }
 
-    fun getNearestAirStationId(context: Context): Int? {
-        return context.getLastKnownLocation()?.let {
-            AirStationModel.getStations().minWith(distanceComparator(it))!!.stationId // since AirStationModel.getStations() is list of static objects, minWith will never returns null
+    private fun getNearestAirStationId(context: Context): Int? {
+        val nearestStation = context.getLastKnownLocation()?.let {
+            AirStationModel.getStations()
+                .minWith(distanceComparator(it)) // since AirStationModel.getStations() is list of static objects, minWith will never returns null
         }
+
+        // distance is not null if we run distanceComparator() (if we not, nearestStation is null and this is secured)
+        return if (nearestStation?.distance!! <= 10) { // TODO: move this 10 km into options perhaps?
+            nearestStation.stationId
+        } else null
+
     }
 
     private fun getNearestWeatherStationId(location: Location): Int =

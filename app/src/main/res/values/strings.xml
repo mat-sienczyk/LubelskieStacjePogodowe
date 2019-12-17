@@ -19,16 +19,16 @@
     <string name="error_server">Problem z serwerem lub z połączeniem sieciowym, może spróbujesz ponownie później?</string>
 
     <!--Station fragment-->
-    <string name="station_title_weather">"Stacja pogodowa UMCS"</string>
-    <string name="station_title_air">"Stacja powietrza GIOŚ"</string>
-    <string name="forecast_title">"Prognoza ICM"</string>
-    <string name="air_index_title">"O indeksie jakości powietrza"</string>
+    <string name="station_title_weather">Stacja pogodowa UMCS</string>
+    <string name="station_title_air">Stacja powietrza GIOŚ</string>
+    <string name="forecast_title">Prognoza ICM</string>
+    <string name="air_index_title">O indeksie jakości powietrza</string>
 
     <string name="station_open_website">Otwórz stronę stacji</string>
     <string name="forecast_open_website">Otwórz stronę prognozy</string>
     <string name="open_website">Otwórz stronę</string>
 
-    <string name="data_placeholder">"%1$s%2$s"</string>
+    <string name="data_placeholder">%1$s%2$s</string>
 
     <string name="station_date">Data</string>
     <string name="station_date_old">%1$s - dane nieaktualne</string>
@@ -41,12 +41,12 @@
     <string name="station_rain_today">Opad dziś</string>
 
     <!--settings-->
-    <string name="auto_sync_title">"Ustawienia automatycznej synchornizacji"</string>
-    <string name="auto_sync_weather_title">"Ustawienia stacji pogodowych"</string>
-    <string name="auto_sync_air_title">"Ustawienia stacji powietrza"</string>
-    <string name="app_settings_title">"Ustawienia aplikacji"</string>
-    <string name="enable_auto_sync_title">"Włącz automatyczną synchornizację"</string>
-    <string name="default_location_title">"Użyj lokalizacji"</string>
+    <string name="auto_sync_title">Ustawienia automatycznej synchornizacji</string>
+    <string name="auto_sync_weather_title">Ustawienia stacji pogodowych</string>
+    <string name="auto_sync_air_title">Ustawienia stacji powietrz</string>
+    <string name="app_settings_title">Ustawienia aplikacji</string>
+    <string name="enable_auto_sync_title">Włącz automatyczną synchornizację</string>
+    <string name="default_location_title">Użyj lokalizacji</string>
     <string name="default_location_summary">Pokazuj na widgecie i w powiadomieniu najbliższą stację (wymaga dostępu do lokalizacji w tle)</string>
     <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
     <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
@@ -54,48 +54,73 @@
     <string name="show_air_quality_notification_summary">Wyświetl powiadomienie gdy jakość powietrza przekroczy dopuszczalną normę (wymaga dostępu do lokalizacji w tle)</string>
     <string name="show_weather_notification_icon_title">Wyświetlaj ikonę jako temperaturę</string>
     <string name="show_weather_notification_icon_summary">Funkcja eksperymentalna, polecane dla Always-on display</string>
-    <string name="sync_via_title">"Synchronizowanie przez"</string>
-    <string name="weather_auto_sync_title">"Stacje pogodowe"</string>
-    <string name="air_auto_sync_title">"Stacje powietrza"</string>
-    <string name="night_mode_title">"Motyw interfejsu"</string>
-    <string name="default_station_title">"Stacja podstawowa"</string>
-    <string name="sync_every_placeholder">"synchronizuj co %1$s"</string>
-    <string name="weather_default_interval">"15"</string>
-    <string name="air_default_interval">"60"</string>
-    <string name="sync_default">"all"</string>
-    <string name="night_mode_default">"1"</string>
-    <string name="default_station_default">"16"</string>
+    <string name="sync_via_title">Synchronizowanie przez</string>
+    <string name="weather_auto_sync_title">Stacje pogodowe</string>
+    <string name="air_auto_sync_title">Stacje powietrza</string>
+    <string name="night_mode_title">Motyw interfejsu</string>
+    <string name="default_station_title">Stacja podstawowa</string>
+    <string name="air_quality_warning_title">Poinformuj kiedy stan powietrza jest</string>
+    <string name="sync_every_placeholder">synchronizuj co %1$s</string>
+    <string name="weather_default_interval">15</string>
+    <string name="air_default_interval">60</string>
+    <string name="sync_default">all</string>
+    <string name="night_mode_default">1</string>
+    <string name="default_station_default">16</string>
+    <string name="air_quality_warning_default">2</string>
 
     <!--settings keys-->
-    <string name="app_settings_key">"app_settings_key"</string>
-    <string name="enable_auto_sync_key">"enable_auto_sync_key"</string>
-    <string name="show_weather_notification_key">"show_weather_notification_key"</string>
-    <string name="show_weather_notification_icon_key">"show_weather_notification_icon_key"</string>
-    <string name="show_air_quality_notification_key">"show_air_quality_notification_key"</string>
-    <string name="default_location_key">"widget_location_key"</string>
-    <string name="weather_sync_interval_key">"weather_sync_interval_key"</string>
-    <string name="air_sync_interval_key">"air_sync_interval_key"</string>
-    <string name="sync_via_key">"sync_via_key"</string>
-    <string name="night_mode_key">"night_mode_key"</string>
-    <string name="default_station_key">"widget_station_key"</string>
+    <string name="app_settings_key">app_settings_key</string>
+    <string name="enable_auto_sync_key">enable_auto_sync_key</string>
+    <string name="show_weather_notification_key">show_weather_notification_key</string>
+    <string name="show_weather_notification_icon_key">show_weather_notification_icon_key</string>
+    <string name="show_air_quality_notification_key">show_air_quality_notification_key</string>
+    <string name="default_location_key">widget_location_key</string>
+    <string name="weather_sync_interval_key">weather_sync_interval_key</string>
+    <string name="air_sync_interval_key">air_sync_interval_key</string>
+    <string name="sync_via_key">sync_via_key</string>
+    <string name="night_mode_key">night_mode_key</string>
+    <string name="default_station_key">widget_station_key</string>
+    <string name="air_quality_warning_key">air_quality_warning_key</string>
+
+    <!--settings options-->
+    <string name="connected_options_all">Wi-Fi i Dane mobilne</string>
+    <string name="connected_options_wifi">Wi-Fi</string>
+
+    <string name="weather_interval_options_15_min">15 min</string>
+    <string name="weather_interval_options_30_min">30 min</string>
+    <string name="weather_interval_options_1_h">1 godz</string>
+    <string name="weather_interval_options_3_h">3 godz</string>
+    <string name="weather_interval_options_6_h">6 godz</string>
+
+    <string name="air_interval_options_1_h">1 godz</string>
+    <string name="air_interval_options_2_h">2 godz</string>
+    <string name="air_interval_options_3_h">3 godz</string>
+    <string name="air_interval_options_4_h">4 godz</string>
+    <string name="air_interval_options_5_h">5 godz</string>
+    <string name="air_interval_options_6_h">6 godz</string>
+
+    <string name="night_mode_options_default">Zgodny z ustawieniami systemu</string>
+    <string name="night_mode_options_light">Jasny</string>
+    <string name="night_mode_options_dark">Ciemny</string>
+
 
     <!--chart-->
-    <string name="chart_empty">"Brak danych"</string>
-    <string name="chart_title">"%1$s - ostatnie 24h"</string>
-    <string name="limit_line_label">"100%"</string>
-    <string name="marker_text">"%1$s - %2$s"</string>
+    <string name="chart_empty">Brak danych</string>
+    <string name="chart_title">%1$s - ostatnie 24h</string>
+    <string name="limit_line_label">100%</string>
+    <string name="marker_text">%1$s - %2$s</string>
 
     <!--units-->
-    <string name="m_per_sec">" m/s"</string>
-    <string name="km_per_hour">" km/h"</string>
-    <string name="celsius_degree">"\u00B0C"</string>
-    <string name="percent">" %"</string>
-    <string name="hectopascal">" hPa"</string>
-    <string name="milliliters">" mm"</string>
-    <string name="km">" km"</string>
-    <string name="m">" m"</string>
-    <string name="microgram_per_cubic_metre">" µg/m\u00B3"</string>
-    <string name="milligram_per_cubic_metre">" mg/m\u00B3"</string>
+    <string name="m_per_sec"> m/s</string>
+    <string name="km_per_hour"> km/h</string>
+    <string name="celsius_degree">\u00B0C</string>
+    <string name="percent"> %</string>
+    <string name="hectopascal"> hPa</string>
+    <string name="milliliters"> mm</string>
+    <string name="km"> km</string>
+    <string name="m"> m</string>
+    <string name="microgram_per_cubic_metre"> µg/m\u00B3</string>
+    <string name="milligram_per_cubic_metre"> mg/m\u00B3</string>
 
     <!--widget-->
     <string name="appwidget_text"> - </string>

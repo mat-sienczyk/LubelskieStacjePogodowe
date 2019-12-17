@@ -4,5 +4,5 @@
     <bool name="default_location_default">false</bool>
     <bool name="show_weather_notification_default">false</bool>
     <bool name="show_weather_notification_icon_default">false</bool>
-    <bool name="show_air_quality_notification">false</bool>
+    <bool name="show_air_quality_notification_default">false</bool>
 </resources>

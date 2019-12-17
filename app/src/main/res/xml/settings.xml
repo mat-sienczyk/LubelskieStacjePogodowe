@@ -102,12 +102,22 @@
                     app:title="@string/air_auto_sync_title" />
 
             <SwitchPreferenceCompat
-                    app:defaultValue="@bool/show_air_quality_notification"
+                    app:defaultValue="@bool/show_air_quality_notification_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:iconSpaceReserved="false"
                     app:key="@string/show_air_quality_notification_key"
                     app:summary="@string/show_air_quality_notification_summary"
                     app:title="@string/show_air_quality_notification_title" />
+
+            <ListPreference
+                    app:defaultValue="@string/air_quality_warning_default"
+                    app:dependency="@string/show_air_quality_notification_key"
+                    app:entries="@array/airQualityOptions"
+                    app:entryValues="@array/airQualityValues"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/air_quality_warning_key"
+                    app:summary="%s"
+                    app:title="@string/air_quality_warning_title" />
 
         </PreferenceCategory>
 

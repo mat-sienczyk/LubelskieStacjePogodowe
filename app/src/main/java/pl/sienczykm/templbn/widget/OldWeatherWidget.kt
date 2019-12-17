@@ -96,7 +96,7 @@ class OldWeatherWidget : AppWidgetProvider() {
                     Intent(context, MainActivity::class.java).apply {
                         putExtra("navigation_key", "weather") // TODO: this is not working
                     },
-                    0
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
 

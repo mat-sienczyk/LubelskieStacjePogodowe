@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     "air" -> nav_view.selectedItemId = R.id.navigation_air
                     else -> nav_view.selectedItemId = R.id.navigation_weather
                 }
-            } ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it is not an expression
+            } ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it's not an expression
         }
     }
 

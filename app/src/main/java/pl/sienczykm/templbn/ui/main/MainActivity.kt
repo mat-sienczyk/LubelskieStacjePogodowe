@@ -9,7 +9,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        UpdateHandler.handleAutoSync(PreferenceManager.getDefaultSharedPreferences(this), this)
+        UpdateHandler.handleAutoSync(this)
 
         if (savedInstanceState == null) {
             getLocationPermission()
@@ -63,7 +62,8 @@ class MainActivity : AppCompatActivity() {
                     "air" -> nav_view.selectedItemId = R.id.navigation_air
                     else -> nav_view.selectedItemId = R.id.navigation_weather
                 }
-            } ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it's not an expression
+            }
+                ?: nav_view.setSelectedItemId(R.id.navigation_weather) // can't use "Kotlin way" here because then it's not an expression
         }
     }
 

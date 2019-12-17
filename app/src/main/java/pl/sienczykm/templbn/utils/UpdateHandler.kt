@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Handler
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
@@ -75,68 +74,45 @@ object UpdateHandler {
 
     }
 
-    fun handleAutoSync(sharedPreferences: SharedPreferences, context: Context) {
-        when (sharedPreferences.getBoolean(
-            context.getString(R.string.enable_auto_sync_key),
-            context.resources.getBoolean(R.bool.auto_sync_default)
-        )) {
-            true -> {
-                setWeatherStationAutoSync(
-                    sharedPreferences,
-                    context,
-                    ExistingPeriodicWorkPolicy.KEEP
-                )
-                setAirStationAutoSync(
-                    sharedPreferences,
-                    context,
-                    ExistingPeriodicWorkPolicy.KEEP
-                )
-            }
-            false -> disableAutoSync(context)
-        }
+    fun handleAutoSync(context: Context) {
+        if (context.isAutoUpdateEnabled()) {
+            setWeatherStationAutoSync(context, ExistingPeriodicWorkPolicy.KEEP)
+            setAirStationAutoSync(context, ExistingPeriodicWorkPolicy.KEEP)
+        } else disableAutoSync(context)
     }
 
     fun setWeatherStationAutoSync(
-        sharedPreferences: SharedPreferences,
         context: Context,
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
-                getInterval(
-                    sharedPreferences,
-                    context.getString(R.string.weather_sync_interval_key),
-                    context.getString(R.string.weather_default_interval)
-                ),
+                context.getWeatherStationUpdateInterval().toLong(),
                 WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY,
-                syncViaWifiOnly(sharedPreferences, context)
+                syncViaWifiOnly(context)
             )
         )
     }
 
     fun setAirStationAutoSync(
-        sharedPreferences: SharedPreferences,
         context: Context,
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
-                getInterval(
-                    sharedPreferences,
-                    context.getString(R.string.air_sync_interval_key),
-                    context.getString(R.string.air_default_interval)
-                ),
+                context.getAirStationUpdateInterval().toLong(),
                 AirStationModel.getStations().map { it.stationId }.toIntArray(),
                 AirStationModel.ID_KEY,
-                syncViaWifiOnly(sharedPreferences, context)
+                syncViaWifiOnly(context)
             )
         )
     }
 
     private fun disableAutoSync(context: Context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(AUTO_SYNC_TAG)
-        with(NotificationManagerCompat.from(context)) { // ugly :(
+        //TODO: ugly, move this to ExternalDisplaysHandler?
+        with(NotificationManagerCompat.from(context)) {
             cancelAll()
         }
     }
@@ -163,14 +139,8 @@ object UpdateHandler {
         .setRequiredNetworkType(if (onlyWifi) NetworkType.UNMETERED else NetworkType.CONNECTED)
         .build()
 
-    private fun getInterval(sharedPreferences: SharedPreferences, key: String, defValue: String) =
-        sharedPreferences.getString(key, defValue)!!.toLong() // defValue is non-nullable
-
-    private fun syncViaWifiOnly(sharedPreferences: SharedPreferences, context: Context): Boolean {
-        return when (sharedPreferences.getString(
-            context.getString(R.string.sync_via_key),
-            context.getString(R.string.sync_default)
-        )) {
+    private fun syncViaWifiOnly(context: Context): Boolean {
+        return when (context.getSyncVia()) {
             context.getString(R.string.sync_default) -> false
             else -> true
         }

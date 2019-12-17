@@ -42,7 +42,7 @@
                 app:title="@string/auto_sync_weather_title">
 
             <ListPreference
-                    app:defaultValue="@string/weather_default_interval"
+                    app:defaultValue="@string/weather_sync_interval_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:entries="@array/weatherIntervalOptions"
                     app:entryValues="@array/weatherIntervalValues"
@@ -92,7 +92,7 @@
                 app:title="@string/auto_sync_air_title">
 
             <ListPreference
-                    app:defaultValue="@string/air_default_interval"
+                    app:defaultValue="@string/air_sync_interval_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:entries="@array/airIntervalOptions"
                     app:entryValues="@array/airIntervalValues"

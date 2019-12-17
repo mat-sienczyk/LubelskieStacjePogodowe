@@ -50,29 +50,25 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 ExternalDisplaysHandler.checkAirQuality(requireContext())
 
             getString(R.string.enable_auto_sync_key) ->
-                UpdateHandler.handleAutoSync(sharedPreferences, requireContext())
+                UpdateHandler.handleAutoSync(requireContext())
 
             getString(R.string.sync_via_key) -> {
                 UpdateHandler.setWeatherStationAutoSync(
-                    sharedPreferences,
                     requireContext(),
                     ExistingPeriodicWorkPolicy.REPLACE
                 )
                 UpdateHandler.setAirStationAutoSync(
-                    sharedPreferences,
                     requireContext(),
                     ExistingPeriodicWorkPolicy.REPLACE
                 )
             }
 
             getString(R.string.weather_sync_interval_key) -> UpdateHandler.setWeatherStationAutoSync(
-                sharedPreferences,
                 requireContext(),
                 ExistingPeriodicWorkPolicy.REPLACE
             )
 
             getString(R.string.air_sync_interval_key) -> UpdateHandler.setAirStationAutoSync(
-                sharedPreferences,
                 requireContext(),
                 ExistingPeriodicWorkPolicy.REPLACE
             )

@@ -14,7 +14,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -39,24 +38,14 @@ object ExternalDisplaysHandler {
     fun checkAirQuality(context: Context) {
         val notificationId = 70
 
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-                context.getString(R.string.show_air_quality_notification_key),
-                context.resources.getBoolean(R.bool.show_air_quality_notification_default)
-            ) && context.isAutoUpdateEnabled()
-        ) {
+        if (context.showAirQualityNotification()) {
             val airChannelId = "air_quality_notification"
 
             CoroutineScope(Dispatchers.IO).launch {
                 getNearestAirStationId(context)?.let {
                     val airStation = AppDb.getDatabase(context).airStationDao().getStationById(it)
 
-                    if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! >= PreferenceManager.getDefaultSharedPreferences(
-                            context
-                        ).getString(
-                            context.getString(R.string.air_quality_warning_key),
-                            context.getString(R.string.air_quality_warning_default)
-                        )!!.toInt()
-                    ) {
+                    if (airStation?.airQualityIndex != null && airStation.airQualityIndex!! >= context.getAirQualityLevel()) {
 
                         val pendingIntent = PendingIntent.getActivity(
                             context,
@@ -126,11 +115,7 @@ object ExternalDisplaysHandler {
 
         val notificationId = 69
 
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-                context.getString(R.string.show_weather_notification_key),
-                context.resources.getBoolean(R.bool.show_weather_notification_default)
-            ) && context.isAutoUpdateEnabled()
-        ) {
+        if (context.showWeatherNotification()) {
             val weatherChannelId = "weather_notification"
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -212,18 +197,9 @@ object ExternalDisplaysHandler {
     )
 
     fun getProperWeatherStationId(context: Context): Int {
-        val defaultStationId = PreferenceManager.getDefaultSharedPreferences(context).getString(
-            context.getString(R.string.default_station_key),
-            context.getString(R.string.default_station_default)
-        )!!.toInt() // default value provided
+        val defaultStationId = context.getWeatherStationId()
 
-        val useLocationForWidget =
-            PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-                context.getString(R.string.default_location_key),
-                context.resources.getBoolean(R.bool.default_location_default)
-            )
-
-        return if (useLocationForWidget) {
+        return if (context.useLocationToUpdateWeather()) {
             context.getLastKnownLocation()?.let { getNearestWeatherStationId(it) }
                 ?: defaultStationId
         } else {

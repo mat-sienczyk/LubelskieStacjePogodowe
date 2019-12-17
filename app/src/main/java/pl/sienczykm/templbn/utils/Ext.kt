@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
@@ -107,25 +106,8 @@ fun Double?.roundAndGetString(places: Int = 0): String? {
     }
 }
 
-fun Context.isAutoUpdateEnabled(): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-        getString(R.string.enable_auto_sync_key),
-        resources.getBoolean(R.bool.auto_sync_default)
-    )
-}
-
-fun Context.createIconForNotification(): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-        getString(R.string.show_weather_notification_icon_key),
-        resources.getBoolean(R.bool.show_weather_notification_icon_default)
-    )
-}
-
 fun Context.handleNightMode() {
-    when (PreferenceManager.getDefaultSharedPreferences(this).getString(
-        getString(R.string.night_mode_key),
-        getString(R.string.night_mode_default)
-    )!!.toInt()) { // default value provided
+    when (getDarkModeSetting()) {
         1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         3 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

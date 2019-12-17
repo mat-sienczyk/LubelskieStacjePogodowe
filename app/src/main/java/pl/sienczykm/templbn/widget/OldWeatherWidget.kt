@@ -18,6 +18,7 @@ import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
+import pl.sienczykm.templbn.utils.getWeatherStationUpdateInterval
 import java.util.concurrent.TimeUnit
 
 /**
@@ -48,7 +49,7 @@ class OldWeatherWidget : AppWidgetProvider() {
 
         (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).set(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + TimeUnit.MINUTES.toMillis(30),
+            SystemClock.elapsedRealtime() + TimeUnit.MINUTES.toMillis((context.getWeatherStationUpdateInterval() + 10).toLong()),
             widgetUpdatePendingIntent
         )
 

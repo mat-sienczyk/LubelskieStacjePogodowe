@@ -32,6 +32,21 @@ object ExternalDisplaysHandler {
         NotificationManagerCompat.from(context).cancelAll()
     }
 
+    private fun cancelNotification(
+        context: Context,
+        notificationId: Int
+    ) {
+        NotificationManagerCompat.from(context).cancel(notificationId)
+    }
+
+    private fun sendNotification(
+        context: Context,
+        notificationId: Int,
+        notification: Notification
+    ) {
+        NotificationManagerCompat.from(context).notify(notificationId, notification)
+    }
+
     fun updateExternalDisplays(context: Context) {
         setWeatherNotification(context)
         updateOldWeatherWidget(context)
@@ -74,10 +89,9 @@ object ExternalDisplaysHandler {
                             .setAutoCancel(true)
                             .setSmallIcon(R.drawable.ic_app_icon)
 
-                        NotificationManagerCompat.from(context)
-                            .notify(notificationId, builder.build())
+                        sendNotification(context, notificationId, builder.build())
                     } else {
-                        NotificationManagerCompat.from(context).cancel(notificationId)
+                        cancelNotification(context, notificationId)
                     }
                 }
 
@@ -153,12 +167,12 @@ object ExternalDisplaysHandler {
                         } ?: setSmallIcon(R.drawable.ic_temperature)
                     }
 
-                NotificationManagerCompat.from(context).notify(notificationId, builder.build())
+                sendNotification(context, notificationId, builder.build())
 
                 cancel()
             }
         } else {
-            NotificationManagerCompat.from(context).cancel(notificationId)
+            cancelNotification(context, notificationId)
         }
     }
 

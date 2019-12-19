@@ -27,8 +27,6 @@ http://www.meteo.pl/
 
 ## Google Play
 
-[Zostań testerem, aby zainstalowac aplikację ze sklepu Google Play.](https://play.google.com/apps/testing/pl.sienczykm.templbn)
-[![Google Play Beta](/assets/gplay_beta_join.jpg?raw=true)](https://play.google.com/apps/testing/pl.sienczykm.templbn)
 [![Google Play](/assets/gplay_download_pl.png?raw=true)](https://play.google.com/store/apps/details?id=pl.sienczykm.templbn)
 
 Licencja

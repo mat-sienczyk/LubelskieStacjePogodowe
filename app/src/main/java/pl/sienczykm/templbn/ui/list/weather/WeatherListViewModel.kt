@@ -8,7 +8,7 @@ import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 
-class WeatherViewModel(application: Application) :
+class WeatherListViewModel(application: Application) :
     BaseStationListViewModel<WeatherStationModel>(application) {
 
     override fun refresh() {

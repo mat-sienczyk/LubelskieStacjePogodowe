@@ -7,7 +7,7 @@ import pl.sienczykm.templbn.databinding.RowWeatherStationBinding
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
 
-class WeatherAdapter(clickListener: RecyclerViewClickListener) : BaseStationsAdapter<RowWeatherStationBinding>(clickListener) {
+class WeatherListAdapter(clickListener: RecyclerViewClickListener) : BaseStationsAdapter<RowWeatherStationBinding>(clickListener) {
 
     override fun getViewDataBinding(parent: ViewGroup, layoutInflater: LayoutInflater): ViewDataBinding {
         return RowWeatherStationBinding.inflate(layoutInflater, parent, false)

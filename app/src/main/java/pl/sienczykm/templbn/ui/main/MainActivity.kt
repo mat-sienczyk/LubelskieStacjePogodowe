@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.about.AboutActivity
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
-import pl.sienczykm.templbn.ui.list.weather.WeatherFragment
+import pl.sienczykm.templbn.ui.list.weather.WeatherListFragment
 import pl.sienczykm.templbn.ui.map.MapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_weather -> {
-                    changeFragment(WeatherFragment.newInstance())
+                    changeFragment(WeatherListFragment.newInstance())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_air -> {

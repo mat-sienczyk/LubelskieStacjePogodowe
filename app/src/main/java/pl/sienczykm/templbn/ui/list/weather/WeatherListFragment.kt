@@ -9,17 +9,17 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.list.common.BaseStationListFragment
 import pl.sienczykm.templbn.ui.list.common.BaseStationsAdapter
 
-class WeatherFragment :
-    BaseStationListFragment<WeatherStationModel, WeatherViewModel, RowWeatherStationBinding>() {
+class WeatherListFragment :
+    BaseStationListFragment<WeatherStationModel, WeatherListViewModel, RowWeatherStationBinding>() {
 
     companion object {
-        fun newInstance(): WeatherFragment {
-            return WeatherFragment()
+        fun newInstance(): WeatherListFragment {
+            return WeatherListFragment()
         }
     }
 
-    override fun getViewModel(): WeatherViewModel {
-        return ViewModelProvider(requireActivity()).get(WeatherViewModel::class.java)
+    override fun getViewModel(): WeatherListViewModel {
+        return ViewModelProvider(requireActivity()).get(WeatherListViewModel::class.java)
     }
 
     override fun getSwipeToRefreshLayout(): SwipeRefreshLayout {
@@ -35,6 +35,6 @@ class WeatherFragment :
     }
 
     override fun getAdapter(): BaseStationsAdapter<RowWeatherStationBinding> {
-        return WeatherAdapter(this)
+        return WeatherListAdapter(this)
     }
 }

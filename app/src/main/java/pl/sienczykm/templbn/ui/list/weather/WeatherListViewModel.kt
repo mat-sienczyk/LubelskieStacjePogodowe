@@ -6,7 +6,6 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 
 class WeatherListViewModel(application: Application) :
     BaseStationListViewModel<WeatherStationModel>(application) {
@@ -19,7 +18,7 @@ class WeatherListViewModel(application: Application) :
         AppDb.getDatabase(getApplication()).weatherStationDao().getAllStationsLiveData()
 
     init {
-        if (!application.isAutoUpdateEnabled()) refresh()
+        refresh()
 
         stations.addSource(stationsLiveData) { result: List<WeatherStationModel>? ->
             result?.let {

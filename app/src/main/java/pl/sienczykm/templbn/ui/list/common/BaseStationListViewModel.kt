@@ -15,7 +15,7 @@ import pl.sienczykm.templbn.utils.haversine
 abstract class BaseStationListViewModel<T : BaseStationModel>(application: Application) :
     BaseRefreshViewModel<BaseRefreshNavigator>(application) {
 
-    // change this BaseStationModel to T when databinding lib is fixed
+    // TODO: change this BaseStationModel to T when databinding lib is fixed
     val stations = MediatorLiveData<List<BaseStationModel>>()
 
     abstract val stationsLiveData: LiveData<List<T>>
@@ -37,7 +37,7 @@ abstract class BaseStationListViewModel<T : BaseStationModel>(application: Appli
         }
     }
 
-    // change this BaseStationModel to T when databinding lib is fixed
+    // TODO: change this BaseStationModel to T when databinding lib is fixed
     abstract suspend fun updateFavourite(station: BaseStationModel): Int
 
     fun handleFavorite(position: Int) {

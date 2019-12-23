@@ -112,7 +112,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     private fun updateLocation(location: Location?) {
         stationViewModel.coordinates = location
-//        getList().smoothScrollToPosition(0) // TODO: calls when we come back from detail view, need to rethink
+//        scrollToTop() // TODO: calls when we come back from detail view, need to rethink
     }
 
     override fun onClickItem(v: View, position: Int) {
@@ -145,9 +145,13 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     override fun showInfo(message: Int) {
         showSnackbar(message)
-        // TODO: ugly, rethink this, besides call this in showInfo is unclear
+        scrollToTop() // TODO: call this in showInfo is unclear
+    }
+
+    private fun scrollToTop(delayInMillis: Long = 500) {
+        // TODO: ugly, rethink this
         lifecycleScope.launch {
-            delay(500)
+            delay(delayInMillis)
             getList().smoothScrollToPosition(0)
         }
     }

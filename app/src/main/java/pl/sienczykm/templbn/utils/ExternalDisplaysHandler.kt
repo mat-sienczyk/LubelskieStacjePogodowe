@@ -25,7 +25,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.widget.OldWeatherWidget
 
-// TODO refactor this
+// TODO refactor this somehow?
 object ExternalDisplaysHandler {
 
     fun cancelAllNotifications(context: Context) {
@@ -45,6 +45,15 @@ object ExternalDisplaysHandler {
         notification: Notification
     ) {
         NotificationManagerCompat.from(context).notify(notificationId, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(
+        context: Context,
+        channel: NotificationChannel
+    ) {
+        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+            .createNotificationChannel(channel)
     }
 
     fun updateExternalDisplays(context: Context) {
@@ -77,8 +86,7 @@ object ExternalDisplaysHandler {
                                     context.getString(R.string.air_index_notification_channel_description)
                             }
 
-                            (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                                .createNotificationChannel(channel)
+                            createNotificationChannel(context, channel)
 
                         }
 
@@ -145,8 +153,7 @@ object ExternalDisplaysHandler {
                             context.getString(R.string.weather_notification_channel_description)
                     }
 
-                    (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                        .createNotificationChannel(channel)
+                    createNotificationChannel(context, channel)
 
                     Notification.Builder(context, weatherChannelId)
                 } else {

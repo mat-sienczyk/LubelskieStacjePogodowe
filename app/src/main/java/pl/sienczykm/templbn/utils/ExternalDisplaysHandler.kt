@@ -80,7 +80,7 @@ object ExternalDisplaysHandler {
                             val channel = NotificationChannel(
                                 airChannelId,
                                 context.getString(R.string.air_index_notification_channel_name),
-                                NotificationManager.IMPORTANCE_DEFAULT
+                                NotificationManager.IMPORTANCE_LOW
                             ).apply {
                                 description =
                                     context.getString(R.string.air_index_notification_channel_description)

@@ -95,7 +95,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         }
 
         viewModel.station.observe(viewLifecycleOwner, Observer { station ->
-            requireActivity().title = station.getName()
+            requireActivity().title = station?.getName()
         })
 
         bottomSheetBehavior = BottomSheetBehavior.from(getBottomSheetLayout())
@@ -159,7 +159,9 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         inflater.inflate(R.menu.station_fragment_menu, menu)
 
         viewModel.station.observe(viewLifecycleOwner, Observer { station ->
-            updateFavorite(menu.findItem(R.id.favorite), station.favorite)
+            station?.run {
+                updateFavorite(menu.findItem(R.id.favorite), favorite)
+            }
         })
 
         super.onCreateOptionsMenu(menu, inflater)

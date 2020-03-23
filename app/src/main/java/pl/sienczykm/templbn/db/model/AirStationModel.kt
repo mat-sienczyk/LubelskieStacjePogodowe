@@ -119,6 +119,8 @@ class AirStationModel constructor(
         val FLORAINKA = AirStationModel(10874, 50.551894, 22.982861, "Florianka")
         val CHELM = AirStationModel(11360, 51.122190, 23.472870, "Chełm", "ul. Połaniecka")
         val NALECZOW = AirStationModel(11362, 51.284931, 22.210242, "Nałęczów")
+        val KRASNOBROD =
+            AirStationModel(12098, 50.549297, 23.197317, "Krasnobród", "ul. Sanatoryjna")
 
         fun getStations(): List<AirStationModel> {
             return listOf(
@@ -130,7 +132,8 @@ class AirStationModel constructor(
                 PULAWY,
                 FLORAINKA,
                 CHELM,
-                NALECZOW
+                NALECZOW,
+                KRASNOBROD
             )
         }
 

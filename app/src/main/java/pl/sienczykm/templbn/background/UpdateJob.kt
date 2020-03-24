@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.background
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
@@ -49,5 +50,55 @@ abstract class UpdateJob : JobIntentService() {
         }
 
         receiver?.send(StatusReceiver.STATUS_IDLE, Bundle())
+    }
+}
+
+class AirUpdateJob : UpdateJob() {
+
+    companion object {
+        private const val JOB_ID = 102
+
+        fun enqueueWork(
+            context: Context,
+            stationsIds: List<Int>,
+            statusReceiver: StatusReceiver,
+            stationType: String
+        ) {
+            enqueueWork(
+                context,
+                AirUpdateJob::class.java,
+                JOB_ID,
+                Intent(context, AirUpdateJob::class.java).apply {
+                    putExtra(UpdateHandler.STATION_ID_ARRAY_KEY, stationsIds.toIntArray())
+                    putExtra(UpdateHandler.STATION_TYPE_KEY, stationType)
+                    putExtra(RECEIVER_KEY, statusReceiver)
+                }
+            )
+        }
+    }
+}
+
+class WeatherUpdateJob : UpdateJob() {
+
+    companion object {
+        private const val JOB_ID = 101
+
+        fun enqueueWork(
+            context: Context,
+            stationsIds: List<Int>,
+            statusReceiver: StatusReceiver,
+            stationType: String
+        ) {
+            enqueueWork(
+                context,
+                WeatherUpdateJob::class.java,
+                JOB_ID,
+                Intent(context, WeatherUpdateJob::class.java).apply {
+                    putExtra(UpdateHandler.STATION_ID_ARRAY_KEY, stationsIds.toIntArray())
+                    putExtra(UpdateHandler.STATION_TYPE_KEY, stationType)
+                    putExtra(RECEIVER_KEY, statusReceiver)
+                }
+            )
+        }
     }
 }

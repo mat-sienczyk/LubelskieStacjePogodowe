@@ -177,9 +177,7 @@ fun Context.openUrl(url: String): Boolean {
         val webPage = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, webPage)
         if (intent.resolveActivity(packageManager) != null) {
-            val builder = CustomTabsIntent.Builder()
-            val customTabsIntent = builder.build()
-            customTabsIntent.launchUrl(this, webPage)
+            CustomTabsIntent.Builder().build().launchUrl(this, webPage)
             true
         } else {
             false

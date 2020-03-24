@@ -3,16 +3,16 @@ package pl.sienczykm.templbn.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.AirSensorModel
+import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.*
 
 
 class Converter {
 
-    val dataArrayType = object : TypeToken<List<ChartDataModel>>() {}.type
-    val sensorArrayType = object : TypeToken<List<AirSensorModel>>() {}.type
+    private val dataArrayType = object : TypeToken<List<ChartDataModel>>() {}.type
+    private val sensorArrayType = object : TypeToken<List<AirSensorModel>>() {}.type
 
     @TypeConverter
     fun timestampToDate(value: Long?): Date? {

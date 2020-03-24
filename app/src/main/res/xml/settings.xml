@@ -62,6 +62,14 @@
                     app:title="@string/default_station_title" />
 
             <SwitchPreferenceCompat
+                    app:defaultValue="@bool/open_weather_station_from_externals_default"
+                    app:dependency="@string/enable_auto_sync_key"
+                    app:iconSpaceReserved="false"
+                    app:key="@string/open_weather_station_from_externals_key"
+                    app:summary="@string/open_weather_station_from_externals_summary"
+                    app:title="@string/open_weather_station_from_externals_title" />
+
+            <SwitchPreferenceCompat
                     app:defaultValue="@bool/show_weather_notification_default"
                     app:dependency="@string/enable_auto_sync_key"
                     app:iconSpaceReserved="false"
@@ -84,14 +92,6 @@
                     app:key="@string/show_weather_notification_icon_key"
                     app:summary="@string/show_weather_notification_icon_summary"
                     app:title="@string/show_weather_notification_icon_title" />
-
-            <SwitchPreferenceCompat
-                    app:defaultValue="@bool/open_weather_station_from_externals_default"
-                    app:dependency="@string/show_weather_notification_key"
-                    app:iconSpaceReserved="false"
-                    app:key="@string/open_weather_station_from_externals_key"
-                    app:summary="@string/open_weather_station_from_externals_summary"
-                    app:title="@string/open_weather_station_from_externals_title" />
 
         </PreferenceCategory>
 

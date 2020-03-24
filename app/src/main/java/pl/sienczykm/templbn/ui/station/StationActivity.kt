@@ -1,10 +1,15 @@
 package pl.sienczykm.templbn.ui.station
 
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import androidx.core.app.TaskStackBuilder
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.common.ActivityWithToolbarAndUpAction
 import pl.sienczykm.templbn.ui.station.air.AirStationFragment
 import pl.sienczykm.templbn.ui.station.weather.WeatherStationFragment
+import pl.sienczykm.templbn.utils.getWeatherStationId
 
 
 class StationActivity : ActivityWithToolbarAndUpAction() {
@@ -16,6 +21,20 @@ class StationActivity : ActivityWithToolbarAndUpAction() {
     companion object {
         const val STATION_TYPE_KEY = "station_type_key"
         const val STATION_ID_KEY = "station_id_key"
+
+        fun openWeatherStationPendingIntent(
+            context: Context,
+            stationId: Int?
+        ): PendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(Intent(context, StationActivity::class.java).apply {
+                putExtra(STATION_TYPE_KEY, Type.WEATHER)
+                putExtra(STATION_ID_KEY, stationId ?: context.getWeatherStationId())
+            })
+            getPendingIntent(
+                71,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )!! // FLAG_UPDATE_CURRENT provided, no null then
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

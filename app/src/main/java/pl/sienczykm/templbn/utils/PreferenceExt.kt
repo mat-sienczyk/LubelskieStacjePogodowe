@@ -51,6 +51,12 @@ fun Context.showWeatherNotification(): Boolean {
     )
 }
 
+fun Context.openWeatherStation() =
+    getPreferenceBoolean(
+        R.string.open_weather_station_from_externals_key,
+        R.bool.open_weather_station_from_externals_default
+    )
+
 fun Context.getSyncVia() =
     getPreferenceString(R.string.sync_via_key, R.string.sync_default)
 

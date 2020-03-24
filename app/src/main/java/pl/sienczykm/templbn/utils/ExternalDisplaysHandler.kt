@@ -23,6 +23,7 @@ import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
+import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.widget.OldWeatherWidget
 
 // TODO refactor this somehow?
@@ -157,12 +158,19 @@ object ExternalDisplaysHandler {
 
                     Notification.Builder(context, weatherChannelId)
                 } else {
-                    // NotificationCompact do not allow pass Icon via setSmallIcon()
-                    Notification.Builder(context)
+                    Notification.Builder(context) // NotificationCompact do not allow pass Icon via setSmallIcon()
                 }
                     .setContentTitle("$temperatureString - $hourString")
                     .setContentText(weatherStation?.getFullStationName())
-                    .setContentIntent(MainActivity.openWeatherPendingIntent(context))
+                    .setContentIntent(
+                        if (context.openWeatherStation())
+                            StationActivity.openWeatherStationPendingIntent(
+                                context,
+                                weatherStation?.stationId
+                            )
+                        else
+                            MainActivity.openWeatherPendingIntent(context)
+                    )
                     .setOngoing(true)
                     .apply {
                         temperatureString?.let { text ->
@@ -221,7 +229,8 @@ object ExternalDisplaysHandler {
     }
 
     private fun getNearestWeatherStationId(location: Location): Int =
-        WeatherStationModel.getStations().minWith(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
+        WeatherStationModel.getStations()
+            .minWith(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
 
     private fun distanceComparator(it: Location): Comparator<BaseStationModel> {
         return Comparator { station1, station2 ->

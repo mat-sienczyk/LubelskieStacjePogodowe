@@ -17,8 +17,10 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
+import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.getWeatherStationUpdateInterval
+import pl.sienczykm.templbn.utils.openWeatherStation
 import java.util.concurrent.TimeUnit
 
 /**
@@ -91,7 +93,13 @@ class OldWeatherWidget : AppWidgetProvider() {
 
             views.setOnClickPendingIntent(
                 R.id.widget,
-                MainActivity.openWeatherPendingIntent(context)
+                if (context.openWeatherStation())
+                    StationActivity.openWeatherStationPendingIntent(
+                        context,
+                        weatherStation?.stationId
+                    )
+                else
+                    MainActivity.openWeatherPendingIntent(context)
             )
 
             views.setTextViewText(

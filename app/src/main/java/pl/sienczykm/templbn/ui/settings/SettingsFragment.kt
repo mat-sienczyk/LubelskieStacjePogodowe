@@ -38,12 +38,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            getString(R.string.night_mode_key) -> requireContext().handleNightMode()
+            getString(R.string.night_mode_key) ->
+                requireContext().handleNightMode()
 
-            getString(R.string.default_station_key), getString(R.string.default_location_key) ->
+            getString(R.string.default_station_key),
+            getString(R.string.default_location_key),
+            getString(R.string.open_weather_station_from_externals_key) ->
                 ExternalDisplaysHandler.updateExternalDisplays(requireContext())
 
-            getString(R.string.show_weather_notification_key), getString(R.string.show_weather_notification_icon_key) ->
+            getString(R.string.show_weather_notification_key),
+            getString(R.string.show_weather_notification_icon_key) ->
                 ExternalDisplaysHandler.setWeatherNotification(requireContext())
 
             getString(R.string.show_air_quality_notification_key) ->
@@ -63,15 +67,17 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 )
             }
 
-            getString(R.string.weather_sync_interval_key) -> UpdateHandler.setWeatherStationAutoSync(
-                requireContext(),
-                ExistingPeriodicWorkPolicy.REPLACE
-            )
+            getString(R.string.weather_sync_interval_key) ->
+                UpdateHandler.setWeatherStationAutoSync(
+                    requireContext(),
+                    ExistingPeriodicWorkPolicy.REPLACE
+                )
 
-            getString(R.string.air_sync_interval_key) -> UpdateHandler.setAirStationAutoSync(
-                requireContext(),
-                ExistingPeriodicWorkPolicy.REPLACE
-            )
+            getString(R.string.air_sync_interval_key) ->
+                UpdateHandler.setAirStationAutoSync(
+                    requireContext(),
+                    ExistingPeriodicWorkPolicy.REPLACE
+                )
         }
     }
 }

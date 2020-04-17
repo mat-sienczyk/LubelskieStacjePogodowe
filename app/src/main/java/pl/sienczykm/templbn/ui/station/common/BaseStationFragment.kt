@@ -1,18 +1,12 @@
 package pl.sienczykm.templbn.ui.station.common
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -145,14 +139,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
 
     private fun updateFavorite(favoriteItem: MenuItem?, favorite: Boolean) {
         favoriteItem?.icon =
-            if (favorite) getDrawable(R.drawable.ic_heart_solid) else getDrawable(R.drawable.ic_heart)
-    }
-
-    private fun getDrawable(@DrawableRes drawableResId: Int, @ColorInt color: Int = Color.WHITE): Drawable? {
-        val originalDrawable = ContextCompat.getDrawable(requireContext(), drawableResId)
-        val wrappedDrawable = originalDrawable?.let { DrawableCompat.wrap(it) } ?: return null
-        DrawableCompat.setTint(wrappedDrawable, color)
-        return wrappedDrawable
+            if (favorite) requireContext().getDrawableWithColor(R.drawable.ic_heart_solid)
+            else requireContext().getDrawableWithColor(R.drawable.ic_heart)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -266,7 +254,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         MarkerView(context, res) {
 
         init {
-            marker_bg.background = getDrawable(
+            marker_bg.background = requireContext().getDrawableWithColor(
                 R.drawable.ic_marker,
                 context.getColorCompact(R.color.colorPrimary)
             )

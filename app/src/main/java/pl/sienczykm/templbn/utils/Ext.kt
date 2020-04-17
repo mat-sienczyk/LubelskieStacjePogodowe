@@ -15,14 +15,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
-import androidx.annotation.WorkerThread
+import androidx.annotation.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
@@ -84,6 +84,9 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
 fun Context.isLocationPermissionGranted(): Boolean =
     isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
 
+fun Context.isWriteExternalStoragePermissionGranted(): Boolean =
+    isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
 fun Context.isPermissionGranted(permission: String): Boolean =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
@@ -125,6 +128,17 @@ fun Context.isNightModeActive(): Boolean {
     }
 }
 
+fun Context.getDrawableWithColor(
+    @DrawableRes drawableResId: Int,
+    @ColorInt color: Int = Color.WHITE
+) = ContextCompat.getDrawable(this, drawableResId)?.apply { setTint(color) }
+
+fun Context.isGooglePlayServicesAvailable() =
+    when (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)) {
+        ConnectionResult.SUCCESS -> true
+        else -> false
+    }
+
 fun SwipeRefreshLayout.setColors() {
     setProgressBackgroundColorSchemeResource(R.color.refresh_bg)
     setColorSchemeResources(R.color.refresh_yellow, R.color.refresh_red, R.color.refresh_green)
@@ -165,9 +179,14 @@ fun Context.getColorHex(@ColorRes colorResId: Int): String =
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
-    return try {
-        Tasks.await(LocationServices.getFusedLocationProviderClient(this).lastLocation)
-    } catch (e: Exception) {
+    return if(isGooglePlayServicesAvailable()){
+        try {
+            Tasks.await(LocationServices.getFusedLocationProviderClient(this).lastLocation)
+        } catch (e: Exception) {
+            null
+        }
+    }else {
+        // TODO use LocationManager from Android System
         null
     }
 }

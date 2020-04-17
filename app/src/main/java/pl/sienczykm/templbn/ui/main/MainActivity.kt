@@ -19,14 +19,18 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.about.AboutActivity
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
 import pl.sienczykm.templbn.ui.list.weather.WeatherListFragment
-import pl.sienczykm.templbn.ui.map.MapFragment
+import pl.sienczykm.templbn.ui.map.GoogleMapFragment
+import pl.sienczykm.templbn.ui.map.OsmMapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
+import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
+import pl.sienczykm.templbn.utils.isWriteExternalStoragePermissionGranted
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val PERMISSIONS_REQUEST_CODE = 111
+        const val LOCATION_PERMISSIONS_REQUEST_CODE = 111
+        const val STORAGE_PERMISSIONS_REQUEST_CODE = 112
 
         fun openWeatherPendingIntent(context: Context) =
             getNavigationPendingIntent(context, R.string.navigation_weather, 69)
@@ -60,8 +64,20 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_map -> {
-                    changeFragment(MapFragment.newInstance())
-                    return@OnNavigationItemSelectedListener true
+                    if (isGooglePlayServicesAvailable()) {
+                        changeFragment(GoogleMapFragment.newInstance())
+                        return@OnNavigationItemSelectedListener true
+                    } else {
+                        // show snackbar?
+                        if (isWriteExternalStoragePermissionGranted()) {
+                            changeFragment(OsmMapFragment.newInstance())
+                            return@OnNavigationItemSelectedListener true
+                        } else {
+                            getExternalStoragePermission()
+                            // get the result of clicked?
+                            return@OnNavigationItemSelectedListener false
+                        }
+                    }
                 }
             }
             false
@@ -134,7 +150,16 @@ class MainActivity : AppCompatActivity() {
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ), PERMISSIONS_REQUEST_CODE
+            ),
+            LOCATION_PERMISSIONS_REQUEST_CODE
+        )
+    }
+
+    private fun getExternalStoragePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            STORAGE_PERMISSIONS_REQUEST_CODE
         )
     }
 

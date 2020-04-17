@@ -29,6 +29,7 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
@@ -92,20 +93,28 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun onResume() {
         super.onResume()
         if (requireContext().isLocationPermissionGranted()) {
-            LocationServices.getFusedLocationProviderClient(requireContext())
-                .requestLocationUpdates(
-                    LocationRequest.create()?.apply {
-                        priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-                    },
-                    locationCallback,
-                    null
-                )
+            if (requireContext().isGooglePlayServicesAvailable()) {
+                LocationServices.getFusedLocationProviderClient(requireContext())
+                    .requestLocationUpdates(
+                        LocationRequest.create()?.apply {
+                            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+                        },
+                        locationCallback,
+                        null
+                    )
+            } else {
+                // TODO use LocationManager from Android System
+            }
         }
     }
 
     override fun onPause() {
-        LocationServices.getFusedLocationProviderClient(requireContext())
-            .removeLocationUpdates(locationCallback)
+        if (requireContext().isGooglePlayServicesAvailable()) {
+            LocationServices.getFusedLocationProviderClient(requireContext())
+                .removeLocationUpdates(locationCallback)
+        } else {
+            // TODO use LocationManager from Android System
+        }
         super.onPause()
     }
 

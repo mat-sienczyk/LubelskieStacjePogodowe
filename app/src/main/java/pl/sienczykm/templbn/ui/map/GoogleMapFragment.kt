@@ -14,7 +14,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.databinding.FragmentMapBinding
+import pl.sienczykm.templbn.databinding.FragmentGoogleMapBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
@@ -24,31 +24,35 @@ import pl.sienczykm.templbn.utils.isNightModeActive
 import timber.log.Timber
 
 
-class MapFragment : Fragment(), OnMapReadyCallback,
-    GoogleMap.OnInfoWindowClickListener {
+class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     companion object {
-        fun newInstance(): MapFragment {
-            return MapFragment()
+        fun newInstance(): GoogleMapFragment {
+            return GoogleMapFragment()
         }
     }
 
     //TODO move to viewModel?
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
-    private lateinit var binding: FragmentMapBinding
+    private lateinit var binding: FragmentGoogleMapBinding
+
     //TODO move to viewModel?
     private val markerMap = hashMapOf<Marker, BaseStationModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_google_map, container, false)
 //        binding.viewModelWeather = viewModelWeather
         binding.lifecycleOwner = viewLifecycleOwner
 
-        mapView = binding.mapView
-        mapView.onCreate(savedInstanceState)
-
-        mapView.getMapAsync(this)
+        mapView = binding.mapView.apply {
+            onCreate(savedInstanceState)
+            getMapAsync(this@GoogleMapFragment)
+        }
 
         return binding.root
     }

@@ -8,22 +8,29 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.BaseStationModel
-import pl.sienczykm.templbn.ui.common.BaseRefreshNavigator
 import pl.sienczykm.templbn.ui.common.BaseRefreshViewModel
 import pl.sienczykm.templbn.utils.haversine
 
 abstract class BaseStationListViewModel<T : BaseStationModel>(application: Application) :
-    BaseRefreshViewModel<BaseRefreshNavigator>(application) {
+    BaseRefreshViewModel<BaseRefreshListNavigator>(application) {
 
     // TODO: change this BaseStationModel to T when databinding lib is fixed
     val stations = MediatorLiveData<List<BaseStationModel>>()
 
     abstract val stationsLiveData: LiveData<List<T>>
 
+    private var scrollToTop = true
+
     var coordinates: Location? = null
         set(value) {
             field = value
-            stationsLiveData.value?.let { stations.value = sortStations(it) }
+            stationsLiveData.value?.let {
+                stations.value = sortStations(it)
+                if (scrollToTop) {
+                    getNavigator()?.scrollToTop()
+                    scrollToTop = false
+                }
+            }
         }
 
     fun sortStations(stations: List<T>): List<T>? {
@@ -32,7 +39,14 @@ abstract class BaseStationListViewModel<T : BaseStationModel>(application: Appli
                 .onEach { it.distance = null }
                 .sortedWith(compareBy({ !it.favorite }, { it.getName() }))
             else -> stations
-                .onEach { it.distance = haversine(coordinates!!.latitude, coordinates!!.longitude, it.latitude, it.longitude) }
+                .onEach {
+                    it.distance = haversine(
+                        coordinates!!.latitude,
+                        coordinates!!.longitude,
+                        it.latitude,
+                        it.longitude
+                    )
+                }
                 .sortedWith(compareBy({ !it.favorite }, { it.distance }, { it.getName() }))
         }
     }
@@ -46,6 +60,7 @@ abstract class BaseStationListViewModel<T : BaseStationModel>(application: Appli
             if (updateFavourite(station) > 0) {
                 if (!station.favorite) getNavigator()?.showInfo(R.string.added_to_favorites)
                 else getNavigator()?.showInfo(R.string.removed_from_favorites)
+                getNavigator()?.scrollToTop()
             }
         }
     }

@@ -27,7 +27,6 @@ import pl.sienczykm.templbn.databinding.FragmentListBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.ui.common.BaseRefreshNavigator
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
@@ -36,7 +35,7 @@ import pl.sienczykm.templbn.utils.snackbarShow
 import timber.log.Timber
 
 abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, L : ViewDataBinding> :
-    Fragment(), RecyclerViewClickListener, BaseRefreshNavigator {
+    Fragment(), RecyclerViewClickListener, BaseRefreshListNavigator {
 
     lateinit var stationViewModel: T
     lateinit var binding: FragmentListBinding
@@ -112,7 +111,13 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     private fun updateLocation(location: Location?) {
         stationViewModel.coordinates = location
-//        scrollToTop() // TODO: calls when we come back from detail view, need to rethink
+    }
+
+    override fun scrollToTop() {
+        lifecycleScope.launch {
+            delay(500)
+            getList().smoothScrollToPosition(0)
+        }
     }
 
     override fun onClickItem(v: View, position: Int) {
@@ -145,15 +150,6 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
 
     override fun showInfo(message: Int) {
         showSnackbar(message)
-        scrollToTop() // TODO: call this in showInfo is unclear
-    }
-
-    private fun scrollToTop(delayInMillis: Long = 500) {
-        // TODO: ugly, rethink this
-        lifecycleScope.launch {
-            delay(delayInMillis)
-            getList().smoothScrollToPosition(0)
-        }
     }
 
     override fun noConnection() {

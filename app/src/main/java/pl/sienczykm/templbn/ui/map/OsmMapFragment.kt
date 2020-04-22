@@ -1,6 +1,8 @@
 package pl.sienczykm.templbn.ui.map
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +23,12 @@ import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentOsmMapBinding
 import pl.sienczykm.templbn.db.model.AirStationModel
+import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
+import java.io.File
 
 
 class OsmMapFragment : Fragment() {
@@ -45,7 +50,20 @@ class OsmMapFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_osm_map, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        // todo button with animate to my position
+
+        Configuration.getInstance().apply {
+            userAgentValue = BuildConfig.APPLICATION_ID
+            // workaround for API 29
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                osmdroidBasePath = File(requireContext().filesDir, "osmdroid").apply {
+                    mkdirs()
+                }
+                osmdroidTileCache = File(osmdroidBasePath, "tiles").apply {
+                    mkdirs()
+                }
+            }
+        }
 
         mapView = binding.mapView.apply {
             setTileSource(TileSourceFactory.MAPNIK)
@@ -70,6 +88,12 @@ class OsmMapFragment : Fragment() {
                 title = weatherStationModel.getName()
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.GREEN)
                 snippet = getString(R.string.station_title_weather)
+                // todo investigate why MyMarkerInfoWindow does not disappear when click another marker, and default one does
+                infoWindow = ClickableMarkerInfoWindow<BaseStationModel>(
+                    mapView,
+                    weatherStationModel,
+                    onMarkerWindowTouch()
+                )
             })
         }
 
@@ -79,6 +103,12 @@ class OsmMapFragment : Fragment() {
                 title = airStationModel.getName()
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.BLUE)
                 snippet = getString(R.string.station_title_air)
+                // todo investigate why MyMarkerInfoWindow does not disappear when click another marker, and default one does
+                infoWindow = ClickableMarkerInfoWindow<BaseStationModel>(
+                    mapView,
+                    airStationModel,
+                    onMarkerWindowTouch()
+                )
             })
         }
 
@@ -104,16 +134,16 @@ class OsmMapFragment : Fragment() {
         return binding.root
     }
 
-//    fun onMarker(marker: Marker) {
-//        val intent = Intent(requireContext(), StationActivity::class.java).apply {
-//            putExtra(
-//                StationActivity.STATION_TYPE_KEY,
-//                if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
-//            )
-//            putExtra(StationActivity.STATION_ID_KEY, markerMap[marker]?.stationId)
-//        }
-//        startActivity(intent)
-//    }
+    private fun onMarkerWindowTouch(): (BaseStationModel) -> Unit = { station ->
+        val intent = Intent(requireContext(), StationActivity::class.java).apply {
+            putExtra(
+                StationActivity.STATION_TYPE_KEY,
+                if (station is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
+            )
+            putExtra(StationActivity.STATION_ID_KEY, station.stationId)
+        }
+        startActivity(intent)
+    }
 
     override fun onResume() {
         super.onResume()

@@ -58,6 +58,16 @@ class LocationUpdates(
             context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         init {
+            val gpsLocation =
+                locationManager.getLastKnownLocationForProvider(LocationManager.GPS_PROVIDER)
+            val networkLocation =
+                locationManager.getLastKnownLocationForProvider(LocationManager.NETWORK_PROVIDER)
+
+            when {
+                gpsLocation != null -> locationCallback(gpsLocation)
+                networkLocation != null -> locationCallback(networkLocation)
+            }
+
             val locationSources = hashSetOf(
                 LocationManager.GPS_PROVIDER,
                 LocationManager.NETWORK_PROVIDER

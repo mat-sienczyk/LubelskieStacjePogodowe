@@ -75,4 +75,8 @@ fun Context.getWeatherStationUpdateInterval() =
 fun Context.getAirStationUpdateInterval() =
     getPreferenceInt(R.string.air_sync_interval_key, R.string.air_sync_interval_default)
 
+fun Context.useGooglePlayServices() = getPreferenceBoolean(
+    R.string.enable_google_play_services_key,
+    R.bool.enable_google_play_services_default
+)
 

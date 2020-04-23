@@ -55,7 +55,9 @@
     <string name="show_weather_notification_icon_title">Wyświetlaj ikonę jako temperaturę</string>
     <string name="show_weather_notification_icon_summary">Funkcja eksperymentalna, polecane dla Always-on display</string>
     <string name="open_weather_station_from_externals_title">Otwórz konkretną stację</string>
+    <string name="enable_google_play_services_title">Używaj Usług Google Play</string>
     <string name="open_weather_station_from_externals_summary">Po kliknięciu w widget/powiadomienie</string>
+    <string name="enable_google_play_services_summary">Jeśli chcesz, możesz wyłączyć Usługi Google (wykorzystywane do określania lokalizacji oraz jako dostawca mapy)</string>
     <string name="sync_via_title">Synchronizowanie przez</string>
     <string name="weather_auto_sync_title">Stacje pogodowe</string>
     <string name="air_auto_sync_title">Stacje powietrza</string>
@@ -76,6 +78,7 @@
     <string name="show_weather_notification_key">show_weather_notification_key</string>
     <string name="show_weather_notification_icon_key">show_weather_notification_icon_key</string>
     <string name="open_weather_station_from_externals_key">open_weather_station_from_externals_key</string>
+    <string name="enable_google_play_services_key">enable_google_play_services_key</string>
     <string name="show_air_quality_notification_key">show_air_quality_notification_key</string>
     <string name="default_location_key">widget_location_key</string>
     <string name="weather_sync_interval_key">weather_sync_interval_key</string>

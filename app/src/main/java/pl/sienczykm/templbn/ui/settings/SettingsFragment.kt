@@ -9,6 +9,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.handleNightMode
+import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -23,6 +24,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
         setPreferencesFromResource(R.xml.settings, rootKey)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             preferenceScreen.removePreferenceRecursively(getString(R.string.show_weather_notification_icon_key))
+        }
+        if (!requireContext().isGooglePlayServicesAvailable()) {
+            preferenceScreen.removePreferenceRecursively(getString(R.string.enable_google_play_services_key))
         }
     }
 

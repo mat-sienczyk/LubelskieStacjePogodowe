@@ -5,11 +5,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import timber.log.Timber
+import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
 
 class LocationUpdates(
@@ -18,7 +14,7 @@ class LocationUpdates(
 ) {
 
     private val locationHandlerImpl: LocationHandler =
-        if (context.isGooglePlayServicesAvailable()) {
+        if (context.isGooglePlayServicesAvailableAndEnabled()) {
             GoogleLocationUpdateCallbackImpl(locationCallback)
         } else {
             AndroidLocationUpdateCallbackImpl(locationCallback)
@@ -32,8 +28,11 @@ class LocationUpdates(
     private inner class GoogleLocationUpdateCallbackImpl(private val locationCallback: (Location?) -> Unit) :
         LocationHandler, LocationCallback() {
 
-        init {
+        val locationProviderClient: FusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
+
+        init {
+            locationProviderClient
                 .requestLocationUpdates(
                     LocationRequest.create()?.apply {
                         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
@@ -44,7 +43,7 @@ class LocationUpdates(
         }
 
         override fun stop() {
-            LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(this)
+            locationProviderClient.removeLocationUpdates(this)
         }
 
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -88,15 +87,12 @@ class LocationUpdates(
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            Timber.d("onStatusChanged")
         }
 
         override fun onProviderEnabled(provider: String?) {
-            Timber.d("onProviderEnabled")
         }
 
         override fun onProviderDisabled(provider: String?) {
-            Timber.d("onProviderDisabled")
         }
 
     }

@@ -23,6 +23,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +44,7 @@ fun Context.toast(@StringRes message: Int, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, this.getText(message), duration).show()
 }
 
-fun Context.isNetworkAvailable(): Boolean =
+fun Context.isNetworkAvailable() =
     (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected == true
 
 fun CoordinatorLayout.snackbarShow(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
@@ -81,35 +83,31 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     return 2 * R * asin(sqrt(sin(Δλ / 2).pow(2.0) + sin(Δφ / 2).pow(2.0) * cos(λ1) * cos(λ2)))
 }
 
-fun Context.isLocationPermissionGranted(): Boolean =
+fun Context.isLocationPermissionGranted() =
     isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
 
-fun Context.isWriteExternalStoragePermissionGranted(): Boolean =
+fun Context.isWriteExternalStoragePermissionGranted() =
     isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-fun Context.isPermissionGranted(permission: String): Boolean =
+fun Context.isPermissionGranted(permission: String) =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
-fun Double?.round(places: Int = 0): Double? {
-    return when {
-        this == null -> null
-        places < 0 -> this
-        else -> {
-            var bd = BigDecimal(this)
-            bd = bd.setScale(places, RoundingMode.HALF_UP)
-            bd.toDouble()
-        }
+fun Double?.round(places: Int = 0) = when {
+    this == null -> null
+    places < 0 -> this
+    else -> {
+        var bd = BigDecimal(this)
+        bd = bd.setScale(places, RoundingMode.HALF_UP)
+        bd.toDouble()
     }
 }
 
-fun Double?.roundAndGetString(places: Int = 0): String? {
-    return when {
-        this == null -> null
-        places < 0 -> this.toString()
-        places == 0 -> this.round(places)?.toInt()?.toString()
-        else -> {
-            this.round(places)?.toString()?.replace(".", ",")
-        }
+fun Double?.roundAndGetString(places: Int = 0) = when {
+    this == null -> null
+    places < 0 -> this.toString()
+    places == 0 -> this.round(places)?.toInt()?.toString()
+    else -> {
+        this.round(places)?.toString()?.replace(".", ",")
     }
 }
 
@@ -121,12 +119,11 @@ fun Context.handleNightMode() {
     }
 }
 
-fun Context.isNightModeActive(): Boolean {
-    return when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+fun Context.isNightModeActive() =
+    when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
         Configuration.UI_MODE_NIGHT_YES -> true
         else -> false
     }
-}
 
 fun Context.getDrawableWithColor(
     @DrawableRes drawableResId: Int,
@@ -143,6 +140,9 @@ fun Context.isGooglePlayServicesAvailable() =
         else -> false
     }
 
+fun Context.isGooglePlayServicesAvailableAndEnabled() =
+    isGooglePlayServicesAvailable() && useGooglePlayServices()
+
 fun SwipeRefreshLayout.setColors() {
     setProgressBackgroundColorSchemeResource(R.color.refresh_bg)
     setColorSchemeResources(R.color.refresh_yellow, R.color.refresh_red, R.color.refresh_green)
@@ -151,12 +151,12 @@ fun SwipeRefreshLayout.setColors() {
 fun nowInPoland(): Calendar =
     Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"), Locale("pl", "PL"))
 
-fun dateFormat(pattern: String, timeZoneString: String = "Europe/Warsaw"): SimpleDateFormat =
+fun dateFormat(pattern: String, timeZoneString: String = "Europe/Warsaw") =
     SimpleDateFormat(pattern, Locale("pl", "PL")).apply {
         timeZone = TimeZone.getTimeZone(timeZoneString)
     }
 
-fun Date.isOlderThan(minutes: Long): Boolean =
+fun Date.isOlderThan(minutes: Long) =
     nowInPoland().timeInMillis - this.time > TimeUnit.MINUTES.toMillis(minutes)
 
 fun TextView.setColor(@ColorRes colorResId: Int) {
@@ -175,15 +175,15 @@ fun ImageView.invertColors() {
         )
 }
 
-fun Context.getColorCompact(@ColorRes colorResId: Int): Int =
+fun Context.getColorCompact(@ColorRes colorResId: Int) =
     ContextCompat.getColor(this, colorResId)
 
-fun Context.getColorHex(@ColorRes colorResId: Int): String =
+fun Context.getColorHex(@ColorRes colorResId: Int) =
     String.format("#%06X", 0xFFFFFF and getColorCompact(colorResId))
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
-    return if (isGooglePlayServicesAvailable()) {
+    return if (isGooglePlayServicesAvailableAndEnabled()) {
         try {
             Tasks.await(LocationServices.getFusedLocationProviderClient(this).lastLocation)
         } catch (e: Exception) {

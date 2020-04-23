@@ -23,7 +23,7 @@ import pl.sienczykm.templbn.ui.map.GoogleMapFragment
 import pl.sienczykm.templbn.ui.map.OsmMapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
+import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailableAndEnabled
 import pl.sienczykm.templbn.utils.isWriteExternalStoragePermissionGranted
 
 class MainActivity : AppCompatActivity() {
@@ -64,11 +64,10 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_map -> {
-                    if (isGooglePlayServicesAvailable()) {
+                    if (isGooglePlayServicesAvailableAndEnabled()) {
                         changeFragment(GoogleMapFragment.newInstance())
                         return@OnNavigationItemSelectedListener true
                     } else {
-                        // show snackbar?
                         if (isWriteExternalStoragePermissionGranted()) {
                             changeFragment(OsmMapFragment.newInstance())
                             return@OnNavigationItemSelectedListener true

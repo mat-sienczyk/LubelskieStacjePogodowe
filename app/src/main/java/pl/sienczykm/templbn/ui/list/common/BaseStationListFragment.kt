@@ -16,10 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
@@ -29,7 +25,7 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.common.RecyclerViewClickListener
 import pl.sienczykm.templbn.ui.station.StationActivity
-import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
+import pl.sienczykm.templbn.utils.LocationUpdates
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.setColors
 import pl.sienczykm.templbn.utils.snackbarShow
@@ -41,6 +37,8 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     lateinit var stationViewModel: T
     lateinit var binding: FragmentListBinding
 
+    private var locationUpdates: LocationUpdates? = null
+
     abstract fun getViewModel(): T
 
     abstract fun getSwipeToRefreshLayout(): SwipeRefreshLayout
@@ -50,13 +48,6 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     abstract fun getList(): RecyclerView
 
     abstract fun getAdapter(): BaseStationsAdapter<L>
-
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult ?: return
-            updateLocation(locationResult.lastLocation)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,28 +84,14 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     override fun onResume() {
         super.onResume()
         if (requireContext().isLocationPermissionGranted()) {
-            if (requireContext().isGooglePlayServicesAvailable()) {
-                LocationServices.getFusedLocationProviderClient(requireContext())
-                    .requestLocationUpdates(
-                        LocationRequest.create()?.apply {
-                            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-                        },
-                        locationCallback,
-                        null
-                    )
-            } else {
-                // TODO use LocationManager from Android System
+            locationUpdates = LocationUpdates(requireContext()) { location ->
+                updateLocation(location)
             }
         }
     }
 
     override fun onPause() {
-        if (requireContext().isGooglePlayServicesAvailable()) {
-            LocationServices.getFusedLocationProviderClient(requireContext())
-                .removeLocationUpdates(locationCallback)
-        } else {
-            // TODO use LocationManager from Android System
-        }
+        locationUpdates?.stop()
         super.onPause()
     }
 

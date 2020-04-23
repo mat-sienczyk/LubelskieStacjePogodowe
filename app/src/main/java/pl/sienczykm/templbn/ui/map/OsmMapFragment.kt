@@ -52,8 +52,6 @@ class OsmMapFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_osm_map, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // todo button with animate to my position
-
         Configuration.getInstance().apply {
             userAgentValue = BuildConfig.APPLICATION_ID
             // workaround for API 29

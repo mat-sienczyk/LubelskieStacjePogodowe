@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.util.Patterns
@@ -22,8 +23,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
@@ -191,9 +190,29 @@ fun Context.getLastKnownLocation(): Location? {
             null
         }
     } else {
-        // TODO use LocationManager from Android System
-        null
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        val gpsLocation =
+            locationManager.getLastKnownLocationForProvider(LocationManager.GPS_PROVIDER)
+        val networkLocation =
+            locationManager.getLastKnownLocationForProvider(LocationManager.NETWORK_PROVIDER)
+
+        return when {
+            gpsLocation == null -> networkLocation
+            networkLocation == null -> gpsLocation
+            else -> null
+        }
     }
+}
+
+fun LocationManager.getLastKnownLocationForProvider(provider: String): Location? {
+    return if (isProviderEnabled(provider)) {
+        try {
+            return getLastKnownLocation(provider)
+        } catch (e: SecurityException) {
+            null
+        }
+    } else null
 }
 
 fun Context.openUrl(url: String): Boolean {

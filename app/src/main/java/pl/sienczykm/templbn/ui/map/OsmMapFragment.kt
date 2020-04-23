@@ -42,6 +42,9 @@ class OsmMapFragment : Fragment() {
     private lateinit var binding: FragmentOsmMapBinding
     private lateinit var mapView: MapView
 
+    //TODO move to viewModel?
+    private var selectedStation: BaseStationModel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,18 +85,26 @@ class OsmMapFragment : Fragment() {
 
         val overlays = arrayListOf<Overlay>()
 
+        val infoView = ClickableMarkerInfoWindow(
+            mapView,
+            closeOnClick = false,
+            onTouchCallback = onMarkerWindowTouch()
+        )
+
         WeatherStationModel.getStations().forEach { weatherStationModel ->
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(weatherStationModel.latitude, weatherStationModel.longitude)
                 title = weatherStationModel.getName()
+                //todo this is not working good on all phones
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.GREEN)
                 snippet = getString(R.string.station_title_weather)
-                // todo investigate why MyMarkerInfoWindow does not disappear when click another marker, and default one does
-                infoWindow = ClickableMarkerInfoWindow<BaseStationModel>(
-                    mapView,
-                    weatherStationModel,
-                    onMarkerWindowTouch()
-                )
+                infoWindow = infoView
+                setOnMarkerClickListener { marker, _ ->
+                    marker.showInfoWindow()
+                    mapView.controller.animateTo(marker.position)
+                    selectedStation = weatherStationModel
+                    true
+                }
             })
         }
 
@@ -101,14 +112,16 @@ class OsmMapFragment : Fragment() {
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(airStationModel.latitude, airStationModel.longitude)
                 title = airStationModel.getName()
+                //todo this is not working good on all phones
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.BLUE)
                 snippet = getString(R.string.station_title_air)
-                // todo investigate why MyMarkerInfoWindow does not disappear when click another marker, and default one does
-                infoWindow = ClickableMarkerInfoWindow<BaseStationModel>(
-                    mapView,
-                    airStationModel,
-                    onMarkerWindowTouch()
-                )
+                infoWindow = infoView
+                setOnMarkerClickListener { marker, _ ->
+                    marker.showInfoWindow()
+                    mapView.controller.animateTo(marker.position)
+                    selectedStation = airStationModel
+                    true
+                }
             })
         }
 
@@ -134,15 +147,16 @@ class OsmMapFragment : Fragment() {
         return binding.root
     }
 
-    private fun onMarkerWindowTouch(): (BaseStationModel) -> Unit = { station ->
-        val intent = Intent(requireContext(), StationActivity::class.java).apply {
-            putExtra(
-                StationActivity.STATION_TYPE_KEY,
-                if (station is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
-            )
-            putExtra(StationActivity.STATION_ID_KEY, station.stationId)
+    private fun onMarkerWindowTouch(): () -> Unit = {
+        selectedStation?.let { station: BaseStationModel ->
+            startActivity(Intent(requireContext(), StationActivity::class.java).apply {
+                putExtra(
+                    StationActivity.STATION_TYPE_KEY,
+                    if (station is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
+                )
+                putExtra(StationActivity.STATION_ID_KEY, station.stationId)
+            })
         }
-        startActivity(intent)
     }
 
     override fun onResume() {

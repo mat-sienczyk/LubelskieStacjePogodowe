@@ -5,17 +5,17 @@ import org.osmdroid.library.R
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
-class ClickableMarkerInfoWindow<T>(
+class ClickableMarkerInfoWindow(
     mapView: MapView,
-    objectClicked: T,
-    onTouchCallback: (T) -> Unit
+    closeOnClick: Boolean = true,
+    onTouchCallback: () -> Unit
 ) :
     MarkerInfoWindow(R.layout.bonuspack_bubble, mapView) {
     init {
         view.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                onTouchCallback(objectClicked)
-                close()
+                onTouchCallback()
+                if (closeOnClick) close()
             }
             true
         }

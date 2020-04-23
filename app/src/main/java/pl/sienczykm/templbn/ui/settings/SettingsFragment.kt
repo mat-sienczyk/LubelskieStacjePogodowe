@@ -42,6 +42,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
+            //TODO reload map (means load proper fragment) when disable/enable Google Play Services
+
             getString(R.string.night_mode_key) ->
                 requireContext().handleNightMode()
 

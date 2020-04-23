@@ -92,8 +92,10 @@ class OsmMapFragment : Fragment() {
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(weatherStationModel.latitude, weatherStationModel.longitude)
                 title = weatherStationModel.getName()
-                //todo this is not working good on all phones
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.GREEN)
+                setAnchor(
+                    Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
+                )
                 snippet = getString(R.string.station_title_weather)
                 infoWindow = infoView
                 setOnMarkerClickListener { marker, _ ->
@@ -109,8 +111,10 @@ class OsmMapFragment : Fragment() {
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(airStationModel.latitude, airStationModel.longitude)
                 title = airStationModel.getName()
-                //todo this is not working good on all phones
                 icon = requireContext().getDrawableWithColor(R.drawable.ic_map_marker, Color.BLUE)
+                setAnchor(
+                    Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
+                )
                 snippet = getString(R.string.station_title_air)
                 infoWindow = infoView
                 setOnMarkerClickListener { marker, _ ->

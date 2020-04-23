@@ -15,6 +15,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Overlay
+import org.osmdroid.views.overlay.TilesOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import pl.sienczykm.templbn.BuildConfig
@@ -26,6 +27,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
+import pl.sienczykm.templbn.utils.isNightModeActive
 import pl.sienczykm.templbn.utils.show
 import java.io.File
 
@@ -70,8 +72,11 @@ class OsmMapFragment : Fragment() {
             setMultiTouchControls(true)
         }
 
+        if (requireContext().isNightModeActive())
+            mapView.overlayManager.tilesOverlay.setColorFilter(TilesOverlay.INVERT_COLORS)
+
         mapView.controller.apply {
-            setZoom(resources.getInteger(R.integer.map_zoom_lvl).toDouble() * 1.3)
+            setZoom(resources.getInteger(R.integer.map_zoom_lvl).toDouble() * 1.35)
             setCenter(
                 GeoPoint(
                     WeatherStationModel.PLAC_LITEWSKI.latitude,

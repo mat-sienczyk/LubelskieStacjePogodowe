@@ -16,15 +16,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        <!--TODO fix bg in dark mode-->
+        <!--TODO fix this hardcoded colors?-->
         <ImageButton
                 android:id="@+id/myLocationButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:backgroundTint="#d6d8d7"
                 android:elevation="5dp"
                 android:src="@drawable/ic_gps"
+                android:tint="#666666"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/mapView" />

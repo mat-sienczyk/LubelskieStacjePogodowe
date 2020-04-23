@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -131,7 +132,11 @@ fun Context.isNightModeActive(): Boolean {
 fun Context.getDrawableWithColor(
     @DrawableRes drawableResId: Int,
     @ColorInt color: Int = Color.WHITE
-) = ContextCompat.getDrawable(this, drawableResId)?.apply { setTint(color) }
+): Drawable? =
+    ContextCompat.getDrawable(this, drawableResId)?.apply {
+        mutate()
+        setTint(color)
+    }
 
 fun Context.isGooglePlayServicesAvailable() =
     when (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)) {
@@ -179,13 +184,13 @@ fun Context.getColorHex(@ColorRes colorResId: Int): String =
 
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
-    return if(isGooglePlayServicesAvailable()){
+    return if (isGooglePlayServicesAvailable()) {
         try {
             Tasks.await(LocationServices.getFusedLocationProviderClient(this).lastLocation)
         } catch (e: Exception) {
             null
         }
-    }else {
+    } else {
         // TODO use LocationManager from Android System
         null
     }

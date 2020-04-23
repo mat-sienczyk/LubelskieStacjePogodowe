@@ -15,8 +15,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Overlay
-import org.osmdroid.views.overlay.compass.CompassOverlay
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import pl.sienczykm.templbn.BuildConfig
@@ -28,6 +26,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
+import pl.sienczykm.templbn.utils.show
 import java.io.File
 
 
@@ -125,13 +124,13 @@ class OsmMapFragment : Fragment() {
             })
         }
 
-        overlays.add(CompassOverlay(
-            requireContext(),
-            InternalCompassOrientationProvider(requireContext()),
-            mapView
-        ).apply {
-            enableCompass()
-        })
+//        overlays.add(CompassOverlay(
+//            requireContext(),
+//            InternalCompassOrientationProvider(requireContext()),
+//            mapView
+//        ).apply {
+//            enableCompass()
+//        })
 
         if (requireContext().isLocationPermissionGranted()) {
             overlays.add(MyLocationNewOverlay(
@@ -139,6 +138,12 @@ class OsmMapFragment : Fragment() {
                 mapView
             ).apply {
                 enableMyLocation()
+                binding.myLocationButton.apply {
+                    show()
+                    setOnClickListener {
+                        mapView.controller.animateTo(myLocation, 16.0, null)
+                    }
+                }
             })
         }
 

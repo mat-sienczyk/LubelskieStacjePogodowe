@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.ui.map
 
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +17,6 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Overlay
 import org.osmdroid.views.overlay.TilesOverlay
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentOsmMapBinding
@@ -76,7 +75,8 @@ class OsmMapFragment : Fragment() {
             mapView.overlayManager.tilesOverlay.setColorFilter(TilesOverlay.INVERT_COLORS)
 
         mapView.controller.apply {
-            setZoom(resources.getInteger(R.integer.map_zoom_lvl).toDouble() * 1.35)
+            setZoom(9.3)
+            //TODO calculate somehow middle of map based on markes?
             setCenter(
                 GeoPoint(
                     WeatherStationModel.PLAC_LITEWSKI.latitude,
@@ -131,26 +131,16 @@ class OsmMapFragment : Fragment() {
             })
         }
 
-//        overlays.add(CompassOverlay(
-//            requireContext(),
-//            InternalCompassOrientationProvider(requireContext()),
-//            mapView
-//        ).apply {
-//            enableCompass()
-//        })
-
         if (requireContext().isLocationPermissionGranted()) {
-            overlays.add(MyLocationNewOverlay(
-                GpsMyLocationProvider(requireContext()),
-                mapView
-            ).apply {
-                enableMyLocation()
+            overlays.add(ObservableLocationNewOverlay(mapView) { location: Location ->
                 binding.myLocationButton.apply {
                     show()
                     setOnClickListener {
-                        mapView.controller.animateTo(myLocation, 16.0, null)
+                        mapView.controller.animateTo(GeoPoint(location), 16.0, null)
                     }
                 }
+            }.apply {
+                enableMyLocation()
             })
         }
 

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private var triedToOpenOsmMap = false
+
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                             return@OnNavigationItemSelectedListener true
                         } else {
                             getExternalStoragePermission()
-                            // get the result of clicked?
+                            triedToOpenOsmMap = true
                             return@OnNavigationItemSelectedListener false
                         }
                     }
@@ -128,6 +131,23 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            STORAGE_PERMISSIONS_REQUEST_CODE -> {
+                if (triedToOpenOsmMap && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    nav_view.selectedItemId = R.id.navigation_map
+                }
+                triedToOpenOsmMap = false
+                return
+            }
+
         }
     }
 

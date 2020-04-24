@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.ui.main
 
 import android.Manifest
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val LOCATION_PERMISSIONS_REQUEST_CODE = 111
         const val STORAGE_PERMISSIONS_REQUEST_CODE = 112
+        const val RELOAD_MAP_REQUEST_CODE = 113
 
         fun openWeatherPendingIntent(context: Context) =
             getNavigationPendingIntent(context, R.string.navigation_weather, 69)
@@ -134,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //TODO use Activity Result APIs in the future
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -151,6 +154,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //TODO use Activity Result APIs in the future
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (nav_view.selectedItemId == R.id.navigation_map &&
+            requestCode == RELOAD_MAP_REQUEST_CODE &&
+            resultCode == Activity.RESULT_OK
+        ) {
+            nav_view.selectedItemId = R.id.navigation_weather
+            nav_view.selectedItemId = R.id.navigation_map
+        }
+    }
+
     private fun openAboutPage() {
         Intent(this, AboutActivity::class.java).run {
             startActivity(this)
@@ -159,7 +175,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun openSettings() {
         Intent(this, SettingsActivity::class.java).run {
-            startActivity(this)
+            //TODO use Activity Result APIs in the future
+            startActivityForResult(this, RELOAD_MAP_REQUEST_CODE)
         }
     }
 

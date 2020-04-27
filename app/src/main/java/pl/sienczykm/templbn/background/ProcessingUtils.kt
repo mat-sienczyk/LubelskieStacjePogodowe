@@ -51,6 +51,7 @@ object ProcessingUtils {
             ?.data?.lastOrNull { dataModel -> dataModel.value != null }?.timestamp?.let { Date(it) }
     }
 
+    //TODO refactor this, create something more generic perhaps
     private fun constructWeatherStationModel(station: WeatherStationModel): WeatherStationModel {
         when (station.type) {
             WeatherStationModel.Type.UMCS_ONE -> LspController.getUmcsWeatherStationOne(station.stationId)
@@ -98,12 +99,6 @@ object ProcessingUtils {
                         }
                     } else throw Exception(errorBody().toString())
                 }
-            WeatherStationModel.Type.IMGW_SIMPLE -> LspController.getImgwWeatherStation(station.stationId)
-                .apply {
-                    if (isSuccessful) {
-                        //TODO create response model and parse it to WeatherStationModel
-                    } else throw Exception(errorBody().toString())
-                }
             WeatherStationModel.Type.IMGW_POGODYNKA -> LspController.getPogodynkaWeatherStation(
                 station.stationId
             )
@@ -112,6 +107,7 @@ object ProcessingUtils {
                         //TODO create response model and parse it to WeatherStationModel
                     } else throw Exception(errorBody().toString())
                 }
+            else -> throw Exception("Unparsed ${station.type} type!")
         }
 
         return station

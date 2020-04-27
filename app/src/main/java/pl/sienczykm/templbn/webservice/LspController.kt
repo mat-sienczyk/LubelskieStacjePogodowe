@@ -7,6 +7,7 @@ import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.webservice.model.air.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.air.AirSensor
@@ -79,22 +80,24 @@ object LspController {
             .build()
     }
 
+    //TODO create one instance of this
     private fun getClient(): OkHttpClient {
         return OkHttpClient().newBuilder()
-            .connectionSpecs(
-                listOf(
-                    ConnectionSpec.CLEARTEXT,
-                    ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                        .allEnabledTlsVersions()
-                        .allEnabledCipherSuites()
-                        .build()
-                )
-            )
+//            .connectionSpecs(
+//                listOf(
+//                    ConnectionSpec.CLEARTEXT,
+//                    ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+//                        .allEnabledTlsVersions()
+//                        .allEnabledCipherSuites()
+//                        .build()
+//                )
+//            )
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             }).build()
     }
 
+    //TODO create one instance of this
     private fun getGson(): Gson {
         return GsonBuilder().apply {
             setLenient()

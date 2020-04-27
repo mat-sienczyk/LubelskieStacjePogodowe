@@ -11,8 +11,6 @@ class App : Application() {
 
         handleNightMode()
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 }

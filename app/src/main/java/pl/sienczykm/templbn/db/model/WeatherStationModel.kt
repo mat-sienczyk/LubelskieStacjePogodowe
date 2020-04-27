@@ -185,7 +185,6 @@ class WeatherStationModel constructor(
 
     companion object {
 
-
         const val ID_KEY = "weather_station_id"
 
         // UMCS weather stations
@@ -287,9 +286,24 @@ class WeatherStationModel constructor(
         // IMGW weather stations https://danepubliczne.imgw.pl/api/data/synop
         val TERESPOL_SIMPLE =
             WeatherStationModel(12399, Type.IMGW_SIMPLE, 276, 416, 52.078611, 23.621944, "Terespol")
+        val WLODAWA_SIMPLE =
+            WeatherStationModel(
+                12497, Type.IMGW_SIMPLE, 276, 416, 51.553333,
+                23.529444, "Włodawa"
+            )
+        val LUBLIN_SIMPLE =
+            WeatherStationModel(
+                12495, Type.IMGW_SIMPLE, 276, 416, 51.216666,
+                22.393055, "LUBLIN"
+            )
+        val ZAMOSC_SIMPLE =
+            WeatherStationModel(
+                12595, Type.IMGW_SIMPLE, 276, 416, 50.698333,
+                23.205555, "Zamość"
+            )
 
         private val imgwStations = listOf(
-            TERESPOL_SIMPLE
+            TERESPOL_SIMPLE, WLODAWA_SIMPLE, LUBLIN_SIMPLE, ZAMOSC_SIMPLE
         )
 
 

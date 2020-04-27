@@ -25,7 +25,11 @@ class WeatherStationModel constructor(
     BaseStationModel(stationId, latitude, longitude, city, location) {
 
     override fun getStationUrl(): String {
-        return Config.BASE_WEATHER_URL + "podglad/" + stationId
+        return when (type) {
+            Type.UMCS_ONE, Type.UMCS_TWO -> Config.UMCS_BASE_WEATHER_URL + "podglad/" + stationId
+            Type.IMGW_POGODYNKA -> Config.POGODYNKA_BASE_WEATHER_URL + "#station/meteo/" + stationId
+            else -> ""
+        }
     }
 
     override fun getOldDateTimeInMinutes(): Long = 30
@@ -181,12 +185,14 @@ class WeatherStationModel constructor(
 
     companion object {
 
+
         const val ID_KEY = "weather_station_id"
 
+        // UMCS weather stations
         val PLAC_LITEWSKI =
             WeatherStationModel(
                 16,
-                Type.ONE,
+                Type.UMCS_ONE,
                 276,
                 430,
                 51.248831,
@@ -197,7 +203,7 @@ class WeatherStationModel constructor(
         val OGROD_BOTANICZNY =
             WeatherStationModel(
                 10,
-                Type.ONE,
+                Type.UMCS_ONE,
                 276,
                 430,
                 51.263975,
@@ -208,7 +214,7 @@ class WeatherStationModel constructor(
         val ZEMBORZYCKA =
             WeatherStationModel(
                 17,
-                Type.ONE,
+                Type.UMCS_ONE,
                 276,
                 430,
                 51.203525,
@@ -219,7 +225,7 @@ class WeatherStationModel constructor(
         val HAJDOW =
             WeatherStationModel(
                 18,
-                Type.TWO,
+                Type.UMCS_TWO,
                 276,
                 430,
                 51.264328,
@@ -227,37 +233,282 @@ class WeatherStationModel constructor(
                 "Lublin",
                 "MPWiK Hajdów"
             )
-        val GUCIOW = WeatherStationModel(11, Type.ONE, 290, 451, 50.582600, 23.073628, "Guciów")
+        val GUCIOW =
+            WeatherStationModel(11, Type.UMCS_ONE, 290, 451, 50.582600, 23.073628, "Guciów")
         val FLORIANKA =
-            WeatherStationModel(12, Type.TWO, 283, 451, 50.554803, 22.988150, "Florianka")
-        val LUKOW = WeatherStationModel(13, Type.TWO, 276, 416, 51.930883, 22.389122, "Łuków")
+            WeatherStationModel(12, Type.UMCS_TWO, 283, 451, 50.554803, 22.988150, "Florianka")
+        val LUKOW = WeatherStationModel(13, Type.UMCS_TWO, 276, 416, 51.930883, 22.389122, "Łuków")
         val LUBARTOW =
-            WeatherStationModel(19, Type.ONE, 276, 423, 51.452850, 22.590253, "Lubartów", "PGK ")
-        val TRZDNIK = WeatherStationModel(20, Type.TWO, 269, 416, 50.851986, 22.134056, "Trzydnik")
+            WeatherStationModel(
+                19,
+                Type.UMCS_ONE,
+                276,
+                423,
+                51.452850,
+                22.590253,
+                "Lubartów",
+                "PGK "
+            )
+        val TRZDNIK =
+            WeatherStationModel(20, Type.UMCS_TWO, 269, 416, 50.851986, 22.134056, "Trzydnik")
         val LESNIOWICE =
-            WeatherStationModel(21, Type.TWO, 297, 437, 50.988278, 23.509881, "Leśniowice")
+            WeatherStationModel(21, Type.UMCS_TWO, 297, 437, 50.988278, 23.509881, "Leśniowice")
         val RYBCZEWICE =
-            WeatherStationModel(22, Type.TWO, 283, 437, 51.039969, 22.853811, "Rybczewice")
+            WeatherStationModel(22, Type.UMCS_TWO, 283, 437, 51.039969, 22.853811, "Rybczewice")
         val WOLA_WERESZCZYNSKA =
-            WeatherStationModel(23, Type.TWO, 283, 423, 51.442264, 23.129692, "Wola Wereszczyńska")
-        val CELEJOW = WeatherStationModel(24, Type.TWO, 269, 430, 51.330653, 22.071947, "Celejów")
+            WeatherStationModel(
+                23,
+                Type.UMCS_TWO,
+                283,
+                423,
+                51.442264,
+                23.129692,
+                "Wola Wereszczyńska"
+            )
+        val CELEJOW =
+            WeatherStationModel(24, Type.UMCS_TWO, 269, 430, 51.330653, 22.071947, "Celejów")
+
+        private val umcsStations = listOf(
+            PLAC_LITEWSKI,
+            OGROD_BOTANICZNY,
+            ZEMBORZYCKA,
+            HAJDOW,
+            LUBARTOW,
+            GUCIOW,
+//                FLORIANKA,
+            LUKOW,
+            TRZDNIK,
+            LESNIOWICE,
+            RYBCZEWICE,
+            WOLA_WERESZCZYNSKA,
+            CELEJOW
+        )
+
+        // IMGW weather stations https://danepubliczne.imgw.pl/api/data/synop
+        val TERESPOL_SIMPLE =
+            WeatherStationModel(12399, Type.IMGW_SIMPLE, 276, 416, 52.078611, 23.621944, "Terespol")
+
+        private val imgwStations = listOf(
+            TERESPOL_SIMPLE
+        )
+
+
+        //POGODYNKA weather stations http://monitor.pogodynka.pl/api/map/?category=meteo
+        val TERESPOL =
+            WeatherStationModel(
+                352230399,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                52.078611,
+                23.621944,
+                "Terespol"
+            )
+        val CICIBOR =
+            WeatherStationModel(
+                252230190,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                52.076944,
+                23.109444,
+                "Cicibór"
+            )
+        val JARCZEW =
+            WeatherStationModel(
+                251210040,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.814722,
+                21.973333,
+                "Jarczew"
+            )
+        val RADZYN_PODLASKI =
+            WeatherStationModel(
+                251220040,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.769166,
+                22.600833,
+                "Radzyń Podlaski"
+            )
+        val WLODAWA =
+            WeatherStationModel(
+                351230497,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.553333,
+                23.529444,
+                "Włodawa"
+            )
+        val PULAWY =
+            WeatherStationModel(
+                251210120,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.412777,
+                21.966111,
+                "Puławy"
+            )
+        val RADAWIEC =
+            WeatherStationModel(
+                351220495,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.216666,
+                22.393055,
+                "Radawiec"
+            )
+        val BEZEK =
+            WeatherStationModel(
+                251230120,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                51.177222,
+                23.263611,
+                "Bezek"
+            )
+        val ANNOPOL =
+            WeatherStationModel(
+                250210030,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.889444,
+                21.834166,
+                "Annopol"
+            )
+        val WYSOKIE =
+            WeatherStationModel(
+                250220030,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.917777,
+                22.666944,
+                "Wysokie"
+            )
+        val STRZYZOW =
+            WeatherStationModel(
+                250240010,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.84,
+                24.035555,
+                "Strzyżów"
+            )
+        val NIELISZ =
+            WeatherStationModel(
+                250230020,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.805,
+                23.038611,
+                "Nielisz"
+            )
+        val ZAKLODZIE =
+            WeatherStationModel(
+                250220050,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.7575,
+                22.861388,
+                "Zakłodzie"
+            )
+        val ZAMOSC =
+            WeatherStationModel(
+                350230595,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.698333,
+                23.205555,
+                "Zamość"
+            )
+        val FRAMPOL =
+            WeatherStationModel(
+                250220080,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.675,
+                22.666111,
+                "Frampol"
+            )
+        val BRODZIAKI =
+            WeatherStationModel(
+                250220130,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.5066,
+                22.790,
+                "Brodziaki"
+            )
+        val JOZEFOW =
+            WeatherStationModel(
+                250230060,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.4875,
+                23.05833,
+                "Józefów"
+            )
+        val TOMASZOW_LUBELSKI =
+            WeatherStationModel(
+                250230070,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.45805,
+                23.3988,
+                "Tomaszów Lubelski"
+            )
+        val TARNOGROD =
+            WeatherStationModel(
+                250220140,
+                Type.IMGW_POGODYNKA,
+                276,
+                416,
+                50.356,
+                22.756,
+                "Tarnogród"
+            )
+
+        private val imgwPogodynkaStations = listOf(
+            TERESPOL,
+            CICIBOR,
+            JARCZEW,
+            RADZYN_PODLASKI,
+            WLODAWA,
+            PULAWY,
+            RADAWIEC,
+            BEZEK,
+            ANNOPOL,
+            WYSOKIE,
+            STRZYZOW,
+            NIELISZ,
+            ZAKLODZIE,
+            ZAMOSC,
+            FRAMPOL,
+            BRODZIAKI,
+            JOZEFOW,
+            TOMASZOW_LUBELSKI,
+            TARNOGROD
+        )
 
         fun getStations(): List<WeatherStationModel> {
-            return listOf(
-                PLAC_LITEWSKI,
-                OGROD_BOTANICZNY,
-                ZEMBORZYCKA,
-                HAJDOW,
-                LUBARTOW,
-                GUCIOW,
-//                FLORIANKA,
-                LUKOW,
-                TRZDNIK,
-                LESNIOWICE,
-                RYBCZEWICE,
-                WOLA_WERESZCZYNSKA,
-                CELEJOW
-            )
+            return umcsStations + imgwPogodynkaStations
         }
 
         fun getStationForGivenId(id: Int): WeatherStationModel {
@@ -289,6 +540,6 @@ class WeatherStationModel constructor(
     }
 
     enum class Type {
-        ONE, TWO
+        UMCS_ONE, UMCS_TWO, IMGW_SIMPLE, IMGW_POGODYNKA
     }
 }

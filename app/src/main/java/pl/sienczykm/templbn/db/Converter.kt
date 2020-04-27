@@ -26,8 +26,13 @@ class Converter {
 
     @TypeConverter
     fun stringToType(value: String): WeatherStationModel.Type =
-        if (value == WeatherStationModel.Type.ONE.name) WeatherStationModel.Type.ONE
-        else WeatherStationModel.Type.TWO
+        when (value) {
+            WeatherStationModel.Type.UMCS_ONE.name -> WeatherStationModel.Type.UMCS_ONE
+            WeatherStationModel.Type.UMCS_TWO.name -> WeatherStationModel.Type.UMCS_TWO
+            WeatherStationModel.Type.IMGW_SIMPLE.name -> WeatherStationModel.Type.IMGW_SIMPLE
+            WeatherStationModel.Type.IMGW_POGODYNKA.name -> WeatherStationModel.Type.IMGW_POGODYNKA
+            else -> throw Exception("Add TypeConverter for new WeatherStationModel.Type!")
+        }
 
     @TypeConverter
     fun typeToString(type: WeatherStationModel.Type): String {

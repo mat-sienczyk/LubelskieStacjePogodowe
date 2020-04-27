@@ -11,7 +11,7 @@ import pl.sienczykm.templbn.utils.dateFormat
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.webservice.LspController
-import pl.sienczykm.templbn.webservice.model.AirSensorData
+import pl.sienczykm.templbn.webservice.model.air.AirSensorData
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -53,49 +53,65 @@ object ProcessingUtils {
 
     private fun constructWeatherStationModel(station: WeatherStationModel): WeatherStationModel {
         when (station.type) {
-            WeatherStationModel.Type.ONE -> LspController.getWeatherStationOne(station.stationId).apply {
-                if (isSuccessful) {
-                    body()?.apply {
-                        station.date = parseWeatherDate(data)
-                        station.temperature = temperature
-                        station.temperatureWind = temperatureWindChill
-                        station.windSpeed = windSpeed
-                        station.windDir = windDir
-                        station.humidity = humidity
-                        station.pressure = pressure
-                        station.rainToday = rainToday
-                        station.temperatureData =
-                            parseWeatherChartData(temperatureData?.data)
-                        station.humidityData =
-                            parseWeatherChartData(humidityData?.data)
-                        station.windSpeedData =
-                            parseWeatherChartData(windSpeedData?.data)
-                        station.temperatureWindData =
-                            parseWeatherChartData(temperatureWindChart?.data)
-                        station.pressureData =
-                            parseWeatherChartData(pressureData?.data, true)
-                        station.rainTodayData =
-                            parseWeatherChartData(rainData?.data)
-                    }
-                } else throw Exception(errorBody().toString())
-            }
-            WeatherStationModel.Type.TWO -> LspController.getWeatherStationTwo(station.stationId).apply {
-                if (isSuccessful) {
-                    body()?.apply {
-                        station.date = parseWeatherDate(data)
-                        station.temperature = temperature
-                        station.temperatureGround = temperatureGround
-                        station.windSpeed = windSpeed
-                        station.windDir = windDir
-                        station.humidity = humidity
-                        station.rainToday = rainToday
-                        station.temperatureWindData =
-                            parseWeatherChartData(temperatureData?.data)
-                        station.humidityData =
-                            parseWeatherChartData(humidityData?.data)
-                    }
-                } else throw Exception(errorBody().toString())
-            }
+            WeatherStationModel.Type.UMCS_ONE -> LspController.getUmcsWeatherStationOne(station.stationId)
+                .apply {
+                    if (isSuccessful) {
+                        body()?.apply {
+                            station.date = parseWeatherDate(data)
+                            station.temperature = temperature
+                            station.temperatureWind = temperatureWindChill
+                            station.windSpeed = windSpeed
+                            station.windDir = windDir
+                            station.humidity = humidity
+                            station.pressure = pressure
+                            station.rainToday = rainToday
+                            station.temperatureData =
+                                parseWeatherChartData(temperatureData?.data)
+                            station.humidityData =
+                                parseWeatherChartData(humidityData?.data)
+                            station.windSpeedData =
+                                parseWeatherChartData(windSpeedData?.data)
+                            station.temperatureWindData =
+                                parseWeatherChartData(temperatureWindChart?.data)
+                            station.pressureData =
+                                parseWeatherChartData(pressureData?.data, true)
+                            station.rainTodayData =
+                                parseWeatherChartData(rainData?.data)
+                        }
+                    } else throw Exception(errorBody().toString())
+                }
+            WeatherStationModel.Type.UMCS_TWO -> LspController.getUmcsWeatherStationTwo(station.stationId)
+                .apply {
+                    if (isSuccessful) {
+                        body()?.apply {
+                            station.date = parseWeatherDate(data)
+                            station.temperature = temperature
+                            station.temperatureGround = temperatureGround
+                            station.windSpeed = windSpeed
+                            station.windDir = windDir
+                            station.humidity = humidity
+                            station.rainToday = rainToday
+                            station.temperatureWindData =
+                                parseWeatherChartData(temperatureData?.data)
+                            station.humidityData =
+                                parseWeatherChartData(humidityData?.data)
+                        }
+                    } else throw Exception(errorBody().toString())
+                }
+            WeatherStationModel.Type.IMGW_SIMPLE -> LspController.getImgwWeatherStation(station.stationId)
+                .apply {
+                    if (isSuccessful) {
+                        //TODO create response model and parse it to WeatherStationModel
+                    } else throw Exception(errorBody().toString())
+                }
+            WeatherStationModel.Type.IMGW_POGODYNKA -> LspController.getPogodynkaWeatherStation(
+                station.stationId
+            )
+                .apply {
+                    if (isSuccessful) {
+                        //TODO create response model and parse it to WeatherStationModel
+                    } else throw Exception(errorBody().toString())
+                }
         }
 
         return station

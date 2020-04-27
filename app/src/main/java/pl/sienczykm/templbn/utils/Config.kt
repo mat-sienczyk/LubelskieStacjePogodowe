@@ -9,7 +9,11 @@ object Config {
 
     const val PREF_NAME = "lsp_pref"
 
-    const val BASE_WEATHER_URL = "http://212.182.4.252/"
+    const val UMCS_BASE_WEATHER_URL = "http://212.182.4.252/"
 
-    const val BASE_AIR_URL = "http://api.gios.gov.pl/pjp-api/rest/"
+    const val IMGW_BASE_WEATHER_URL = "https://danepubliczne.imgw.pl/api/data/synop/id/"
+
+    const val POGODYNKA_BASE_WEATHER_URL = "http://monitor.pogodynka.pl/"
+
+    const val GIOS_BASE_AIR_URL = "http://api.gios.gov.pl/pjp-api/rest/"
 }

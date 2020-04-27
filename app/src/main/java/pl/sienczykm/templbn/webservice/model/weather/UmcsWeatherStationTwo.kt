@@ -1,11 +1,12 @@
-package pl.sienczykm.templbn.webservice.model
+package pl.sienczykm.templbn.webservice.model.weather
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import pl.sienczykm.templbn.utils.EmptyStringTypeAdapter
+import pl.sienczykm.templbn.webservice.model.weather.ChartModel
 
-class WeatherStationTwo {
+class UmcsWeatherStationTwo {
 
     @SerializedName("data")
     @Expose

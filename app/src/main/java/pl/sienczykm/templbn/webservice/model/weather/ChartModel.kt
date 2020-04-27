@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.webservice.model
+package pl.sienczykm.templbn.webservice.model.weather
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

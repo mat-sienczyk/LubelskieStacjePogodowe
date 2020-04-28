@@ -148,7 +148,7 @@ class Connections {
     var meteo: List<Items>? = null
 }
 
-class ExtendedRecord {
+open class Record {
     @SerializedName("date")
     @Expose
     var date: String? = null
@@ -156,7 +156,9 @@ class ExtendedRecord {
     @SerializedName("value")
     @Expose
     var value: Double? = null
+}
 
+class ExtendedRecord : Record() {
     @SerializedName("dreId")
     @Expose
     var dreId: Long? = null
@@ -176,17 +178,6 @@ class ExtendedRecord {
     @SerializedName("id")
     @Expose
     var id: Long? = null
-}
-
-
-class Record {
-    @SerializedName("date")
-    @Expose
-    var date: String? = null
-
-    @SerializedName("value")
-    @Expose
-    var value: Double? = null
 }
 
 class Items {

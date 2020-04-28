@@ -12,6 +12,7 @@ import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.webservice.LspController
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
+import pl.sienczykm.templbn.webservice.model.weather.Record
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -107,7 +108,15 @@ object ProcessingUtils {
                         body()?.apply {
                             station.date =
                                 parsePogodynkaWeatherDate(temperatureAutoRecords?.lastOrNull()?.date)
-                            station.temperature = temperatureAutoRecords?.last()?.value
+                            station.temperature = temperatureAutoRecords?.lastOrNull()?.value
+                            station.windSpeed = windVelocityTelRecords?.lastOrNull()?.value
+                            station.windDir = windDirectionTelRecords?.lastOrNull()?.value
+                            station.temperatureData =
+                                parsePogodynkaChartData(temperatureAutoRecords)
+                            station.windSpeedData = parsePogodynkaChartData(windVelocityTelRecords)
+                            station.rainTodayData = parsePogodynkaChartData(hourlyPrecipRecords)
+                            station.rainToday =
+                                parsePogodynkaRainToday(station.rainTodayData) // status?.precip24HoursSum?.toDouble()
                         }
                     } else throw Exception(errorBody().toString())
                 }
@@ -119,9 +128,6 @@ object ProcessingUtils {
 
     private fun parseUmcsWeatherDate(stringDate: String?): Date? =
         stringDate?.let { dateFormat("yyyy-MM-dd HH:mm", "UTC").parse(it) }
-
-    private fun parsePogodynkaWeatherDate(stringDate: String?): Date? =
-        stringDate?.let { dateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", "UTC").parse(it) }
 
     private fun parseUmcsWeatherChartData(
         chartData: List<List<Double>?>?,
@@ -137,6 +143,29 @@ object ProcessingUtils {
             if (isPressure) returnList = returnList.filter { it[1] > 0 }
             returnList.map { ChartDataModel(it[0].toLong().plus(offset), it[1]) }
         }
+    }
+
+    private fun parsePogodynkaWeatherDate(stringDate: String?): Date? =
+        stringDate?.let { dateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", "UTC").parse(it) }
+
+    private fun parsePogodynkaChartData(records: List<Record?>?) =
+        records?.map { record ->
+            ChartDataModel(
+                parsePogodynkaWeatherDate(record?.date)?.time,
+                record?.value
+            )
+        }
+
+    private fun parsePogodynkaRainToday(rainRecords: List<ChartDataModel>?): Double? {
+        // accumulate data today from tenMinutesPrecipRecords
+        val fromToday = nowInPoland().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+
+        return rainRecords?.filter { it.timestamp!! > fromToday.timeInMillis }
+            ?.sumByDouble { it.value!! }
     }
 
     private fun getSensors(stationId: Int): List<AirSensorModel>? {

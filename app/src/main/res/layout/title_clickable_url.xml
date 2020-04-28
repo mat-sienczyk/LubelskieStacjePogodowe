@@ -5,6 +5,10 @@
     <data>
 
         <variable
+                name="stringRes"
+                type="Integer" />
+
+        <variable
                 name="title"
                 type="String" />
 
@@ -14,7 +18,7 @@
 
         <variable
                 name="url"
-                type="String"/>
+                type="String" />
 
         <variable
                 name="viewModel"
@@ -43,8 +47,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="@{title}"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:string="@{title}"
+                    app:stringResource="@{stringRes}" />
 
             <TextView
                     android:layout_width="wrap_content"

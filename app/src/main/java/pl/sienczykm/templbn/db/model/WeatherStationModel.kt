@@ -32,7 +32,15 @@ class WeatherStationModel constructor(
         }
     }
 
-    override fun getOldDateTimeInMinutes(): Long = 30
+    override fun getStationSource(): Int = when (type) {
+        Type.UMCS_ONE, Type.UMCS_TWO -> R.string.umcs_station_title_weather
+        Type.IMGW_POGODYNKA, Type.IMGW_SIMPLE -> R.string.imgw_station_title_weather
+    }
+
+    override fun getOldDateTimeInMinutes(): Long = when (type) {
+        Type.UMCS_ONE, Type.UMCS_TWO -> 30
+        Type.IMGW_POGODYNKA, Type.IMGW_SIMPLE -> 90
+    }
 
     init {
         this.url = getStationUrl()
@@ -499,24 +507,25 @@ class WeatherStationModel constructor(
                 "Tarnogród"
             )
 
+        // commented out stations without temperature
         private val imgwPogodynkaStations = listOf(
             TERESPOL,
             CICIBOR,
             JARCZEW,
-            RADZYN_PODLASKI,
+//            RADZYN_PODLASKI,
             WLODAWA,
             PULAWY,
             RADAWIEC,
-            BEZEK,
-            ANNOPOL,
+//            BEZEK,
+//            ANNOPOL,
             WYSOKIE,
-            STRZYZOW,
+//            STRZYZOW,
             NIELISZ,
-            ZAKLODZIE,
+//            ZAKLODZIE,
             ZAMOSC,
-            FRAMPOL,
-            BRODZIAKI,
-            JOZEFOW,
+//            FRAMPOL,
+//            BRODZIAKI,
+//            JOZEFOW,
             TOMASZOW_LUBELSKI,
             TARNOGROD
         )
@@ -529,27 +538,26 @@ class WeatherStationModel constructor(
             return getStations().single { it.stationId == id }
         }
 
-        fun windIntToDir(windDirInt: Double?, returnEmpty: Boolean = false): Int {
-            return when {
-                windDirInt == null -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
-                // north N
-                windDirInt <= 22 || windDirInt >= 338 -> R.drawable.ic_arrow_down
-                // north-east NE
-                windDirInt <= 67 -> R.drawable.ic_arrow_bottom_left
-                // east E
-                windDirInt <= 112 -> R.drawable.ic_arrow_left
-                // south-east SE
-                windDirInt <= 157 -> R.drawable.ic_arrow_top_left
-                // south S
-                windDirInt <= 202 -> R.drawable.ic_arrow_up
-                // south-west SW
-                windDirInt <= 247 -> R.drawable.ic_arrow_top_right
-                // west W
-                windDirInt <= 292 -> R.drawable.ic_arrow_right
-                // north-west NW
-                windDirInt <= 337 -> R.drawable.ic_arrow_bottom_right
-                else -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
-            }
+        fun windIntToDir(windDirInt: Double?, returnEmpty: Boolean = false): Int = when {
+            windDirInt == null -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
+            // north N
+            windDirInt <= 22 || windDirInt >= 338 -> R.drawable.ic_arrow_down
+            // north-east NE
+            windDirInt <= 67 -> R.drawable.ic_arrow_bottom_left
+            // east E
+            windDirInt <= 112 -> R.drawable.ic_arrow_left
+            // south-east SE
+            windDirInt <= 157 -> R.drawable.ic_arrow_top_left
+            // south S
+            windDirInt <= 202 -> R.drawable.ic_arrow_up
+            // south-west SW
+            windDirInt <= 247 -> R.drawable.ic_arrow_top_right
+            // west W
+            windDirInt <= 292 -> R.drawable.ic_arrow_right
+            // north-west NW
+            windDirInt <= 337 -> R.drawable.ic_arrow_bottom_right
+
+            else -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
         }
     }
 

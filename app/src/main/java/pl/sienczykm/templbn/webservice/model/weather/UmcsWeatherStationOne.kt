@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import pl.sienczykm.templbn.utils.EmptyStringTypeAdapter
-import pl.sienczykm.templbn.webservice.model.weather.ChartModel
 
 class UmcsWeatherStationOne {
 
@@ -71,7 +70,6 @@ class UmcsWeatherStationOne {
     @Expose
     @JsonAdapter(EmptyStringTypeAdapter::class)
     var rainToday: Double? = null
-
 
 
 }

@@ -3,7 +3,6 @@ package pl.sienczykm.templbn.webservice
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,6 +11,7 @@ import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.webservice.model.air.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.air.AirSensor
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
+import pl.sienczykm.templbn.webservice.model.weather.PogodynkaWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationOne
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationTwo
 import retrofit2.Response
@@ -37,7 +37,7 @@ object LspController {
     }
 
     @WorkerThread
-    fun getPogodynkaWeatherStation(stationId: Int): Response<ResponseBody> {
+    fun getPogodynkaWeatherStation(stationId: Int): Response<PogodynkaWeatherStation> {
         return getPogodynkaWeatherService().getPogodynkaStation(stationId).execute()
     }
 

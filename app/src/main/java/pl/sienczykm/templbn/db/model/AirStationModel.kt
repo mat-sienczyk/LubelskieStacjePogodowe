@@ -29,6 +29,8 @@ class AirStationModel constructor(
         return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
     }
 
+    override fun getStationSource(): Int = R.string.station_title_air
+
     override fun getOldDateTimeInMinutes(): Long = 180
 
     init {
@@ -161,7 +163,11 @@ class AirStationModel constructor(
         CO(R.string.sensor_type_co, "CO", 8, 3, 7, 11, 15, 21)
     }
 
-    enum class AirQualityIndex(val value: Int, @StringRes val description: Int, @ColorRes val color: Int) {
+    enum class AirQualityIndex(
+        val value: Int,
+        @StringRes val description: Int,
+        @ColorRes val color: Int
+    ) {
         VERY_GOOD(0, R.string.sensor_quality_very_good, R.color.quality_very_good),
         GOOD(1, R.string.sensor_quality_good, R.color.quality_good),
         MODERATE(2, R.string.sensor_quality_moderate, R.color.quality_moderate),

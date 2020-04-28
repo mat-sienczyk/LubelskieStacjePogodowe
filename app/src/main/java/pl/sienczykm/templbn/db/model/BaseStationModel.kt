@@ -22,10 +22,12 @@ abstract class BaseStationModel(
     lateinit var url: String
     var favorite: Boolean = false
     var date: Date? = null
+
     @Ignore
     var distance: Double? = null
 
     abstract fun getStationUrl(): String
+    abstract fun getStationSource(): Int
     abstract fun getOldDateTimeInMinutes(): Long
 
     // need to create own implementation of copy() function instead of Kotlin Data Class because of problem with inheritance

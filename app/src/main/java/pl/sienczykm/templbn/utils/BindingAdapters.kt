@@ -112,8 +112,22 @@ fun setWeatherData(
 }
 
 @BindingAdapter("imageResource")
-fun setImageResource(imageView: ImageView, resource: Int) {
-    imageView.setImageResource(resource)
+fun setImageResource(imageView: ImageView, resource: Int?) {
+    if (resource != null && resource != 0)
+        imageView.setImageResource(resource)
+}
+
+@BindingAdapter(value = ["stringResource", "string"], requireAll = false)
+fun setStringResource(
+    textView: TextView,
+    stringResource: Int?,
+    string: String?
+) {
+    if (string != null) {
+        textView.text = string
+    } else if (stringResource != null && stringResource != 0) {
+        textView.setText(stringResource)
+    }
 }
 
 @BindingAdapter("oldDate")

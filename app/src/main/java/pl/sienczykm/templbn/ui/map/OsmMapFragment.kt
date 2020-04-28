@@ -90,7 +90,7 @@ class OsmMapFragment : Fragment() {
                 setAnchor(
                     Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
                 )
-                snippet = getString(R.string.station_title_weather)
+                snippet = getString(weatherStationModel.getStationSource())
                 infoWindow = infoView
                 setOnMarkerClickListener { marker, _ ->
                     marker.showInfoWindow()
@@ -109,7 +109,7 @@ class OsmMapFragment : Fragment() {
                 setAnchor(
                     Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
                 )
-                snippet = getString(R.string.station_title_air)
+                snippet = getString(airStationModel.getStationSource())
                 infoWindow = infoView
                 setOnMarkerClickListener { marker, _ ->
                     marker.showInfoWindow()

@@ -1,6 +1,7 @@
 package pl.sienczykm.templbn.webservice
 
 import okhttp3.ResponseBody
+import pl.sienczykm.templbn.webservice.model.weather.PogodynkaWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationOne
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationTwo
 import retrofit2.Call
@@ -19,5 +20,5 @@ interface WeatherService {
     fun getImgwStation(@Path("id") stationId: Int): Call<ResponseBody>
 
     @GET("api/station/meteo")
-    fun getPogodynkaStation(@Query("id") stationId: Int): Call<ResponseBody>
+    fun getPogodynkaStation(@Query("id") stationId: Int): Call<PogodynkaWeatherStation>
 }

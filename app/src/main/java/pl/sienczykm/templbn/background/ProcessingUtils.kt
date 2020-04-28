@@ -58,7 +58,7 @@ object ProcessingUtils {
                 .apply {
                     if (isSuccessful) {
                         body()?.apply {
-                            station.date = parseWeatherDate(data)
+                            station.date = parseUmcsWeatherDate(data)
                             station.temperature = temperature
                             station.temperatureWind = temperatureWindChill
                             station.windSpeed = windSpeed
@@ -67,17 +67,17 @@ object ProcessingUtils {
                             station.pressure = pressure
                             station.rainToday = rainToday
                             station.temperatureData =
-                                parseWeatherChartData(temperatureData?.data)
+                                parseUmcsWeatherChartData(temperatureData?.data)
                             station.humidityData =
-                                parseWeatherChartData(humidityData?.data)
+                                parseUmcsWeatherChartData(humidityData?.data)
                             station.windSpeedData =
-                                parseWeatherChartData(windSpeedData?.data)
+                                parseUmcsWeatherChartData(windSpeedData?.data)
                             station.temperatureWindData =
-                                parseWeatherChartData(temperatureWindChart?.data)
+                                parseUmcsWeatherChartData(temperatureWindChart?.data)
                             station.pressureData =
-                                parseWeatherChartData(pressureData?.data, true)
+                                parseUmcsWeatherChartData(pressureData?.data, true)
                             station.rainTodayData =
-                                parseWeatherChartData(rainData?.data)
+                                parseUmcsWeatherChartData(rainData?.data)
                         }
                     } else throw Exception(errorBody().toString())
                 }
@@ -85,7 +85,7 @@ object ProcessingUtils {
                 .apply {
                     if (isSuccessful) {
                         body()?.apply {
-                            station.date = parseWeatherDate(data)
+                            station.date = parseUmcsWeatherDate(data)
                             station.temperature = temperature
                             station.temperatureGround = temperatureGround
                             station.windSpeed = windSpeed
@@ -93,9 +93,9 @@ object ProcessingUtils {
                             station.humidity = humidity
                             station.rainToday = rainToday
                             station.temperatureWindData =
-                                parseWeatherChartData(temperatureData?.data)
+                                parseUmcsWeatherChartData(temperatureData?.data)
                             station.humidityData =
-                                parseWeatherChartData(humidityData?.data)
+                                parseUmcsWeatherChartData(humidityData?.data)
                         }
                     } else throw Exception(errorBody().toString())
                 }
@@ -104,7 +104,11 @@ object ProcessingUtils {
             )
                 .apply {
                     if (isSuccessful) {
-                        //TODO create response model and parse it to WeatherStationModel
+                        body()?.apply {
+                            station.date =
+                                parsePogodynkaWeatherDate(temperatureAutoRecords?.lastOrNull()?.date)
+                            station.temperature = temperatureAutoRecords?.last()?.value
+                        }
                     } else throw Exception(errorBody().toString())
                 }
             else -> throw Exception("Unparsed ${station.type} type!")
@@ -113,10 +117,13 @@ object ProcessingUtils {
         return station
     }
 
-    private fun parseWeatherDate(stringDate: String?): Date? =
+    private fun parseUmcsWeatherDate(stringDate: String?): Date? =
         stringDate?.let { dateFormat("yyyy-MM-dd HH:mm", "UTC").parse(it) }
 
-    private fun parseWeatherChartData(
+    private fun parsePogodynkaWeatherDate(stringDate: String?): Date? =
+        stringDate?.let { dateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", "UTC").parse(it) }
+
+    private fun parseUmcsWeatherChartData(
         chartData: List<List<Double>?>?,
         isPressure: Boolean = false
     ): List<ChartDataModel>? {

@@ -320,8 +320,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 352230399,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                297,
+                409,
                 52.078611,
                 23.621944,
                 "Terespol"
@@ -330,8 +330,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 252230190,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                283,
+                409,
                 52.076944,
                 23.109444,
                 "Cicibór"
@@ -340,7 +340,7 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 251210040,
                 Type.IMGW_POGODYNKA,
-                276,
+                269,
                 416,
                 51.814722,
                 21.973333,
@@ -350,8 +350,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 251220040,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 51.769166,
                 22.600833,
                 "Radzyń Podlaski"
@@ -360,8 +360,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 351230497,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                290,
+                423,
                 51.553333,
                 23.529444,
                 "Włodawa"
@@ -370,8 +370,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 251210120,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                269,
+                430,
                 51.412777,
                 21.966111,
                 "Puławy"
@@ -381,7 +381,7 @@ class WeatherStationModel constructor(
                 351220495,
                 Type.IMGW_POGODYNKA,
                 276,
-                416,
+                430,
                 51.216666,
                 22.393055,
                 "Radawiec"
@@ -390,8 +390,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 251230120,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 51.177222,
                 23.263611,
                 "Bezek"
@@ -400,8 +400,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250210030,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.889444,
                 21.834166,
                 "Annopol"
@@ -411,7 +411,7 @@ class WeatherStationModel constructor(
                 250220030,
                 Type.IMGW_POGODYNKA,
                 276,
-                416,
+                444,
                 50.917777,
                 22.666944,
                 "Wysokie"
@@ -420,8 +420,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250240010,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.84,
                 24.035555,
                 "Strzyżów"
@@ -430,8 +430,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250230020,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                283,
+                444,
                 50.805,
                 23.038611,
                 "Nielisz"
@@ -440,8 +440,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250220050,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.7575,
                 22.861388,
                 "Zakłodzie"
@@ -450,8 +450,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 350230595,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                290,
+                444,
                 50.698333,
                 23.205555,
                 "Zamość"
@@ -460,8 +460,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250220080,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.675,
                 22.666111,
                 "Frampol"
@@ -470,8 +470,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250220130,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.5066,
                 22.790,
                 "Brodziaki"
@@ -480,8 +480,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250230060,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                276, // bad
+                416, // bad
                 50.4875,
                 23.05833,
                 "Józefów"
@@ -490,8 +490,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250230070,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                290,
+                451,
                 50.45805,
                 23.3988,
                 "Tomaszów Lubelski"
@@ -500,8 +500,8 @@ class WeatherStationModel constructor(
             WeatherStationModel(
                 250220140,
                 Type.IMGW_POGODYNKA,
-                276,
-                416,
+                283,
+                458,
                 50.356,
                 22.756,
                 "Tarnogród"

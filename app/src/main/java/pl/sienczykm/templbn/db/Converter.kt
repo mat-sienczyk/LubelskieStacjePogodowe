@@ -31,6 +31,7 @@ class Converter {
             WeatherStationModel.Type.UMCS_TWO.name -> WeatherStationModel.Type.UMCS_TWO
             WeatherStationModel.Type.IMGW_SIMPLE.name -> WeatherStationModel.Type.IMGW_SIMPLE
             WeatherStationModel.Type.IMGW_POGODYNKA.name -> WeatherStationModel.Type.IMGW_POGODYNKA
+            WeatherStationModel.Type.SWIDNIK.name -> WeatherStationModel.Type.SWIDNIK
             else -> throw Exception("Add TypeConverter for new WeatherStationModel.Type!")
         }
 

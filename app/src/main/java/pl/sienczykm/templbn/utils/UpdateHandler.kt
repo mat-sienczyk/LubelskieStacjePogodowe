@@ -18,7 +18,8 @@ object UpdateHandler {
     const val STATION_TYPE_KEY = "station_type_key"
     const val AUTO_SYNC_TAG = "auto_sync_tag"
     const val AIR_SYNC_WORK_NAME = "air_sync_tag"
-    const val WEATHER_SYNC_WORK_NAME = "auto_sync_tag"
+    const val FREQUENT_WEATHER_SYNC_WORK_NAME = "auto_sync_tag"
+    const val RARE_WEATHER_SYNC_WORK_NAME = "auto_sync_tag"
 
     fun syncNowAirStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
@@ -36,7 +37,7 @@ object UpdateHandler {
     fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
             context,
-            WeatherStationModel.getStations().map { it.stationId },
+            WeatherStationModel.getAllStations().map { it.stationId },
             receiver,
             WeatherStationModel.ID_KEY
         )
@@ -85,9 +86,17 @@ object UpdateHandler {
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
+            FREQUENT_WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 context.getWeatherStationUpdateInterval().toLong(),
-                WeatherStationModel.getStations().map { it.stationId }.toIntArray(),
+                WeatherStationModel.getFrequentUpdatedStations().map { it.stationId }.toIntArray(),
+                WeatherStationModel.ID_KEY,
+                syncViaWifiOnly(context)
+            )
+        )
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            RARE_WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
+                60, // TODO put this into prefs
+                WeatherStationModel.getRareUpdatedStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY,
                 syncViaWifiOnly(context)
             )

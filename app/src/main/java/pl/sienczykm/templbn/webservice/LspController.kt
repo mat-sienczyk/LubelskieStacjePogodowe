@@ -6,12 +6,14 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import org.jsoup.Jsoup
 import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.webservice.model.air.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.air.AirSensor
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
 import pl.sienczykm.templbn.webservice.model.weather.PogodynkaWeatherStation
+import pl.sienczykm.templbn.webservice.model.weather.SwidnikWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationOne
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationTwo
 import retrofit2.Response
@@ -39,6 +41,11 @@ object LspController {
     @WorkerThread
     fun getPogodynkaWeatherStation(stationId: Int): Response<PogodynkaWeatherStation> {
         return getPogodynkaWeatherService().getPogodynkaStation(stationId).execute()
+    }
+
+    @WorkerThread
+    fun getSwidnikWeatherStation(url: String): SwidnikWeatherStation {
+        return SwidnikWeatherStation(Jsoup.connect(url).get())
     }
 
     @WorkerThread

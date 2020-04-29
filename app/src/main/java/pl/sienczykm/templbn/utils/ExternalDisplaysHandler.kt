@@ -229,7 +229,7 @@ object ExternalDisplaysHandler {
     }
 
     private fun getNearestWeatherStationId(location: Location): Int =
-        WeatherStationModel.getStations()
+        WeatherStationModel.getAllStations()
             .minWith(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
 
     private fun distanceComparator(it: Location): Comparator<BaseStationModel> {

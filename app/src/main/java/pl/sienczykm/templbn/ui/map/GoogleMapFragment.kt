@@ -78,7 +78,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindow
 
         val markerBoundsBuilder = LatLngBounds.Builder()
 
-        WeatherStationModel.getStations().forEach { weatherStationModel ->
+        WeatherStationModel.getAllStations().forEach { weatherStationModel ->
             val position = LatLng(weatherStationModel.latitude, weatherStationModel.longitude)
             val marker: Marker
 

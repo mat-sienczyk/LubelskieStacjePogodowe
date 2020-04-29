@@ -24,22 +24,22 @@ class WeatherStationModel constructor(
 ) :
     BaseStationModel(stationId, latitude, longitude, city, location) {
 
-    override fun getStationUrl(): String {
-        return when (type) {
-            Type.UMCS_ONE, Type.UMCS_TWO -> Config.UMCS_BASE_WEATHER_URL + "podglad/" + stationId
-            Type.IMGW_POGODYNKA -> Config.POGODYNKA_BASE_WEATHER_URL + "#station/meteo/" + stationId
-            else -> ""
-        }
+    override fun getStationUrl(): String = when (type) {
+        Type.UMCS_ONE, Type.UMCS_TWO -> Config.UMCS_BASE_WEATHER_URL + "podglad/" + stationId
+        Type.IMGW_POGODYNKA -> Config.POGODYNKA_BASE_WEATHER_URL + "#station/meteo/" + stationId
+        Type.SWIDNIK -> Config.SWIDNIK_WEATHER_URL
+        else -> ""
     }
 
     override fun getStationSource(): Int = when (type) {
         Type.UMCS_ONE, Type.UMCS_TWO -> R.string.umcs_station_title_weather
         Type.IMGW_POGODYNKA, Type.IMGW_SIMPLE -> R.string.imgw_station_title_weather
+        else -> R.string.generic_station_title_weather
     }
 
     override fun getOldDateTimeInMinutes(): Long = when (type) {
         Type.UMCS_ONE, Type.UMCS_TWO -> 30
-        Type.IMGW_POGODYNKA, Type.IMGW_SIMPLE -> 90
+        Type.IMGW_POGODYNKA, Type.IMGW_SIMPLE, Type.SWIDNIK -> 90
     }
 
     init {
@@ -530,15 +530,27 @@ class WeatherStationModel constructor(
             TARNOGROD
         )
 
-        fun getStations(): List<WeatherStationModel> {
-            return umcsStations + imgwPogodynkaStations
-        }
+        val SWIDNIK =
+            WeatherStationModel(
+                666999,
+                Type.SWIDNIK,
+                276,
+                430,
+                51.221090,
+                22.698810,
+                "Świdnik",
+                "PEC"
+            )
 
-        fun getStationForGivenId(id: Int): WeatherStationModel {
-            return getStations().single { it.stationId == id }
-        }
+        fun getFrequentUpdatedStations() = umcsStations
 
-        fun windIntToDir(windDirInt: Double?, returnEmpty: Boolean = false): Int = when {
+        fun getRareUpdatedStations() = imgwPogodynkaStations + SWIDNIK
+
+        fun getAllStations() = getFrequentUpdatedStations() + getRareUpdatedStations()
+
+        fun getStationForGivenId(id: Int) = getAllStations().single { it.stationId == id }
+
+        fun windIntToDir(windDirInt: Double?, returnEmpty: Boolean = false) = when {
             windDirInt == null -> if (returnEmpty) android.R.id.empty else R.drawable.ic_wind
             // north N
             windDirInt <= 22 || windDirInt >= 338 -> R.drawable.ic_arrow_down
@@ -562,6 +574,6 @@ class WeatherStationModel constructor(
     }
 
     enum class Type {
-        UMCS_ONE, UMCS_TWO, IMGW_SIMPLE, IMGW_POGODYNKA
+        UMCS_ONE, UMCS_TWO, IMGW_SIMPLE, IMGW_POGODYNKA, SWIDNIK
     }
 }

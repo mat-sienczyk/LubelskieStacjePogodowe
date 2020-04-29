@@ -82,7 +82,7 @@ class OsmMapFragment : Fragment() {
             onTouchCallback = onMarkerWindowTouch()
         )
 
-        WeatherStationModel.getStations().forEach { weatherStationModel ->
+        WeatherStationModel.getAllStations().forEach { weatherStationModel ->
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(weatherStationModel.latitude, weatherStationModel.longitude)
                 title = weatherStationModel.getName()

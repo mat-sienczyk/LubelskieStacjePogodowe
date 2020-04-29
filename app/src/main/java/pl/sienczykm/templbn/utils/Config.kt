@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.utils
 object Config {
 
     //remember to increase value after changes in db model
-    const val DB_VERSION = 6
+    const val DB_VERSION = 7
 
     const val DB_NAME = "lsp.db"
 
@@ -14,6 +14,8 @@ object Config {
     const val IMGW_BASE_WEATHER_URL = "https://danepubliczne.imgw.pl/api/data/synop/id/"
 
     const val POGODYNKA_BASE_WEATHER_URL = "http://monitor.pogodynka.pl/"
+
+    const val SWIDNIK_WEATHER_URL = "http://www.meteo.pec.swidnik.pl/index_1.php"
 
     const val GIOS_BASE_AIR_URL = "http://api.gios.gov.pl/pjp-api/rest/"
 }

@@ -114,11 +114,22 @@ object ProcessingUtils {
                             station.temperatureData =
                                 parsePogodynkaChartData(temperatureAutoRecords)
                             station.windSpeedData = parsePogodynkaChartData(windVelocityTelRecords)
-                            station.rainTodayData = parsePogodynkaChartData(hourlyPrecipRecords)
-                            station.rainToday =
-                                parsePogodynkaRainToday(station.rainTodayData) // status?.precip24HoursSum?.toDouble()
+                            station.rainTodayData =
+                                accumulateRainToday(parsePogodynkaChartData(hourlyPrecipRecords))
                         }
                     } else throw Exception(errorBody().toString())
+                }
+            WeatherStationModel.Type.SWIDNIK -> LspController.getSwidnikWeatherStation(station.url)
+                .apply {
+                    station.date = temperatureData.lastOrNull()?.timestamp?.let {
+                        Date(it)
+                    }
+                    station.windSpeed = windSpeedData.lastOrNull()?.value
+                    station.windDir = windDirData.lastOrNull()?.value
+                    station.temperatureData = temperatureData
+                    station.pressureData = pressureData
+                    station.windSpeedData = windSpeedData
+                    station.rainTodayData = accumulateRainToday(rainTodayData)
                 }
             else -> throw Exception("Unparsed ${station.type} type!")
         }
@@ -156,16 +167,18 @@ object ProcessingUtils {
             )
         }
 
-    private fun parsePogodynkaRainToday(rainRecords: List<ChartDataModel>?): Double? {
-        // accumulate data today from tenMinutesPrecipRecords
+    private fun accumulateRainToday(rainRecords: List<ChartDataModel>?): List<ChartDataModel>? {
         val fromToday = nowInPoland().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
 
-        return rainRecords?.filter { it.timestamp!! > fromToday.timeInMillis }
-            ?.sumByDouble { it.value!! }
+        var acc = 0.0
+        return rainRecords?.filter { it.timestamp!! > fromToday.timeInMillis }?.map {
+            acc += it.value ?: 0.0
+            ChartDataModel(it.timestamp, acc)
+        }
     }
 
     private fun getSensors(stationId: Int): List<AirSensorModel>? {

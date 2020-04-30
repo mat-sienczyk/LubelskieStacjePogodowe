@@ -3,7 +3,6 @@ package pl.sienczykm.templbn.ui.map
 import android.content.Intent
 import android.graphics.Color
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +27,6 @@ import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
 import pl.sienczykm.templbn.utils.show
-import java.io.File
 
 
 class OsmMapFragment : Fragment() {
@@ -55,15 +53,6 @@ class OsmMapFragment : Fragment() {
 
         Configuration.getInstance().apply {
             userAgentValue = BuildConfig.APPLICATION_ID
-            // workaround for API 29
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                osmdroidBasePath = File(requireContext().filesDir, "osmdroid").apply {
-                    mkdirs()
-                }
-                osmdroidTileCache = File(osmdroidBasePath, "tiles").apply {
-                    mkdirs()
-                }
-            }
         }
 
         mapView = binding.mapView.apply {

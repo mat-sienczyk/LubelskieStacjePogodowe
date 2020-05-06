@@ -25,22 +25,53 @@ object LspController {
 
     @WorkerThread
     fun getUmcsWeatherStationOne(stationId: Int): Response<UmcsWeatherStationOne> {
-        return getUmcsWeatherService().getUmcsStationOne(stationId).execute()
+        return RetrofitService.get().getUmcsStationOne(
+            Config.UMCS_BASE_WEATHER_URL + "data.php",
+            stationId
+        ).execute()
     }
 
     @WorkerThread
     fun getUmcsWeatherStationTwo(stationId: Int): Response<UmcsWeatherStationTwo> {
-        return getUmcsWeatherService().getUmcsStationTwo(stationId).execute()
+        return RetrofitService.get().getUmcsStationTwo(
+            Config.UMCS_BASE_WEATHER_URL + "data2.php",
+            stationId
+        ).execute()
     }
 
     @WorkerThread
     fun getImgwWeatherStation(stationId: Int): Response<ResponseBody> {
-        return getImgwWeatherService().getImgwStation(stationId).execute()
+        return RetrofitService.get().getImgwStation(
+            Config.IMGW_BASE_WEATHER_URL + stationId
+        ).execute()
     }
 
     @WorkerThread
     fun getPogodynkaWeatherStation(stationId: Int): Response<PogodynkaWeatherStation> {
-        return getPogodynkaWeatherService().getPogodynkaStation(stationId).execute()
+        return RetrofitService.get().getPogodynkaStation(
+            Config.POGODYNKA_BASE_WEATHER_URL + "api/station/meteo",
+            stationId
+        ).execute()
+    }
+
+    @WorkerThread
+    fun getAirSensors(stationId: Int): Response<List<AirSensor>> {
+        return RetrofitService.get()
+            .getSensorsForStation(Config.GIOS_BASE_AIR_URL + "station/sensors/$stationId")
+            .execute()
+    }
+
+    @WorkerThread
+    fun getAirSensorData(sensorId: Int): Response<AirSensorData> {
+        return RetrofitService.get()
+            .getDataForSensor(Config.GIOS_BASE_AIR_URL + "data/getData/$sensorId").execute()
+    }
+
+    @WorkerThread
+    fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> {
+        return RetrofitService.get()
+            .getAirQualityIndex(Config.GIOS_BASE_AIR_URL + "aqindex/getIndex/$stationId")
+            .execute()
     }
 
     @WorkerThread
@@ -48,47 +79,18 @@ object LspController {
         return SwidnikWeatherStation(Jsoup.connect(url).get())
     }
 
-    @WorkerThread
-    fun getAirSensors(stationId: Int): Response<List<AirSensor>> {
-        return getAirService().getSensorsForStation(stationId).execute()
-    }
-
-    @WorkerThread
-    fun getAirSensorData(sensorId: Int): Response<AirSensorData> {
-        return getAirService().getDataForSensor(sensorId).execute()
-    }
-
-    @WorkerThread
-    fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> {
-        return getAirService().getAirQualityIndex(stationId).execute()
-    }
-
-    private fun getUmcsWeatherService(): WeatherService {
-        return getRetrofit(Config.UMCS_BASE_WEATHER_URL).create(WeatherService::class.java)
-    }
-
-    private fun getImgwWeatherService(): WeatherService {
-        return getRetrofit(Config.IMGW_BASE_WEATHER_URL).create(WeatherService::class.java)
-    }
-
-    private fun getPogodynkaWeatherService(): WeatherService {
-        return getRetrofit(Config.POGODYNKA_BASE_WEATHER_URL).create(WeatherService::class.java)
-    }
-
-    private fun getAirService(): AirService {
-        return getRetrofit(Config.GIOS_BASE_AIR_URL).create(AirService::class.java)
-    }
-
-    //TODO create one instance of this with dynamic baseUrl?
-    private fun getRetrofit(baseUrl: String): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
+    private object RetrofitService {
+        private val service = Retrofit.Builder()
+            .baseUrl("http://example.com/") // baseUrl is required, even if we use @Url in calls
             .client(HttpClient.get())
             .addConverterFactory(ConverterFactory.get())
             .build()
+            .create(Service::class.java)
+
+        fun get(): Service = service
     }
 
-    object HttpClient {
+    private object HttpClient {
         private val client = OkHttpClient().newBuilder()
             .connectionSpecs(
                 listOf(
@@ -103,10 +105,10 @@ object LspController {
                 if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             }).build()
 
-        fun get() = client
+        fun get(): OkHttpClient = client
     }
 
-    object ConverterFactory {
+    private object ConverterFactory {
         private val converterFactory = GsonConverterFactory.create(
             GsonBuilder().apply {
                 setLenient()

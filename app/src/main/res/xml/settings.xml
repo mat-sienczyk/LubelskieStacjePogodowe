@@ -61,8 +61,6 @@
             <ListPreference
                     app:defaultValue="@string/default_station_default"
                     app:dependency="@string/enable_auto_sync_key"
-                    app:entries="@array/stationOptions"
-                    app:entryValues="@array/stationValues"
                     app:iconSpaceReserved="false"
                     app:key="@string/default_station_key"
                     app:summary="%s"

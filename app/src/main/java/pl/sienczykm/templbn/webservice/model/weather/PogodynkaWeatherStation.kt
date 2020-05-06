@@ -99,19 +99,19 @@ class Status {
 
     @SerializedName("precip3HoursSum")
     @Expose
-    var precip3HoursSum: Long? = null
+    var precip3HoursSum: Double? = null
 
     @SerializedName("precip6HoursSum")
     @Expose
-    var precip6HoursSum: Long? = null
+    var precip6HoursSum: Double? = null
 
     @SerializedName("precip12HoursSum")
     @Expose
-    var precip12HoursSum: Long? = null
+    var precip12HoursSum: Double? = null
 
     @SerializedName("precip24HoursSum")
     @Expose
-    var precip24HoursSum: Long? = null
+    var precip24HoursSum: Double? = null
 
     @SerializedName("maxDailyPrecipValue")
     @Expose

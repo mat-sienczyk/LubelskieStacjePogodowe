@@ -95,7 +95,7 @@ object UpdateHandler {
         )
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             RARE_WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
-                20, // TODO put this into prefs
+                60, // TODO put this into prefs
                 WeatherStationModel.getRareUpdatedStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY,
                 syncViaWifiOnly(context)

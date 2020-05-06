@@ -3,9 +3,11 @@ package pl.sienczykm.templbn.ui.settings
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.handleNightMode
@@ -22,6 +24,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
+        preferenceManager.findPreference<ListPreference>(getString(R.string.default_station_key))
+            ?.apply {
+                entries =
+                    WeatherStationModel.getAllStations().map { it.getFullStationName().toString() }
+                        .toTypedArray()
+                entryValues = WeatherStationModel.getAllStations().map { it.stationId.toString() }
+                    .toTypedArray()
+            }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             preferenceScreen.removePreferenceRecursively(getString(R.string.show_weather_notification_icon_key))
         }

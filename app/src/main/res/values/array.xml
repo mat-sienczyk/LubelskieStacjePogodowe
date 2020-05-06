@@ -57,40 +57,6 @@
         <item>3</item>
     </string-array>
 
-
-    <!--    TODO move this to string an unify somehow with WeatherStationModel?  -->
-    <string-array name="stationOptions">
-        <item>Lublin Plac Litewski</item>
-        <item>Lublin Ogród botaniczny</item>
-        <item>Lublin MPWiK Zemborzycka</item>
-        <item>Lublin MPWiK Hajdów</item>
-        <item>Guciów</item>
-        <!--        <item>Florianka</item>-->
-        <item>Łuków</item>
-        <item>Lubartów PGK</item>
-        <item>Trzydnik</item>
-        <item>Leśniowice</item>
-        <item>Rybczewice</item>
-        <item>Wola Wereszczyńska</item>
-        <item>Celejów</item>
-    </string-array>
-
-    <string-array name="stationValues">
-        <item>16</item>
-        <item>10</item>
-        <item>17</item>
-        <item>18</item>
-        <item>11</item>
-        <!--        <item>12</item>-->
-        <item>13</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-    </string-array>
-
     <string-array name="airQualityOptions">
         <item>@string/sensor_quality_moderate</item>
         <item>@string/sensor_quality_unhealthy_sensitive</item>

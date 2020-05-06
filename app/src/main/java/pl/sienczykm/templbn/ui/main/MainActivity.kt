@@ -204,6 +204,6 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.container, fragment)
-            .commit()
+            .commitAllowingStateLoss() //TODO investigate why commit() throw an exception sometimes
     }
 }

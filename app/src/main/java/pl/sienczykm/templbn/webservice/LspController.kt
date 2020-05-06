@@ -1,8 +1,8 @@
 package pl.sienczykm.templbn.webservice
 
 import androidx.annotation.WorkerThread
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -79,35 +79,40 @@ object LspController {
         return getRetrofit(Config.GIOS_BASE_AIR_URL).create(AirService::class.java)
     }
 
+    //TODO create one instance of this with dynamic baseUrl?
     private fun getRetrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(getClient())
-            .addConverterFactory(GsonConverterFactory.create(getGson()))
+            .client(HttpClient.get())
+            .addConverterFactory(ConverterFactory.get())
             .build()
     }
 
-    //TODO create one instance of this
-    private fun getClient(): OkHttpClient {
-        return OkHttpClient().newBuilder()
-//            .connectionSpecs(
-//                listOf(
-//                    ConnectionSpec.CLEARTEXT,
-//                    ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-//                        .allEnabledTlsVersions()
-//                        .allEnabledCipherSuites()
-//                        .build()
-//                )
-//            )
+    object HttpClient {
+        private val client = OkHttpClient().newBuilder()
+            .connectionSpecs(
+                listOf(
+                    ConnectionSpec.CLEARTEXT,
+                    ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+                        .allEnabledTlsVersions()
+                        .allEnabledCipherSuites()
+                        .build()
+                )
+            )
             .addInterceptor(HttpLoggingInterceptor().apply {
                 if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             }).build()
+
+        fun get() = client
     }
 
-    //TODO create one instance of this
-    private fun getGson(): Gson {
-        return GsonBuilder().apply {
-            setLenient()
-        }.create()
+    object ConverterFactory {
+        private val converterFactory = GsonConverterFactory.create(
+            GsonBuilder().apply {
+                setLenient()
+            }.create()
+        )
+
+        fun get(): GsonConverterFactory = converterFactory
     }
 }

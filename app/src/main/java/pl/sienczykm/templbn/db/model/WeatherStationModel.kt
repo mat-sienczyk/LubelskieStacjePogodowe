@@ -28,7 +28,7 @@ class WeatherStationModel constructor(
     override fun getStationUrl(): String = when (type) {
         Type.UMCS_ONE, Type.UMCS_TWO -> Config.UMCS_BASE_WEATHER_URL + "podglad/" + stationId
         Type.IMGW_POGODYNKA -> Config.POGODYNKA_BASE_WEATHER_URL + "#station/meteo/" + stationId
-        Type.SWIDNIK -> Config.SWIDNIK_WEATHER_URL
+        Type.SWIDNIK -> Config.SWIDNIK_BASE_WEATHER_URL
         else -> ""
     }
 

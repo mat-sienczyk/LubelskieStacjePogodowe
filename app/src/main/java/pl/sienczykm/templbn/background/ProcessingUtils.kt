@@ -118,7 +118,7 @@ object ProcessingUtils {
                         }
                     } else throw Exception(errorBody().toString())
                 }
-            WeatherStationModel.Type.SWIDNIK -> LspController.getSwidnikWeatherStation(station.url)
+            WeatherStationModel.Type.SWIDNIK -> LspController.getSwidnikWeatherStation()
                 .apply {
                     station.date = temperatureData.lastOrNull()?.timestamp?.let {
                         Date(it)

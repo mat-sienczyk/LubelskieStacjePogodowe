@@ -15,7 +15,7 @@ object Config {
 
     const val POGODYNKA_BASE_WEATHER_URL = "http://monitor.pogodynka.pl/"
 
-    const val SWIDNIK_WEATHER_URL = "http://www.meteo.pec.swidnik.pl/index_1.php"
+    const val SWIDNIK_BASE_WEATHER_URL = "http://www.meteo.pec.swidnik.pl/"
 
     const val GIOS_BASE_AIR_URL = "http://api.gios.gov.pl/pjp-api/rest/"
 }

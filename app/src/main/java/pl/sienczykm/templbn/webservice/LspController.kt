@@ -20,64 +20,53 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 object LspController {
 
     @WorkerThread
-    fun getUmcsWeatherStationOne(stationId: Int): Response<UmcsWeatherStationOne> {
-        return RetrofitService.get().getUmcsStationOne(
-            Config.UMCS_BASE_WEATHER_URL + "data.php",
-            stationId
-        ).execute()
-    }
+    fun getUmcsWeatherStationOne(stationId: Int): Response<UmcsWeatherStationOne> =
+        RetrofitService.get()
+            .getUmcsStationOne(Config.UMCS_BASE_WEATHER_URL + "data.php", stationId)
+            .execute()
 
     @WorkerThread
-    fun getUmcsWeatherStationTwo(stationId: Int): Response<UmcsWeatherStationTwo> {
-        return RetrofitService.get().getUmcsStationTwo(
-            Config.UMCS_BASE_WEATHER_URL + "data2.php",
-            stationId
-        ).execute()
-    }
+    fun getUmcsWeatherStationTwo(stationId: Int): Response<UmcsWeatherStationTwo> =
+        RetrofitService.get()
+            .getUmcsStationTwo(Config.UMCS_BASE_WEATHER_URL + "data2.php", stationId)
+            .execute()
 
     @WorkerThread
-    fun getImgwWeatherStation(stationId: Int): Response<ResponseBody> {
-        return RetrofitService.get().getImgwStation(
-            Config.IMGW_BASE_WEATHER_URL + stationId
-        ).execute()
-    }
+    fun getImgwWeatherStation(stationId: Int): Response<ResponseBody> =
+        RetrofitService.get()
+            .getImgwStation(Config.IMGW_BASE_WEATHER_URL + stationId)
+            .execute()
 
     @WorkerThread
-    fun getPogodynkaWeatherStation(stationId: Int): Response<PogodynkaWeatherStation> {
-        return RetrofitService.get().getPogodynkaStation(
-            Config.POGODYNKA_BASE_WEATHER_URL + "api/station/meteo",
-            stationId
-        ).execute()
-    }
+    fun getPogodynkaWeatherStation(stationId: Int): Response<PogodynkaWeatherStation> =
+        RetrofitService.get()
+            .getPogodynkaStation(Config.POGODYNKA_BASE_WEATHER_URL + "api/station/meteo", stationId)
+            .execute()
 
     @WorkerThread
-    fun getAirSensors(stationId: Int): Response<List<AirSensor>> {
-        return RetrofitService.get()
+    fun getAirSensors(stationId: Int): Response<List<AirSensor>> =
+        RetrofitService.get()
             .getSensorsForStation(Config.GIOS_BASE_AIR_URL + "station/sensors/$stationId")
             .execute()
-    }
 
     @WorkerThread
-    fun getAirSensorData(sensorId: Int): Response<AirSensorData> {
-        return RetrofitService.get()
-            .getDataForSensor(Config.GIOS_BASE_AIR_URL + "data/getData/$sensorId").execute()
-    }
+    fun getAirSensorData(sensorId: Int): Response<AirSensorData> =
+        RetrofitService.get()
+            .getDataForSensor(Config.GIOS_BASE_AIR_URL + "data/getData/$sensorId")
+            .execute()
 
     @WorkerThread
-    fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> {
-        return RetrofitService.get()
+    fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> =
+        RetrofitService.get()
             .getAirQualityIndex(Config.GIOS_BASE_AIR_URL + "aqindex/getIndex/$stationId")
             .execute()
-    }
 
     @WorkerThread
-    fun getSwidnikWeatherStation(url: String): SwidnikWeatherStation {
-        return SwidnikWeatherStation(Jsoup.connect(url).get())
-    }
+    fun getSwidnikWeatherStation(): SwidnikWeatherStation =
+        SwidnikWeatherStation(Jsoup.connect(Config.SWIDNIK_BASE_WEATHER_URL + "index_1.php").get())
 
     private object RetrofitService {
         private val service = Retrofit.Builder()

@@ -11,6 +11,7 @@ import android.graphics.drawable.Icon
 import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.CoroutineScope
@@ -132,8 +133,8 @@ object ExternalDisplaysHandler {
 
         if (context.showWeatherNotification()) {
             CoroutineScope(Dispatchers.IO).launch {
-                val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                    .getStationById(getProperWeatherStationId(context))
+
+                val weatherStation = getProperWeatherStation(context)
 
                 val temperatureString = weatherStation?.getParsedTemperature()?.let {
                     "$it${context.getString(R.string.celsius_degree)}"
@@ -204,8 +205,19 @@ object ExternalDisplaysHandler {
         )
     )
 
-    fun getProperWeatherStationId(context: Context): Int {
-        val defaultStationId = context.getWeatherStationId()
+    @WorkerThread
+    fun getProperWeatherStation(context: Context) =
+        AppDb.getDatabase(context).weatherStationDao()
+            .getStationById(getProperWeatherStationId(context))
+            .let { station ->
+                if (station?.isDateObsoleteOrNull() == false) station
+                else
+                    AppDb.getDatabase(context).weatherStationDao()
+                        .getStationById(context.getDefaultWeatherStationId())
+            }
+
+    private fun getProperWeatherStationId(context: Context): Int {
+        val defaultStationId = context.getDefaultWeatherStationId()
 
         return if (context.useLocationToUpdateWeather()) {
             context.getLastKnownLocation()?.let { getNearestWeatherStationId(it) }

@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.main.MainActivity
 import pl.sienczykm.templbn.ui.station.StationActivity
@@ -85,8 +84,8 @@ class OldWeatherWidget : AppWidgetProvider() {
     ) {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val weatherStation = AppDb.getDatabase(context).weatherStationDao()
-                .getStationById(ExternalDisplaysHandler.getProperWeatherStationId(context))
+
+            val weatherStation = ExternalDisplaysHandler.getProperWeatherStation(context)
 
             // views can be updated from non-UI thread since it's RemoteViews
             val views = RemoteViews(context.packageName, R.layout.simple_widget)

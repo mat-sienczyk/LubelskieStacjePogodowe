@@ -66,7 +66,7 @@ fun Context.getDarkModeSetting() =
 fun Context.getAirQualityLevel() =
     getPreferenceInt(R.string.air_quality_warning_key, R.string.air_quality_warning_default)
 
-fun Context.getWeatherStationId() =
+fun Context.getDefaultWeatherStationId() =
     getPreferenceInt(R.string.default_station_key, R.string.default_station_default)
 
 fun Context.getWeatherStationUpdateInterval() =

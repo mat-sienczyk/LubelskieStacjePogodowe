@@ -9,7 +9,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.common.ActivityWithToolbarAndUpAction
 import pl.sienczykm.templbn.ui.station.air.AirStationFragment
 import pl.sienczykm.templbn.ui.station.weather.WeatherStationFragment
-import pl.sienczykm.templbn.utils.getWeatherStationId
+import pl.sienczykm.templbn.utils.getDefaultWeatherStationId
 
 
 class StationActivity : ActivityWithToolbarAndUpAction() {
@@ -28,7 +28,7 @@ class StationActivity : ActivityWithToolbarAndUpAction() {
         ): PendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(Intent(context, StationActivity::class.java).apply {
                 putExtra(STATION_TYPE_KEY, Type.WEATHER)
-                putExtra(STATION_ID_KEY, stationId ?: context.getWeatherStationId())
+                putExtra(STATION_ID_KEY, stationId ?: context.getDefaultWeatherStationId())
             })
             getPendingIntent(
                 71,

@@ -49,7 +49,7 @@
     <string name="app_settings_title">Ustawienia aplikacji</string>
     <string name="enable_auto_sync_title">Włącz automatyczną synchronizację</string>
     <string name="default_location_title">Użyj lokalizacji</string>
-    <string name="default_location_summary">Pokazuj na widgecie i w powiadomieniu najbliższą stację (wymaga dostępu do lokalizacji w tle)</string>
+    <string name="default_location_summary">Pokazuj na widgecie i w powiadomieniu najbliższą stację (wymaga dostępu do lokalizacji w tle oraz dane muszą być aktualne)</string>
     <string name="show_weather_notification_title">Wyświetlaj powiadomienie</string>
     <string name="show_weather_notification_summary">Stałe powiadomienie z temperaturą dla najbliższej lub podstawowej stacji</string>
     <string name="show_air_quality_notification_title">Monitoruj stan powietrza</string>

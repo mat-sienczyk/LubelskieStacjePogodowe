@@ -85,9 +85,12 @@ object UpdateHandler {
         context: Context,
         existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
     ) {
+
+        val weatherUpdateInterval = context.getWeatherStationUpdateInterval().toLong()
+
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             FREQUENT_WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
-                context.getWeatherStationUpdateInterval().toLong(),
+                weatherUpdateInterval,
                 WeatherStationModel.getFrequentUpdatedStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY,
                 syncViaWifiOnly(context)
@@ -95,7 +98,7 @@ object UpdateHandler {
         )
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             RARE_WEATHER_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
-                60, // TODO put this into prefs
+                weatherUpdateInterval.run { if (this < 60) 60 else this },
                 WeatherStationModel.getRareUpdatedStations().map { it.stationId }.toIntArray(),
                 WeatherStationModel.ID_KEY,
                 syncViaWifiOnly(context)

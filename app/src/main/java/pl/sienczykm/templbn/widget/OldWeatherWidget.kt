@@ -133,7 +133,7 @@ class OldWeatherWidget : AppWidgetProvider() {
                 views.setViewVisibility(R.id.widget_wind_dir, View.GONE)
             }
 
-            if (setOld) {
+            if (setOld || weatherStation?.isDateObsoleteOrNull() != false) {
                 views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_old)
             } else {
                 views.setInt(R.id.widget, "setBackgroundResource", R.drawable.widget_fresh)

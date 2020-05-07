@@ -5,6 +5,7 @@ import androidx.room.Ignore
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Entity
 class WeatherStationModel constructor(
@@ -59,7 +60,7 @@ class WeatherStationModel constructor(
     var windSpeedData: List<ChartDataModel>? = null
     var temperatureWindData: List<ChartDataModel>? = null
     var pressureData: List<ChartDataModel>? = null
-    var rainTodayData: List<ChartDataModel>? = null
+    var rainData: List<ChartDataModel>? = null
 
     //TODO set this value from preferences later
     @Ignore
@@ -94,7 +95,7 @@ class WeatherStationModel constructor(
         stationCopy.windSpeedData = windSpeedData
         stationCopy.temperatureWindData = temperatureWindData
         stationCopy.pressureData = pressureData
-        stationCopy.rainTodayData = rainTodayData
+        stationCopy.rainData = rainData
         return stationCopy
     }
 
@@ -112,25 +113,20 @@ class WeatherStationModel constructor(
         return super.isContentTheSame(other)
     }
 
-    fun getParsedTemperature(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, temperature, temperatureData)
-    }
+    fun getParsedTemperature(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, temperature, temperatureData)
 
-    fun getParsedTemperatureWind(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, temperatureWind, temperatureWindData)
-    }
+    fun getParsedTemperatureWind(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, temperatureWind, temperatureWindData)
 
-    fun getParsedTemperatureGround(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, temperatureGround, null)
-    }
+    fun getParsedTemperatureGround(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, temperatureGround, null)
 
-    fun getParsedWind(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, windSpeed, windSpeedData, convertWind)
-    }
+    fun getParsedWind(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, windSpeed, windSpeedData, convertWind)
 
-    fun getParsedHumidity(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, humidity, humidityData)
-    }
+    fun getParsedHumidity(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, humidity, humidityData)
 
     fun getParsedPressure(roundPlaces: Int = 0): String? {
         return if (pressure == 0.0) {
@@ -140,9 +136,8 @@ class WeatherStationModel constructor(
         }
     }
 
-    fun getParsedRain(roundPlaces: Int = 0): String? {
-        return getLatestParsedData(roundPlaces, rainToday, rainTodayData)
-    }
+    fun getParsedRain(roundPlaces: Int = 0) =
+        getLatestParsedData(roundPlaces, rainToday, getTodayRainChartData())
 
     fun getProperWindSpeedData(): List<ChartDataModel>? {
         return if (convertWind) {
@@ -165,17 +160,40 @@ class WeatherStationModel constructor(
         }
     }
 
-    fun convertMetersToKm(wind: Double?): Double? {
-        return (wind?.times(3.6)).round(1)
+    fun getTodayRainChartData(): List<ChartDataModel>? {
+
+        val now = nowInPoland()
+        val fromToday = now.apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+
+        return when (type) {
+            Type.UMCS_ONE, Type.UMCS_TWO -> {
+                val offset =
+                    if (now.timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
+                    else TimeUnit.HOURS.toMillis(1)
+
+                rainData?.filter { it.timestamp!!.minus(offset) > fromToday.timeInMillis }
+            }
+            else -> {
+                var acc = 0.0
+                rainData?.filter { it.timestamp!! > fromToday.timeInMillis }?.map {
+                    acc += it.value ?: 0.0
+                    ChartDataModel(it.timestamp, acc)
+                }
+            }
+        }
     }
 
-    fun getForecastPhotoUrl(): String {
-        return "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=${getForecastDate()}&row=$forecastY&col=$forecastX&lang=pl"
-    }
+    fun convertMetersToKm(wind: Double?) = (wind?.times(3.6)).round(1)
 
-    fun getForecastUrl(): String {
-        return "http://www.meteo.pl/um/php/meteorogram_map_um.php?ntype=0u&row=$forecastY&col=$forecastX&lang=pl"
-    }
+    fun getForecastPhotoUrl() =
+        "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=${getForecastDate()}&row=$forecastY&col=$forecastX&lang=pl"
+
+    fun getForecastUrl() =
+        "http://www.meteo.pl/um/php/meteorogram_map_um.php?ntype=0u&row=$forecastY&col=$forecastX&lang=pl"
 
     fun getForecastDate(): String {
         val now = nowInPoland()

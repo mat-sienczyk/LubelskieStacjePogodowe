@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "6187acfeaef021316fbdaa3460e84a56",
+    "identityHash": "78e9ba7ca828d35ff416f3fea57f26f7",
     "entities": [
       {
         "tableName": "WeatherStationModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `temperature` REAL, `temperatureWind` REAL, `temperatureGround` REAL, `windSpeed` REAL, `windDir` REAL, `humidity` REAL, `pressure` REAL, `rainToday` REAL, `temperatureData` TEXT, `humidityData` TEXT, `windSpeedData` TEXT, `temperatureWindData` TEXT, `pressureData` TEXT, `rainTodayData` TEXT, `type` TEXT NOT NULL, `forecastX` INTEGER NOT NULL, `forecastY` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `date` INTEGER, `stationId` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `city` TEXT NOT NULL, `location` TEXT, PRIMARY KEY(`stationId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `temperature` REAL, `temperatureWind` REAL, `temperatureGround` REAL, `windSpeed` REAL, `windDir` REAL, `humidity` REAL, `pressure` REAL, `rainToday` REAL, `temperatureData` TEXT, `humidityData` TEXT, `windSpeedData` TEXT, `temperatureWindData` TEXT, `pressureData` TEXT, `rainData` TEXT, `type` TEXT NOT NULL, `forecastX` INTEGER NOT NULL, `forecastY` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `date` INTEGER, `stationId` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `city` TEXT NOT NULL, `location` TEXT, PRIMARY KEY(`stationId`))",
         "fields": [
           {
             "fieldPath": "url",
@@ -93,8 +93,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "rainTodayData",
-            "columnName": "rainTodayData",
+            "fieldPath": "rainData",
+            "columnName": "rainData",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -246,7 +246,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6187acfeaef021316fbdaa3460e84a56')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78e9ba7ca828d35ff416f3fea57f26f7')"
     ]
   }
 }

@@ -12,7 +12,7 @@ class SwidnikWeatherStation(doc: Document?) {
     val windSpeedData = arrayListOf<ChartDataModel>()
     val windMaxSpeedData = arrayListOf<ChartDataModel>()
     val pressureData = arrayListOf<ChartDataModel>()
-    val rainTodayData = arrayListOf<ChartDataModel>()
+    val rainData = arrayListOf<ChartDataModel>()
 
     init {
         doc?.select("table")?.get(10)?.select("tr")?.takeLast(24)?.forEach { row ->
@@ -43,7 +43,7 @@ class SwidnikWeatherStation(doc: Document?) {
                     parseWindSpeed(row?.select("td")?.get(4)?.text())
                 )
             )
-            rainTodayData.add( // rain mm = 0.0
+            rainData.add( // rain mm = 0.0
                 ChartDataModel(
                     date?.time,
                     row?.select("td")?.get(5)?.text()?.toDouble()

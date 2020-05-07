@@ -77,7 +77,7 @@ object ProcessingUtils {
                                 parseUmcsWeatherChartData(temperatureWindChart?.data)
                             station.pressureData =
                                 parseUmcsWeatherChartData(pressureData?.data, true)
-                            station.rainTodayData =
+                            station.rainData =
                                 parseUmcsWeatherChartData(rainData?.data)
                         }
                     } else throw Exception(errorBody().toString())
@@ -114,8 +114,7 @@ object ProcessingUtils {
                             station.temperatureData =
                                 parsePogodynkaChartData(temperatureAutoRecords)
                             station.windSpeedData = parsePogodynkaChartData(windVelocityTelRecords)
-                            station.rainTodayData =
-                                accumulateRainToday(parsePogodynkaChartData(hourlyPrecipRecords))
+                            station.rainData = parsePogodynkaChartData(hourlyPrecipRecords)
                         }
                     } else throw Exception(errorBody().toString())
                 }
@@ -129,7 +128,7 @@ object ProcessingUtils {
                     station.temperatureData = temperatureData
                     station.pressureData = pressureData
                     station.windSpeedData = windSpeedData
-                    station.rainTodayData = accumulateRainToday(rainTodayData)
+                    station.rainData = rainData
                 }
             else -> throw Exception("Unparsed ${station.type} type!")
         }
@@ -166,20 +165,6 @@ object ProcessingUtils {
                 record?.value
             )
         }
-
-    private fun accumulateRainToday(rainRecords: List<ChartDataModel>?): List<ChartDataModel>? {
-        val fromToday = nowInPoland().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-
-        var acc = 0.0
-        return rainRecords?.filter { it.timestamp!! > fromToday.timeInMillis }?.map {
-            acc += it.value ?: 0.0
-            ChartDataModel(it.timestamp, acc)
-        }
-    }
 
     private fun getSensors(stationId: Int): List<AirSensorModel>? {
         LspController.getAirSensors(stationId).apply {

@@ -121,7 +121,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.rainTodayData}"
+                                    app:chartData="@{viewModel.station.getTodayRainChartData()}"
                                     app:chartMinZero="@{true}"
                                     app:metadata="@{@string/station_rain_today}"
                                     app:unit="@{@string/milliliters}"

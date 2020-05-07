@@ -11,7 +11,7 @@
 
         <variable
                 name="station"
-                type="pl.sienczykm.templbn.db.model.WeatherStationModel"/>
+                type="pl.sienczykm.templbn.db.model.WeatherStationModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,37 +103,51 @@
                             layout="@layout/weather_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:drawableInt="@{R.drawable.ic_temperature}"
+                            app:forceHide="@{false}"
                             app:metadata="@{@string/station_temp}"
                             app:unit="@{@string/celsius_degree}"
-                            app:drawableInt="@{R.drawable.ic_temperature}"
                             app:value="@{station.getParsedTemperature(1)}" />
 
                     <include
                             layout="@layout/weather_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:drawableInt="@{station.Companion.windIntToDir(station.windDir, false)}"
+                            app:forceHide="@{false}"
                             app:metadata="@{@string/station_wind}"
                             app:unit="@{station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
-                            app:drawableInt="@{station.Companion.windIntToDir(station.windDir, false)}"
                             app:value="@{station.getParsedWind(0)}" />
 
                     <include
                             layout="@layout/weather_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:drawableInt="@{R.drawable.ic_humidity}"
+                            app:forceHide="@{false}"
                             app:metadata="@{@string/station_humidity}"
                             app:unit="@{@string/percent}"
-                            app:drawableInt="@{R.drawable.ic_humidity}"
                             app:value="@{station.getParsedHumidity(0)}" />
 
                     <include
                             layout="@layout/weather_value_and_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:drawableInt="@{R.drawable.ic_pressure}"
+                            app:forceHide="@{false}"
                             app:metadata="@{@string/station_pressure}"
                             app:unit="@{@string/hectopascal}"
-                            app:drawableInt="@{R.drawable.ic_pressure}"
                             app:value="@{station.getParsedPressure(0)}" />
+
+                    <include
+                            layout="@layout/weather_value_and_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:drawableInt="@{R.drawable.ic_rain}"
+                            app:forceHide="@{station.stationId == station.Companion.SWIDNIK.stationId ? false : station.getParsedPressure(0) != null}"
+                            app:metadata="@{@string/station_rain_today}"
+                            app:unit="@{@string/milliliters}"
+                            app:value="@{station.getParsedRain(1)}" />
 
                 </com.google.android.flexbox.FlexboxLayout>
             </LinearLayout>

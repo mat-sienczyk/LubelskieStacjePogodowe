@@ -111,7 +111,6 @@
     <string name="night_mode_options_light">Jasny</string>
     <string name="night_mode_options_dark">Ciemny</string>
 
-
     <!--chart-->
     <string name="chart_empty">Brak danych</string>
     <string name="chart_title">%1$s - ostatnie 24h</string>
@@ -137,7 +136,6 @@
     <!--weather notification-->
     <string name="weather_notification_channel_name">Temperatura</string>
     <string name="weather_notification_channel_description">Wyświetla temperaturę dla najbliższej lub podstawowej stacji</string>
-
 
     <!--air notification-->
     <string name="air_index_notification_channel_name">Jakość powietrza</string>

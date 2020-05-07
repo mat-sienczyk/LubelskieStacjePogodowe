@@ -211,7 +211,7 @@ object ExternalDisplaysHandler {
             .getStationById(getProperWeatherStationId(context))
             .let { station ->
                 if (station?.isDateObsoleteOrNull() == false) station
-                else
+                else     //TODO find next closest station with valid data?
                     AppDb.getDatabase(context).weatherStationDao()
                         .getStationById(context.getDefaultWeatherStationId())
             }

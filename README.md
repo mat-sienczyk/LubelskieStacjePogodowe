@@ -13,9 +13,17 @@ Lubelskie Stacje Pogodowe to projekt open-source i jest w fazie rozwoju - możli
 
 Aplikacja powstała aby ułatwić szybki dostęp do ogólnodostępnych danych - nie odpowiadam za ich poprawność, brak oraz ewentualną niedostępność. Jest to aplikacja non-profit, nie czerpię z niej żadnych korzyści finansowych.
 
-Dane pogodowe są własnością Katedry Hydrologii i Klimatologii Uniwersytetu Marii Curie-Skłodowskiej w Lublinie.
+Dane pogodowe stacji UMCS są własnością Katedry Hydrologii i Klimatologii Uniwersytetu Marii Curie-Skłodowskiej w Lublinie.
 
 https://www.umcs.pl/pl/pogoda-w-regionie,2812.htm
+
+Dane pogodowe stacji IMGW są własnością Instytutu Meteorologii i Gospodarki Wodnej – Państwowego Instytutu Badawczego.
+
+https://dane.imgw.pl/regulations
+
+Dane pogodowe stacji Świdnik PEC są własnością Przedsiębiorstwa Energetyki Cieplnej „PEC” w Świdniku Sp. z o.o.
+
+http://www.meteo.pec.swidnik.pl/index_5.php
 
 Dane o jakości powietrza są własnością Głównego Inspektoratu Ochrony Środowiska.
 

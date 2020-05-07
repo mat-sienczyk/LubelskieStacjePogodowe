@@ -90,7 +90,10 @@ class ChartHandler(private val bottomSheetLayout: LinearLayout) {
 
         bottomSheetLayout.unit.text = unit
         bottomSheetLayout.title.text =
-            context.getString(R.string.chart_title, title ?: context.getString(titleId!!))
+            if (unit == context.getString(R.string.milliliters)) // TODO ugly?
+                title ?: context.getString(titleId!!)
+            else
+                context.getString(R.string.chart_title, title ?: context.getString(titleId!!))
 
         val limitLine = limitValue?.let {
             LimitLine(it, context.getString(R.string.limit_line_label))

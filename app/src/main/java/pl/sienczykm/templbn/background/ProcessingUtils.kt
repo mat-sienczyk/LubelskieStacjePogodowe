@@ -16,6 +16,7 @@ import pl.sienczykm.templbn.webservice.model.weather.Record
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+//TODO refactor this somehow, maybe split this into two classes?
 object ProcessingUtils {
 
     const val ERROR_KEY = "error_key"

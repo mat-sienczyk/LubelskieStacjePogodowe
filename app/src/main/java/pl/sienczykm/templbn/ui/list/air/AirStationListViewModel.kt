@@ -11,7 +11,7 @@ class AirStationListViewModel(application: Application) :
     BaseStationListViewModel<AirStationModel>(application) {
 
     override fun refresh() {
-        UpdateHandler.syncNowSmogStations(getApplication(), receiver)
+        UpdateHandler.syncNowAirStations(getApplication(), receiver)
     }
 
     override val stationsLiveData =

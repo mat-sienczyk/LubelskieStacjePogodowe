@@ -36,7 +36,7 @@ class AirStationViewModel(
 
     override fun refresh() {
         super.refresh()
-        UpdateHandler.syncNowSmogStation(getApplication(), stationId, receiver)
+        UpdateHandler.syncNowAirStation(getApplication(), stationId, receiver)
     }
 
     override suspend fun updateFavourite(station: AirStationModel): Int =

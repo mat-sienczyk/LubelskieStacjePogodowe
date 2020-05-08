@@ -20,7 +20,7 @@ object UpdateHandler {
     const val AIR_SYNC_WORK_NAME = "air_sync_tag"
     const val WEATHER_SYNC_WORK_NAME = "auto_sync_tag"
 
-    fun syncNowSmogStations(context: Context, receiver: StatusReceiver.Receiver) {
+    fun syncNowAirStations(context: Context, receiver: StatusReceiver.Receiver) {
         syncNowStations(
             context,
             AirStationModel.getStations().map { it.stationId },
@@ -29,7 +29,7 @@ object UpdateHandler {
         )
     }
 
-    fun syncNowSmogStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
+    fun syncNowAirStation(context: Context, stationId: Int, receiver: StatusReceiver.Receiver) {
         syncNowStations(context, listOf(stationId), receiver, AirStationModel.ID_KEY)
     }
 

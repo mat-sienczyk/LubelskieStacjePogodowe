@@ -229,7 +229,7 @@ object ExternalDisplaysHandler {
 
     private fun getNearestAirStationId(context: Context): Int? {
         val nearestStation = context.getLastKnownLocation()?.let {
-            AirStationModel.getStations()
+            AirStationModel.getAllStations()
                 .minWith(distanceComparator(it)) // since AirStationModel.getStations() is list of static objects, minWith will never returns null
         } ?: return null
 

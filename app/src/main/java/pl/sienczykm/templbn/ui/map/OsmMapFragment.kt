@@ -101,7 +101,7 @@ class OsmMapFragment : Fragment() {
             })
         }
 
-        AirStationModel.getStations().forEach { airStationModel ->
+        AirStationModel.getAllStations().forEach { airStationModel ->
             overlays.add(Marker(mapView).apply {
                 position = GeoPoint(airStationModel.latitude, airStationModel.longitude)
                 title = airStationModel.getName()

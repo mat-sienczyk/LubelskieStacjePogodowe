@@ -21,10 +21,14 @@ object UpdateHandler {
     const val FREQUENT_WEATHER_SYNC_WORK_NAME = "frequent_weather_work_name"
     const val RARE_WEATHER_SYNC_WORK_NAME = "rare_weather_work_name"
 
-    fun syncNowAirStations(context: Context, receiver: StatusReceiver.Receiver) {
+    fun syncNowAirStations(
+        context: Context,
+        receiver: StatusReceiver.Receiver,
+        stations: List<AirStationModel> = AirStationModel.getAllStations()
+    ) {
         syncNowStations(
             context,
-            AirStationModel.getStations().map { it.stationId },
+            stations.map { it.stationId },
             receiver,
             AirStationModel.ID_KEY
         )
@@ -34,10 +38,14 @@ object UpdateHandler {
         syncNowStations(context, listOf(stationId), receiver, AirStationModel.ID_KEY)
     }
 
-    fun syncNowWeatherStations(context: Context, receiver: StatusReceiver.Receiver) {
+    fun syncNowWeatherStations(
+        context: Context,
+        receiver: StatusReceiver.Receiver,
+        stations: List<WeatherStationModel> = WeatherStationModel.getAllStations()
+    ) {
         syncNowStations(
             context,
-            WeatherStationModel.getAllStations().map { it.stationId },
+            stations.map { it.stationId },
             receiver,
             WeatherStationModel.ID_KEY
         )
@@ -113,7 +121,7 @@ object UpdateHandler {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
                 context.getAirStationUpdateInterval().toLong(),
-                AirStationModel.getStations().map { it.stationId }.toIntArray(),
+                AirStationModel.getAllStations().map { it.stationId }.toIntArray(),
                 AirStationModel.ID_KEY,
                 syncViaWifiOnly(context)
             )

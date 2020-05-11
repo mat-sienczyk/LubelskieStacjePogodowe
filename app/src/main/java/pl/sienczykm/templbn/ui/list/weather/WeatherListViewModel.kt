@@ -6,7 +6,6 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.list.common.BaseStationListViewModel
 import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.isAutoUpdateEnabled
 
 class WeatherListViewModel(application: Application) :
     BaseStationListViewModel<WeatherStationModel>(application) {
@@ -19,14 +18,28 @@ class WeatherListViewModel(application: Application) :
         AppDb.getDatabase(getApplication()).weatherStationDao().getAllStationsLiveData()
 
     init {
-        // TODO temporally, until figure out how to avoid refreshing so much
-        if (!application.isAutoUpdateEnabled()) refresh()
-
         stations.addSource(stationsLiveData) { result: List<WeatherStationModel>? ->
             result?.let {
                 stations.value = sortStations(it)
+                if (!isRefreshedOnInit) refreshIfNeeded(it)
             }
         }
+    }
+
+    override fun refreshIfNeeded(stations: List<WeatherStationModel>) {
+        if (stations.size != WeatherStationModel.getAllStations().size)
+            refresh()
+        else {
+            stations.filter { it.isDateObsoleteOrNull() ?: true }
+                .let { stationsToUpdate ->
+                    UpdateHandler.syncNowWeatherStations(
+                        getApplication(),
+                        receiver,
+                        stationsToUpdate
+                    )
+                }
+        }
+        isRefreshedOnInit = true
     }
 
     override suspend fun updateFavourite(station: BaseStationModel): Int =

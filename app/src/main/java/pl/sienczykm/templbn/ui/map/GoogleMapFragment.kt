@@ -96,7 +96,7 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindow
             markerBoundsBuilder.include(position)
         }
 
-        AirStationModel.getStations().forEach { airStationModel ->
+        AirStationModel.getAllStations().forEach { airStationModel ->
             val position = LatLng(airStationModel.latitude, airStationModel.longitude)
             val marker: Marker
 

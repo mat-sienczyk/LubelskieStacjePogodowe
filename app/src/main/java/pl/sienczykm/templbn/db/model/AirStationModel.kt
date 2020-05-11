@@ -124,7 +124,7 @@ class AirStationModel constructor(
         val KRASNOBROD =
             AirStationModel(12098, 50.549297, 23.197317, "Krasnobród", "ul. Sanatoryjna")
 
-        fun getStations(): List<AirStationModel> {
+        fun getAllStations(): List<AirStationModel> {
             return listOf(
                 LUBLIN,
                 BIALA_PODLASKA,
@@ -140,7 +140,7 @@ class AirStationModel constructor(
         }
 
         fun getStationForGivenId(id: Int): AirStationModel {
-            return getStations().single { it.stationId == id }
+            return getAllStations().single { it.stationId == id }
         }
     }
 

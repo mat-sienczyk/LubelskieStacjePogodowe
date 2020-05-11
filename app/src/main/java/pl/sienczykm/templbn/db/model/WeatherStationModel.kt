@@ -8,7 +8,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Entity
-class WeatherStationModel constructor(
+data class WeatherStationModel constructor(
     @Ignore
     override val stationId: Int,
     var type: Type,
@@ -300,7 +300,7 @@ class WeatherStationModel constructor(
             HAJDOW,
             LUBARTOW,
             GUCIOW,
-//                FLORIANKA,
+//            FLORIANKA,
             LUKOW,
             TRZDNIK,
             LESNIOWICE,

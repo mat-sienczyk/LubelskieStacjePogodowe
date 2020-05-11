@@ -11,7 +11,7 @@ import pl.sienczykm.templbn.utils.round
 import java.util.*
 
 @Entity
-class AirStationModel constructor(
+data class AirStationModel constructor(
     @Ignore
     override val stationId: Int,
     @Ignore
@@ -171,7 +171,11 @@ class AirStationModel constructor(
         VERY_GOOD(0, R.string.sensor_quality_very_good, R.color.quality_very_good),
         GOOD(1, R.string.sensor_quality_good, R.color.quality_good),
         MODERATE(2, R.string.sensor_quality_moderate, R.color.quality_moderate),
-        UNHEALTHY_SENSITIVE(3, R.string.sensor_quality_unhealthy_sensitive, R.color.quality_unhealthy_sensitive),
+        UNHEALTHY_SENSITIVE(
+            3,
+            R.string.sensor_quality_unhealthy_sensitive,
+            R.color.quality_unhealthy_sensitive
+        ),
         UNHEALTHY(4, R.string.sensor_quality_unhealthy, R.color.quality_unhealthy),
         HAZARDOUS(5, R.string.sensor_quality_hazardous, R.color.quality_hazardous),
     }

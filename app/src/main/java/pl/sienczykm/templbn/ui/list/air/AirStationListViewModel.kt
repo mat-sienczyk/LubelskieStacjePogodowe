@@ -27,15 +27,17 @@ class AirStationListViewModel(application: Application) :
     }
 
     override fun refreshIfNeeded(stations: List<AirStationModel>) {
-        //TODO this is working fine only when db is recreated from scratch
-        stations.filter { it.isDateObsoleteOrNull() ?: true }
-            .let { stationsToUpdate ->
-                UpdateHandler.syncNowAirStations(
-                    getApplication(),
-                    receiver,
-                    stationsToUpdate
-                )
-            }
+        if (AirStationModel.getAllStations().minus(stations).isNotEmpty()) refresh()
+        else {
+            stations.filter { it.isDateObsoleteOrNull() ?: true }
+                .let { stationsToUpdate ->
+                    UpdateHandler.syncNowAirStations(
+                        getApplication(),
+                        receiver,
+                        stationsToUpdate
+                    )
+                }
+        }
         isRefreshedOnInit = true
     }
 

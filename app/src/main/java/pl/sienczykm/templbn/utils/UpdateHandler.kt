@@ -128,7 +128,7 @@ object UpdateHandler {
         )
     }
 
-    private fun disableAutoSync(context: Context) {
+    fun disableAutoSync(context: Context) {
         WorkManager.getInstance(context).cancelAllWorkByTag(AUTO_SYNC_TAG)
         ExternalDisplaysHandler.cancelAllNotifications(context) //TODO: ugly?
     }

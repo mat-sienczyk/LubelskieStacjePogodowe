@@ -26,6 +26,7 @@ import pl.sienczykm.templbn.ui.map.OsmMapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailableAndEnabled
+import pl.sienczykm.templbn.utils.isNewVersion
 import pl.sienczykm.templbn.utils.isWriteExternalStoragePermissionGranted
 
 class MainActivity : AppCompatActivity() {
@@ -93,6 +94,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        if (isNewVersion()) UpdateHandler.disableAutoSync(this)
 
         UpdateHandler.handleAutoSync(this)
 

@@ -5,13 +5,17 @@ import android.content.SharedPreferences
 import androidx.annotation.BoolRes
 import androidx.annotation.StringRes
 import androidx.preference.PreferenceManager
+import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.R
 
 private fun Context.getDefaultSharedPreferences(): SharedPreferences =
     PreferenceManager.getDefaultSharedPreferences(this)
 
 private fun Context.getPreferenceBoolean(@StringRes key: Int, @BoolRes defaultValue: Int) =
-    getDefaultSharedPreferences().getBoolean(getString(key), resources.getBoolean(defaultValue))
+    getPreferenceBoolean(getString(key), resources.getBoolean(defaultValue))
+
+private fun Context.getPreferenceBoolean(key: String, defaultValue: Boolean) =
+    getDefaultSharedPreferences().getBoolean(key, defaultValue)
 
 private fun Context.getPreferenceInt(@StringRes key: Int, @StringRes defaultValue: Int) =
     getDefaultSharedPreferences().getString(
@@ -79,4 +83,11 @@ fun Context.useGooglePlayServices() = getPreferenceBoolean(
     R.string.enable_google_play_services_key,
     R.bool.enable_google_play_services_default
 )
+
+fun Context.isNewVersion(): Boolean {
+    val toReturn = getPreferenceBoolean(BuildConfig.VERSION_NAME, true)
+    getDefaultSharedPreferences().edit().putBoolean(BuildConfig.VERSION_NAME, false).apply()
+    return toReturn
+}
+
 

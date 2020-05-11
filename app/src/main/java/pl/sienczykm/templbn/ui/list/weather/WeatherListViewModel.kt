@@ -27,18 +27,15 @@ class WeatherListViewModel(application: Application) :
     }
 
     override fun refreshIfNeeded(stations: List<WeatherStationModel>) {
-        if (stations.size != WeatherStationModel.getAllStations().size)
-            refresh()
-        else {
-            stations.filter { it.isDateObsoleteOrNull() ?: true }
-                .let { stationsToUpdate ->
-                    UpdateHandler.syncNowWeatherStations(
-                        getApplication(),
-                        receiver,
-                        stationsToUpdate
-                    )
-                }
-        }
+        //TODO this is working fine only when db is recreated from scratch
+        stations.filter { it.isDateObsoleteOrNull() ?: true }
+            .let { stationsToUpdate ->
+                UpdateHandler.syncNowWeatherStations(
+                    getApplication(),
+                    receiver,
+                    stationsToUpdate
+                )
+            }
         isRefreshedOnInit = true
     }
 

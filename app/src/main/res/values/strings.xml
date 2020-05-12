@@ -162,7 +162,7 @@
 
     <!--about-->
     <string name="version">Wersja %1$s</string>
-    <string name="author">\u00A9 2015–2019 Mateusz Sieńczyk</string>
+    <string name="author">\u00A9 2015–2020 Mateusz Sieńczyk</string>
     <string name="email">mat.sienczyk@gmail.com</string>
     <string name="rate_app">Oceń aplikację</string>
     <string name="license">Licencje Open Source</string>

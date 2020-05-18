@@ -33,9 +33,10 @@ Prognoza została udostępniona nieodpłatnie przez serwis meteo.pl prowadzony p
 
 http://www.meteo.pl/
 
-## Google Play
+## Pobierz
 
-[![Google Play](/assets/gplay_download_pl.png?raw=true)](https://play.google.com/store/apps/details?id=pl.sienczykm.templbn)
+<a href="https://play.google.com/store/apps/details?id=pl.sienczykm.templbn"><img src="/assets/google-play-badge.png" alt="Google Play" width="480"></a>
+<a href="https://appgallery.cloud.huawei.com/marketshare/app/C102222543"><img src="/assets/AppGallery_Badge_Black.png" alt="AppGallery" width="480"></a>
 
 Licencja
 --------

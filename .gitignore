@@ -98,3 +98,4 @@ lint/tmp/
 
 *.jks
 *.pepk
+*.pem

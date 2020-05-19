@@ -114,7 +114,7 @@ class OldWeatherWidget : AppWidgetProvider() {
             views.setTextViewText(
                 R.id.widget_wind,
                 (weatherStation?.getParsedWind(1)
-                    ?: noExists) + context.getString(R.string.km_per_hour)
+                    ?: noExists) + getWindUnit(weatherStation, context)
             )
 
             views.setTextViewText(
@@ -143,5 +143,17 @@ class OldWeatherWidget : AppWidgetProvider() {
 
             cancel()
         }
+    }
+
+    private fun getWindUnit(
+        weatherStation: WeatherStationModel?,
+        context: Context
+    ): String {
+        return weatherStation?.run {
+            if (convertWind)
+                context.getString(R.string.km_per_hour)
+            else
+                context.getString(R.string.m_per_sec)
+        } ?: return ""
     }
 }

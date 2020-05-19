@@ -62,7 +62,7 @@ data class WeatherStationModel constructor(
     var pressureData: List<ChartDataModel>? = null
     var rainData: List<ChartDataModel>? = null
 
-    //TODO set this value from preferences later
+    //TODO set this value from preferences?
     @Ignore
     val convertWind = true
 
@@ -139,10 +139,32 @@ data class WeatherStationModel constructor(
     fun getParsedRain(roundPlaces: Int = 0) =
         getLatestParsedData(roundPlaces, rainToday, getTodayRainChartData())
 
+    fun getLastDayTempData() = getLastDayChartData(temperatureData)
+
+    fun getLastDayHumData() = getLastDayChartData(humidityData)
+
+    fun getLastDayTempWindData() = getLastDayChartData(temperatureWindData)
+
+    fun getLastDayPressData() = getLastDayChartData(pressureData)
+
     fun getProperWindSpeedData(): List<ChartDataModel>? {
         return if (convertWind) {
-            windSpeedData?.map { ChartDataModel(it.timestamp, convertMetersToKm(it.value)) }
-        } else windSpeedData
+            getLastDayChartData(windSpeedData?.map {
+                ChartDataModel(
+                    it.timestamp,
+                    convertMetersToKm(it.value)
+                )
+            })
+        } else getLastDayChartData(windSpeedData)
+    }
+
+    private fun getLastDayChartData(chartData: List<ChartDataModel>?): List<ChartDataModel>? {
+        val yesterday = nowInPoland().apply {
+            add(Calendar.HOUR_OF_DAY, -1)
+            add(Calendar.DAY_OF_MONTH, -1)
+        }
+
+        return chartData?.filter { it.timestamp!! > yesterday.timeInMillis }
     }
 
     private fun getLatestParsedData(

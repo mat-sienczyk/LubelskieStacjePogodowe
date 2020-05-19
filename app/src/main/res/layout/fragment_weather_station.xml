@@ -74,14 +74,14 @@
                                     app:chartData="@{viewModel.station.properWindSpeedData}"
                                     app:chartMinZero="@{true}"
                                     app:metadata="@{@string/station_wind}"
-                                    app:unit="@{@string/km_per_hour}"
+                                    app:unit="@{viewModel.station.convertWind ? @string/km_per_hour : @string/m_per_sec}"
                                     app:value="@{viewModel.station.getParsedWind(1)}"
                                     app:viewModel="@{viewModel}"
                                     app:windDirDouble="@{viewModel.station.windDir}" />
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.temperatureData}"
+                                    app:chartData="@{viewModel.station.lastDayTempData}"
                                     app:metadata="@{@string/station_temp}"
                                     app:unit="@{@string/celsius_degree}"
                                     app:value="@{viewModel.station.getParsedTemperature(1)}"
@@ -89,7 +89,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.temperatureWindData}"
+                                    app:chartData="@{viewModel.station.lastDayTempWindData}"
                                     app:metadata="@{@string/station_temp_air}"
                                     app:unit="@{@string/celsius_degree}"
                                     app:value="@{viewModel.station.getParsedTemperatureWind(1)}"
@@ -105,7 +105,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.humidityData}"
+                                    app:chartData="@{viewModel.station.lastDayHumData}"
                                     app:metadata="@{@string/station_humidity}"
                                     app:unit="@{@string/percent}"
                                     app:value="@{viewModel.station.getParsedHumidity(1)}"
@@ -113,7 +113,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.pressureData}"
+                                    app:chartData="@{viewModel.station.lastDayPressData}"
                                     app:metadata="@{@string/station_pressure}"
                                     app:unit="@{@string/hectopascal}"
                                     app:value="@{viewModel.station.getParsedPressure(1)}"
@@ -121,7 +121,7 @@
 
                             <include
                                     layout="@layout/row_weather_data"
-                                    app:chartData="@{viewModel.station.getTodayRainChartData()}"
+                                    app:chartData="@{viewModel.station.todayRainChartData}"
                                     app:chartMinZero="@{true}"
                                     app:metadata="@{@string/station_rain_today}"
                                     app:unit="@{@string/milliliters}"

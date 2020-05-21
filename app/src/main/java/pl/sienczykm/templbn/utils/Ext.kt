@@ -83,6 +83,48 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     return 2 * R * asin(sqrt(sin(Δλ / 2).pow(2.0) + sin(Δφ / 2).pow(2.0) * cos(λ1) * cos(λ2)))
 }
 
+/**
+ * Calculate absolute pressure from relative (sea level).
+ *
+ * https://keisan.casio.com/exec/system/1224575267
+ * To get absolute pressure from relative, use Pa = Pr / factor
+ *
+ * @return pressure in hPa.
+ */
+fun calcAbsolutePressure(pressure: Double?, temp: Double?, altitude: Double) =
+    calcPressure(pressure, temp, altitude, Double::div)
+
+/**
+ * Calculate relative (sea level) pressure from absolute.
+ *
+ * https://keisan.casio.com/exec/system/1224575267
+ * To get relative pressure from absolute, use Pr = Pa * factor
+ *
+ * @return pressure in hPa.
+ */
+fun calcRelativePressure(pressure: Double?, temp: Double?, altitude: Double) =
+    calcPressure(pressure, temp, altitude, Double::times)
+
+private fun calcPressure(
+    pressure: Double?,
+    temp: Double?,
+    altitude: Double,
+    operation: (Double, Double) -> Double
+): Double? {
+    return if (pressure != null && temp != null) {
+        val temperature = temp + 273.15f
+        val tempGradient = 0.0065f
+
+        val factor = (1 - (tempGradient * altitude) / (temperature + tempGradient * altitude)).pow(
+            -5.257
+        )
+
+        operation(pressure, factor)
+    } else {
+        null
+    }
+}
+
 fun Context.isLocationPermissionGranted() =
     isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
 

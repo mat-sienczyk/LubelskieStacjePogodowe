@@ -53,13 +53,13 @@ data class WeatherStationModel constructor(
     var windSpeed: Double? = null
     var windDir: Double? = null
     var humidity: Double? = null
-    var pressure: Double? = null
+    var pressureAbsolute: Double? = null
     var rainToday: Double? = null
     var temperatureData: List<ChartDataModel>? = null
     var humidityData: List<ChartDataModel>? = null
     var windSpeedData: List<ChartDataModel>? = null
     var temperatureWindData: List<ChartDataModel>? = null
-    var pressureData: List<ChartDataModel>? = null
+    var pressureAbsoluteData: List<ChartDataModel>? = null
     var rainData: List<ChartDataModel>? = null
 
     //TODO set this value from preferences?
@@ -88,13 +88,13 @@ data class WeatherStationModel constructor(
         stationCopy.windSpeed = windSpeed
         stationCopy.windDir = windDir
         stationCopy.humidity = humidity
-        stationCopy.pressure = pressure
+        stationCopy.pressureAbsolute = pressureAbsolute
         stationCopy.rainToday = rainToday
         stationCopy.temperatureData = temperatureData
         stationCopy.humidityData = humidityData
         stationCopy.windSpeedData = windSpeedData
         stationCopy.temperatureWindData = temperatureWindData
-        stationCopy.pressureData = pressureData
+        stationCopy.pressureAbsoluteData = pressureAbsoluteData
         stationCopy.rainData = rainData
         return stationCopy
     }
@@ -107,7 +107,7 @@ data class WeatherStationModel constructor(
             if (windSpeed != other.windSpeed) return false
             if (windDir != other.windDir) return false
             if (humidity != other.humidity) return false
-            if (pressure != other.pressure) return false
+            if (pressureAbsolute != other.pressureAbsolute) return false
         }
 
         return super.isContentTheSame(other)
@@ -129,10 +129,10 @@ data class WeatherStationModel constructor(
         getLatestParsedData(roundPlaces, humidity, humidityData)
 
     fun getParsedPressure(roundPlaces: Int = 0): String? {
-        return if (pressure == 0.0) {
-            pressureData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
+        return if (pressureAbsolute == 0.0) {
+            pressureAbsoluteData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
         } else {
-            getLatestParsedData(roundPlaces, pressure, pressureData)
+            getLatestParsedData(roundPlaces, pressureAbsolute, pressureAbsoluteData)
         }
     }
 
@@ -145,7 +145,7 @@ data class WeatherStationModel constructor(
 
     fun getLastDayTempWindData() = getLastDayChartData(temperatureWindData)
 
-    fun getLastDayPressData() = getLastDayChartData(pressureData)
+    fun getLastDayPressData() = getLastDayChartData(pressureAbsoluteData)
 
     fun getProperWindSpeedData(): List<ChartDataModel>? {
         return if (convertWind) {

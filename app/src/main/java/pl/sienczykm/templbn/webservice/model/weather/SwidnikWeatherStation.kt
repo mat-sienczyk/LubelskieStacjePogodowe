@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.webservice.model.weather
 
 import org.jsoup.nodes.Document
 import pl.sienczykm.templbn.db.model.ChartDataModel
+import pl.sienczykm.templbn.utils.calcAbsolutePressure
 import pl.sienczykm.templbn.utils.dateFormat
 import java.util.*
 
@@ -19,10 +20,12 @@ class SwidnikWeatherStation(doc: Document?) {
 
             val date = parseDate(row?.select("td")?.get(0)?.text())
 
+            val temp = row?.select("td")?.get(1)?.text()?.toDouble()
+
             temperatureData.add( // temp = 12.1
                 ChartDataModel(
                     date?.time,
-                    row?.select("td")?.get(1)?.text()?.toDouble()
+                    temp
                 )
             )
             windDirData.add( // windDir = S
@@ -49,10 +52,14 @@ class SwidnikWeatherStation(doc: Document?) {
                     row?.select("td")?.get(5)?.text()?.toDouble()
                 )
             )
-            pressureData.add( // pressure hPa = 1020.2
+            pressureData.add( // pressure hPa = 1020.2, relative
                 ChartDataModel(
                     date?.time,
-                    row?.select("td")?.get(6)?.text()?.toDouble()
+                    calcAbsolutePressure(
+                        row?.select("td")?.get(6)?.text()?.toDouble(),
+                        temp,
+                        225.5
+                    )
                 )
             )
         }
@@ -79,5 +86,4 @@ class SwidnikWeatherStation(doc: Document?) {
     } catch (e: Exception) {
         null
     }
-
 }

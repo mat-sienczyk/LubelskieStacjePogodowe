@@ -66,7 +66,7 @@ object ProcessingUtils {
                             station.windSpeed = windSpeed
                             station.windDir = windDir
                             station.humidity = humidity
-                            station.pressure = pressure
+                            station.pressureAbsolute = pressure
                             station.rainToday = rainToday
                             station.temperatureData =
                                 parseUmcsWeatherChartData(temperatureData?.data)
@@ -76,7 +76,7 @@ object ProcessingUtils {
                                 parseUmcsWeatherChartData(windSpeedData?.data)
                             station.temperatureWindData =
                                 parseUmcsWeatherChartData(temperatureWindChart?.data)
-                            station.pressureData =
+                            station.pressureAbsoluteData =
                                 parseUmcsWeatherChartData(pressureData?.data, true)
                             station.rainData =
                                 parseUmcsWeatherChartData(rainData?.data)
@@ -127,7 +127,7 @@ object ProcessingUtils {
                     station.windSpeed = windSpeedData.lastOrNull()?.value
                     station.windDir = windDirData.lastOrNull()?.value
                     station.temperatureData = temperatureData
-                    station.pressureData = pressureData
+                    station.pressureAbsoluteData = pressureData
                     station.windSpeedData = windSpeedData
                     station.rainData = rainData
                 }

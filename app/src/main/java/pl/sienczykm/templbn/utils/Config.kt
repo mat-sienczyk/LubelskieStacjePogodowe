@@ -3,7 +3,7 @@ package pl.sienczykm.templbn.utils
 object Config {
 
     //remember to increase value after changes in db model
-    const val DB_VERSION = 7
+    const val DB_VERSION = 8
 
     const val DB_NAME = "lsp.db"
 

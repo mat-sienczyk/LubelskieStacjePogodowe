@@ -27,7 +27,7 @@ class ChartHandler(private val bottomSheetLayout: LinearLayout) {
 
     private val timeChartFormatter = dateFormat("HH:mm")
 
-    private val valueChartFormatter: NumberFormat = NumberFormat.getInstance().apply {
+    private val valueChartFormatter = NumberFormat.getIntegerInstance(Locale("pl", "PL")).apply {
         minimumFractionDigits = 1
         maximumFractionDigits = 1
     }

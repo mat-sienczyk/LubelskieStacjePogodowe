@@ -2,7 +2,7 @@
 
 ## Techologie
 
-- Koltin, Coroutines,
+- Kotlin, Coroutines,
 - Android Jetpack (AndroidKTX, Lifecycle, Room, LivaData, DataBinding, ViewModel, WorkManager),
 - AndroidX, Retrofit2, OkHttp4,
 - Google Play Services (Maps, Location).

@@ -122,8 +122,12 @@ data class WeatherStationModel constructor(
     fun getParsedTemperatureGround(roundPlaces: Int = 0) =
         getLatestParsedData(roundPlaces, temperatureGround, null)
 
-    fun getParsedWind(roundPlaces: Int = 0) =
-        getLatestParsedData(roundPlaces, windSpeed, windSpeedData, convertWind)
+    fun getParsedWind(roundPlaces: Int = 0) = if (convertWind) {
+        convertMetersToKm(windSpeed).roundAndGetString(roundPlaces)
+            ?: convertMetersToKm(windSpeedData?.lastOrNull()?.value).roundAndGetString(roundPlaces)
+    } else {
+        getLatestParsedData(roundPlaces, windSpeed, windSpeedData)
+    }
 
     fun getParsedHumidity(roundPlaces: Int = 0) =
         getLatestParsedData(roundPlaces, humidity, humidityData)
@@ -171,16 +175,8 @@ data class WeatherStationModel constructor(
         roundPlaces: Int,
         data: Double?,
         chartData: List<ChartDataModel>?,
-        convertWind: Boolean = false
-    ): String? {
-        return if (convertWind) {
-            convertMetersToKm(data).roundAndGetString(roundPlaces)
-                ?: convertMetersToKm(chartData?.lastOrNull()?.value).roundAndGetString(roundPlaces)
-        } else {
-            data.roundAndGetString(roundPlaces)
-                ?: chartData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
-        }
-    }
+    ) = data.roundAndGetString(roundPlaces)
+        ?: chartData?.lastOrNull()?.value.roundAndGetString(roundPlaces)
 
     fun getTodayRainChartData(): List<ChartDataModel>? {
 

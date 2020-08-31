@@ -71,13 +71,19 @@ object ProcessingUtils {
                             station.temperatureData =
                                 parseUmcsWeatherChartData(temperatureData?.data)
                             station.humidityData =
-                                parseUmcsWeatherChartData(humidityData?.data)
+                                parseUmcsWeatherChartData(humidityData?.data) { humidityList ->
+                                    humidityList.map {
+                                        listOf(it[0], if (it[1] > 100) 100.0 else it[1])
+                                    }
+                                }
                             station.windSpeedData =
                                 parseUmcsWeatherChartData(windSpeedData?.data)
                             station.temperatureWindData =
                                 parseUmcsWeatherChartData(temperatureWindChart?.data)
                             station.pressureAbsoluteData =
-                                parseUmcsWeatherChartData(pressureData?.data, true)
+                                parseUmcsWeatherChartData(pressureData?.data) { pressureList ->
+                                    pressureList.filter { it[1] > 0 }
+                                }
                             station.rainData =
                                 parseUmcsWeatherChartData(rainData?.data)
                         }
@@ -142,16 +148,16 @@ object ProcessingUtils {
 
     private fun parseUmcsWeatherChartData(
         chartData: List<List<Double>?>?,
-        isPressure: Boolean = false
+        operationOnList: ((List<List<Double>>) -> List<List<Double>>)? = null,
     ): List<ChartDataModel>? {
-        val offset =
-            if (nowInPoland().timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
-            else TimeUnit.HOURS.toMillis(1)
-
         return if (chartData.isNullOrEmpty()) null
         else {
+            val offset =
+                if (nowInPoland().timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
+                else TimeUnit.HOURS.toMillis(1)
+
             var returnList = chartData.filterNotNull()
-            if (isPressure) returnList = returnList.filter { it[1] > 0 }
+            operationOnList?.let { returnList = it(returnList) }
             returnList.map { ChartDataModel(it[0].toLong().plus(offset), it[1]) }
         }
     }

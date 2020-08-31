@@ -21,9 +21,12 @@ abstract class UpdateJob : JobIntentService() {
 
         val receiver: ResultReceiver? = intent.getParcelableExtra(RECEIVER_KEY)
 
-        receiver?.send(StatusReceiver.STATUS_RUNNING, Bundle())
+        receiver?.send(StatusReceiver.STATUS_REFRESHING, Bundle())
 
         if (applicationContext.isNetworkAvailable()) {
+
+            val errorList = mutableListOf<String>()
+
             intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY)?.forEach { stationId ->
                 try {
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {
@@ -35,20 +38,24 @@ abstract class UpdateJob : JobIntentService() {
                             applicationContext,
                             stationId
                         )
-                        else -> throw Exception("Invalid station key")
+                        else -> errorList.add("Invalid station key")
                     }
                 } catch (e: Exception) {
-                    val errorBundle = Bundle().apply {
-                        putString(ProcessingUtils.ERROR_KEY, e.localizedMessage)
-                    }
-                    receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)
+                    errorList.add(e.message ?: "Unknown exception")
                 }
+            } ?: errorList.add("Stations are null")
+
+            if (errorList.isNotEmpty()) {
+                val errorBundle = Bundle().apply {
+                    putStringArray(ProcessingUtils.ERROR_KEY, errorList.toTypedArray())
+                }
+                receiver?.send(StatusReceiver.STATUS_ERROR, errorBundle)
             }
+
             ExternalDisplaysHandler.updateExternalDisplays(applicationContext)
         } else {
             receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }
-
         receiver?.send(StatusReceiver.STATUS_IDLE, Bundle())
     }
 }

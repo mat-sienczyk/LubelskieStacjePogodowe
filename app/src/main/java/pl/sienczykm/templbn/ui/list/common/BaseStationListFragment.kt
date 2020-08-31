@@ -129,9 +129,9 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
         }.apply { targetPosition = position }
 
 
-    override fun handleError(message: String?) {
-        Timber.e(Throwable(message))
-        showSnackbar(R.string.error_server)
+    override fun handleError(errorMessages: Array<String>?) {
+        errorMessages?.forEach { Timber.e(Throwable(it)) }
+        showSnackbar(R.string.error_server_list)
     }
 
     override fun showInfo(message: Int) {

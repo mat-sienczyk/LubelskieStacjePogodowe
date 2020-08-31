@@ -17,17 +17,17 @@ abstract class BaseRefreshViewModel<N : BaseRefreshNavigator>(application: Appli
     val receiver = object : StatusReceiver.Receiver {
         override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
             when (resultCode) {
-                StatusReceiver.STATUS_RUNNING -> onRunning()
+                StatusReceiver.STATUS_REFRESHING -> onRefresh()
                 StatusReceiver.STATUS_IDLE -> onIdle()
                 StatusReceiver.STATUS_NO_CONNECTION -> onNoConnection()
-                StatusReceiver.STATUS_ERROR -> onError(resultData.getString(ProcessingUtils.ERROR_KEY))
+                StatusReceiver.STATUS_ERROR -> onError(resultData.getStringArray(ProcessingUtils.ERROR_KEY))
             }
         }
     }
 
     abstract fun refresh()
 
-    fun onRunning() {
+    fun onRefresh() {
         isRefreshing.value = true
     }
 
@@ -35,13 +35,11 @@ abstract class BaseRefreshViewModel<N : BaseRefreshNavigator>(application: Appli
         isRefreshing.value = false
     }
 
-    fun onError(resultData: String?) {
-        isRefreshing.value = false
+    fun onError(resultData: Array<String>?) {
         getNavigator()?.handleError(resultData)
     }
 
     fun onNoConnection() {
-        isRefreshing.value = false
         getNavigator()?.noConnection()
     }
 

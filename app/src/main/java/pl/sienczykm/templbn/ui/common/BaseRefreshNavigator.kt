@@ -4,6 +4,6 @@ import androidx.annotation.StringRes
 
 interface BaseRefreshNavigator {
     fun showInfo(@StringRes message: Int)
-    fun handleError(message: String?)
+    fun handleError(errorMessages: Array<String>?)
     fun noConnection()
 }

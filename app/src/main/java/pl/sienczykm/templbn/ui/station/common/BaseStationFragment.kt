@@ -128,8 +128,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         chartHandler.showChart(chartData, minIsZero, limitValue, unit, title, titleId)
     }
 
-    override fun handleError(message: String?) {
-        Timber.e(Throwable(message))
+    override fun handleError(errorMessages: Array<String>?) {
+        errorMessages?.forEach { Timber.e(Throwable(it)) }
         showSnackbar(R.string.error_server)
     }
 

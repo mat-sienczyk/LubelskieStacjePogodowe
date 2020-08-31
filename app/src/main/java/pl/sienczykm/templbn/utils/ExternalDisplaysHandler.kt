@@ -230,7 +230,7 @@ object ExternalDisplaysHandler {
     private fun getNearestAirStationId(context: Context): Int? {
         val nearestStation = context.getLastKnownLocation()?.let {
             AirStationModel.getAllStations()
-                .minWith(distanceComparator(it)) // since AirStationModel.getStations() is list of static objects, minWith will never returns null
+                .minWithOrNull(distanceComparator(it)) // since AirStationModel.getStations() is list of static objects, minWithOrNull will never returns null
         } ?: return null
 
         // distance is not null if we run distanceComparator()
@@ -242,7 +242,7 @@ object ExternalDisplaysHandler {
 
     private fun getNearestWeatherStationId(location: Location): Int =
         WeatherStationModel.getAllStations()
-            .minWith(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWith will never returns null
+            .minWithOrNull(distanceComparator(location))!!.stationId // since WeatherStationModel.getStations() is list of static objects, minWithOrNull will never returns null
 
     private fun distanceComparator(it: Location): Comparator<BaseStationModel> {
         return Comparator { station1, station2 ->

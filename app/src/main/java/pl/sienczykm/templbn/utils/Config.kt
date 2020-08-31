@@ -13,7 +13,7 @@ object Config {
 
     const val IMGW_BASE_WEATHER_URL = "https://danepubliczne.imgw.pl/api/data/synop/id/"
 
-    const val POGODYNKA_BASE_WEATHER_URL = "http://monitor.pogodynka.pl/"
+    const val POGODYNKA_BASE_WEATHER_URL = "http://hydro.imgw.pl/"
 
     const val SWIDNIK_BASE_WEATHER_URL = "http://www.meteo.pec.swidnik.pl/"
 

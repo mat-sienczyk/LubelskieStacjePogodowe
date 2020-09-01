@@ -8,6 +8,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 
+//TODO change this to CoroutineWorker
 class AutoUpdateWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 

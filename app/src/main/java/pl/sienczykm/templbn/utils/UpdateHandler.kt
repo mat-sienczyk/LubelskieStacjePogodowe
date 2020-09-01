@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Handler
 import androidx.work.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.background.AirUpdateJob
-import pl.sienczykm.templbn.background.AutoUpdateWorker
-import pl.sienczykm.templbn.background.StatusReceiver
-import pl.sienczykm.templbn.background.WeatherUpdateJob
+import pl.sienczykm.templbn.background.*
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit
@@ -63,19 +60,21 @@ object UpdateHandler {
     ) {
         when (stationType) {
             AirStationModel.ID_KEY -> {
-                AirUpdateJob.enqueueWork(
+//                AirUpdateJob.enqueueWork(
+                UpdateCoroutine.updateAir(
                     context,
                     stationsIds,
                     StatusReceiver(Handler(), receiver),
-                    stationType
+//                    stationType
                 )
             }
             WeatherStationModel.ID_KEY -> {
-                WeatherUpdateJob.enqueueWork(
+//                WeatherUpdateJob.enqueueWork(
+                UpdateCoroutine.updateWeather(
                     context,
                     stationsIds,
                     StatusReceiver(Handler(), receiver),
-                    stationType
+//                    stationType
                 )
             }
         }

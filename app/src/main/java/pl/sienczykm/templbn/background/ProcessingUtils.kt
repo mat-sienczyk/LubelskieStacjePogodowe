@@ -103,7 +103,11 @@ object ProcessingUtils {
                             station.temperatureWindData =
                                 parseUmcsWeatherChartData(temperatureData?.data)
                             station.humidityData =
-                                parseUmcsWeatherChartData(humidityData?.data)
+                                parseUmcsWeatherChartData(humidityData?.data) { humidityList ->
+                                    humidityList.map {
+                                        listOf(it[0], if (it[1] > 100) 100.0 else it[1])
+                                    }
+                                }
                         }
                     } else throw Exception(errorBody().toString())
                 }

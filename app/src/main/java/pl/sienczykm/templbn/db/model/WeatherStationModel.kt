@@ -129,8 +129,13 @@ data class WeatherStationModel constructor(
         getLatestParsedData(roundPlaces, windSpeed, windSpeedData)
     }
 
-    fun getParsedHumidity(roundPlaces: Int = 0) =
-        getLatestParsedData(roundPlaces, humidity, humidityData)
+    fun getParsedHumidity(roundPlaces: Int = 0): String? {
+        return when {
+            humidity == null -> null
+            humidity!! > 100 -> "100"
+            else -> getLatestParsedData(roundPlaces, humidity, humidityData)
+        }
+    }
 
     fun getParsedPressure(roundPlaces: Int = 0): String? {
         return if (pressureAbsolute == 0.0) {

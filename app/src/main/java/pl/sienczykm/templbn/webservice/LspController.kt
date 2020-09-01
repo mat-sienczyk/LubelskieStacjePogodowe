@@ -91,7 +91,7 @@ object LspController {
                 )
             )
             .addInterceptor(HttpLoggingInterceptor().apply {
-                if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BASIC
+                if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BODY
             }).build()
 
         fun get(): OkHttpClient = client

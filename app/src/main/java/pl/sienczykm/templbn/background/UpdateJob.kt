@@ -10,6 +10,7 @@ import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isNetworkAvailable
+import timber.log.Timber
 
 abstract class UpdateJob : JobIntentService() {
 
@@ -18,6 +19,8 @@ abstract class UpdateJob : JobIntentService() {
     }
 
     override fun onHandleWork(intent: Intent) {
+
+        val start = System.currentTimeMillis()
 
         val receiver: ResultReceiver? = intent.getParcelableExtra(RECEIVER_KEY)
 
@@ -57,6 +60,9 @@ abstract class UpdateJob : JobIntentService() {
             receiver?.send(StatusReceiver.STATUS_NO_CONNECTION, Bundle())
         }
         receiver?.send(StatusReceiver.STATUS_IDLE, Bundle())
+
+        val stop = System.currentTimeMillis()
+        Timber.wtf("Time in millis: ${stop - start}")
     }
 }
 

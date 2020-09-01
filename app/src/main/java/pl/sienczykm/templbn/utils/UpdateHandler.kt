@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Handler
 import androidx.work.*
 import pl.sienczykm.templbn.R
-import pl.sienczykm.templbn.background.*
+import pl.sienczykm.templbn.background.AutoUpdateWorker
+import pl.sienczykm.templbn.background.StatusReceiver
+import pl.sienczykm.templbn.background.UpdateCoroutine
 import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import java.util.concurrent.TimeUnit

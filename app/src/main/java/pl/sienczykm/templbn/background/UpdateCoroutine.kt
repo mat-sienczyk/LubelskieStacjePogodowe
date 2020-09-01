@@ -38,7 +38,6 @@ object UpdateCoroutine {
                 val errorList = mutableListOf<String>()
 
                 val jobs = stationIds.map { stationId ->
-//                stationIds.forEach { stationId ->
                     async { // can't do it fully async because server cutting me off, BUT IT"S WORKING
                         try {
                             updateStation(stationId)

@@ -51,4 +51,8 @@ class AirStationFragment :
     override fun getBottomSheetLayout(): LinearLayout {
         return binding.bottomSheet.bottomSheet
     }
+
+    override fun openPhoto(url: String) {
+        // not used here yet
+    }
 }

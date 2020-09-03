@@ -13,4 +13,5 @@ interface StationNavigator : BaseRefreshNavigator {
         title: String? = null,
         @StringRes titleId: Int? = null
     )
+    fun openPhoto(url: String)
 }

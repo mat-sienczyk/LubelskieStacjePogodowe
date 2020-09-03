@@ -5,12 +5,14 @@ import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.bottom_sheet.view.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentWeatherStationBinding
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.ui.station.common.BaseStationFragment
+import pl.sienczykm.templbn.utils.downloadImage
 
 class WeatherStationFragment :
     BaseStationFragment<WeatherStationModel, WeatherStationViewModel, FragmentWeatherStationBinding>() {
@@ -50,5 +52,16 @@ class WeatherStationFragment :
 
     override fun getBottomSheetLayout(): LinearLayout {
         return binding.bottomSheet.bottomSheet
+    }
+
+    override fun openPhoto(url: String) {
+        StfalconImageViewer.Builder(requireContext(), listOf(url)) { imageView, passedUrl ->
+            imageView.downloadImage(passedUrl)
+        }
+            .allowSwipeToDismiss(true)
+            .allowZooming(true)
+            .withHiddenStatusBar(false)
+            .withTransitionFrom(binding.photoView)
+            .show()
     }
 }

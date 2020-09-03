@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.map
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources.NotFoundException
 import android.os.Bundle
@@ -10,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentGoogleMapBinding
@@ -34,7 +35,6 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindow
 
     //TODO move to viewModel?
     private lateinit var map: GoogleMap
-    private lateinit var mapView: MapView
     private lateinit var binding: FragmentGoogleMapBinding
 
     //TODO move to viewModel?
@@ -49,14 +49,14 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindow
 //        binding.viewModelWeather = viewModelWeather
         binding.lifecycleOwner = viewLifecycleOwner
 
-        mapView = binding.mapView.apply {
-            onCreate(savedInstanceState)
+        (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).apply {
             getMapAsync(this@GoogleMapFragment)
         }
 
         return binding.root
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         //TODO move to viewModel?
         map = googleMap
@@ -138,40 +138,4 @@ class GoogleMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindow
         }
         startActivity(intent)
     }
-
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-
 }

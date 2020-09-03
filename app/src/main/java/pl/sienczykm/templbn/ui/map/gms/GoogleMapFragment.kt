@@ -7,9 +7,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.ui.IconGenerator
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentGoogleMapBinding
-import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
@@ -83,8 +83,22 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             stations?.let { stations ->
                 stations.forEach { stationModel ->
 
-                    val icon =
-                        BitmapDescriptorFactory.defaultMarker(if (stationModel is AirStationModel) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_GREEN)
+                    val icon = when (stationModel) {
+//                        is AirStationModel -> BitmapDescriptorFactory.fromBitmap(
+//                            IconGenerator(
+//                                requireContext()
+//                            ).makeIcon(stationModel.getValue(AirStationModel.AirSensorType.PM25).toString())
+//                        )
+                        is WeatherStationModel -> BitmapDescriptorFactory.fromBitmap(
+                            IconGenerator(
+                                requireContext()
+                            ).makeIcon(stationModel.getParsedTemperature() + " C")
+                        )
+                        else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+                    }
+
+//                    val icon =
+//                        BitmapDescriptorFactory.defaultMarker(if (stationModel is AirStationModel) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_GREEN)
 
                     val marker = googleMap.addMarker(
                         MarkerOptions()

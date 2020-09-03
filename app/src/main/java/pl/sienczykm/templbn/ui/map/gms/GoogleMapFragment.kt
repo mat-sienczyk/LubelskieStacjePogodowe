@@ -83,8 +83,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             stations?.let { stations ->
                 stations.forEach { stationModel ->
 
-//                    val icon = IconGenerator(requireContext()).makeIcon().apply { setC }
-
                     val icon =
                         BitmapDescriptorFactory.defaultMarker(if (stationModel is AirStationModel) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_GREEN)
 

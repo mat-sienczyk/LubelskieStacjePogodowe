@@ -25,7 +25,7 @@ abstract class UpdateJob : JobIntentService() {
 
         if (applicationContext.isNetworkAvailable()) {
 
-            val errorList = mutableListOf<String>()
+            val errorList = arrayListOf<String>()
 
             intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY)?.forEach { stationId ->
                 try {

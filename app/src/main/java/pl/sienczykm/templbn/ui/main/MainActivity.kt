@@ -21,8 +21,8 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.about.AboutActivity
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
 import pl.sienczykm.templbn.ui.list.weather.WeatherListFragment
-import pl.sienczykm.templbn.ui.map.GoogleMapFragment
-import pl.sienczykm.templbn.ui.map.OsmMapFragment
+import pl.sienczykm.templbn.ui.map.gms.GoogleMapFragment
+import pl.sienczykm.templbn.ui.map.osm.OsmMapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailableAndEnabled

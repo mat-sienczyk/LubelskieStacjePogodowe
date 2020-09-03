@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.map
+package pl.sienczykm.templbn.ui.map.osm
 
 import android.location.Location
 import org.osmdroid.views.MapView

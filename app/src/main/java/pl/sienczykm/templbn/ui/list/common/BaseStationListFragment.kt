@@ -34,7 +34,7 @@ import timber.log.Timber
 abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, L : ViewDataBinding> :
     Fragment(), RecyclerViewClickListener, BaseRefreshListNavigator {
 
-    lateinit var stationViewModel: T
+    private lateinit var stationViewModel: T
     lateinit var binding: FragmentListBinding
 
     private var locationUpdates: LocationUpdates? = null

@@ -1,7 +1,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.map.MapViewModel" />
     </data>
 
     <androidx.fragment.app.FragmentContainerView

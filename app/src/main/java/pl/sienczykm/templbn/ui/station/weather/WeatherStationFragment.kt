@@ -17,6 +17,8 @@ import pl.sienczykm.templbn.utils.downloadImage
 class WeatherStationFragment :
     BaseStationFragment<WeatherStationModel, WeatherStationViewModel, FragmentWeatherStationBinding>() {
 
+    var photoViewer: StfalconImageViewer<String>? = null
+
     companion object {
 
         fun newInstance(stationId: Int): WeatherStationFragment {
@@ -38,6 +40,11 @@ class WeatherStationFragment :
         ).get(WeatherStationViewModel::class.java)
     }
 
+    override fun onDestroyView() {
+        photoViewer?.dismiss()
+        super.onDestroyView()
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_weather_station
     }
@@ -55,13 +62,14 @@ class WeatherStationFragment :
     }
 
     override fun openPhoto(url: String) {
-        StfalconImageViewer.Builder(requireContext(), listOf(url)) { imageView, passedUrl ->
-            imageView.downloadImage(passedUrl)
-        }
-            .allowSwipeToDismiss(true)
-            .allowZooming(true)
-            .withHiddenStatusBar(false)
-            .withTransitionFrom(binding.photoView)
-            .show()
+        photoViewer =
+            StfalconImageViewer.Builder(requireContext(), listOf(url)) { imageView, passedUrl ->
+                imageView.downloadImage(passedUrl)
+            }
+                .allowSwipeToDismiss(true)
+                .allowZooming(true)
+                .withHiddenStatusBar(false)
+                .withTransitionFrom(binding.photoView)
+                .show()
     }
 }

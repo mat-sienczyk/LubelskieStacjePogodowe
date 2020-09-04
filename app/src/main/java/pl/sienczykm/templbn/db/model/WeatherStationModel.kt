@@ -210,7 +210,7 @@ data class WeatherStationModel constructor(
         }
     }
 
-    fun convertMetersToKm(wind: Double?) = (wind?.times(3.6)).round(1)
+    private fun convertMetersToKm(wind: Double?) = (wind?.times(3.6)).round(1)
 
     fun getForecastPhotoUrl() =
         "http://www.meteo.pl/um/metco/mgram_pict.php?ntype=0u&fdate=${getForecastDate()}&row=$forecastY&col=$forecastX&lang=pl"
@@ -218,7 +218,7 @@ data class WeatherStationModel constructor(
     fun getForecastUrl() =
         "http://www.meteo.pl/um/php/meteorogram_map_um.php?ntype=0u&row=$forecastY&col=$forecastX&lang=pl"
 
-    fun getForecastDate(): String {
+    private fun getForecastDate(): String {
         val now = nowInPoland()
         when (now.get(Calendar.HOUR_OF_DAY)) {
             in 0..6 -> now.apply {

@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.clearCache
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
@@ -98,6 +100,8 @@ class MainActivity : AppCompatActivity() {
         if (isNewVersion()) UpdateHandler.disableAutoSync(this)
 
         UpdateHandler.handleAutoSync(this)
+
+        Picasso.get().clearCache()
 
         if (savedInstanceState == null) {
             getLocationPermission()

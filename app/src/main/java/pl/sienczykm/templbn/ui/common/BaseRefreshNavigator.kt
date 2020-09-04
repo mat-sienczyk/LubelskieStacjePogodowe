@@ -2,8 +2,8 @@ package pl.sienczykm.templbn.ui.common
 
 import androidx.annotation.StringRes
 
-interface BaseRefreshNavigator {
+interface BaseRefreshNavigator : Navigator {
     fun showInfo(@StringRes message: Int)
-    fun handleError(message: String?)
+    fun handleError(errorMessages: Array<String>?)
     fun noConnection()
 }

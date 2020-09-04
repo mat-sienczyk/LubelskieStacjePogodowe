@@ -1,4 +1,4 @@
-package pl.sienczykm.templbn.ui.map
+package pl.sienczykm.templbn.ui.map.osm
 
 import android.view.MotionEvent
 import org.osmdroid.library.R

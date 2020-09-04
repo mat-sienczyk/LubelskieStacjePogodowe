@@ -15,14 +15,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.clearCache
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.ui.about.AboutActivity
 import pl.sienczykm.templbn.ui.list.air.AirStationListFragment
 import pl.sienczykm.templbn.ui.list.weather.WeatherListFragment
-import pl.sienczykm.templbn.ui.map.GoogleMapFragment
-import pl.sienczykm.templbn.ui.map.OsmMapFragment
+import pl.sienczykm.templbn.ui.map.gms.GoogleMapFragment
+import pl.sienczykm.templbn.ui.map.osm.OsmMapFragment
 import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailableAndEnabled
@@ -98,6 +100,8 @@ class MainActivity : AppCompatActivity() {
         if (isNewVersion()) UpdateHandler.disableAutoSync(this)
 
         UpdateHandler.handleAutoSync(this)
+
+        Picasso.get().clearCache()
 
         if (savedInstanceState == null) {
             getLocationPermission()

@@ -9,7 +9,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
@@ -72,7 +71,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
             setColors()
         }
 
-        viewModel.station.observe(viewLifecycleOwner, Observer { station ->
+        viewModel.station.observe(viewLifecycleOwner, { station ->
             requireActivity().title = station?.getName()
         })
 
@@ -88,7 +87,7 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.station_fragment_menu, menu)
 
-        viewModel.station.observe(viewLifecycleOwner, Observer { station ->
+        viewModel.station.observe(viewLifecycleOwner, { station ->
             station?.run {
                 updateFavorite(menu.findItem(R.id.favorite), favorite)
             }
@@ -128,8 +127,8 @@ abstract class BaseStationFragment<K : BaseStationModel, T : BaseStationViewMode
         chartHandler.showChart(chartData, minIsZero, limitValue, unit, title, titleId)
     }
 
-    override fun handleError(message: String?) {
-        Timber.e(Throwable(message))
+    override fun handleError(errorMessages: Array<String>?) {
+        errorMessages?.forEach { Timber.e(Throwable(it)) }
         showSnackbar(R.string.error_server)
     }
 

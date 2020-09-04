@@ -59,4 +59,8 @@ class WeatherStationViewModel(
             )
         }
     }
+
+    fun openPhoto(url: String) {
+        getNavigator()?.openPhoto(url)
+    }
 }

@@ -1,12 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+                name="viewModel"
+                type="pl.sienczykm.templbn.ui.map.MapViewModel" />
     </data>
 
-    <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
+    <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 </layout>

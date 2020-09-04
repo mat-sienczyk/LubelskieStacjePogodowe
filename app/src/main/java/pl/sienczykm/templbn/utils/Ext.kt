@@ -28,6 +28,9 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.clearCache
 import pl.sienczykm.templbn.R
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -297,4 +300,19 @@ fun drawTextOnBitmap(
     val y = (bitmap.height + bounds.height()) / 2
     canvas.drawText(text, x.toFloat(), y.toFloat(), paint)
     return bitmap
+}
+
+fun ImageView.downloadImage(url: String) {
+    Picasso.get().apply {
+        load(url)
+            .into(this@downloadImage, object : Callback {
+                override fun onSuccess() {
+                    if (this@downloadImage.context.isNightModeActive()) this@downloadImage.invertColors()
+                }
+
+                override fun onError(e: Exception?) {
+                    this@apply.clearCache(url)
+                }
+            })
+    }
 }

@@ -2,11 +2,29 @@ package pl.sienczykm.templbn.ui.map
 
 import android.app.Application
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import pl.sienczykm.templbn.db.AppDb
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.ui.common.NavigatorAndroidViewModel
 
-class MapViewModel(application: Application) :
+class MapViewViewModelFactory(
+    private val application: Application,
+    private val weatherFilter: WeatherFilter = WeatherFilter.LOCATION,
+    private val airFilter: AirFilter = AirFilter.LOCATION,
+) :
+    ViewModelProvider.NewInstanceFactory() {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return MapViewModel(application, weatherFilter, airFilter) as T
+    }
+}
+
+class MapViewModel(
+    application: Application,
+    weatherFilter: WeatherFilter,
+    airFilter: AirFilter,
+) :
     NavigatorAndroidViewModel<MapNavigator>(application) {
 
     private var weatherStations =
@@ -17,8 +35,10 @@ class MapViewModel(application: Application) :
 
     val stations = MediatorLiveData<List<BaseStationModel>>()
 
-    var weatherFilter = WeatherFilter.LOCATION
-    var airFilter = AirFilter.LOCATION
+    var weatherFilter = weatherFilter
+        private set
+    var airFilter = airFilter
+        private set
 
     init {
         stations.apply {
@@ -31,8 +51,9 @@ class MapViewModel(application: Application) :
         }
     }
 
-    private fun combineLatestData() =
-        (weatherStations.value ?: emptyList()) + (airStations.value ?: emptyList())
+    private fun combineLatestData(): List<BaseStationModel> {
+        return (weatherStations.value ?: emptyList()) + (airStations.value ?: emptyList())
+    }
 
     fun setFilters(weatherFilter: WeatherFilter, airFilter: AirFilter) {
         this.weatherFilter = weatherFilter

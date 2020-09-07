@@ -7,6 +7,8 @@ import androidx.annotation.StringRes
 import androidx.preference.PreferenceManager
 import pl.sienczykm.templbn.BuildConfig
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.ui.map.AirFilter
+import pl.sienczykm.templbn.ui.map.WeatherFilter
 
 private fun Context.getDefaultSharedPreferences(): SharedPreferences =
     PreferenceManager.getDefaultSharedPreferences(this)
@@ -27,6 +29,12 @@ private fun Context.getPreferenceString(@StringRes key: Int, @StringRes defaultV
     getDefaultSharedPreferences().getString(
         getString(key),
         getString(defaultValue)
+    )!! // default value provided
+
+private fun Context.getPreferenceString(@StringRes key: Int, defaultValue: String) =
+    getDefaultSharedPreferences().getString(
+        getString(key),
+        defaultValue
     )!! // default value provided
 
 fun Context.isAutoUpdateEnabled() =
@@ -90,4 +98,19 @@ fun Context.isNewVersion(): Boolean {
     return toReturn
 }
 
+fun Context.getWeatherFilter() =
+    WeatherFilter.valueOf(getPreferenceString(R.string.weather_filter_key,
+        WeatherFilter.LOCATION.name))
+
+fun Context.setWeatherFilter(filter: WeatherFilter) =
+    getDefaultSharedPreferences().edit()
+        .putString(getString(R.string.weather_filter_key), filter.name).apply()
+
+fun Context.getAirFilter() =
+    AirFilter.valueOf(getPreferenceString(R.string.air_filter_key,
+        AirFilter.LOCATION.name))
+
+fun Context.setAirFilter(filter: AirFilter) =
+    getDefaultSharedPreferences().edit()
+        .putString(getString(R.string.air_filter_key), filter.name).apply()
 

@@ -76,7 +76,7 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
 
     override fun updateMap() {
         mapView?.let { mapView ->
-            stations?.let { stations ->
+            viewModel.stations.value?.let { stations ->
                 val infoView = ClickableMarkerInfoWindow(
                     mapView,
                     closeOnClick = false,

@@ -29,7 +29,7 @@ class WeatherListViewModel(application: Application) :
     override fun refreshIfNeeded(stations: List<WeatherStationModel>) {
         if (WeatherStationModel.getAllStations().minus(stations).isNotEmpty()) refresh()
         else {
-            stations.filter { it.isDateObsoleteOrNull() ?: true }
+            stations.filter { it.isDateObsoleteOrNull() }
                 .let { stationsToUpdate ->
                     UpdateHandler.syncNowWeatherStations(
                         getApplication(),

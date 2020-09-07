@@ -29,7 +29,7 @@ class AirStationListViewModel(application: Application) :
     override fun refreshIfNeeded(stations: List<AirStationModel>) {
         if (AirStationModel.getAllStations().minus(stations).isNotEmpty()) refresh()
         else {
-            stations.filter { it.isDateObsoleteOrNull() ?: true }
+            stations.filter { it.isDateObsoleteOrNull() }
                 .let { stationsToUpdate ->
                     UpdateHandler.syncNowAirStations(
                         getApplication(),

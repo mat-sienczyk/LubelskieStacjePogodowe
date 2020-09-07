@@ -16,6 +16,7 @@ import pl.sienczykm.templbn.ui.map.AirFilter
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
 import pl.sienczykm.templbn.ui.map.MapNavigator
 import pl.sienczykm.templbn.ui.map.WeatherFilter
+import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
 import pl.sienczykm.templbn.utils.roundAndGetString
@@ -85,8 +86,10 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
     override fun updateMap() {
         googleMap?.let { googleMap ->
             googleMap.clear()
-            stations?.let { stations ->
+            viewModel.stations.value?.let { stations ->
                 stations.forEach { stationModel ->
+
+//                    if (stationModel.isDateObsoleteOrNull()) return@forEach // TODO make this active only for non LOCATION filter
 
                     val icon = when (stationModel) {
                         is AirStationModel -> airMarker(stationModel)
@@ -116,7 +119,12 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                 ?.plus(getString(R.string.celsius_degree)))
             WeatherFilter.WIND -> stringMarker(stationModel.getParsedWind(1)
                 ?.plus(if (stationModel.convertWind) getString(R.string.km_per_hour) else getString(
-                    R.string.m_per_sec)))
+                    R.string.m_per_sec))
+//                ?.plus(" ") // TODO add dir to the wind
+//                ?.plus(requireContext().getDrawableWithColor(WeatherStationModel.windIntToDir(
+//                    stationModel.windDir,
+//                    true)))
+            )
             WeatherFilter.HUMIDITY -> stringMarker(stationModel.getParsedHumidity(1)
                 ?.plus(getString(R.string.percent)))
             WeatherFilter.RAIN_TODAY -> stringMarker(stationModel.getParsedRain(1)

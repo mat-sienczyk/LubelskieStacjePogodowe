@@ -5,23 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.filters_spinner.view.*
 import pl.sienczykm.templbn.BR
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.station.StationActivity
+import pl.sienczykm.templbn.utils.getAirFilter
+import pl.sienczykm.templbn.utils.getWeatherFilter
+import pl.sienczykm.templbn.utils.setAirFilter
+import pl.sienczykm.templbn.utils.setWeatherFilter
+
 
 abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
 
     lateinit var binding: T
-
-    var stations: List<BaseStationModel>? = null
 
     lateinit var viewModel: MapViewModel
 
@@ -36,8 +42,14 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =
-            ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            MapViewViewModelFactory(
+                requireActivity().application,
+                requireActivity().getWeatherFilter(),
+                requireActivity().getAirFilter(),
+            )
+        ).get(MapViewModel::class.java)
         viewModel.setNavigator(this)
     }
 
@@ -57,8 +69,7 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.stations.observe(viewLifecycleOwner, { stations ->
-            this.stations = stations
+        viewModel.stations.observe(viewLifecycleOwner, {
             updateMap()
         })
     }
@@ -80,16 +91,71 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
 
     override fun openFilters() {
         filterDialog = AlertDialog.Builder(requireContext()).apply {
+
+            var activeWeatherFilter = requireContext().getWeatherFilter()
+            var activeAirFilter = requireContext().getAirFilter()
+
+            val dialogView = layoutInflater.inflate(R.layout.filters_spinner, null)
+            dialogView.weather_filters.apply {
+
+                val weatherFilters = WeatherFilter.values().toList()
+
+                adapter = ArrayAdapter(requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    weatherFilters.map { it.name })
+                setSelection(weatherFilters.indexOf(activeWeatherFilter))
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long,
+                    ) {
+                        activeWeatherFilter = weatherFilters[position]
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // do nothing
+                    }
+                }
+            }
+            dialogView.air_filters.apply {
+
+                val airFilters = AirFilter.values().toList()
+
+                adapter = ArrayAdapter(requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    airFilters.map { it.name })
+                setSelection(airFilters.indexOf(activeAirFilter))
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long,
+                    ) {
+                        activeAirFilter = airFilters[position]
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // do nothing
+                    }
+                }
+            }
+
             setTitle(R.string.filters)
             setPositiveButton(R.string.save) { dialogInterface, _ ->
-                viewModel.setFilters(WeatherFilter.TEMPERATURE, AirFilter.NOTHING)
+                requireContext().setWeatherFilter(activeWeatherFilter)
+                requireContext().setAirFilter(activeAirFilter)
+                viewModel.setFilters(activeWeatherFilter, activeAirFilter)
                 dialogInterface.dismiss()
             }
             setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                viewModel.setFilters(WeatherFilter.LOCATION, AirFilter.LOCATION)
                 dialogInterface.dismiss()
             }
-//            setView(webView) // TODO create, inflate view, whateva
+            setView(dialogView)
+
+
         }.create().apply {
             setCancelable(true)
             setCanceledOnTouchOutside(true)

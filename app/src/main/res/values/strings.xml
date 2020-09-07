@@ -90,6 +90,8 @@
     <string name="night_mode_key">night_mode_key</string>
     <string name="default_station_key">widget_station_key</string>
     <string name="air_quality_warning_key">air_quality_warning_key</string>
+    <string name="weather_filter_key">weather_filter_key</string>
+    <string name="air_filter_key">air_filter_key</string>
 
     <!--settings options-->
     <string name="connected_options_all">Wi-Fi i Dane mobilne</string>
@@ -172,7 +174,9 @@
     <string name="error_play_store">Problem ze Sklepem Play.</string>
     <string name="ok">OK</string>
 
-    <!--filers on map-->
+    <!--filers-->
+    <string name="weather_stations">Stacje pogodowe:</string>
+    <string name="air_stations">Staje powietrza:</string>
     <string name="filters">Filtry</string>
     <string name="save">Zapisz</string>
     <string name="cancel">Anuluj</string>

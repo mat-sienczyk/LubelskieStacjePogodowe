@@ -1,7 +1,6 @@
 package pl.sienczykm.templbn.ui.map.gms
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.res.Resources.NotFoundException
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,7 +16,6 @@ import pl.sienczykm.templbn.ui.map.AirFilter
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
 import pl.sienczykm.templbn.ui.map.MapNavigator
 import pl.sienczykm.templbn.ui.map.WeatherFilter
-import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
 import pl.sienczykm.templbn.utils.roundAndGetString
@@ -35,9 +33,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
     private var googleMap: GoogleMap? = null
     private val markerMap = hashMapOf<Marker, BaseStationModel>()
-
-    private var weatherFilter = WeatherFilter.LOCATION
-    private var airFilter = AirFilter.LOCATION
 
     override fun getLayoutId() =
         R.layout.fragment_google_map
@@ -77,6 +72,8 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
                 googleMap.setOnInfoWindowClickListener(this@GoogleMapFragment)
 
+                googleMap.uiSettings.isMapToolbarEnabled = false
+
                 if (requireContext().isLocationPermissionGranted()) {
                     googleMap.isMyLocationEnabled = true
                 }
@@ -87,6 +84,7 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
     override fun updateMap() {
         googleMap?.let { googleMap ->
+            googleMap.clear()
             stations?.let { stations ->
                 stations.forEach { stationModel ->
 
@@ -95,6 +93,7 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                         is WeatherStationModel -> weatherMarker(stationModel)
                         else -> null
                     } ?: return@forEach
+
 
                     val marker = googleMap.addMarker(
                         MarkerOptions()
@@ -109,8 +108,8 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
         }
     }
 
-    private fun weatherMarker(stationModel: WeatherStationModel): BitmapDescriptor? {
-        return when (weatherFilter) {
+    private fun weatherMarker(stationModel: WeatherStationModel) =
+        when (viewModel.weatherFilter) {
             WeatherFilter.NOTHING -> null
             WeatherFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
             WeatherFilter.TEMPERATURE -> stringMarker(stationModel.getParsedTemperature(1)
@@ -123,10 +122,9 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             WeatherFilter.RAIN_TODAY -> stringMarker(stationModel.getParsedRain(1)
                 ?.plus(getString(R.string.milliliters)))
         }
-    }
 
-    private fun airMarker(stationModel: AirStationModel): BitmapDescriptor? {
-        return when (airFilter) {
+    private fun airMarker(stationModel: AirStationModel) =
+        when (viewModel.airFilter) {
             AirFilter.NOTHING -> null
             AirFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
             AirFilter.PM10 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.PM10)
@@ -144,7 +142,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             AirFilter.CO -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.CO)
                 ?.roundAndGetString()?.plus(getString(R.string.milligram_per_cubic_metre)))
         }
-    }
 
     private fun stringMarker(value: String?) = value?.let {
         BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
@@ -154,13 +151,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
     }
 
     override fun onInfoWindowClick(marker: Marker) {
-        val intent = Intent(requireContext(), StationActivity::class.java).apply {
-            putExtra(
-                StationActivity.STATION_TYPE_KEY,
-                if (markerMap[marker] is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
-            )
-            putExtra(StationActivity.STATION_ID_KEY, markerMap[marker]?.stationId)
-        }
-        startActivity(intent)
+        markerMap[marker]?.let { openStation(it) }
     }
 }

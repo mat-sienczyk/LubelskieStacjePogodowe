@@ -1,6 +1,5 @@
 package pl.sienczykm.templbn.ui.map.osm
 
-import android.content.Intent
 import android.graphics.Color
 import android.location.Location
 import org.osmdroid.config.Configuration
@@ -17,7 +16,6 @@ import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
 import pl.sienczykm.templbn.ui.map.MapNavigator
-import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
@@ -112,15 +110,7 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
     }
 
     private fun onMarkerWindowTouch(): () -> Unit = {
-        selectedStation?.let { station: BaseStationModel ->
-            startActivity(Intent(requireContext(), StationActivity::class.java).apply {
-                putExtra(
-                    StationActivity.STATION_TYPE_KEY,
-                    if (station is WeatherStationModel) StationActivity.Type.WEATHER else StationActivity.Type.AIR
-                )
-                putExtra(StationActivity.STATION_ID_KEY, station.stationId)
-            })
-        }
+        selectedStation?.let { openStation(it) }
     }
 
     override fun onResume() {

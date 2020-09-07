@@ -17,6 +17,9 @@ class MapViewModel(application: Application) :
 
     val stations = MediatorLiveData<List<BaseStationModel>>()
 
+    var weatherFilter = WeatherFilter.LOCATION
+    var airFilter = AirFilter.LOCATION
+
     init {
         stations.apply {
             addSource(weatherStations) {
@@ -30,4 +33,14 @@ class MapViewModel(application: Application) :
 
     private fun combineLatestData() =
         (weatherStations.value ?: emptyList()) + (airStations.value ?: emptyList())
+
+    fun setFilters(weatherFilter: WeatherFilter, airFilter: AirFilter) {
+        this.weatherFilter = weatherFilter
+        this.airFilter = airFilter
+        getNavigator()?.updateMap()
+    }
+
+    fun onOpenFilterClicked() {
+        getNavigator()?.openFilters()
+    }
 }

@@ -172,6 +172,11 @@
     <string name="error_play_store">Problem ze Sklepem Play.</string>
     <string name="ok">OK</string>
 
+    <!--filers on map-->
+    <string name="filters">Filtry</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+
     <!--navigation keys, check if it match in shortcuts.xml due to unable to use res there-->
     <string name="navigation_key">navigation_key</string>
     <string name="navigation_map">navigation_map</string>

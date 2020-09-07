@@ -37,7 +37,7 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         binding.setVariable(BR.viewModel, viewModel)

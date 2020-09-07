@@ -10,13 +10,17 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.ui.IconGenerator
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentGoogleMapBinding
+import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.BaseStationModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
+import pl.sienczykm.templbn.ui.map.AirFilter
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
 import pl.sienczykm.templbn.ui.map.MapNavigator
+import pl.sienczykm.templbn.ui.map.WeatherFilter
 import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
+import pl.sienczykm.templbn.utils.roundAndGetString
 import timber.log.Timber
 
 
@@ -31,6 +35,9 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
     private var googleMap: GoogleMap? = null
     private val markerMap = hashMapOf<Marker, BaseStationModel>()
+
+    private var weatherFilter = WeatherFilter.LOCATION
+    private var airFilter = AirFilter.LOCATION
 
     override fun getLayoutId() =
         R.layout.fragment_google_map
@@ -84,21 +91,10 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                 stations.forEach { stationModel ->
 
                     val icon = when (stationModel) {
-//                        is AirStationModel -> BitmapDescriptorFactory.fromBitmap(
-//                            IconGenerator(
-//                                requireContext()
-//                            ).makeIcon(stationModel.getValue(AirStationModel.AirSensorType.PM25).toString())
-//                        )
-                        is WeatherStationModel -> BitmapDescriptorFactory.fromBitmap(
-                            IconGenerator(
-                                requireContext()
-                            ).makeIcon(stationModel.getParsedTemperature() + " C")
-                        )
-                        else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
-                    }
-
-//                    val icon =
-//                        BitmapDescriptorFactory.defaultMarker(if (stationModel is AirStationModel) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_GREEN)
+                        is AirStationModel -> airMarker(stationModel)
+                        is WeatherStationModel -> weatherMarker(stationModel)
+                        else -> null
+                    } ?: return@forEach
 
                     val marker = googleMap.addMarker(
                         MarkerOptions()
@@ -111,6 +107,50 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                 }
             }
         }
+    }
+
+    private fun weatherMarker(stationModel: WeatherStationModel): BitmapDescriptor? {
+        return when (weatherFilter) {
+            WeatherFilter.NOTHING -> null
+            WeatherFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            WeatherFilter.TEMPERATURE -> stringMarker(stationModel.getParsedTemperature(1)
+                ?.plus(getString(R.string.celsius_degree)))
+            WeatherFilter.WIND -> stringMarker(stationModel.getParsedWind(1)
+                ?.plus(if (stationModel.convertWind) getString(R.string.km_per_hour) else getString(
+                    R.string.m_per_sec)))
+            WeatherFilter.HUMIDITY -> stringMarker(stationModel.getParsedHumidity(1)
+                ?.plus(getString(R.string.percent)))
+            WeatherFilter.RAIN_TODAY -> stringMarker(stationModel.getParsedRain(1)
+                ?.plus(getString(R.string.milliliters)))
+        }
+    }
+
+    private fun airMarker(stationModel: AirStationModel): BitmapDescriptor? {
+        return when (airFilter) {
+            AirFilter.NOTHING -> null
+            AirFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+            AirFilter.PM10 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.PM10)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.PM25 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.PM25)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.O3 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.O3)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.NO2 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.NO2)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.SO2 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.SO2)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.C6H6 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.C6H6)
+                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.CO -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.CO)
+                ?.roundAndGetString()?.plus(getString(R.string.milligram_per_cubic_metre)))
+        }
+    }
+
+    private fun stringMarker(value: String?) = value?.let {
+        BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
+            // TODO style marker here
+            makeIcon(it)
+        })
     }
 
     override fun onInfoWindowClick(marker: Marker) {

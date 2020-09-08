@@ -96,13 +96,13 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
             var activeAirFilter = requireContext().getAirFilter()
 
             val dialogView = layoutInflater.inflate(R.layout.filters_spinner, null)
-            dialogView.weather_filters.apply {
+            dialogView.weatherFilters.apply {
 
                 val weatherFilters = WeatherFilter.values().toList()
 
                 adapter = ArrayAdapter(requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
-                    weatherFilters.map { it.name })
+                    weatherFilters.map { getString(it.stringId) })
                 setSelection(weatherFilters.indexOf(activeWeatherFilter))
                 onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
@@ -119,13 +119,13 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
                     }
                 }
             }
-            dialogView.air_filters.apply {
+            dialogView.airFilters.apply {
 
                 val airFilters = AirFilter.values().toList()
 
                 adapter = ArrayAdapter(requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
-                    airFilters.map { it.name })
+                    airFilters.map { getString(it.stringId) })
                 setSelection(airFilters.indexOf(activeAirFilter))
                 onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
@@ -154,8 +154,6 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
                 dialogInterface.dismiss()
             }
             setView(dialogView)
-
-
         }.create().apply {
             setCancelable(true)
             setCanceledOnTouchOutside(true)

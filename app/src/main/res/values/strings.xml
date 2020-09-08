@@ -174,17 +174,30 @@
     <string name="error_play_store">Problem ze Sklepem Play.</string>
     <string name="ok">OK</string>
 
-    <!--filers-->
-    <string name="weather_stations">Stacje pogodowe:</string>
-    <string name="air_stations">Staje powietrza:</string>
-    <string name="filters">Filtry</string>
-    <string name="save">Zapisz</string>
-    <string name="cancel">Anuluj</string>
-
     <!--navigation keys, check if it match in shortcuts.xml due to unable to use res there-->
     <string name="navigation_key">navigation_key</string>
     <string name="navigation_map">navigation_map</string>
     <string name="navigation_air">navigation_air</string>
     <string name="navigation_weather">navigation_weather</string>
+
+    <!--filers-->
+    <string name="filters">Filtry stacji</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="filter_weather_stations">pogodowcyh:</string>
+    <string name="filter_air_stations">powietrza:</string>
+    <string name="filter_nothing">Ukryj</string>
+    <string name="filter_location">Lokalizacja</string>
+    <string name="filter_temperature">Temperatura</string>
+    <string name="filter_wind">Wiatr z kierunkiem</string>
+    <string name="filter_humidity">Wilgotność</string>
+    <string name="filter_rain_today">Desz dziś</string>
+    <string name="filter_pm10">Pył zawieszony PM10</string>
+    <string name="filter_pm25">Pył zawieszony PM2.5</string>
+    <string name="filter_o3">Ozon O3</string>
+    <string name="filter_no2">Dwutlenek azotu NO3</string>
+    <string name="filter_so2">Dwutlenek siarki SO2</string>
+    <string name="filter_c6h6">Benzen C6H6</string>
+    <string name="filter_co">Tlenek węgla CO</string>
 
 </resources>

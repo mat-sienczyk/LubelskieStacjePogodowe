@@ -16,7 +16,6 @@ import pl.sienczykm.templbn.ui.map.AirFilter
 import pl.sienczykm.templbn.ui.map.BaseMapFragment
 import pl.sienczykm.templbn.ui.map.MapNavigator
 import pl.sienczykm.templbn.ui.map.WeatherFilter
-import pl.sienczykm.templbn.utils.getDrawableWithColor
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
 import pl.sienczykm.templbn.utils.roundAndGetString

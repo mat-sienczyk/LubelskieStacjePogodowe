@@ -11,6 +11,10 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.DynamicDrawableSpan
+import android.text.style.ImageSpan
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.View
@@ -112,7 +116,7 @@ private fun calcPressure(
     pressure: Double?,
     temp: Double?,
     altitude: Double,
-    operation: (Double, Double) -> Double
+    operation: (Double, Double) -> Double,
 ): Double? {
     return if (pressure != null && temp != null) {
         val temperature = temp + 273.15f
@@ -172,7 +176,7 @@ fun Context.isNightModeActive() =
 
 fun Context.getDrawableWithColor(
     @DrawableRes drawableResId: Int,
-    @ColorInt color: Int = Color.WHITE
+    @ColorInt color: Int = Color.WHITE,
 ): Drawable? =
     ContextCompat.getDrawable(this, drawableResId)?.apply {
         mutate()
@@ -280,7 +284,7 @@ fun drawTextOnBitmap(
     textXScale: Float,
     textSize: Int,
     scalable: Boolean,
-    text: String
+    text: String,
 ): Bitmap {
     val scale = if (scalable) context.resources.displayMetrics.density else 1.0f
     val bitmap = Bitmap.createBitmap(
@@ -314,5 +318,20 @@ fun ImageView.downloadImage(url: String) {
                     this@apply.clearCache(url)
                 }
             })
+    }
+}
+
+fun CharSequence.plusDrawable(context: Context, @DrawableRes drawableResId: Int): CharSequence {
+
+    if (drawableResId == android.R.id.empty) return this
+
+    return SpannableStringBuilder(this).apply {
+        append(" ")
+        setSpan(
+            ImageSpan(context, drawableResId, DynamicDrawableSpan.ALIGN_CENTER),
+            this.length - 1,
+            this.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
     }
 }

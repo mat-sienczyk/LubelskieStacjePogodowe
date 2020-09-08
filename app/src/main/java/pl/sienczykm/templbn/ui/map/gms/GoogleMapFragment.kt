@@ -18,6 +18,7 @@ import pl.sienczykm.templbn.ui.map.MapNavigator
 import pl.sienczykm.templbn.ui.map.WeatherFilter
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.isNightModeActive
+import pl.sienczykm.templbn.utils.plusDrawable
 import pl.sienczykm.templbn.utils.roundAndGetString
 import timber.log.Timber
 
@@ -118,10 +119,7 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             WeatherFilter.WIND -> stringMarker(stationModel, stationModel.getParsedWind(1)
                 ?.plus(if (stationModel.convertWind) getString(R.string.km_per_hour) else getString(
                     R.string.m_per_sec))
-//                ?.plus(" ") // TODO add dir to the wind
-//                ?.plus(requireContext().getDrawableWithColor(WeatherStationModel.windIntToDir(
-//                    stationModel.windDir,
-//                    true)))
+                ?.plusDrawable(requireContext(), stationModel.getWindDir(true))
             )
             WeatherFilter.HUMIDITY -> stringMarker(stationModel, stationModel.getParsedHumidity(1)
                 ?.plus(getString(R.string.percent)))
@@ -156,14 +154,16 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                     ?.roundAndGetString()?.plus(getString(R.string.milligram_per_cubic_metre)))
         }
 
-    private fun stringMarker(stationModel: BaseStationModel, value: String?): BitmapDescriptor? {
+    private fun stringMarker(
+        stationModel: BaseStationModel,
+        value: CharSequence?,
+    ): BitmapDescriptor? {
 
         if (stationModel.isDateObsoleteOrNull()) return null
 
         return value?.let {
             BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
                 // TODO style marker here
-//                if (stationModel.isDateObsoleteOrNull()) setColor(requireContext().getColorCompact(R.color.colorAccent))
                 makeIcon(it)
             })
         }

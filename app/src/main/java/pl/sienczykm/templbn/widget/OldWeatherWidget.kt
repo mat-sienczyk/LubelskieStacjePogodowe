@@ -37,7 +37,7 @@ class OldWeatherWidget : AppWidgetProvider() {
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
+        appWidgetIds: IntArray,
     ) {
 
         val widgetUpdateIntent = Intent(context, OldWeatherWidget::class.java).apply {
@@ -80,7 +80,7 @@ class OldWeatherWidget : AppWidgetProvider() {
     private fun updateAppWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetId: Int
+        appWidgetId: Int,
     ) {
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -147,7 +147,7 @@ class OldWeatherWidget : AppWidgetProvider() {
 
     private fun getWindUnit(
         weatherStation: WeatherStationModel?,
-        context: Context
+        context: Context,
     ): String {
         return weatherStation?.run {
             if (convertWind)

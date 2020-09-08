@@ -21,7 +21,7 @@ data class WeatherStationModel constructor(
     @Ignore
     override val city: String,
     @Ignore
-    override val location: String? = null
+    override val location: String? = null,
 ) :
     BaseStationModel(stationId, latitude, longitude, city, location) {
 
@@ -231,6 +231,8 @@ data class WeatherStationModel constructor(
         }
         return dateFormat("yyyyMMddHH").format(now.time)
     }
+
+    fun getWindDir(returnEmpty: Boolean = false) = windIntToDir(windDir, returnEmpty)
 
     companion object {
 

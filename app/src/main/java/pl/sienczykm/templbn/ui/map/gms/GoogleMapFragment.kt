@@ -88,8 +88,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
             viewModel.stations.value?.let { stations ->
                 stations.forEach { stationModel ->
 
-//                    if (stationModel.isDateObsoleteOrNull()) return@forEach // TODO make this active only for non LOCATION filter
-
                     val icon = when (stationModel) {
                         is AirStationModel -> airMarker(stationModel)
                         is WeatherStationModel -> weatherMarker(stationModel)
@@ -114,9 +112,10 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
         when (viewModel.weatherFilter) {
             WeatherFilter.NOTHING -> null
             WeatherFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-            WeatherFilter.TEMPERATURE -> stringMarker(stationModel.getParsedTemperature(1)
-                ?.plus(getString(R.string.celsius_degree)))
-            WeatherFilter.WIND -> stringMarker(stationModel.getParsedWind(1)
+            WeatherFilter.TEMPERATURE -> stringMarker(stationModel,
+                stationModel.getParsedTemperature(1)
+                    ?.plus(getString(R.string.celsius_degree)))
+            WeatherFilter.WIND -> stringMarker(stationModel, stationModel.getParsedWind(1)
                 ?.plus(if (stationModel.convertWind) getString(R.string.km_per_hour) else getString(
                     R.string.m_per_sec))
 //                ?.plus(" ") // TODO add dir to the wind
@@ -124,9 +123,9 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 //                    stationModel.windDir,
 //                    true)))
             )
-            WeatherFilter.HUMIDITY -> stringMarker(stationModel.getParsedHumidity(1)
+            WeatherFilter.HUMIDITY -> stringMarker(stationModel, stationModel.getParsedHumidity(1)
                 ?.plus(getString(R.string.percent)))
-            WeatherFilter.RAIN_TODAY -> stringMarker(stationModel.getParsedRain(1)
+            WeatherFilter.RAIN_TODAY -> stringMarker(stationModel, stationModel.getParsedRain(1)
                 ?.plus(getString(R.string.milliliters)))
         }
 
@@ -134,27 +133,40 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
         when (viewModel.airFilter) {
             AirFilter.NOTHING -> null
             AirFilter.LOCATION -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
-            AirFilter.PM10 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.PM10)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.PM25 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.PM25)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.O3 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.O3)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.NO2 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.NO2)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.SO2 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.SO2)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.C6H6 -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.C6H6)
-                ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
-            AirFilter.CO -> stringMarker(stationModel.getValue(AirStationModel.AirSensorType.CO)
-                ?.roundAndGetString()?.plus(getString(R.string.milligram_per_cubic_metre)))
+            AirFilter.PM10 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.PM10)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.PM25 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.PM25)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.O3 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.O3)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.NO2 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.NO2)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.SO2 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.SO2)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.C6H6 -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.C6H6)
+                    ?.roundAndGetString()?.plus(getString(R.string.microgram_per_cubic_metre)))
+            AirFilter.CO -> stringMarker(stationModel,
+                stationModel.getValue(AirStationModel.AirSensorType.CO)
+                    ?.roundAndGetString()?.plus(getString(R.string.milligram_per_cubic_metre)))
         }
 
-    private fun stringMarker(value: String?) = value?.let {
-        BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
-            // TODO style marker here
-            makeIcon(it)
-        })
+    private fun stringMarker(stationModel: BaseStationModel, value: String?): BitmapDescriptor? {
+
+        if (stationModel.isDateObsoleteOrNull()) return null
+
+        return value?.let {
+            BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
+                // TODO style marker here
+//                if (stationModel.isDateObsoleteOrNull()) setColor(requireContext().getColorCompact(R.color.colorAccent))
+                makeIcon(it)
+            })
+        }
     }
 
     override fun onInfoWindowClick(marker: Marker) {

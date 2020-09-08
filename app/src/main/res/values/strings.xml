@@ -189,7 +189,7 @@
     <string name="filter_nothing">Ukryj</string>
     <string name="filter_location">Lokalizacja</string>
     <string name="filter_temperature">Temperatura</string>
-    <string name="filter_wind">Wiatr z kierunkiem</string>
+    <string name="filter_wind">Wiatr</string>
     <string name="filter_humidity">Wilgotność</string>
     <string name="filter_rain_today">Desz dziś</string>
     <string name="filter_pm10">Pył zawieszony PM10</string>

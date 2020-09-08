@@ -1,5 +1,6 @@
 package pl.sienczykm.templbn.ui.map
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -89,6 +91,7 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
         })
     }
 
+    @SuppressLint("InflateParams")
     override fun openFilters() {
         filterDialog = AlertDialog.Builder(requireContext()).apply {
 
@@ -97,49 +100,15 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
 
             val dialogView = layoutInflater.inflate(R.layout.filters_spinner, null)
             dialogView.weatherFilters.apply {
-
-                val weatherFilters = WeatherFilter.values().toList()
-
-                adapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    weatherFilters.map { getString(it.stringId) })
-                setSelection(weatherFilters.indexOf(activeWeatherFilter))
-                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long,
-                    ) {
-                        activeWeatherFilter = weatherFilters[position]
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // do nothing
-                    }
+                populateSpinnerWithFilters(activeWeatherFilter,
+                    WeatherFilter.values().toList()) {
+                    activeWeatherFilter = it
                 }
             }
             dialogView.airFilters.apply {
-
-                val airFilters = AirFilter.values().toList()
-
-                adapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    airFilters.map { getString(it.stringId) })
-                setSelection(airFilters.indexOf(activeAirFilter))
-                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long,
-                    ) {
-                        activeAirFilter = airFilters[position]
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // do nothing
-                    }
+                populateSpinnerWithFilters(activeAirFilter,
+                    AirFilter.values().toList()) {
+                    activeAirFilter = it
                 }
             }
 
@@ -160,5 +129,30 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
         }
 
         filterDialog?.show()
+    }
+
+    private fun <T : StringIdRes> Spinner.populateSpinnerWithFilters(
+        activeFilter: T,
+        filterList: List<T>,
+        onItemSelected: (T) -> Unit,
+    ) {
+        adapter = ArrayAdapter(requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            filterList.map { getString(it.getStringId()) })
+        setSelection(filterList.indexOf(activeFilter))
+        onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                onItemSelected(filterList[position])
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // do nothing
+            }
+        }
     }
 }

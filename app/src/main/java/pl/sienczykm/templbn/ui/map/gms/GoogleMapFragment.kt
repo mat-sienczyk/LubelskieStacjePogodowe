@@ -163,7 +163,7 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
         return value?.let {
             BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
-                // TODO style marker here
+                // TODO style marker here?
                 makeIcon(it)
             })
         }

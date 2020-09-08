@@ -184,8 +184,8 @@
     <string name="filters">Filtry stacji</string>
     <string name="save">Zapisz</string>
     <string name="cancel">Anuluj</string>
-    <string name="filter_weather_stations">pogodowcyh:</string>
-    <string name="filter_air_stations">powietrza:</string>
+    <string name="filter_weather_stations">Pogodowcyh:</string>
+    <string name="filter_air_stations">Powietrza:</string>
     <string name="filter_nothing">Ukryj</string>
     <string name="filter_location">Lokalizacja</string>
     <string name="filter_temperature">Temperatura</string>

@@ -1,19 +1,18 @@
 package pl.sienczykm.templbn.utils
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.DynamicDrawableSpan
 import android.text.style.ImageSpan
 import android.util.Patterns
 import android.util.TypedValue
@@ -177,7 +176,7 @@ fun Context.isNightModeActive() =
 fun Context.getDrawableWithColor(
     @DrawableRes drawableResId: Int,
     @ColorInt color: Int = Color.WHITE,
-): Drawable? =
+) =
     ContextCompat.getDrawable(this, drawableResId)?.apply {
         mutate()
         setTint(color)
@@ -230,6 +229,7 @@ fun Context.getColorCompact(@ColorRes colorResId: Int) =
 fun Context.getColorHex(@ColorRes colorResId: Int) =
     String.format("#%06X", 0xFFFFFF and getColorCompact(colorResId))
 
+@SuppressLint("MissingPermission")
 @WorkerThread
 fun Context.getLastKnownLocation(): Location? {
     return if (isGooglePlayServicesAvailableAndEnabled()) {
@@ -325,10 +325,20 @@ fun CharSequence.plusDrawable(context: Context, @DrawableRes drawableResId: Int)
 
     if (drawableResId == android.R.id.empty) return this
 
+    val drawable =
+//        ContextCompat.getDrawable(context, drawableResId)?.apply { // TODO color the arrow or not?
+        context.getDrawableWithColor(drawableResId,
+            context.getColorCompact(R.color.marker_text_color))?.apply {
+            setBounds(0,
+                0,
+                (intrinsicWidth / 1.3).roundToInt(),
+                (intrinsicHeight / 1.3).roundToInt())
+        } ?: return this
+
     return SpannableStringBuilder(this).apply {
         append(" ")
         setSpan(
-            ImageSpan(context, drawableResId, DynamicDrawableSpan.ALIGN_CENTER),
+            ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM),
             this.length - 1,
             this.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,

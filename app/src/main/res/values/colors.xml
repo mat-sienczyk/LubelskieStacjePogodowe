@@ -19,6 +19,8 @@
     <color name="quality_unhealthy">#ff9800</color>
     <color name="quality_hazardous">#ff5722</color>
 
+    <color name="marker_text_color">#717171</color>
+
     <!--  text color in light theme -->
     <color name="base_color">#717171</color>
 

@@ -84,7 +84,7 @@ class ChartHandler(private val bottomSheetLayout: LinearLayout) {
         limitValue: Float?,
         unit: String,
         title: String?,
-        @StringRes titleId: Int?
+        @StringRes titleId: Int?,
     ) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
@@ -118,22 +118,24 @@ class ChartHandler(private val bottomSheetLayout: LinearLayout) {
                     }
                 }
             }
-            data = LineData(LineDataSet(chartData.map {
-                Entry(
-                    it.timestamp!!.toFloat(),
-                    it.value!!.toFloat()
-                )
-            }, null).apply {
-                axisDependency = YAxis.AxisDependency.LEFT
-                setDrawCircles(false)
-                setDrawValues(false)
-                color = context.getColorCompact(R.color.colorAccent)
-                lineWidth = 1.5f
-                highLightColor = context.getColorCompact(R.color.colorPrimary)
-                highlightLineWidth = 0.8f
-                setDrawFilled(true)
-                fillColor = context.getColorCompact(R.color.colorAccent)
-            })
+            data =
+                LineData(LineDataSet(chartData.filterNot { it.timestamp == null || it.value == null }
+                    .map {
+                        Entry(
+                            it.timestamp!!.toFloat(), // filtered null before
+                            it.value!!.toFloat() // filtered null before
+                        )
+                    }, null).apply {
+                    axisDependency = YAxis.AxisDependency.LEFT
+                    setDrawCircles(false)
+                    setDrawValues(false)
+                    color = context.getColorCompact(R.color.colorAccent)
+                    lineWidth = 1.5f
+                    highLightColor = context.getColorCompact(R.color.colorPrimary)
+                    highlightLineWidth = 0.8f
+                    setDrawFilled(true)
+                    fillColor = context.getColorCompact(R.color.colorAccent)
+                })
             fitScreen()
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

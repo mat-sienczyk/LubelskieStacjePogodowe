@@ -20,7 +20,7 @@ class SwidnikWeatherStation(doc: Document?) {
 
             val date = parseDate(row?.select("td")?.get(0)?.text())
 
-            val temp = row?.select("td")?.get(1)?.text()?.toDouble()
+            val temp = row?.select("td")?.get(1)?.text()?.toDoubleOrNull()
 
             temperatureData.add( // temp = 12.1
                 ChartDataModel(
@@ -49,14 +49,14 @@ class SwidnikWeatherStation(doc: Document?) {
             rainData.add( // rain mm = 0.0
                 ChartDataModel(
                     date?.time,
-                    row?.select("td")?.get(5)?.text()?.toDouble()
+                    row?.select("td")?.get(5)?.text()?.toDoubleOrNull()
                 )
             )
             pressureData.add( // pressure hPa = 1020.2, relative
                 ChartDataModel(
                     date?.time,
                     calcAbsolutePressure(
-                        row?.select("td")?.get(6)?.text()?.toDouble(),
+                        row?.select("td")?.get(6)?.text()?.toDoubleOrNull(),
                         temp,
                         225.5
                     )

@@ -183,6 +183,7 @@
     <!--filers-->
     <string name="filters">Filtry stacji</string>
     <string name="save">Zapisz</string>
+    <string name="reset">Reset</string>
     <string name="cancel">Anuluj</string>
     <string name="filter_weather_stations">Pogodowcyh:</string>
     <string name="filter_air_stations">Powietrza:</string>

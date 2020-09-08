@@ -119,6 +119,14 @@ abstract class BaseMapFragment<T : ViewDataBinding> : Fragment(), MapNavigator {
                 viewModel.setFilters(activeWeatherFilter, activeAirFilter)
                 dialogInterface.dismiss()
             }
+            setNeutralButton(R.string.reset) { dialogInterface, _ ->
+                activeWeatherFilter = WeatherFilter.LOCATION
+                activeAirFilter = AirFilter.LOCATION
+                requireContext().setWeatherFilter(activeWeatherFilter)
+                requireContext().setAirFilter(activeAirFilter)
+                viewModel.setFilters(activeWeatherFilter, activeAirFilter)
+                dialogInterface.dismiss()
+            }
             setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }

@@ -108,11 +108,13 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
                         position =
                             GeoPoint(stationModel.latitude, stationModel.longitude)
                         title = stationModel.getName()
-                        if (icon != null) setIcon(icon)
+                        if (icon != null) {
+                            setIcon(icon)
+                            setAnchor(
+                                Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
+                            )
+                        }
                         if (textIcon != null) setTextIcon(textIcon)
-                        setAnchor(
-                            Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
-                        )
                         snippet = getString(stationModel.getStationSource())
                         infoWindow = infoView
                         setOnMarkerClickListener { marker, _ ->

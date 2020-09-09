@@ -6,6 +6,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ui.IconGenerator
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentGoogleMapBinding
@@ -34,6 +35,8 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
     private var googleMap: GoogleMap? = null
     private val markerMap = hashMapOf<Marker, BaseStationModel>()
+
+    private var clusterManager: ClusterManager<StationMarker>? = null
 
     override fun getLayoutId() =
         R.layout.fragment_google_map
@@ -78,6 +81,12 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                 if (requireContext().isLocationPermissionGranted()) {
                     googleMap.isMyLocationEnabled = true
                 }
+
+                clusterManager = ClusterManager<StationMarker>(requireContext(), googleMap).apply {
+                    renderer = MarkerRenderer(requireContext(), googleMap, this)
+                    googleMap.setOnCameraIdleListener(this)
+                }
+
                 updateMap()
             }
         }
@@ -85,7 +94,7 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
     override fun updateMap() {
         googleMap?.let { googleMap ->
-            googleMap.clear()
+            clusterManager?.clearItems()
             viewModel.stations.value?.let { stations ->
                 stations.forEach { stationModel ->
 
@@ -96,14 +105,22 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                     } ?: return@forEach
 
 
-                    val marker = googleMap.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(stationModel.latitude, stationModel.longitude))
-                            .title(stationModel.getName())
-                            .icon(icon)
-                            .snippet(getString(stationModel.getStationSource()))
+//                    val marker = clusterManager!!.markerCollection.addMarker {
+//                        position(LatLng(stationModel.latitude, stationModel.longitude))
+//                        title(stationModel.getName())
+//                        icon(icon)
+//                        snippet(getString(stationModel.getStationSource()))
+//                    }
+//                    markerMap[marker] = stationModel
+
+                    clusterManager?.addItem(
+                        StationMarker(
+                            LatLng(stationModel.latitude, stationModel.longitude),
+                            stationModel.getName(),
+                            getString(stationModel.getStationSource()),
+                            icon,
+                        ),
                     )
-                    markerMap[marker] = stationModel
                 }
             }
         }

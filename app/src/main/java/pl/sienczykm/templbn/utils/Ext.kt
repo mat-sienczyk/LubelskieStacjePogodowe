@@ -326,7 +326,6 @@ fun CharSequence.plusDrawable(context: Context, @DrawableRes drawableResId: Int)
     if (drawableResId == android.R.id.empty) return this
 
     val drawable =
-//        ContextCompat.getDrawable(context, drawableResId)?.apply { // TODO color the arrow or not?
         context.getDrawableWithColor(drawableResId,
             context.getColorCompact(R.color.marker_text_color))?.apply {
             setBounds(0,

@@ -3,7 +3,6 @@ package pl.sienczykm.templbn.ui.map.gms
 import android.annotation.SuppressLint
 import android.content.res.Resources.NotFoundException
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
@@ -24,17 +23,13 @@ import pl.sienczykm.templbn.utils.roundAndGetString
 import timber.log.Timber
 
 
-class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
-    GoogleMap.OnInfoWindowClickListener, MapNavigator {
+class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(), MapNavigator {
 
     companion object {
         fun newInstance(): GoogleMapFragment {
             return GoogleMapFragment()
         }
     }
-
-    private var googleMap: GoogleMap? = null
-    private val markerMap = hashMapOf<Marker, BaseStationModel>()
 
     private var clusterManager: ClusterManager<StationMarker>? = null
 
@@ -45,8 +40,6 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
     override fun configureMap() {
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).apply {
             getMapAsync { googleMap ->
-                this@GoogleMapFragment.googleMap = googleMap
-
                 if (requireContext().isNightModeActive()) {
                     try {
                         val success = googleMap.setMapStyle(
@@ -73,18 +66,19 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                     )
                 )
 
-
-                googleMap.setOnInfoWindowClickListener(this@GoogleMapFragment)
-
                 googleMap.uiSettings.isMapToolbarEnabled = false
-
-                if (requireContext().isLocationPermissionGranted()) {
-                    googleMap.isMyLocationEnabled = true
-                }
 
                 clusterManager = ClusterManager<StationMarker>(requireContext(), googleMap).apply {
                     renderer = MarkerRenderer(requireContext(), googleMap, this)
                     googleMap.setOnCameraIdleListener(this)
+                    setOnClusterItemInfoWindowClickListener {
+                        openStation(it.stationModel)
+                    }
+                    googleMap.setOnInfoWindowClickListener(this)
+                }
+
+                if (requireContext().isLocationPermissionGranted()) {
+                    googleMap.isMyLocationEnabled = true
                 }
 
                 updateMap()
@@ -93,8 +87,8 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
     }
 
     override fun updateMap() {
-        googleMap?.let { googleMap ->
-            clusterManager?.clearItems()
+        clusterManager?.let { clusterManager ->
+            clusterManager.clearItems()
             viewModel.stations.value?.let { stations ->
                 stations.forEach { stationModel ->
 
@@ -104,25 +98,16 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
                         else -> null
                     } ?: return@forEach
 
-
-//                    val marker = clusterManager!!.markerCollection.addMarker {
-//                        position(LatLng(stationModel.latitude, stationModel.longitude))
-//                        title(stationModel.getName())
-//                        icon(icon)
-//                        snippet(getString(stationModel.getStationSource()))
-//                    }
-//                    markerMap[marker] = stationModel
-
-                    clusterManager?.addItem(
+                    clusterManager.addItem(
                         StationMarker(
-                            LatLng(stationModel.latitude, stationModel.longitude),
-                            stationModel.getName(),
+                            stationModel,
                             getString(stationModel.getStationSource()),
                             icon,
                         ),
                     )
                 }
             }
+            clusterManager.cluster()
         }
     }
 
@@ -180,13 +165,9 @@ class GoogleMapFragment : BaseMapFragment<FragmentGoogleMapBinding>(),
 
         return value?.let {
             BitmapDescriptorFactory.fromBitmap(IconGenerator(requireContext()).run {
-                // TODO style marker here?
+                // TODO style info window here?
                 makeIcon(it)
             })
         }
-    }
-
-    override fun onInfoWindowClick(marker: Marker) {
-        markerMap[marker]?.let { openStation(it) }
     }
 }

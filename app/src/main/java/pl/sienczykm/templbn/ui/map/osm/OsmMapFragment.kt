@@ -31,6 +31,7 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
 
     private var mapView: MapView? = null
     private var selectedStation: BaseStationModel? = null
+    private var infoView: ClickableMarkerInfoWindow? = null
     private val markers = arrayListOf<Marker>()
 
     override fun getLayoutId() =
@@ -70,6 +71,13 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
                     enableMyLocation()
                 })
             }
+
+            infoView = ClickableMarkerInfoWindow(
+                mapView,
+                closeOnClick = false,
+                onTouchCallback = onMarkerWindowTouch()
+            )
+
             updateMap()
         }
     }
@@ -77,17 +85,12 @@ class OsmMapFragment : BaseMapFragment<FragmentOsmMapBinding>(), MapNavigator {
     override fun updateMap() {
         mapView?.let { mapView ->
             mapView.apply {
+                infoView?.close()
                 overlays.removeAll(markers)
                 markers.clear()
                 invalidate()
             }
             viewModel.stations.value?.let { stations ->
-                val infoView = ClickableMarkerInfoWindow(
-                    mapView,
-                    closeOnClick = false,
-                    onTouchCallback = onMarkerWindowTouch()
-                )
-
                 stations.forEach { stationModel ->
 
                     val icon = when (stationModel) {

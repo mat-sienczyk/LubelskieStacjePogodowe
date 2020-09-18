@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.sienczykm.templbn.R
+import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import java.util.*
@@ -14,6 +15,7 @@ import java.util.*
 data class AirStationModel constructor(
     @Ignore
     override val stationId: Int,
+    val type: Type,
     @Ignore
     override val latitude: Double,
     @Ignore
@@ -21,15 +23,21 @@ data class AirStationModel constructor(
     @Ignore
     override val city: String,
     @Ignore
-    override val location: String? = null
+    override val location: String? = null,
+    val device: String? = null,
 ) :
     BaseStationModel(stationId, latitude, longitude, city, location) {
 
-    override fun getStationUrl(): String {
-        return "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
+    override fun getStationUrl() = when (type) {
+        Type.GIOS -> "http://powietrze.gios.gov.pl/pjp/current/station_details/chart/$stationId"
+        Type.LOOKO2 -> Config.LOOKO2_URL + "/?method=Widget2&id=$device"
     }
 
-    override fun getStationSource(): Int = R.string.station_title_air
+    override fun getStationSource() =
+        when (type) {
+            Type.GIOS -> R.string.station_title_air_gios
+            Type.LOOKO2 -> R.string.station_title_air_looko2
+        }
 
     override fun getOldDateTimeInMinutes(): Long = 180
 
@@ -42,7 +50,7 @@ data class AirStationModel constructor(
 
     override fun copy(): AirStationModel {
         val stationCopy =
-            AirStationModel(stationId, latitude, longitude, city, location)
+            AirStationModel(stationId, type, latitude, longitude, city, location)
         stationCopy.url = url
         stationCopy.favorite = favorite
         stationCopy.date = date
@@ -111,18 +119,22 @@ data class AirStationModel constructor(
 
         const val ID_KEY = "air_station_id"
 
-        val LUBLIN = AirStationModel(266, 51.259431, 22.569133, "Lublin", "ul. Obywatelska")
+        val LUBLIN =
+            AirStationModel(266, Type.GIOS, 51.259431, 22.569133, "Lublin", "ul. Obywatelska")
         val BIALA_PODLASKA =
-            AirStationModel(236, 52.029194, 23.149389, "Biała Podlaska", "ul. Orzechowa")
-        val JARCZEW = AirStationModel(248, 51.814367, 21.972375, "Jarczew")
-        val WILCZOPOLE = AirStationModel(282, 51.163542, 22.598608, "Wilczopole")
-        val ZAMOSC = AirStationModel(285, 50.716628, 23.290247, "Zamość", "ul. Hrubieszowska 69A")
-        val PULAWY = AirStationModel(9593, 51.419047, 21.961089, "Puławy", "ul. Karpińskiego")
-        val FLORAINKA = AirStationModel(10874, 50.551894, 22.982861, "Florianka")
-        val CHELM = AirStationModel(11360, 51.122190, 23.472870, "Chełm", "ul. Połaniecka")
-        val NALECZOW = AirStationModel(11362, 51.284931, 22.210242, "Nałęczów")
+            AirStationModel(236, Type.GIOS, 52.029194, 23.149389, "Biała Podlaska", "ul. Orzechowa")
+        val JARCZEW = AirStationModel(248, Type.GIOS, 51.814367, 21.972375, "Jarczew")
+        val WILCZOPOLE = AirStationModel(282, Type.GIOS, 51.163542, 22.598608, "Wilczopole")
+        val ZAMOSC =
+            AirStationModel(285, Type.GIOS, 50.716628, 23.290247, "Zamość", "ul. Hrubieszowska 69A")
+        val PULAWY =
+            AirStationModel(9593, Type.GIOS, 51.419047, 21.961089, "Puławy", "ul. Karpińskiego")
+        val FLORAINKA = AirStationModel(10874, Type.GIOS, 50.551894, 22.982861, "Florianka")
+        val CHELM =
+            AirStationModel(11360, Type.GIOS, 51.122190, 23.472870, "Chełm", "ul. Połaniecka")
+        val NALECZOW = AirStationModel(11362, Type.GIOS, 51.284931, 22.210242, "Nałęczów")
         val KRASNOBROD =
-            AirStationModel(12098, 50.549297, 23.197317, "Krasnobród", "ul. Sanatoryjna")
+            AirStationModel(12098, Type.GIOS, 50.549297, 23.197317, "Krasnobród", "ul. Sanatoryjna")
 
         fun getAllStations(): List<AirStationModel> {
             return listOf(
@@ -152,7 +164,7 @@ data class AirStationModel constructor(
         val maxGood: Int,
         val maxModerate: Int,
         val maxUnhealthySensitive: Int,
-        val maxUnhealthy: Int
+        val maxUnhealthy: Int,
     ) {
         PM10(R.string.sensor_type_pm10, "PM10", 3, 21, 61, 101, 141, 201),
         PM25(R.string.sensor_type_pm25, "PM2.5", 69, 13, 37, 61, 85, 121),
@@ -166,7 +178,7 @@ data class AirStationModel constructor(
     enum class AirQualityIndex(
         val value: Int,
         @StringRes val description: Int,
-        @ColorRes val color: Int
+        @ColorRes val color: Int,
     ) {
         VERY_GOOD(0, R.string.sensor_quality_very_good, R.color.quality_very_good),
         GOOD(1, R.string.sensor_quality_good, R.color.quality_good),
@@ -178,5 +190,9 @@ data class AirStationModel constructor(
         ),
         UNHEALTHY(4, R.string.sensor_quality_unhealthy, R.color.quality_unhealthy),
         HAZARDOUS(5, R.string.sensor_quality_hazardous, R.color.quality_hazardous),
+    }
+
+    enum class Type {
+        GIOS, LOOKO2
     }
 }

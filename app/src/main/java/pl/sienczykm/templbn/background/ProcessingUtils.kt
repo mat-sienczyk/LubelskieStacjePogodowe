@@ -31,6 +31,11 @@ object ProcessingUtils {
     }
 
     @WorkerThread
+    fun updateLookO2Station(appContext: Context) {
+        AppDb.getDatabase(appContext).airStationDao().insertStations(constructLookO2Stations())
+    }
+
+    @WorkerThread
     fun updateWeatherStation(appContext: Context, stationId: Int) {
         AppDb.getDatabase(appContext).weatherStationDao().apply {
             getStationById(stationId)?.let { insert(constructWeatherStationModel(it)) }
@@ -45,6 +50,33 @@ object ProcessingUtils {
         station.sensors = getSensors(station.stationId)
         station.date = getAirStationDate(station.sensors)
         return station
+    }
+
+    private fun constructLookO2Stations(): List<AirStationModel> {
+
+        var stations = emptyList<AirStationModel>()
+
+        LspController.getLookO2Stations().apply {
+            if (isSuccessful) {
+                body()?.apply {
+                    stations =
+                        filter {
+                            it.lat != null && (it.lat.toDouble() in 50.252..52.288) && it.lon != null && (it.lon.toDouble() in 21.616..24.146)
+                        }.mapIndexed { index, station ->
+                            AirStationModel(
+                                stationId = 666 + index,
+                                type = AirStationModel.Type.LOOKO2,
+                                latitude = station.lat!!.toDouble(), // null is filtered out
+                                longitude = station.lon!!.toDouble(), // null is filtered out
+                                city = station.name ?: "Test",
+                                device = station.device,
+                            )
+                        }
+                } ?: throw Exception("body null")
+            } else throw Exception(errorBody().toString())
+        }
+
+        return stations
     }
 
     private fun getAirStationDate(sensors: List<AirSensorModel>?): Date? {

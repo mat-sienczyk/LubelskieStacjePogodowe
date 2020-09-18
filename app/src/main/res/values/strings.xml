@@ -23,7 +23,8 @@
     <string name="umcs_station_title_weather">Stacja pogodowa UMCS</string>
     <string name="imgw_station_title_weather">Stacja pogodowa IMGW</string>
     <string name="generic_station_title_weather">Stacja pogodowa</string>
-    <string name="station_title_air">Stacja powietrza GIOŚ</string>
+    <string name="station_title_air_gios">Stacja powietrza GIOŚ</string>
+    <string name="station_title_air_looko2">Stacja powietrza LOOKO2</string>
     <string name="forecast_title">Prognoza ICM</string>
     <string name="air_index_title">O indeksie jakości powietrza</string>
 

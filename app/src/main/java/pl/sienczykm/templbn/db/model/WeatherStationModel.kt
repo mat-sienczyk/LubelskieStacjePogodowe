@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit
 data class WeatherStationModel constructor(
     @Ignore
     override val stationId: Int,
-    var type: Type,
-    var forecastX: Int,
-    var forecastY: Int,
+    val type: Type,
+    val forecastX: Int,
+    val forecastY: Int,
     @Ignore
     override val latitude: Double,
     @Ignore

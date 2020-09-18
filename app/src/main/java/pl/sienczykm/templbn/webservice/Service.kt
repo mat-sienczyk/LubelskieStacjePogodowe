@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import pl.sienczykm.templbn.webservice.model.air.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.air.AirSensor
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
+import pl.sienczykm.templbn.webservice.model.air.LookO2Station
 import pl.sienczykm.templbn.webservice.model.weather.PogodynkaWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationOne
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationTwo
@@ -42,4 +43,7 @@ interface Service {
 
     @GET
     fun getAirQualityIndex(@Url url: String): Call<AirIndexQuality>
+
+    @GET
+    fun getLookO2Stations(@Url url: String): Call<List<LookO2Station>>
 }

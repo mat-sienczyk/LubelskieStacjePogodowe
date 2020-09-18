@@ -27,8 +27,8 @@ abstract class UpdateJob : JobIntentService() {
 
             val errorList = arrayListOf<String>()
 
-            intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY)?.forEach { stationId ->
-                try {
+            try {
+                intent.getIntArrayExtra(UpdateHandler.STATION_ID_ARRAY_KEY)?.forEach { stationId ->
                     when (intent.getStringExtra(UpdateHandler.STATION_TYPE_KEY)) {
                         AirStationModel.ID_KEY -> ProcessingUtils.updateAirStation(
                             applicationContext,
@@ -40,10 +40,14 @@ abstract class UpdateJob : JobIntentService() {
                         )
                         else -> errorList.add("Invalid station key")
                     }
-                } catch (e: Exception) {
-                    errorList.add(e.message ?: "Unknown exception")
-                }
-            } ?: errorList.add("Stations are null")
+
+                } ?: errorList.add("Stations are null")
+
+                ProcessingUtils.updateLookO2Station(applicationContext)
+
+            } catch (e: Exception) {
+                errorList.add(e.message ?: "Unknown exception")
+            }
 
             if (errorList.isNotEmpty()) {
                 val errorBundle = Bundle().apply {
@@ -69,7 +73,7 @@ class AirUpdateJob : UpdateJob() {
             context: Context,
             stationsIds: List<Int>,
             statusReceiver: StatusReceiver,
-            stationType: String
+            stationType: String,
         ) {
             enqueueWork(
                 context,
@@ -94,7 +98,7 @@ class WeatherUpdateJob : UpdateJob() {
             context: Context,
             stationsIds: List<Int>,
             statusReceiver: StatusReceiver,
-            stationType: String
+            stationType: String,
         ) {
             enqueueWork(
                 context,

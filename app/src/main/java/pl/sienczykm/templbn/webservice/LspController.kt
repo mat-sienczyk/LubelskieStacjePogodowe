@@ -12,6 +12,7 @@ import pl.sienczykm.templbn.utils.Config
 import pl.sienczykm.templbn.webservice.model.air.AirIndexQuality
 import pl.sienczykm.templbn.webservice.model.air.AirSensor
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
+import pl.sienczykm.templbn.webservice.model.air.LookO2Station
 import pl.sienczykm.templbn.webservice.model.weather.PogodynkaWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.SwidnikWeatherStation
 import pl.sienczykm.templbn.webservice.model.weather.UmcsWeatherStationOne
@@ -62,6 +63,12 @@ object LspController {
     fun getAirQualityIndex(stationId: Int): Response<AirIndexQuality> =
         RetrofitService.get()
             .getAirQualityIndex(Config.GIOS_BASE_AIR_URL + "aqindex/getIndex/$stationId")
+            .execute()
+
+    @WorkerThread
+    fun getLookO2Stations(): Response<List<LookO2Station>> =
+        RetrofitService.get()
+            .getLookO2Stations(Config.LOOKO2_URL + "?method=GetAll&token=${BuildConfig.LOOKO2_KEY}")
             .execute()
 
     @WorkerThread

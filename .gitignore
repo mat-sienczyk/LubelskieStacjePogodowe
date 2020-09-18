@@ -99,3 +99,6 @@ lint/tmp/
 *.jks
 *.pepk
 *.pem
+
+# API keys
+apikey.properties

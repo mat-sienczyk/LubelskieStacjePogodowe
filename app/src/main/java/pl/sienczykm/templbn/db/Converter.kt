@@ -15,63 +15,31 @@ class Converter {
     private val sensorArrayType = object : TypeToken<List<AirSensorModel>>() {}.type
 
     @TypeConverter
-    fun timestampToDate(value: Long?): Date? {
-        return if (value == null) null else Date(value)
-    }
+    fun timestampToDate(value: Long?) = value?.let { Date(it) }
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
-    }
+    fun dateToTimestamp(date: Date?) = date?.time
 
     @TypeConverter
-    fun stringToType(value: String): WeatherStationModel.Type =
-        when (value) {
-            WeatherStationModel.Type.UMCS_ONE.name -> WeatherStationModel.Type.UMCS_ONE
-            WeatherStationModel.Type.UMCS_TWO.name -> WeatherStationModel.Type.UMCS_TWO
-            WeatherStationModel.Type.IMGW_SIMPLE.name -> WeatherStationModel.Type.IMGW_SIMPLE
-            WeatherStationModel.Type.IMGW_POGODYNKA.name -> WeatherStationModel.Type.IMGW_POGODYNKA
-            WeatherStationModel.Type.SWIDNIK.name -> WeatherStationModel.Type.SWIDNIK
-            else -> throw Exception("Add TypeConverter for new WeatherStationModel.Type!")
-        }
+    fun stringToWeatherType(value: String) = WeatherStationModel.Type.valueOf(value)
 
     @TypeConverter
-    fun typeToString(type: WeatherStationModel.Type): String {
-        return type.name
-    }
+    fun weatherTypeToString(type: WeatherStationModel.Type) = type.name
 
     @TypeConverter
-    fun chartArrayToString(data: List<ChartDataModel>?): String? {
-        return when (data) {
-            null -> null
-            else -> Gson().toJson(data, dataArrayType)
-        }
-
-    }
+    fun chartArrayToString(data: List<ChartDataModel>?) =
+        data?.let { Gson().toJson(data, dataArrayType) }
 
     @TypeConverter
-    fun stringToChartArray(json: String?): List<ChartDataModel>? {
-        return when (json) {
-            null -> null
-            else -> Gson().fromJson(json, dataArrayType)
-        }
-    }
+    fun stringToChartArray(json: String?): List<ChartDataModel>? =
+        json?.let { Gson().fromJson(json, dataArrayType) }
 
     @TypeConverter
-    fun sensorArrayToString(data: List<AirSensorModel>?): String? {
-        return when (data) {
-            null -> null
-            else -> Gson().toJson(data, sensorArrayType)
-        }
-
-    }
+    fun sensorArrayToString(data: List<AirSensorModel>?) =
+        data?.let { Gson().toJson(data, sensorArrayType) }
 
     @TypeConverter
-    fun stringToSensorArray(json: String?): List<AirSensorModel>? {
-        return when (json) {
-            null -> null
-            else -> Gson().fromJson(json, sensorArrayType)
-        }
-    }
+    fun stringToSensorArray(json: String?): List<AirSensorModel>? =
+        json?.let { Gson().fromJson(json, sensorArrayType) }
 
 }

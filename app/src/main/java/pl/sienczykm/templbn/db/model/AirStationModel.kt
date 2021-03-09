@@ -134,8 +134,8 @@ data class AirStationModel constructor(
                 PULAWY,
                 FLORAINKA,
                 CHELM,
-                NALECZOW,
-                KRASNOBROD
+//                NALECZOW,
+//                KRASNOBROD,
             )
         }
 

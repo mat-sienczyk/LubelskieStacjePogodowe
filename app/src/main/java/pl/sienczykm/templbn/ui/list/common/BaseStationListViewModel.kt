@@ -35,7 +35,7 @@ abstract class BaseStationListViewModel<T : BaseStationModel>(application: Appli
             }
         }
 
-    fun sortStations(stations: List<T>): List<T>? {
+    fun sortStations(stations: List<T>): List<T> {
         return when (coordinates) {
             null -> stations
                 .onEach { it.distance = null }

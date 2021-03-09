@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         private fun getNavigationPendingIntent(
             context: Context,
             @StringRes navigation: Int,
-            code: Int
+            code: Int,
         ): PendingIntent = PendingIntent.getActivity(
             context, code, Intent(context, MainActivity::class.java).apply {
                 putExtra(
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         when (requestCode) {
             STORAGE_PERMISSIONS_REQUEST_CODE -> {
@@ -190,10 +190,7 @@ class MainActivity : AppCompatActivity() {
     private fun getLocationPermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             LOCATION_PERMISSIONS_REQUEST_CODE
         )
     }

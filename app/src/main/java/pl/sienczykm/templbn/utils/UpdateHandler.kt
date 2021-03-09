@@ -2,6 +2,7 @@ package pl.sienczykm.templbn.utils
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import androidx.work.*
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.background.AirUpdateJob
@@ -24,7 +25,7 @@ object UpdateHandler {
     fun syncNowAirStations(
         context: Context,
         receiver: StatusReceiver.Receiver,
-        stations: List<AirStationModel> = AirStationModel.getAllStations()
+        stations: List<AirStationModel> = AirStationModel.getAllStations(),
     ) {
         syncNowStations(
             context,
@@ -41,7 +42,7 @@ object UpdateHandler {
     fun syncNowWeatherStations(
         context: Context,
         receiver: StatusReceiver.Receiver,
-        stations: List<WeatherStationModel> = WeatherStationModel.getAllStations()
+        stations: List<WeatherStationModel> = WeatherStationModel.getAllStations(),
     ) {
         syncNowStations(
             context,
@@ -59,14 +60,14 @@ object UpdateHandler {
         context: Context,
         stationsIds: List<Int>,
         receiver: StatusReceiver.Receiver,
-        stationType: String
+        stationType: String,
     ) {
         when (stationType) {
             AirStationModel.ID_KEY -> {
                 AirUpdateJob.enqueueWork(
                     context,
                     stationsIds,
-                    StatusReceiver(Handler(), receiver),
+                    StatusReceiver(Handler(Looper.getMainLooper()), receiver),
                     stationType
                 )
             }
@@ -74,7 +75,7 @@ object UpdateHandler {
                 WeatherUpdateJob.enqueueWork(
                     context,
                     stationsIds,
-                    StatusReceiver(Handler(), receiver),
+                    StatusReceiver(Handler(Looper.getMainLooper()), receiver),
                     stationType
                 )
             }
@@ -91,7 +92,7 @@ object UpdateHandler {
 
     fun setWeatherStationAutoSync(
         context: Context,
-        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
+        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy,
     ) {
 
         val weatherUpdateInterval = context.getWeatherStationUpdateInterval().toLong()
@@ -116,7 +117,7 @@ object UpdateHandler {
 
     fun setAirStationAutoSync(
         context: Context,
-        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy
+        existingPeriodicWorkPolicy: ExistingPeriodicWorkPolicy,
     ) {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             AIR_SYNC_WORK_NAME, existingPeriodicWorkPolicy, periodicWorkRequest(
@@ -137,7 +138,7 @@ object UpdateHandler {
         minutes: Long,
         stationsIntArray: IntArray,
         type: String,
-        onlyWifi: Boolean
+        onlyWifi: Boolean,
     ): PeriodicWorkRequest {
         return PeriodicWorkRequestBuilder<AutoUpdateWorker>(minutes, TimeUnit.MINUTES)
             .setInputData(

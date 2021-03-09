@@ -1,16 +1,17 @@
 package pl.sienczykm.templbn.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
+import android.os.Looper
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
 
 class LocationUpdates(
     private val context: Context,
-    locationCallback: (Location?) -> Unit
+    locationCallback: (Location?) -> Unit,
 ) {
 
     private val locationHandlerImpl: LocationHandler =
@@ -25,6 +26,7 @@ class LocationUpdates(
     }
 
 
+    @SuppressLint("MissingPermission")
     private inner class GoogleLocationUpdateCallbackImpl(private val locationCallback: (Location?) -> Unit) :
         LocationHandler, LocationCallback() {
 
@@ -34,11 +36,11 @@ class LocationUpdates(
         init {
             locationProviderClient
                 .requestLocationUpdates(
-                    LocationRequest.create()?.apply {
+                    LocationRequest.create().apply {
                         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
                     },
                     this,
-                    null
+                    Looper.getMainLooper()
                 )
         }
 
@@ -92,19 +94,10 @@ class LocationUpdates(
             locationManager.removeUpdates(this)
         }
 
-        override fun onLocationChanged(location: Location?) {
+
+        override fun onLocationChanged(location: Location) {
             locationCallback(location)
         }
-
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        }
-
-        override fun onProviderEnabled(provider: String?) {
-        }
-
-        override fun onProviderDisabled(provider: String?) {
-        }
-
     }
 }
 

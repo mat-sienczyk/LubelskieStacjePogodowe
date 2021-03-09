@@ -134,6 +134,9 @@ private fun calcPressure(
 fun Context.isLocationPermissionGranted() =
     isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
 
+fun Context.isBgLocationPermissionGranted() =
+    isPermissionGranted(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+
 fun Context.isWriteExternalStoragePermissionGranted() =
     isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 

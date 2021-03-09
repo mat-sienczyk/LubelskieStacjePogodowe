@@ -114,6 +114,8 @@
     <string name="night_mode_options_light">Jasny</string>
     <string name="night_mode_options_dark">Ciemny</string>
 
+    <string name="no_bg_location">Nie przyznano dostepu do lokalizacji w tle</string>
+
     <!--chart-->
     <string name="chart_empty">Brak danych</string>
     <string name="chart_title">%1$s - ostatnie 24h</string>

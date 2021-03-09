@@ -326,12 +326,12 @@ data class WeatherStationModel constructor(
             LUBARTOW,
             GUCIOW,
 //            FLORIANKA,
-            LUKOW,
+//            LUKOW,
             TRZDNIK,
             LESNIOWICE,
             RYBCZEWICE,
             WOLA_WERESZCZYNSKA,
-            CELEJOW
+            CELEJOW,
         )
 
         // IMGW weather stations https://danepubliczne.imgw.pl/api/data/synop
@@ -587,7 +587,7 @@ data class WeatherStationModel constructor(
 
         fun getFrequentUpdatedStations() = umcsStations
 
-        fun getRareUpdatedStations() = imgwPogodynkaStations + SWIDNIK
+        fun getRareUpdatedStations() = imgwPogodynkaStations //+ SWIDNIK
 
         fun getAllStations() = getFrequentUpdatedStations() + getRareUpdatedStations()
 

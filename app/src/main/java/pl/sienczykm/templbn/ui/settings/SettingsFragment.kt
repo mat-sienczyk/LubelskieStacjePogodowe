@@ -1,22 +1,29 @@
 package pl.sienczykm.templbn.ui.settings
 
+import android.Manifest
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import androidx.work.ExistingPeriodicWorkPolicy
+import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.WeatherStationModel
-import pl.sienczykm.templbn.utils.ExternalDisplaysHandler
-import pl.sienczykm.templbn.utils.UpdateHandler
-import pl.sienczykm.templbn.utils.handleNightMode
-import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailable
+import pl.sienczykm.templbn.utils.*
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
+
+        const val BG_LOCATION_PERMISSIONS_REQUEST_CODE = 536
+
         fun newInstance(): SettingsFragment {
             return SettingsFragment()
         }
@@ -60,12 +67,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 requireContext().handleNightMode()
 
             getString(R.string.default_station_key),
-            getString(R.string.default_location_key),
-            getString(R.string.open_weather_station_from_externals_key) ->
+            getString(R.string.open_weather_station_from_externals_key),
+            ->
                 ExternalDisplaysHandler.updateExternalDisplays(requireContext())
 
+            getString(R.string.default_location_key) -> {
+                handleBgLocationRequest()
+                ExternalDisplaysHandler.updateExternalDisplays(requireContext())
+            }
+
             getString(R.string.show_weather_notification_key),
-            getString(R.string.show_weather_notification_icon_key) ->
+            getString(R.string.show_weather_notification_icon_key),
+            ->
                 ExternalDisplaysHandler.setWeatherNotification(requireContext())
 
             getString(R.string.show_air_quality_notification_key) ->
@@ -96,6 +109,40 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     requireContext(),
                     ExistingPeriodicWorkPolicy.REPLACE
                 )
+        }
+    }
+
+    // TODO replace below code with registerForActivityResult() from 'androidx.activity:activity-ktx:1.2.0' and 'androidx.fragment:fragment-ktx:1.3.0'
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        if (requestCode == BG_LOCATION_PERMISSIONS_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            preferenceManager.findPreference<SwitchPreferenceCompat>(getString(R.string.default_location_key))?.isChecked =
+                false
+            Snackbar.make(requireView(), R.string.no_bg_location, Snackbar.LENGTH_LONG)
+                .apply {
+                    setAction(R.string.settings) {
+                        requireContext().startActivity(Intent().apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", requireContext().packageName, null)
+                        })
+                    }
+                    show()
+                }
+        }
+    }
+
+
+    private fun handleBgLocationRequest() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && requireContext().useLocationToUpdateWeather() && !requireContext().isBgLocationPermissionGranted()) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                BG_LOCATION_PERMISSIONS_REQUEST_CODE
+            )
         }
     }
 }

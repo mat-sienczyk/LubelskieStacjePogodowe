@@ -20,7 +20,7 @@ import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.databinding.FragmentAboutBinding
 import pl.sienczykm.templbn.utils.getColorHex
 import pl.sienczykm.templbn.utils.openUrl
-import pl.sienczykm.templbn.utils.snackbarShow
+import pl.sienczykm.templbn.utils.showSnackbar
 import timber.log.Timber
 import java.util.*
 
@@ -66,7 +66,7 @@ class AboutFragment : Fragment(), AboutNavigator {
             startActivity(rateAppIntent)
         } catch (e: Exception) {
             Timber.e("Error with Google Play: ${e.localizedMessage}")
-            binding.coordinatorLayout.snackbarShow(R.string.error_play_store)
+            binding.coordinatorLayout.showSnackbar(R.string.error_play_store)
         }
     }
 

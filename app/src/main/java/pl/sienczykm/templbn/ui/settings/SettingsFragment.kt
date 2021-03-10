@@ -12,7 +12,6 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.ExistingPeriodicWorkPolicy
-import com.google.android.material.snackbar.Snackbar
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.*
@@ -45,15 +44,19 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (!requireContext().isGooglePlayServicesAvailable()) {
             preferenceScreen.removePreferenceRecursively(getString(R.string.enable_google_play_services_key))
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && requireContext().useLocationToUpdateWeather() && !requireContext().isBgLocationPermissionGranted()) {
+            preferenceManager.findPreference<SwitchPreferenceCompat>(getString(R.string.default_location_key))?.isChecked =
+                false
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        super.onStart()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
@@ -113,7 +116,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     // TODO replace below code with registerForActivityResult() from 'androidx.activity:activity-ktx:1.2.0' and 'androidx.fragment:fragment-ktx:1.3.0'
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -122,20 +124,19 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (requestCode == BG_LOCATION_PERMISSIONS_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_DENIED) {
             preferenceManager.findPreference<SwitchPreferenceCompat>(getString(R.string.default_location_key))?.isChecked =
                 false
-            Snackbar.make(requireView(), R.string.no_bg_location, Snackbar.LENGTH_LONG)
-                .apply {
-                    setAction(R.string.settings) {
-                        requireContext().startActivity(Intent().apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            data = Uri.fromParts("package", requireContext().packageName, null)
-                        })
-                    }
-                    show()
-                }
+            requireView().showSnackbar(
+                message = R.string.no_bg_location,
+                buttonText = R.string.settings,
+                action = {
+                    requireContext().startActivity(Intent().apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", requireContext().packageName, null)
+                    })
+                },
+            )
         }
     }
-
 
     private fun handleBgLocationRequest() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && requireContext().useLocationToUpdateWeather() && !requireContext().isBgLocationPermissionGranted()) {

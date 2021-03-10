@@ -28,7 +28,7 @@ import pl.sienczykm.templbn.ui.station.StationActivity
 import pl.sienczykm.templbn.utils.LocationUpdates
 import pl.sienczykm.templbn.utils.isLocationPermissionGranted
 import pl.sienczykm.templbn.utils.setColors
-import pl.sienczykm.templbn.utils.snackbarShow
+import pl.sienczykm.templbn.utils.showSnackbar
 import timber.log.Timber
 
 abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationListViewModel<K>, L : ViewDataBinding> :
@@ -151,7 +151,7 @@ abstract class BaseStationListFragment<K : BaseStationModel, T : BaseStationList
     }
 
     private fun showSnackbar(@StringRes message: Int) {
-        getCoordinatorLayout().snackbarShow(message)
+        getCoordinatorLayout().showSnackbar(message)
     }
 
 }

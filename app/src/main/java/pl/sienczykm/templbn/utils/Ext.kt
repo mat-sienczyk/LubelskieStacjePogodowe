@@ -23,7 +23,6 @@ import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.common.ConnectionResult
@@ -53,12 +52,16 @@ fun Context.toast(@StringRes message: Int, duration: Int = Toast.LENGTH_LONG) {
 fun Context.isNetworkAvailable() =
     (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnected == true
 
-fun CoordinatorLayout.snackbarShow(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(this, message, duration).show()
-}
-
-fun CoordinatorLayout.snackbarShow(message: String, duration: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(this, message, duration).show()
+fun View.showSnackbar(
+    @StringRes message: Int,
+    duration: Int = Snackbar.LENGTH_LONG,
+    @StringRes buttonText: Int? = null,
+    action: (() -> Unit)? = null,
+) {
+    Snackbar.make(this, message, duration).apply {
+        if (action != null && buttonText != null) setAction(buttonText) { action() }
+        show()
+    }
 }
 
 fun View.show() {

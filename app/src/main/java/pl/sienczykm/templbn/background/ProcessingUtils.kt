@@ -8,7 +8,6 @@ import pl.sienczykm.templbn.db.model.AirStationModel
 import pl.sienczykm.templbn.db.model.ChartDataModel
 import pl.sienczykm.templbn.db.model.WeatherStationModel
 import pl.sienczykm.templbn.utils.dateFormat
-import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
 import pl.sienczykm.templbn.webservice.LspController
 import pl.sienczykm.templbn.webservice.model.air.AirSensorData
@@ -156,13 +155,12 @@ object ProcessingUtils {
     ): List<ChartDataModel>? {
         return if (chartData.isNullOrEmpty()) null
         else {
-            val offset =
-                if (nowInPoland().timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
-                else TimeUnit.HOURS.toMillis(1)
-
             var returnList = chartData.filterNotNull()
             operationOnList?.let { returnList = it(returnList) }
-            returnList.map { ChartDataModel(it[0].toLong().plus(offset), it[1]) }
+            returnList.map {
+                ChartDataModel(it[0].toLong().plus(TimeUnit.HOURS.toMillis(1)),
+                    it[1])
+            }
         }
     }
 

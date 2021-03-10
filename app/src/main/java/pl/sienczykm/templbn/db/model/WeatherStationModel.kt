@@ -5,7 +5,6 @@ import androidx.room.Ignore
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 @Entity
 data class WeatherStationModel constructor(
@@ -193,12 +192,8 @@ data class WeatherStationModel constructor(
         }
 
         return when (type) {
-            Type.UMCS_ONE, Type.UMCS_TWO -> {
-                val offset =
-                    if (now.timeZone.useDaylightTime()) TimeUnit.HOURS.toMillis(2)
-                    else TimeUnit.HOURS.toMillis(1)
-
-                rainData?.filter { it.timestamp!!.minus(offset) > fromToday.timeInMillis }
+            Type.UMCS_ONE, Type.UMCS_TWO -> rainData?.filter {
+                it.timestamp!! > fromToday.timeInMillis
             }
             else -> {
                 var acc = 0.0

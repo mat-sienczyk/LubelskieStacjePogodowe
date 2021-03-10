@@ -15,6 +15,10 @@ class AboutViewModel : ViewModel() {
         getNavigator()?.openDialog(dialogType)
     }
 
+    fun openUrl(url: String) {
+        getNavigator()?.openUrl(url)
+    }
+
     private fun getNavigator(): AboutNavigator? {
         return navigator.get()
     }

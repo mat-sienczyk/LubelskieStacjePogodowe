@@ -38,7 +38,7 @@ class AboutFragment : Fragment(), AboutNavigator {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
         binding.viewModel = aboutViewModel
@@ -56,7 +56,7 @@ class AboutFragment : Fragment(), AboutNavigator {
         dialog?.dismiss()
         super.onDestroyView()
     }
-    
+
     override fun openGooglePlay(appId: String) {
         val rateAppIntent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("market://details?id=$appId")
@@ -82,7 +82,7 @@ class AboutFragment : Fragment(), AboutNavigator {
                 }
 
                 override fun shouldOverrideUrlLoading(
-                    view: WebView?, request: WebResourceRequest?
+                    view: WebView?, request: WebResourceRequest?,
                 ): Boolean {
                     return requireContext().openUrl(request?.url.toString())
                 }
@@ -100,6 +100,10 @@ class AboutFragment : Fragment(), AboutNavigator {
         }
 
         dialog?.show()
+    }
+
+    override fun openUrl(url: String) {
+        requireContext().openUrl(url)
     }
 
     enum class DialogType(@StringRes val title: Int) {

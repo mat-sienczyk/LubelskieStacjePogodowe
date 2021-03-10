@@ -7,7 +7,7 @@
 - AndroidX, Retrofit2, OkHttp4,
 - Google Play Services (Maps, Location).
 
-## Warunki i informacje
+## [Warunki i informacje (Terms & Conditions)](https://sites.google.com/view/lsp-terms-conditions)
 
 Lubelskie Stacje Pogodowe to projekt open-source i jest w fazie rozwoju - możliwe są różne błędy i awarie, będę również wdzięczny za wszystkie uwagi, propozycje i inne sugestie.
 
@@ -32,6 +32,8 @@ http://powietrze.gios.gov.pl/pjp/content/terms_of_service
 Prognoza została udostępniona nieodpłatnie przez serwis meteo.pl prowadzony przez ICM, Uniwersytet Warszawski. Wyniki uzyskano przy użyciu oprogramowania Met Office.
 
 http://www.meteo.pl/
+
+## [Polityka prywatności (Privacy Policy)](https://sites.google.com/view/lsp-privacy-policy)
 
 ## Pobierz
 

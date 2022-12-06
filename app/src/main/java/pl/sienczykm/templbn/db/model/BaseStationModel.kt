@@ -4,7 +4,6 @@ import android.text.SpannableStringBuilder
 import androidx.core.text.bold
 import androidx.core.text.scale
 import androidx.room.Ignore
-import androidx.room.PrimaryKey
 import pl.sienczykm.templbn.utils.dateFormat
 import pl.sienczykm.templbn.utils.isOlderThan
 import pl.sienczykm.templbn.utils.round
@@ -12,12 +11,11 @@ import java.util.*
 import kotlin.math.roundToInt
 
 abstract class BaseStationModel(
-    @PrimaryKey
     open val stationId: Int,
     open val latitude: Double,
     open val longitude: Double,
     open val city: String,
-    open val location: String?
+    open val location: String?,
 ) {
     lateinit var url: String
     var favorite: Boolean = false

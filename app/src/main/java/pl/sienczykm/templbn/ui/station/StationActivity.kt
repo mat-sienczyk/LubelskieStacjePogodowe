@@ -32,7 +32,7 @@ class StationActivity : ActivityWithToolbarAndUpAction() {
             })
             getPendingIntent(
                 71,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )!! // FLAG_UPDATE_CURRENT provided, no null then
         }
     }

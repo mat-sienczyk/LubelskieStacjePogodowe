@@ -4,7 +4,7 @@ package pl.sienczykm.templbn.db.model
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.room.Entity
-import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.nowInPoland
 import pl.sienczykm.templbn.utils.round
@@ -12,16 +12,12 @@ import java.util.*
 
 @Entity
 data class AirStationModel constructor(
-    @Ignore
+    @PrimaryKey
     override val stationId: Int,
-    @Ignore
     override val latitude: Double,
-    @Ignore
     override val longitude: Double,
-    @Ignore
     override val city: String,
-    @Ignore
-    override val location: String? = null
+    override val location: String? = null,
 ) :
     BaseStationModel(stationId, latitude, longitude, city, location) {
 
@@ -131,8 +127,8 @@ data class AirStationModel constructor(
                 JARCZEW,
                 WILCZOPOLE,
                 ZAMOSC,
-                PULAWY,
-                FLORAINKA,
+//                PULAWY,
+//                FLORAINKA,
                 CHELM,
 //                NALECZOW,
 //                KRASNOBROD,
@@ -152,7 +148,7 @@ data class AirStationModel constructor(
         val maxGood: Int,
         val maxModerate: Int,
         val maxUnhealthySensitive: Int,
-        val maxUnhealthy: Int
+        val maxUnhealthy: Int,
     ) {
         PM10(R.string.sensor_type_pm10, "PM10", 3, 21, 61, 101, 141, 201),
         PM25(R.string.sensor_type_pm25, "PM2.5", 69, 13, 37, 61, 85, 121),
@@ -166,7 +162,7 @@ data class AirStationModel constructor(
     enum class AirQualityIndex(
         val value: Int,
         @StringRes val description: Int,
-        @ColorRes val color: Int
+        @ColorRes val color: Int,
     ) {
         VERY_GOOD(0, R.string.sensor_quality_very_good, R.color.quality_very_good),
         GOOD(1, R.string.sensor_quality_good, R.color.quality_good),

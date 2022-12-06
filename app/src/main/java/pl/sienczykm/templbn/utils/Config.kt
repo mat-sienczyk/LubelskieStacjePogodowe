@@ -3,13 +3,13 @@ package pl.sienczykm.templbn.utils
 object Config {
 
     //remember to increase value after changes in db model
-    const val DB_VERSION = 9
+    const val DB_VERSION = 10
 
     const val DB_NAME = "lsp.db"
 
     const val PREF_NAME = "lsp_pref"
 
-    const val UMCS_BASE_WEATHER_URL = "http://212.182.4.252/"
+    const val UMCS_BASE_WEATHER_URL = "http://212.182.10.195/"
 
     const val IMGW_BASE_WEATHER_URL = "https://danepubliczne.imgw.pl/api/data/synop/id/"
 

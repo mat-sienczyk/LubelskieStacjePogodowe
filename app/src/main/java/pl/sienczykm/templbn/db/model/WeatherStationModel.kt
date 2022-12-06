@@ -2,24 +2,21 @@ package pl.sienczykm.templbn.db.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import pl.sienczykm.templbn.R
 import pl.sienczykm.templbn.utils.*
 import java.util.*
 
 @Entity
 data class WeatherStationModel constructor(
-    @Ignore
+    @PrimaryKey
     override val stationId: Int,
     var type: Type,
     var forecastX: Int,
     var forecastY: Int,
-    @Ignore
     override val latitude: Double,
-    @Ignore
     override val longitude: Double,
-    @Ignore
     override val city: String,
-    @Ignore
     override val location: String? = null,
 ) :
     BaseStationModel(stationId, latitude, longitude, city, location) {
@@ -321,7 +318,7 @@ data class WeatherStationModel constructor(
             LUBARTOW,
             GUCIOW,
 //            FLORIANKA,
-//            LUKOW,
+            LUKOW,
             TRZDNIK,
             LESNIOWICE,
             RYBCZEWICE,
@@ -545,29 +542,30 @@ data class WeatherStationModel constructor(
                 "Tarnogród"
             )
 
-        // commented out stations without temperature
+        // TODO not working...
         private val imgwPogodynkaStations = listOf(
-            TERESPOL,
-            CICIBOR,
-            JARCZEW,
-//            RADZYN_PODLASKI,
-            WLODAWA,
-            PULAWY,
-            RADAWIEC,
-//            BEZEK,
-//            ANNOPOL,
-            WYSOKIE,
-//            STRZYZOW,
-            NIELISZ,
-//            ZAKLODZIE,
-            ZAMOSC,
-//            FRAMPOL,
-//            BRODZIAKI,
-//            JOZEFOW,
-            TOMASZOW_LUBELSKI,
-            TARNOGROD
+//            TERESPOL,
+//            CICIBOR,
+//            JARCZEW,
+            RADZYN_PODLASKI,
+//            WLODAWA,
+//            PULAWY,
+//            RADAWIEC,
+            BEZEK,
+            ANNOPOL,
+//            WYSOKIE,
+            STRZYZOW,
+//            NIELISZ,
+            ZAKLODZIE,
+//            ZAMOSC,
+            FRAMPOL,
+            BRODZIAKI,
+            JOZEFOW,
+//            TOMASZOW_LUBELSKI,
+//            TARNOGROD
         )
 
+        // TODO not working...
         val SWIDNIK =
             WeatherStationModel(
                 666999,
@@ -582,9 +580,9 @@ data class WeatherStationModel constructor(
 
         fun getFrequentUpdatedStations() = umcsStations
 
-        fun getRareUpdatedStations() = imgwPogodynkaStations //+ SWIDNIK
+//        fun getRareUpdatedStations() = imgwPogodynkaStations + SWIDNIK
 
-        fun getAllStations() = getFrequentUpdatedStations() + getRareUpdatedStations()
+        fun getAllStations() = getFrequentUpdatedStations() //+ getRareUpdatedStations()
 
         fun getStationForGivenId(id: Int) = getAllStations().single { it.stationId == id }
 

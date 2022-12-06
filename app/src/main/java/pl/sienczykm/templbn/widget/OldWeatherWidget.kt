@@ -46,7 +46,7 @@ class OldWeatherWidget : AppWidgetProvider() {
             putExtra(OLD_KEY, true)
         }
         val widgetUpdatePendingIntent =
-            PendingIntent.getBroadcast(context, 0, widgetUpdateIntent, 0)
+            PendingIntent.getBroadcast(context, 0, widgetUpdateIntent, PendingIntent.FLAG_IMMUTABLE)
 
         (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).set(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,

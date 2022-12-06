@@ -36,7 +36,7 @@ object ExternalDisplaysHandler {
 
     private fun cancelNotification(
         context: Context,
-        notificationId: Int
+        notificationId: Int,
     ) {
         NotificationManagerCompat.from(context).cancel(notificationId)
     }
@@ -44,15 +44,17 @@ object ExternalDisplaysHandler {
     private fun sendNotification(
         context: Context,
         notificationId: Int,
-        notification: Notification
+        notification: Notification,
     ) {
-        NotificationManagerCompat.from(context).notify(notificationId, notification)
+        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            NotificationManagerCompat.from(context).notify(notificationId, notification)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(
         context: Context,
-        channel: NotificationChannel
+        channel: NotificationChannel,
     ) {
         (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
             .createNotificationChannel(channel)

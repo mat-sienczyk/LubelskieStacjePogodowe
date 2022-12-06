@@ -140,9 +140,6 @@ fun Context.isLocationPermissionGranted() =
 fun Context.isBgLocationPermissionGranted() =
     isPermissionGranted(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 
-fun Context.isWriteExternalStoragePermissionGranted() =
-    isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
 fun Context.isPermissionGranted(permission: String) =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 

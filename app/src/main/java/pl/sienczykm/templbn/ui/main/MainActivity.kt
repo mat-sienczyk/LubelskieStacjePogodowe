@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -29,13 +28,10 @@ import pl.sienczykm.templbn.ui.settings.SettingsActivity
 import pl.sienczykm.templbn.utils.UpdateHandler
 import pl.sienczykm.templbn.utils.isGooglePlayServicesAvailableAndEnabled
 import pl.sienczykm.templbn.utils.isNewVersion
-import pl.sienczykm.templbn.utils.isWriteExternalStoragePermissionGranted
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val LOCATION_PERMISSIONS_REQUEST_CODE = 111
-        const val STORAGE_PERMISSIONS_REQUEST_CODE = 112
         const val RELOAD_MAP_REQUEST_CODE = 113
 
         fun openWeatherPendingIntent(context: Context) =
@@ -54,11 +50,9 @@ class MainActivity : AppCompatActivity() {
                     context.getString(R.string.navigation_key),
                     context.getString(navigation)
                 )
-            }, PendingIntent.FLAG_UPDATE_CURRENT
+            }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
-
-    private var triedToOpenOsmMap = false
 
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -76,14 +70,8 @@ class MainActivity : AppCompatActivity() {
                         changeFragment(GoogleMapFragment.newInstance())
                         return@OnNavigationItemSelectedListener true
                     } else {
-                        if (isWriteExternalStoragePermissionGranted()) {
-                            changeFragment(OsmMapFragment.newInstance())
-                            return@OnNavigationItemSelectedListener true
-                        } else {
-                            getExternalStoragePermission()
-                            triedToOpenOsmMap = true
-                            return@OnNavigationItemSelectedListener false
-                        }
+                        changeFragment(OsmMapFragment.newInstance())
+                        return@OnNavigationItemSelectedListener true
                     }
                 }
             }
@@ -104,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         Picasso.get().clearCache()
 
         if (savedInstanceState == null) {
-            getLocationPermission()
+            getPermissions()
             handleIntent()
         }
     }
@@ -144,24 +132,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //TODO use Activity Result APIs in the future
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        when (requestCode) {
-            STORAGE_PERMISSIONS_REQUEST_CODE -> {
-                if (triedToOpenOsmMap && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    nav_view.selectedItemId = R.id.navigation_map
-                }
-                triedToOpenOsmMap = false
-                return
-            }
-
-        }
-    }
-
-    //TODO use Activity Result APIs in the future
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -187,19 +157,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocationPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            LOCATION_PERMISSIONS_REQUEST_CODE
+    private fun getPermissions() {
+        val permissionsArray = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.POST_NOTIFICATIONS,
         )
-    }
 
-    private fun getExternalStoragePermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            STORAGE_PERMISSIONS_REQUEST_CODE
+            permissionsArray,
+            0,
         )
     }
 
